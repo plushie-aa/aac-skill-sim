@@ -1,0 +1,713 @@
+{
+  "schemaVersion": 1,
+  "savedId": "example-cleric-healer",
+  "filename": "example-builds/example-cleric-healer.json",
+  "savedAt": "2026-01-01T00:00:00.000Z",
+  "isExample": true,
+  "name": "Example: Cleric (Healer)",
+  "source": "example",
+  "metadata": {
+    "source": "example",
+    "darugearUrl": null,
+    "shareCode": null,
+    "className": "Cleric",
+    "category": "healer",
+    "title": "1st Rank Knight",
+    "equipmentType": "shield",
+    "gearScore": 6410
+  },
+  "shareUrl": null,
+  "darugearUrl": null,
+  "shareCode": null,
+  "className": "Cleric",
+  "level": 55,
+  "gearScore": 6410,
+  "maxHealth": 31400,
+  "maxMana": 23400,
+  "baseAttributes": {
+    "str": 8,
+    "agi": 8,
+    "sta": 158,
+    "int": 158,
+    "spi": 458
+  },
+  "attributes": {
+    "str": 45,
+    "agi": 45,
+    "sta": 940,
+    "int": 260,
+    "spi": 1340
+  },
+  "offense": {
+    "meleeAttack": 180,
+    "rangedAttack": 180,
+    "magicAttack": 60,
+    "healingPower": 1240,
+    "meleeAccuracyPct": 100,
+    "rangedAccuracyPct": 100,
+    "magicAccuracyPct": 100,
+    "meleeCritRatePct": 15,
+    "rangedCritRatePct": 15,
+    "magicCritRatePct": 10,
+    "healCritRatePct": 42.5,
+    "meleeCritBonusPct": 50,
+    "rangedCritBonusPct": 50,
+    "magicCritBonusPct": 50,
+    "healCritBonusPct": 165.0,
+    "meleeSkillDamagePct": 0,
+    "rangedSkillDamagePct": 0,
+    "magicSkillDamagePct": 0,
+    "healingPct": 14.0,
+    "backstabMeleeDamagePct": 0,
+    "backstabRangedDamagePct": 0,
+    "backstabMagicDamagePct": 0,
+    "defensePenetration": 0,
+    "magicDefensePenetration": 0,
+    "shieldDefPenRatePct": 0,
+    "shieldDefPenPct": 0,
+    "focus": 0,
+    "attackSpeed": 90,
+    "castTimePct": 64.0
+  },
+  "defense": {
+    "physicalDefense": 9850,
+    "magicDefense": 13950,
+    "shieldPhysicalDefense": 3400,
+    "hasShield": true,
+    "dualWieldRangedParry": false,
+    "toughness": 3700,
+    "resilience": 4950,
+    "evasionPct": 9.0,
+    "parryPct": 6.0,
+    "rangedParryPct": 0,
+    "blockPct": 19.5,
+    "receivedMeleeDrPct": 11.0,
+    "receivedRangedDrPct": 11.0,
+    "receivedMagicDrPct": 14.0,
+    "fixedMeleeDr": 0,
+    "fixedRangedDr": 0,
+    "fixedMagicDr": 0,
+    "receivedHealingPct": 14.0
+  },
+  "modifiers": [],
+  "consumables": {},
+  "equipment": [
+    {
+      "slotId": 0,
+      "slotName": "Costume",
+      "itemId": 8000927,
+      "name": "Healing Basic Costume",
+      "type": "Synthesis Gear",
+      "gradeId": 10,
+      "gradeName": "Legendary",
+      "gradeColor": "#ffb326",
+      "icon": "assets/icons/icon_item_3288.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [],
+      "synthStats": [
+        "Healing Power +56",
+        "Critical Heal Rate +4.5%",
+        "Critical Heal Bonus +22.0%",
+        "Received Healing +6.0%"
+      ]
+    },
+    {
+      "slotId": 1,
+      "slotName": "Head",
+      "itemId": 31572,
+      "name": "Ayanad Life Hood",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_hm/nu_f_hm_cloth173.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Life Lunadrop",
+        "text": "Spirit +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 2,
+      "slotName": "Chest",
+      "itemId": 31573,
+      "name": "Ayanad Life Shirt",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_ar/nu_f_ar_cloth174.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Honorbold Warrior's Lunafrost",
+        "text": "Received Damage -3%"
+      },
+      "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 3,
+      "slotName": "Waist",
+      "itemId": 31578,
+      "name": "Ayanad Life Sash",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_belt_cloth_0012.png",
+      "ptemper": 106,
+      "mtemper": 106,
+      "temper": 106,
+      "lunafrost": {
+        "name": "Astral Life Lunadrop",
+        "text": "Spirit +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 4,
+      "slotName": "Wrists",
+      "itemId": 31577,
+      "name": "Ayanad Life Sleeves",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_arm_cloth_0012.png",
+      "ptemper": 106,
+      "mtemper": 106,
+      "temper": 106,
+      "lunafrost": {
+        "name": "Astral Life Lunadrop",
+        "text": "Spirit +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 5,
+      "slotName": "Hands",
+      "itemId": 31575,
+      "name": "Ayanad Life Gloves",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_gv/nu_m_gv_cloth174.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Life Lunadrop",
+        "text": "Spirit +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 6,
+      "slotName": "Cloak",
+      "itemId": 43118,
+      "name": "Erenor Flaming Twintail Cloak",
+      "type": "Cloak",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_cp/nu_m_cp_cloth287.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [],
+      "synthStats": [
+        "Spirit +104",
+        "Stamina +70",
+        "Cast Time -4.0%"
+      ]
+    },
+    {
+      "slotId": 7,
+      "slotName": "Legs",
+      "itemId": 31574,
+      "name": "Ayanad Life Pants",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_pt/nu_m_pt_cloth174.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Life Lunadrop",
+        "text": "Spirit +9"
+      },
+      "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 8,
+      "slotName": "Feet",
+      "itemId": 31576,
+      "name": "Ayanad Life Shoes",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_bo/nu_f_bo_cloth174.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Flawless Assassin's Lunafrost",
+        "text": "Move Speed +5%"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 9,
+      "slotName": "Undergarments",
+      "itemId": 8001858,
+      "name": "Healing Black Cat Undergarments",
+      "type": "Synthesis Gear",
+      "gradeId": 10,
+      "gradeName": "Legendary",
+      "gradeColor": "#ffb326",
+      "icon": "assets/icons/costume_set/nu_f_in_pants008_df.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Astral Life Lunadrop",
+        "text": "Spirit +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        }
+      ],
+      "synthStats": [
+        "Critical Heal Bonus +18.0%",
+        "Healing Power +42",
+        "Received Healing +5.0%"
+      ]
+    },
+    {
+      "slotId": 10,
+      "slotName": "Neck",
+      "itemId": 9001878,
+      "name": "Enlightened Ayanad Life Necklace",
+      "type": "Necklace",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/aac/enlightened_life_necklace.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Love Lunafrost",
+        "text": "Magic Defense +53; Healing Power +3"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 11,
+      "slotName": "Earring",
+      "itemId": 9001890,
+      "name": "Enlightened Ayanad Life Earring",
+      "type": "Earring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_life_earring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Love Lunafrost",
+        "text": "Magic Defense +53; Healing Power +3"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 12,
+      "slotName": "Earring",
+      "itemId": 18822,
+      "name": "Delphinad Life Earring",
+      "type": "Earring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/icon_item_earring_0034.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Love Lunafrost",
+        "text": "Magic Defense +53; Healing Power +3"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 13,
+      "slotName": "Ring",
+      "itemId": 9001885,
+      "name": "Enlightened Ayanad Life Ring",
+      "type": "Ring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_life_ring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Love Lunafrost",
+        "text": "Magic Defense +53; Healing Power +3"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 14,
+      "slotName": "Ring",
+      "itemId": 9001885,
+      "name": "Enlightened Ayanad Life Ring",
+      "type": "Ring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_life_ring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Love Lunafrost",
+        "text": "Magic Defense +53; Healing Power +3"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 15,
+      "slotName": "Right Hand Weapon",
+      "itemId": 31368,
+      "name": "Ayanad Life Club",
+      "type": "Club",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_mace_1h_0080.png",
+      "ptemper": 100,
+      "mtemper": 112,
+      "temper": 112,
+      "lunafrost": null,
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Mercy",
+          "text": "Critical Heal Bonus +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Mercy",
+          "text": "Critical Heal Bonus +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Mercy",
+          "text": "Critical Heal Bonus +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Mercy",
+          "text": "Critical Heal Bonus +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Mercy",
+          "text": "Critical Heal Bonus +4%"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 16,
+      "slotName": "Left Hand Weapon",
+      "itemId": 31416,
+      "name": "Ayanad Earth Shield",
+      "type": "Shield",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_shield_0090.png",
+      "ptemper": 110,
+      "mtemper": 100,
+      "temper": 110,
+      "lunafrost": {
+        "name": "Whole Barrier Lunafrost",
+        "text": "Shield Block Rate +2%"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 17,
+      "slotName": "Ranged Weapon",
+      "itemId": 31410,
+      "name": "Ayanad Wave Bow",
+      "type": "Bow",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/icon_item_bow_0088.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 18,
+      "slotName": "Instrument",
+      "itemId": 31420,
+      "name": "Ayanad Life Lute",
+      "type": "Lute",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/icon_item_ins_s_0045.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Love Lunafrost",
+        "text": "Magic Defense +53; Healing Power +3"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Torrent",
+          "text": "Cast Time -1%"
+        }
+      ],
+      "synthStats": []
+    }
+  ],
+  "skillBuild": {
+    "trees": [
+      "vitalism",
+      "songcraft",
+      "auramancy"
+    ],
+    "className": "Cleric",
+    "actives": {
+      "vitalism": [
+        "Antithesis",
+        "Mirror Light",
+        "Resurgence",
+        "Mend",
+        "Fervent Healing",
+        "Renewal",
+        "Skewer",
+        "Twilight"
+      ],
+      "songcraft": [
+        "Quickstep",
+        "Ode to Recovery",
+        "Bulwark Ballad",
+        "Bloody Chantey",
+        "Hummingbird Ditty",
+        "Alarm Call"
+      ],
+      "auramancy": [
+        "Thwart",
+        "Teleportation",
+        "Conversion Shield",
+        "Shrug It Off",
+        "Protective Wings",
+        "Mirror Warp"
+      ]
+    },
+    "passives": {
+      "vitalism": [
+        "Painful Recharge",
+        "Spirit Growth",
+        "Alms",
+        "Defiance",
+        "Joyous Spirit"
+      ],
+      "songcraft": [
+        "Hold the Note",
+        "Loudspeaker"
+      ],
+      "auramancy": []
+    },
+    "hatredTree": null,
+    "ancestrals": {}
+  }
+}

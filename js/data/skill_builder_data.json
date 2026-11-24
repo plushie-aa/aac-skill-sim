@@ -1,0 +1,3448 @@
+{
+  "version": 1,
+  "maxSkillPoints": 28,
+  "treeOrder": [
+    "battlerage",
+    "witchcraft",
+    "defense",
+    "auramancy",
+    "occultism",
+    "archery",
+    "sorcery",
+    "shadowplay",
+    "songcraft",
+    "vitalism"
+  ],
+  "trees": {
+    "battlerage": {
+      "id": 1,
+      "slug": "battlerage",
+      "name": "Battlerage",
+      "actives": [
+        {
+          "key": "battlerage_triple_slash",
+          "name": "Triple Slash",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight02.png",
+          "desc": "A constant pattern of 3 distinct strikes, each dealing Physical Damage and inflicting different effects.\nAttack 1: Shakes enemy for .\nAttack 2: Deals additional damage to Tripped enemies.\nAttack 3: Increases Melee damage +30% and hits multiple enemies in front of you.\nDoes not trigger a global cooldown. Hold down for continuous use.",
+          "simSkillId": "battlerage_triple_slash",
+          "ancestrals": [
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36401,
+              "icon": "assets/icons/icon_skill_fight34.png",
+              "desc": "Fast single-target 3-hit Lightning combo (140% + 140% + 190% Melee Attack).",
+              "simSkillId": "battlerage_triple_slash_lightning"
+            },
+            {
+              "id": "quake",
+              "element": "Quake",
+              "short": "Qk",
+              "skillId": 36404,
+              "icon": "assets/icons/icon_skill_fight35.png",
+              "desc": "Heavy AoE 3-hit Quake slashes (180% + 180% + 260% Melee Attack).",
+              "simSkillId": "battlerage_triple_slash_quake"
+            }
+          ]
+        },
+        {
+          "key": "battlerage_charge",
+          "name": "Charge",
+          "level": 3,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight14.png",
+          "desc": "Launches a rush toward an enemy that deals Physical Damage and inflicts Snare for .\nSnare duration reduced -50% in PvP.\nCan't be used while Snared.",
+          "simSkillId": "battlerage_charge"
+        },
+        {
+          "key": "battlerage_whirlwind_slash",
+          "name": "Whirlwind Slash",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight09.png",
+          "desc": "A spinning attack with up to 3 distinct strikes, each dealing Physical Damage to many nearby enemies.\nAttack 1: Deals additional damage to Shaken targets, and Trips Slowed targets\nAttack 2: Deals additional damage to Tripped targets.\nAttack 3: Shoves nearby targets away from you.\nNo cooldown between strikes. Hold down for continuous use.",
+          "simSkillId": "battlerage_whirlwind_slash"
+        },
+        {
+          "key": "battlerage_sunder_earth",
+          "name": "Sunder Earth",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight04.png",
+          "desc": "Smashes open a fault line in front of you, dealing Physical damage to all enemies in its path and decreasing their Move Speed -60% for .\nAll allies in the area of effect gain Earth Energy, decreasing received damage -30% for up to 7 seconds.",
+          "simSkillId": "battlerage_sunder_earth"
+        },
+        {
+          "key": "battlerage_lasso",
+          "name": "Lasso",
+          "level": 20,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight19.png",
+          "desc": "Pulls a distant enemy to your position. This ability also Taunts the target, forcing affected monsters to attack you for 4 seconds."
+        },
+        {
+          "key": "battlerage_terrifying_roar",
+          "name": "Terrifying Roar",
+          "level": 25,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight26.png",
+          "desc": "Weakens all enemies within m for . \nAlso Toughens the caster for the same amount of time, reducing the duration of those debuffs."
+        },
+        {
+          "key": "battlerage_bondbreaker",
+          "name": "Bondbreaker",
+          "level": 30,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight16.png",
+          "desc": "Removes all Snared, Slowed, and Lassitude effects from the caster, and grants immunity to these effects for . Can only be used while under one of these effects.\nCan be used during global cooldown, and does not trigger a global cooldown."
+        },
+        {
+          "key": "battlerage_precision_strike",
+          "name": "Precision Strike",
+          "level": 35,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight15.png",
+          "desc": "Delivers a powerful attack that deals Physical Damage.",
+          "simSkillId": "battlerage_precision_strike",
+          "ancestrals": [
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36446,
+              "icon": "assets/icons/icon_skill_fight36.png",
+              "desc": "Inflicts 613 (576 + 360% Melee Attack) Physical damage to a single target.\nIncreases Critical Damage +60%. \nIncreases Melee Critical Hit Rate +34% when attacking targets with less than 30% max Health.",
+              "simSkillId": "battlerage_precision_strike_lightning"
+            },
+            {
+              "id": "gale",
+              "element": "Gale",
+              "short": "Gl",
+              "skillId": 36447,
+              "icon": "assets/icons/icon_skill_fight37.png",
+              "desc": "Deals 613 (576 + 360% Melee Attack) Physical Damage to a single target.\nIncreases Critical Damage 60%. Backstabbing increases Melee Critical Rate +34%.\nThis skill's Cooldown resets if it kills the target.",
+              "simSkillId": "battlerage_precision_strike_gale"
+            }
+          ]
+        },
+        {
+          "key": "battlerage_frenzy",
+          "name": "Frenzy",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight10.png",
+          "desc": "Increases Melee Attack and Magic Attack +30 whenever damage is received, and absorbs 21% of received Magic Damage.\nIncreases Move Speed +5% and reduces Physical Defense -10% each time you damage an enemy.\nDecreases Battlerage Mana Cost -50%.\nEffect lasts for , but increases by + per kill. Stuns you for 4 seconds when Frenzy ends."
+        },
+        {
+          "key": "battlerage_battle_focus",
+          "name": "Battle Focus",
+          "level": 45,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight08.png",
+          "desc": "Doesn't trigger a global cooldown."
+        },
+        {
+          "key": "battlerage_tiger_strike",
+          "name": "Tiger Strike",
+          "level": 50,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight18.png",
+          "desc": "Launches a rush past an enemy dealing Physical Damage.\nRepeats up to 5 times if other enemies are nearby.\nCan't be countered with Evasion, Block, or Parry.\nCan't be used while Snared.",
+          "simSkillId": "battlerage_tiger_strike",
+          "ancestrals": [
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36448,
+              "icon": "assets/icons/icon_skill_fight38.png",
+              "desc": "Rushes past the same enemy 3 times, inflicting 441 (422 + 180% Melee Attack) Physical Damage each time.\nThis skill cannot be evaded, blocked, or parried. \nCan't be used while Snared.",
+              "simSkillId": "battlerage_tiger_strike_lightning"
+            },
+            {
+              "id": "life",
+              "element": "Life",
+              "short": "Li",
+              "skillId": 36449,
+              "icon": "assets/icons/icon_skill_fight39.png",
+              "desc": "Rushes past an enemy, dealing 688 (660 + 280% Melee Attack) Physical Damage.\nRepeats up to 5 times if other enemies are nearby, and grants immunity to all harmful effects for the duration.\nThis skill cannot be evaded, blocked, or parried. \nCan't be used while Snared.",
+              "simSkillId": "battlerage_tiger_strike_earth"
+            }
+          ]
+        },
+        {
+          "key": "battlerage_behind_enemy_lines",
+          "name": "Behind Enemy Lines",
+          "level": 55,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight28.png",
+          "desc": "Triggers a high leap that lands at a designated site, dealing Physical Damage and Snaring nearby enemies for .\nCancels Bubble Trap, Petrify, and Telekinesis effects.\nCan't be used while Snared.\nSnare duration reduced -50% in PvP.",
+          "simSkillId": "battlerage_behind_enemy_lines"
+        }
+      ],
+      "passives": [
+        {
+          "id": 3,
+          "key": "battlerage_p_weapon_maneuvers",
+          "buffId": 481,
+          "name": "Weapon Maneuvers",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight03.png",
+          "desc": "Increases Melee Attack +5%.",
+          "effectKind": "sheet",
+          "shortEffect": "+5% Melee Atk",
+          "mulOffense": {
+            "meleeAttack": 1.05
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 33,
+              "value": 5
+            },
+            {
+              "unit_attribute_id": 96,
+              "value": 5
+            },
+            {
+              "unit_attribute_id": 97,
+              "value": 5
+            }
+          ]
+        },
+        {
+          "id": 32,
+          "key": "battlerage_p_dual_wield_proficiency",
+          "buffId": 831,
+          "name": "Dual-Wield Proficiency",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight20.png",
+          "desc": "When dual-wielding, Parry deflects Ranged Attacks as well.\nIncreases Melee Crit Rate +8%.",
+          "effectKind": "sheet",
+          "shortEffect": "+8% Melee Crit, DW Rng Parry",
+          "addOffense": {
+            "meleeCritRatePct": 8
+          },
+          "grantsDwRangedParry": true,
+          "buffData": [
+            {
+              "unit_attribute_id": 77,
+              "value": 80
+            }
+          ]
+        },
+        {
+          "id": 29,
+          "key": "battlerage_p_attack_speed_training",
+          "buffId": 811,
+          "name": "Attack Speed Training",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight17.png",
+          "desc": "Decreases the cooldown of Battlerage skills-10%. Grants one stack of Delirium for every Battlerage Critical Hit, and for every enemy hit by the 3rd attack of Whirlwind Slash.\n\nDelirium:\n- Melee Skill Damage +2%. \n- Melee Critical Damage +5% .\n- Stacks up to 5 times. \n- Grants a 5% chance of inflicting Bleed on targets.",
+          "effectKind": "combat",
+          "shortEffect": "-10% Battlerage CD, Delirium",
+          "cooldownReduction": {
+            "battlerage": 10
+          },
+          "linkedBuffId": "delirium",
+          "buffData": []
+        },
+        {
+          "id": 90,
+          "key": "battlerage_p_deflect_and_retaliate",
+          "buffId": 2610,
+          "name": "Deflect and Retaliate",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight23.png",
+          "desc": "Permanently increases Parry rate +2% each successful parry resets the cooldown on all Battlerage attack skills.\nThis ability has a 12sec cooldown once triggered.",
+          "effectKind": "sheet",
+          "shortEffect": "+2% Parry Rate",
+          "addDefense": {
+            "parryPct": 2
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 81,
+              "value": 20
+            }
+          ]
+        },
+        {
+          "id": 245,
+          "key": "battlerage_p_reckless_charge",
+          "buffId": 7542,
+          "name": "Reckless Charge",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_fight29.png",
+          "desc": "Using Charge, Tiger Strike, or Behind Enemy Lines decreases received Physical Damage -15%, and decreases the duration of Shackle, Slow, Snare, and Impale -35% for 4 seconds.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: -15% Phys Dmg (4s)",
+          "linkedBuffId": "reckless_charge",
+          "buffData": []
+        },
+        {
+          "id": 92,
+          "key": "battlerage_p_puncture",
+          "buffId": 2621,
+          "name": "Puncture",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight24.png",
+          "desc": "Melee Critical attacks decrease the target's Physical Defense -2000 for 5 seconds.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: -2,000 Target PDef (5s)",
+          "linkedBuffId": "puncture",
+          "buffData": []
+        },
+        {
+          "id": 244,
+          "key": "battlerage_p_weapon_mastery",
+          "buffId": 7544,
+          "name": "Weapon Mastery",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_fight30.png",
+          "desc": "Increases Battlerage skill damage +15%.",
+          "effectKind": "combat",
+          "shortEffect": "+15% Battlerage Dmg (mult)",
+          "skillsetDamageBonusPct": {
+            "battlerage": 15
+          },
+          "dedupBuffId": "weapon_mastery",
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "battlerage_soulbound_blades",
+          "name": "Soulbound Blades",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred05.png",
+          "desc": "Throws otherworldly blades that surround the target, dealing damage to the target (if cast on an enemy) and all nearby enemies."
+        },
+        {
+          "key": "battlerage_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "battlerage_swordfall",
+          "name": "Swordfall",
+          "level": 55,
+          "points": 0,
+          "icon": "assets/icons/icon_skill_hatred04.png",
+          "desc": "Call down swords from the sky to Impale enemies in front of you, dealing up to Physical Damage. Use this skill again to stop channeling early. The longer you channel, the more damage will be dealt. \nIf cast while at 6 Abyssal Charges, additional swords are summoned, inflicting more damage the closer an enemy is to the center of the effect."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "battlerage_raging_berserker",
+          "name": "Raging Berserker",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18372,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred06.png",
+          "desc": "Charge, Precision Strike, Tiger Strike, Behind Enemy Lines, and the third hit of Whirlwind Slash each grant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "witchcraft": {
+      "id": 2,
+      "slug": "witchcraft",
+      "name": "Witchcraft",
+      "actives": [
+        {
+          "key": "witchcraft_earthen_grip",
+          "name": "Earthen Grip",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_illusion09.png",
+          "desc": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for .\nDeals Magic Damage on expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect.\nSnare duration reduced -50% in PvP.",
+          "simSkillId": "witchcraft_earthen_grip",
+          "ancestrals": [
+            {
+              "id": "quake",
+              "element": "Quake",
+              "short": "Qk",
+              "skillId": 36450,
+              "icon": "assets/icons/icon_skill_illusion27.png",
+              "desc": "Calls forth hands from the ground that grab all enemies within 8m, inflicting Snare for 12s.\nDeals 177 (86 + 220% Magic Attack) Magic Damage upon expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nSnare duration reduced -50% in PvP.",
+              "simSkillId": "witchcraft_earthen_grip_aoe"
+            },
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36451,
+              "icon": "assets/icons/icon_skill_illusion28.png",
+              "desc": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for 12s.\nDeals 177 (86 + 220% Magic Attack) Magic Damage upon expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nSnare duration reduced -50% in PvP.\nThis skill has a reduced Cast Time compared to regular Earthen Grip, but also has a shorter range."
+            }
+          ]
+        },
+        {
+          "key": "witchcraft_enervate",
+          "name": "Enervate",
+          "level": 5,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_illusion03.png",
+          "desc": "Deals Magic Damage and burns mana over . Decreases healing effectiveness -60% and increases duration of Stun and Trip +30%.",
+          "simSkillId": "witchcraft_enervate"
+        },
+        {
+          "key": "witchcraft_bubble_trap",
+          "name": "Bubble Trap",
+          "level": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion04.png",
+          "desc": "Traps an enemy inside a bubble for and slowly lifts it into the air. \nEnemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect.\nBubble duration reduced -50% in PvP.",
+          "ancestrals": [
+            {
+              "id": "gale",
+              "element": "Gale",
+              "short": "Gl",
+              "skillId": 36452,
+              "icon": "assets/icons/icon_skill_illusion29.png",
+              "desc": "Traps an enemy inside a bubble for 10.8s and slowly lifts it into the air. Enemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP.\nThis skill has a reduced Cooldown compared to regular Bubble Trap, but also has a shorter range."
+            },
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36453,
+              "icon": "assets/icons/icon_skill_illusion30.png",
+              "desc": "Summons a mist at the target location that lasts for 15 seconds, affecting all enemies within a 4m radius.\nEach time an enemy enters the mist it becomes trapped in a bubble, rising into the air for 5.4s.\nEnemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP."
+            }
+          ]
+        },
+        {
+          "key": "witchcraft_insidious_whisper",
+          "name": "Insidious Whisper",
+          "level": 15,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion05.png",
+          "desc": "Inflicts Fear on an enemy and causes it to flee from the caster for .\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect."
+        },
+        {
+          "key": "witchcraft_purge",
+          "name": "Purge",
+          "level": 20,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion14.png",
+          "desc": "Allies: Removes 1 negative effect. \nEnemies: Removes 1 buff."
+        },
+        {
+          "key": "witchcraft_play_dead",
+          "name": "Play Dead",
+          "level": 25,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion07.png",
+          "desc": "Allows caster to play dead to escape danger. Caster can revive at any time. Restores 1% of the caster's health and mana every second if they are below 30%. Effect ends with movement."
+        },
+        {
+          "key": "witchcraft_courageous_action",
+          "name": "Courageous Action",
+          "level": 30,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion08.png",
+          "desc": "Awakens caster or an ally and grants immunity to Sleep for ."
+        },
+        {
+          "key": "witchcraft_lassitude",
+          "name": "Lassitude",
+          "level": 35,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion01.png",
+          "desc": "Magically fatigues the target, causing them to fall asleep for after a delay. Enemies will wake upon taking damage. Sleep duration reduced -50% in PvP."
+        },
+        {
+          "key": "witchcraft_banshee_wail",
+          "name": "Banshee Wail",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion18.png",
+          "desc": "Causes Fear in all nearby enemies for , forcing them to flee and Stunning them for 2 seconds.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect.",
+          "ancestrals": [
+            {
+              "id": "stone",
+              "element": "Stone",
+              "short": "St",
+              "skillId": 36454,
+              "icon": "assets/icons/icon_skill_illusion31.png",
+              "desc": "Causes Fear in all nearby enemies for 2.8s, forcing them to flee. \nThis skill reduces affected enemies' Move Speed -40% for the duration, but does not stun them afterwards like regular Banshee Wail.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect."
+            },
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36455,
+              "icon": "assets/icons/icon_skill_illusion32.png",
+              "desc": "Summons a Phantasm at the target location for 6 seconds, which inflicts Fear on all enemies within a 5m radius every second. Feared enemies flee for up to 2.8s, then are Stunned for 2 seconds afterward.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect. \nThe duration of this skill's Fear effect is not affected by the caster's Passive skills.\nCannot be used in conjunction with Mist Summon Wraith (Occultism)."
+            }
+          ]
+        },
+        {
+          "key": "witchcraft_focal_concussion",
+          "name": "Focal Concussion",
+          "level": 45,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_illusion11.png",
+          "desc": "Deals Magic Damage and Stuns an enemy for .\nIf the target has any positive buffs, Focal Concussion removes one buff and deals additional damage when the Stun ends.",
+          "simSkillId": "witchcraft_focal_concussion"
+        },
+        {
+          "key": "witchcraft_dahuta_s_breath",
+          "name": "Dahuta's Breath",
+          "level": 50,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_illusion22.png",
+          "desc": "Sends forth a wave that deals Magic Damage and pushes enemies back.",
+          "simSkillId": "witchcraft_dahutas_breath"
+        },
+        {
+          "key": "witchcraft_fiend_s_knell",
+          "name": "Fiend's Knell",
+          "level": 55,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion24.png",
+          "desc": "Summons a fiend for up to 30 seconds that relentlessly attacks enemies with special skills.\nSummons only one demon, which can't be healed."
+        }
+      ],
+      "passives": [
+        {
+          "id": 4,
+          "key": "witchcraft_p_folding_time",
+          "buffId": 482,
+          "name": "Folding Time",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion02.png",
+          "desc": "Decreases Cast Time for all skills -4%.",
+          "effectKind": "sheet",
+          "shortEffect": "-4% Cast Time",
+          "addOffense": {
+            "castTimePct": -4
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 71,
+              "value": -40
+            }
+          ]
+        },
+        {
+          "id": 246,
+          "key": "witchcraft_p_illusion_s_favor",
+          "buffId": 7545,
+          "name": "Illusion's Favor",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion25.png",
+          "desc": "Increases Health Regen +7 every 1 second.\nDecreases Cast Time for Earthen Grip and Insidious Whisper -0.5 seconds.",
+          "effectKind": "utility",
+          "shortEffect": "+7 HP Regen, -0.5s Grip/Whisper",
+          "buffData": [
+            {
+              "unit_attribute_id": 67,
+              "value": 35
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "key": "witchcraft_p_magic_detection",
+          "buffId": 805,
+          "name": "Magic Detection",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion15.png",
+          "desc": "Increases Magic Defense +500.",
+          "effectKind": "sheet",
+          "shortEffect": "+500 Magic Def",
+          "addDefense": {
+            "magicDefense": 500
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 64,
+              "value": 500
+            }
+          ]
+        },
+        {
+          "id": 182,
+          "key": "witchcraft_p_mitigation",
+          "buffId": 3779,
+          "name": "Mitigation",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_illusion23.png",
+          "desc": "Decreases received Melee damage -30% for 3 seconds after receiving a Melee Critical Hit.\nThis ability has a 20sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: -30% Recv Melee (3s)",
+          "buffData": []
+        },
+        {
+          "id": 28,
+          "key": "witchcraft_p_baleful_recharge",
+          "buffId": 806,
+          "name": "Baleful Recharge",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion17.png",
+          "desc": "Your successful attacks have a 2% chance to trigger the Baleful Recharge buff, restoring a percentage of your maximum mana with every attack for the following 5 seconds. This ability has a 12sec cooldown once triggered. In addition, each enemy you Fear using Banshee's Wail or Insidious Whisper grants a stack of Exploitation.\n\nExploitation:\n- Decreases the Cooldown of Focal Concussion and Enervate -10% per stack.\n- Stacks up to 5 times.\n- Casting either spell consumes one stack.\n- While under the effects of Exploitation, both spells will deal 90% of their damage as mana burn instead of normal damage, restoring an equal amount of mana to you.",
+          "effectKind": "utility",
+          "shortEffect": "2% Dmg -> Mana",
+          "buffData": []
+        },
+        {
+          "id": 41,
+          "key": "witchcraft_p_augment_witchcraft",
+          "buffId": 1124,
+          "name": "Augment Witchcraft",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion20.png",
+          "desc": "Increases the duration of Earthen Grip, Bubble Trap, Insidious Whisper, Lassitude, and Banshee Wail +20%.\nFiend's Knell now summons a more powerful fiend that last for 5 minutes, tripping enemies where it is summoned. Increases the cooldown on Fiend's Knell to 2m 30sec.",
+          "effectKind": "utility",
+          "shortEffect": "Extended Witchcraft CC",
+          "buffData": []
+        },
+        {
+          "id": 247,
+          "key": "witchcraft_p_enshroud",
+          "buffId": 7546,
+          "name": "Enshroud",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_illusion26.png",
+          "desc": "Decreases Witchcraft skill cooldown -20%.",
+          "effectKind": "combat",
+          "shortEffect": "-20% Witchcraft CD",
+          "cooldownReduction": {
+            "witchcraft": 20
+          },
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "witchcraft_devour_hope",
+          "name": "Devour Hope",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred07.png",
+          "desc": "Inflicts a crippling despair on your chosen victim for . \nCan only be used in PvP."
+        },
+        {
+          "key": "witchcraft_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "witchcraft_stonesight",
+          "name": "Stonesight",
+          "level": 55,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred08.png",
+          "desc": "Unleashes the gaze of the terrifying Gorgon, petrifying all enemies facing the caster within a 15m cone. Enemies remain petrified until the caster stops channeling.\nAny additional Abyssal Charges are consumed on casting, increasing the range of the skill."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "witchcraft_spiteful_curses",
+          "name": "Spiteful Curses",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18406,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred09.png",
+          "desc": "Earthen Grip, Bubble Trap, Insidious Whisper, Lassitude, and Focal Concussion each grant 1 Abyssal Charges whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "defense": {
+      "id": 3,
+      "slug": "defense",
+      "name": "Defense",
+      "actives": [
+        {
+          "key": "defense_shield_slam",
+          "name": "Shield Slam",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_adamant01.png",
+          "desc": "Swings your shield at an enemy, dealing Physical Damage and Stunning them for .",
+          "simSkillId": "defense_shield_slam",
+          "ancestrals": [
+            {
+              "id": "gale",
+              "element": "Gale",
+              "short": "Gl",
+              "skillId": 36456,
+              "icon": "assets/icons/icon_skill_adamant33.png",
+              "desc": "Strike an enemy with your shield, dealing 50 (46 + 50% Melee Attack) Physical Damage. Interrupts the target, canceling all Cast Time, Channeled, and Ongoing skills.\nThis skill has a dramatically shorter Cooldown than regular Shield Slam, but deals less damage and does not Stun.",
+              "simSkillId": "defense_shield_slam_quick"
+            },
+            {
+              "id": "quake",
+              "element": "Quake",
+              "short": "Qk",
+              "skillId": 36457,
+              "icon": "assets/icons/icon_skill_adamant34.png",
+              "desc": "Swing your shield in an arc, dealing 70 (57 + 130% Melee Attack) Physical Damage to multiple enemies in front of you and Stunning them for 1.5s.",
+              "simSkillId": "defense_shield_slam_arc"
+            }
+          ]
+        },
+        {
+          "key": "defense_refreshment",
+          "name": "Refreshment",
+          "level": 5,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant02.png",
+          "desc": "Only works on caster.\nWhile active, you gain 10% of received damage as stacks of Mettle."
+        },
+        {
+          "key": "defense_bull_rush",
+          "name": "Bull Rush",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_adamant28.png",
+          "desc": "Shoves an enemy away with your shield, inflicting Physical Damage and Silencing the target for . Interrupts enemy spellcasting. Increases Aggro generation +200% for 5 seconds afterwards.",
+          "simSkillId": "defense_bull_rush"
+        },
+        {
+          "key": "defense_boastful_roar",
+          "name": "Boastful Roar",
+          "level": 15,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant27.png",
+          "desc": "Inflicts Distressed for , reducing the enemy's Move Speed -45%, Skill Damage -20%, Attack Speed -250, and healing effectiveness -60%.\nInflicts additional damage equal to 60% of your stacked Mettle, consuming all stacks of Mettle when cast.\nThis ability also Provokes the target, forcing affected players to target you and affected monsters to attack you."
+        },
+        {
+          "key": "defense_toughen",
+          "name": "Toughen",
+          "level": 20,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant06.png",
+          "desc": "Lasts .\nWhile active, you gain 50% of received damage as stacks of Mettle."
+        },
+        {
+          "key": "defense_revitalizing_cheer",
+          "name": "Revitalizing Cheer",
+          "level": 25,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_adamant14.png",
+          "desc": "Restores + Health plus an amount equal to 50% of your stacked Mettle.\nConsumes all stacked Mettle and cures one debuff.",
+          "simSkillId": "defense_revitalizing_cheer"
+        },
+        {
+          "key": "defense_redoubt",
+          "name": "Redoubt",
+          "level": 30,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant05.png",
+          "desc": "Raises a shield around the caster for . \nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped.\nCan only be used while a shield is equipped.",
+          "ancestrals": [
+            {
+              "id": "gale",
+              "element": "Gale",
+              "short": "Gl",
+              "skillId": 36458,
+              "icon": "assets/icons/icon_skill_adamant35.png",
+              "desc": "Raises a shield around the caster for 6s. Increases Block Rate +38% and decreases Move Speed -10%.\nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped.\nCan only be used while a shield is equipped."
+            },
+            {
+              "id": "life",
+              "element": "Life",
+              "short": "Li",
+              "skillId": 36459,
+              "icon": "assets/icons/icon_skill_adamant36.png",
+              "desc": "Strengthens the caster's defenses for 20s. Increases Physical Defense +40% and decreases Move Speed -10%.\nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped."
+            }
+          ]
+        },
+        {
+          "key": "defense_ollo_s_hammer",
+          "name": "Ollo's Hammer",
+          "level": 35,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_will26.png",
+          "desc": "Summons Ollo's hammer and hurls it toward a location; inflicts Trip on an enemy for if it hits.\nAlso deals Physical Damage to all enemies within 3m of the target location.",
+          "simSkillId": "defense_ollos_hammer"
+        },
+        {
+          "key": "defense_mocking_howl",
+          "name": "Mocking Howl",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant07.png",
+          "desc": "Inflicts Shaken on all enemies within a m radius, decreasing their Move Speed -27%, Skill Damage -8%, and Attack Speed -75. This ability also Taunts enemies, forcing affected monsters to attack you.\nBuilds additional Aggro equal to 100% of your stacked Mettle, consuming all stacks of Mettle when cast."
+        },
+        {
+          "key": "defense_imprison",
+          "name": "Imprison",
+          "level": 45,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love10.png",
+          "desc": "Imprisons all enemies within a boundary for 12 seconds. Enemies can break out if they use enough force.",
+          "ancestrals": [
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36460,
+              "icon": "assets/icons/icon_skill_adamant37.png",
+              "desc": "Summons a magical circle for 8 seconds that allows anyone to enter but prevents them from escaping. \nEnemies can break out if they use enough force.\nOnly applies in PvP."
+            },
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36461,
+              "icon": "assets/icons/icon_skill_adamant38.png",
+              "desc": "Summons a 20m wide wall of mist directly in front of you. The wall remains in place for 12 seconds. \nEnemies can break through if they use enough force."
+            }
+          ]
+        },
+        {
+          "key": "defense_invincibility",
+          "name": "Invincibility",
+          "level": 50,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_streak16.png",
+          "desc": "Grants immunity to all damage for .\nEffect is canceled if you move."
+        },
+        {
+          "key": "defense_fortress",
+          "name": "Fortress",
+          "level": 55,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant29.png",
+          "desc": "Shoves away up to 5 enemies within 10m and pulls 5 raid members closer. Decreases pulled raid members' received damage -50% and increases your Mettle +1,500. Effective regardless of a target's status."
+        }
+      ],
+      "passives": [
+        {
+          "id": 30,
+          "key": "defense_p_supplemental_block",
+          "buffId": 812,
+          "name": "Supplemental Block",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant15.png",
+          "desc": "Increases Block Rate +15% for 5 seconds after a successful Block.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +15% Block on Block (5s)",
+          "buffData": []
+        },
+        {
+          "id": 11,
+          "key": "defense_p_shield_edge",
+          "buffId": 490,
+          "name": "Shield Edge",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant04.png",
+          "desc": "Has a small chance to stun the attacker when blocking a melee attack. \nThis ability has a 12 sec cooldown once triggered.",
+          "effectKind": "utility",
+          "shortEffect": "Shield Stun on Block",
+          "buffData": []
+        },
+        {
+          "id": 249,
+          "key": "defense_p_shield_of_steel",
+          "buffId": 7550,
+          "name": "Shield of Steel",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant30.png",
+          "desc": "Increases Physical Defense +900.",
+          "effectKind": "sheet",
+          "shortEffect": "+900 Phys Def",
+          "addDefense": {
+            "physicalDefense": 900
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 8,
+              "value": 900
+            }
+          ]
+        },
+        {
+          "id": 31,
+          "key": "defense_p_guardian",
+          "buffId": 830,
+          "name": "Guardian",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant20.png",
+          "desc": "Permanently increases Aggro generation +50%.",
+          "effectKind": "utility",
+          "shortEffect": "+50% Aggro",
+          "buffData": [
+            {
+              "unit_attribute_id": 90,
+              "value": 50
+            }
+          ]
+        },
+        {
+          "id": 250,
+          "key": "defense_p_spry_fortress",
+          "buffId": 7549,
+          "name": "Spry Fortress",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant31.png",
+          "desc": "Decreases Stun and Tripped duration -10%.",
+          "effectKind": "utility",
+          "shortEffect": "-10% Stun/Trip Duration",
+          "buffData": []
+        },
+        {
+          "id": 97,
+          "key": "defense_p_bear_s_vigor",
+          "buffId": 2753,
+          "name": "Bear's Vigor",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant26.png",
+          "desc": "Increases max health +900. Increases the effectiveness of Refreshment +20% and Toughen +33%.",
+          "effectKind": "sheet",
+          "shortEffect": "+900 Max HP",
+          "addMaxHealth": 900,
+          "buffData": [
+            {
+              "unit_attribute_id": 6,
+              "value": 900
+            }
+          ]
+        },
+        {
+          "id": 248,
+          "key": "defense_p_ursine_roar",
+          "buffId": 7551,
+          "name": "Ursine Roar",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_adamant32.png",
+          "desc": "Decreases the cooldown of Defense skills -20%.\nIncreases Continuous Health Regen based on Stamina whenever damage is received while below 30% health.",
+          "effectKind": "combat",
+          "shortEffect": "-20% Defense CD",
+          "cooldownReduction": {
+            "defense": 20
+          },
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "defense_shield_throw",
+          "name": "Shield Throw",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred10.png",
+          "desc": "Hurls your shield at the target, dealing Physical Damage.\nHas a 100% chance to Critical Strike. Temporarily removes all benefits of your shield while the projectile is in the air. Inflicts Disarm on targets that Parry the attack, removing all benefits of their weapon for ."
+        },
+        {
+          "key": "defense_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "defense_cruel_binding",
+          "name": "Cruel Binding",
+          "level": 55,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred11.png",
+          "desc": "Tethers an enemy's soul to a location for , pulling them back to that spot every time they attempt to move further than 10m away.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "defense_indomitable_rage",
+          "name": "Indomitable Rage",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18411,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred12.png",
+          "desc": "Shield Slam, Bull Rush, Revitalizing Cheer, Mocking Howl, and Boastful Roar each grant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "auramancy": {
+      "id": 4,
+      "slug": "auramancy",
+      "name": "Auramancy",
+      "actives": [
+        {
+          "key": "auramancy_thwart",
+          "name": "Thwart",
+          "level": 1,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will24.png",
+          "desc": "Inflicts Shaken on all enemies within a m radius, decreasing their Move Speed -27%, Skill Damage -8%, and Attack Speed -75. Grants the caster 1 stack of Inspired.\n\nInspired:\n- Increases Attack Speed +53.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- Stacks up to 3 times.",
+          "ancestrals": [
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36462,
+              "icon": "assets/icons/icon_skill_will30.png",
+              "desc": "Grants Greater Inspire to all allies in a 6m radius.\n\nGreater Inspire:\n- Increases Attack Speed +65.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- This effect does not stack."
+            },
+            {
+              "id": "stone",
+              "element": "Stone",
+              "short": "St",
+              "skillId": 36463,
+              "icon": "assets/icons/icon_skill_will31.png",
+              "desc": "Increases received damage +20 on enemies in a 6m radius for 5 seconds.\nGrants the caster 1 stack of Inspired.\n\nInspired:\n- Increases Attack Speed +53.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- Stacks up to 3 times."
+            }
+          ]
+        },
+        {
+          "key": "auramancy_comet_s_boon",
+          "name": "Comet's Boon",
+          "level": 5,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_will01.png",
+          "desc": "Fires a flash of light that deals Magic Damage to all enemies hit.\nIncreases the Move Speed of all allies it passes.",
+          "simSkillId": "auramancy_comets_boon"
+        },
+        {
+          "key": "auramancy_spell_shield",
+          "name": "Spell Shield",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_will14.png",
+          "desc": "Creates an energy shield for . \nDoes not trigger a global cooldown.",
+          "simSkillId": "auramancy_spell_shield",
+          "ancestrals": [
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36464,
+              "icon": "assets/icons/icon_skill_will32.png",
+              "desc": "Creates an energy shield for you or an ally for 8s. Decreases Received Magic Damage and Received Healing by -32.0%.\nDoes not trigger a global cooldown."
+            },
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36465,
+              "icon": "assets/icons/icon_skill_will33.png",
+              "desc": "Creates an energy shield for 5s. Reflects 32% of incoming Magic Damage and decreases Received Healing -32%.\nDoes not trigger a global cooldown."
+            }
+          ]
+        },
+        {
+          "key": "auramancy_vicious_implosion",
+          "name": "Vicious Implosion",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_will04.png",
+          "desc": "Triggers a sudden, powerful implosion, pulling enemies within 10 meters towards you and dealing Magic Damage.",
+          "simSkillId": "auramancy_vicious_implosion"
+        },
+        {
+          "key": "auramancy_teleportation",
+          "name": "Teleportation",
+          "level": 20,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will11.png",
+          "desc": "Teleports caster 15 meters ahead.\nCan't teleport through walls or other solid objects.\nCan't be used while Snared."
+        },
+        {
+          "key": "auramancy_health_lift",
+          "name": "Health Lift",
+          "level": 25,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will21.png",
+          "desc": "Affects caster and nearby raid members for 30 minutes.\nCan't be used on targets whose health has already been increased."
+        },
+        {
+          "key": "auramancy_meditate",
+          "name": "Meditate",
+          "level": 30,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will05.png",
+          "desc": "Restores +4% of max mana per second for through meditation. Prevents movement or other actions."
+        },
+        {
+          "key": "auramancy_shrug_it_off",
+          "name": "Shrug It Off",
+          "level": 35,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will12.png",
+          "desc": "Cancels all Stun and Impale effects, and grants immunity to these effects for .\nCan only be used while under one of these effects.\nCan be used during global cooldown, and does not trigger global cooldown."
+        },
+        {
+          "key": "auramancy_liberation",
+          "name": "Liberation",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will08.png",
+          "desc": "Grants immunity to Shackle and Silence for ."
+        },
+        {
+          "key": "auramancy_leech",
+          "name": "Leech",
+          "level": 45,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will07.png",
+          "desc": "Interrupts a target's casting and inflicts Sleep for . Steals one buff from the target.\nTargets will wake upon taking damage.\nSleep duration reduced -50% in PvP."
+        },
+        {
+          "key": "auramancy_protective_wings",
+          "name": "Protective Wings",
+          "level": 50,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will13.png",
+          "desc": "Grants immunity to Magic Damage to allies within 5m for the duration.",
+          "ancestrals": [
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36466,
+              "icon": "assets/icons/icon_skill_will34.png",
+              "desc": "Generates Protective Wings at the target location, granting immunity to Magic Damage for all allies in a 5m radius."
+            },
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36467,
+              "icon": "assets/icons/icon_skill_will35.png",
+              "desc": "Grants the Phoenix Feather buff to a random ally in a 20m radius every 0.5 seconds. Reduces incoming Magic Damage by -29% and reflects 70% back to the attacker."
+            }
+          ]
+        },
+        {
+          "key": "auramancy_mirror_warp",
+          "name": "Mirror Warp",
+          "level": 55,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will27.png",
+          "desc": "Teleports caster 15m to the right or left.\nCan't pass through walls or other solid objects. \nCan't be used while Snared. \nHas a chance to escape enemy targetting during PvP."
+        }
+      ],
+      "passives": [
+        {
+          "id": 13,
+          "key": "auramancy_p_absorb_damage",
+          "buffId": 498,
+          "name": "Absorb Damage",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will02.png",
+          "desc": "Converts 7% of received damage to health.",
+          "effectKind": "combat",
+          "shortEffect": "Restores 7% taken dmg as HP",
+          "absorbDamagePct": 7,
+          "buffData": []
+        },
+        {
+          "id": 98,
+          "key": "auramancy_p_hearten",
+          "buffId": 2784,
+          "name": "Hearten",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_buff43.png",
+          "desc": "Doubles the duration of Inspire.",
+          "effectKind": "proc",
+          "shortEffect": "Inspired 3x (+159 Atk Spd)",
+          "linkedBuffId": "inspired_thwart",
+          "buffData": []
+        },
+        {
+          "id": 251,
+          "key": "auramancy_p_inspiration_cloak",
+          "buffId": 7554,
+          "name": "Inspiration Cloak",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will28.png",
+          "desc": "Decreases all received damage -100 for 3 seconds after receiving critical damage.\nThis ability has a 20 sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: -100 Fixed Dmg (3s)",
+          "buffData": []
+        },
+        {
+          "id": 21,
+          "key": "auramancy_p_unassailable",
+          "buffId": 621,
+          "name": "Unassailable",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will17.png",
+          "desc": "Grants a 1% chance to become immune to all damage for 2 seconds after receiving any damage.\nThis ability has a 20 sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "1% Chance 2s Immunity",
+          "buffData": []
+        },
+        {
+          "id": 26,
+          "key": "auramancy_p_improved_targeting",
+          "buffId": 793,
+          "name": "Improved Targeting",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will19.png",
+          "desc": "Increases the Accuracy of all attack types +8%.",
+          "effectKind": "sheet",
+          "shortEffect": "+8% All Accuracy",
+          "addOffense": {
+            "meleeAccuracyPct": 8,
+            "rangedAccuracyPct": 8,
+            "magicAccuracyPct": 8
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 78,
+              "value": 80
+            },
+            {
+              "unit_attribute_id": 83,
+              "value": 80
+            },
+            {
+              "unit_attribute_id": 88,
+              "value": 80
+            }
+          ]
+        },
+        {
+          "id": 252,
+          "key": "auramancy_p_magic_condenser",
+          "buffId": 7553,
+          "name": "Magic Condenser",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will29.png",
+          "desc": "Increases all Critical Rates and Critical Heal Rate +6%.",
+          "effectKind": "sheet",
+          "shortEffect": "+6% All Crit & Heal Crit",
+          "addOffense": {
+            "meleeCritRatePct": 6,
+            "rangedCritRatePct": 6,
+            "magicCritRatePct": 6,
+            "healCritRatePct": 6
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 77,
+              "value": 60
+            },
+            {
+              "unit_attribute_id": 82,
+              "value": 60
+            },
+            {
+              "unit_attribute_id": 86,
+              "value": 60
+            },
+            {
+              "unit_attribute_id": 185,
+              "value": 60
+            }
+          ]
+        },
+        {
+          "id": 36,
+          "key": "auramancy_p_teleportation_discipline",
+          "buffId": 927,
+          "name": "Teleportation Discipline",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_will16.png",
+          "desc": "Teleportation has a 50% chance to eliminate its cooldown and allow consecutive teleports.\nMirror Warp has a 50% chance to sustain the buff and allow consecutive use.",
+          "effectKind": "utility",
+          "shortEffect": "50% Reset Teleport CD",
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "auramancy_crushing_grasp",
+          "name": "Crushing Grasp",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred14.png",
+          "desc": "Creates a powerful gravity vortex around a chosen target after a short delay. Deals Magic damage to all enemies in a radius, pulling them to the target's location, but leaves the initial target unharmed."
+        },
+        {
+          "key": "auramancy_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "auramancy_abyssal_wave",
+          "name": "Abyssal Wave",
+          "level": 55,
+          "points": 0,
+          "icon": "assets/icons/icon_skill_hatred13.png",
+          "desc": "Shoots a wave of force up to 20m in front of you. Inflicts Magic Damage and knocks back all enemies it touches.\nAny additional Abyssal Charges are consumed on casting, increasing the number of waves. Being struck by multiple waves in a row dramatically decreases enemies' Move Speed."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "auramancy_merciless_manipulator",
+          "name": "Merciless Manipulator",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18412,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred15.png",
+          "desc": "Comet's Boon, Spell Shield, Vicious Implosion, Shrug It Off, and Liberation each grant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "occultism": {
+      "id": 5,
+      "slug": "occultism",
+      "name": "Occultism",
+      "actives": [
+        {
+          "key": "occultism_mana_stars",
+          "name": "Mana Stars",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death25.png",
+          "desc": "Launches your mana as a razor-sharp crystal, dealing Magic Damage. \nEach consecutive Mana Star increases in damage +2%, up to a max of 20%.\nEach Mana Star inflicts Fetter on the target, reducing their damage -1% and move speed -2% per stack. Stacks up to 20 times.\nDoes not cause a global cooldown. Hold down for continuous use.",
+          "simSkillId": "occultism_mana_stars",
+          "ancestrals": [
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36620,
+              "icon": "assets/icons/icon_skill_death30.png",
+              "desc": "Launches your mana as painful bursts of energy, dealing 20 (0 + 50% Magic Attack) Magic Damage. Each consecutive Mana Star increases the caster's Move Speed +2%, up to  a max of +20%.\nEach projectile also inflicts Fetter on the target, reducing their damage -1% and Move Speed -2% per stack. Stacks up to 20 times.\nDoes not cause a global cooldown. Hold down for continuous use.",
+              "simSkillId": "occultism_mana_stars_gale"
+            },
+            {
+              "id": "quake",
+              "element": "Quake",
+              "short": "Qk",
+              "skillId": 36623,
+              "icon": "assets/icons/icon_skill_death31.png",
+              "desc": "Launches your mana as explosive orbs, dealing 20 (0 + 50% Magic Attack) Magic Damage to all enemies in a 6m radius around the target. Each consecutive Mana Star increases in damage +2%, up to a max of 20%.\nInflicts Fetter on each enemy hit, reducing their damage -1% and Move Speed -2% per stack. Stacks up to 20 times.\nWhen using Caster's Enrichment, this skill grants a stack of Burning Brand for each enemy hit.\nHold down for continuous use.",
+              "simSkillId": "occultism_mana_stars_flame"
+            }
+          ]
+        },
+        {
+          "key": "occultism_mana_force",
+          "name": "Mana Force",
+          "level": 3,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death14.png",
+          "desc": "Shoves an enemy away, dealing Magic Damage. Restores Mana equal to half that amount.",
+          "simSkillId": "occultism_mana_force"
+        },
+        {
+          "key": "occultism_hell_spear",
+          "name": "Hell Spear",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death06.png",
+          "desc": "Summons spears from the underworld to pierce all enemies within m.\nDeals Magic Damage and Impales targets for .",
+          "simSkillId": "occultism_hell_spear",
+          "ancestrals": [
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36586,
+              "icon": "assets/icons/icon_skill_death33.png",
+              "desc": "Summons a single Hell Spear at the target's location.\nInflicts 332 (216 + 279% Magic Attack) Magic Damage and Impales the target for 1.7s.",
+              "simSkillId": "occultism_hell_spear_single"
+            },
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36587,
+              "icon": "assets/icons/icon_skill_death32.png",
+              "desc": "Summons burning Hell Spears in a 6m radius after a 2 second delay.\nInflicts 555 (360 + 469% Magic Attack) Magic Damage and Impales enemies for 1.7s.",
+              "simSkillId": "occultism_hell_spear_flame"
+            }
+          ]
+        },
+        {
+          "key": "occultism_absorb_lifeforce",
+          "name": "Absorb Lifeforce",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death05.png",
+          "desc": "Inflicts a debuff which deals Magic Damage to the enemy over 6.5 seconds, healing the caster for half the amount.\nInflicts an additional +140% on pets.\nThis debuff ends early if the caster stops channeling, or if the target moves far enough away from the caster.",
+          "simSkillId": "occultism_absorb_lifeforce"
+        },
+        {
+          "key": "occultism_summon_crows",
+          "name": "Summon Crows",
+          "level": 20,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death09.png",
+          "desc": "Summons crows to attack all enemies within m. Reduces enemies' Physical Accuracy -30% and deals Magic Damage over .",
+          "simSkillId": "occultism_summon_crows"
+        },
+        {
+          "key": "occultism_crippling_mire",
+          "name": "Crippling Mire",
+          "level": 25,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death11.png",
+          "desc": "Forms a painful link with the target, inflicting continuous Magic damage and decreasing Move Speed -50% for 4.5 seconds.\nThis attack ends early if the caster is disabled, or if the target moves far enough away from the caster.",
+          "simSkillId": "occultism_crippling_mire"
+        },
+        {
+          "key": "occultism_telekinesis",
+          "name": "Telekinesis",
+          "level": 30,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death10.png",
+          "desc": "Suspends an enemy in the air for up to . Prevents the target from taking any actions, even when taking damage.\nThis spell ends if the caster moves or takes any other action."
+        },
+        {
+          "key": "occultism_retribution",
+          "name": "Retribution",
+          "level": 35,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death02.png",
+          "desc": "Lasts . Doesn't trigger a global cooldown."
+        },
+        {
+          "key": "occultism_stillness",
+          "name": "Stillness",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death07.png",
+          "desc": "Interrupts all enemy casting within 5 meters and inflicts Silence for . Removes all Fear effects from caster."
+        },
+        {
+          "key": "occultism_urgency",
+          "name": "Urgency",
+          "level": 45,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death03.png",
+          "desc": "Lasts ."
+        },
+        {
+          "key": "occultism_summon_wraith",
+          "name": "Summon Wraith",
+          "level": 50,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death13.png",
+          "desc": "Summons a Wraith that deals Magic Damage per second for a maximum of 9 seconds to all enemies within 7 meters. Inflicts enemies with the Wraith Curse, reducing Move Speed, Attack Speed, and Cast Speed.",
+          "ancestrals": [
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36626,
+              "icon": "assets/icons/icon_skill_death34.png",
+              "desc": "Summons a wraith that deals 260  (211 + 120% Magic Attack) magic damage per second for up to 9 seconds to all enemies within 7m. It also inflicts Wraith Curse in the area, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nThis skill allowed the caster to move while the spell is in effect, but has a weaker Wraith Curse effect than regular Summon Wraith.\nCounts as an ongoing spell, but is canceled if another skill is used."
+            },
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36627,
+              "icon": "assets/icons/icon_skill_death35.png",
+              "desc": "Summons a corporeal Wraith at the target location, dealing a single burst of 627 (528 + 240% Magic Attack) Magic Damage to all enemies in a 7m radius. It then inflicts Wraith Curse in the area for up to 9 seconds, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nCannot be used in conjunction with Mist Banshee Wail (Witchcraft)",
+              "simSkillId": "occultism_summon_wraith_burst"
+            }
+          ]
+        },
+        {
+          "key": "occultism_death_s_vengeance",
+          "name": "Death's Vengeance",
+          "level": 55,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death27.png",
+          "desc": "As you die, blasts your remaining energy to deal Magic Damage to enemies within 15m.\nTargets who die within 3 seconds of receiving this damage will also explode.",
+          "simSkillId": "occultism_deaths_vengeance"
+        }
+      ],
+      "passives": [
+        {
+          "id": 17,
+          "key": "occultism_p_enhanced_mana_recovery",
+          "buffId": 539,
+          "name": "Enhanced Mana Recovery",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death04.png",
+          "desc": "Increases Post-Cast Mana Regen +7 every 1 second.",
+          "effectKind": "utility",
+          "shortEffect": "+7 Mana Regen/sec",
+          "buffData": [
+            {
+              "unit_attribute_id": 68,
+              "value": 35
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "key": "occultism_p_reprisal",
+          "buffId": 533,
+          "name": "Reprisal",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death08.png",
+          "desc": "Increases Melee, Ranged, and Magic Critical Rates +20% for 9 seconds after receiving Critical Damage.\nThis ability has a 12 sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +20% Crit on Crit Taken",
+          "buffData": []
+        },
+        {
+          "id": 100,
+          "key": "occultism_p_caster_s_enrichment",
+          "buffId": 2926,
+          "name": "Caster's Enrichment",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death23.png",
+          "desc": "Decreases health regen -15 every second while not in combat and increases mana regen +15 every second while not casting.\nIncreases Attack Speed +53.\nGrants the Burning Brand buff for each enemy hit by Hell Spear, Summon Crows, or Stillness.\n\n\nBurning Brand:\n- Increases Occultism skill damage +2% per stack.\n- Decreases channeling time of Absorb Lifeforce -3% per stack.\n- Lasts 6sec.\n- Stacks up to 15 times.\n- Triggers Deathmark Aura at 15 stacks.\n\nDeathmark Aura:\n- Grants all accumulated bonuses of 15 stacks of Burning Brand.\n- Reduces nearby enemies' damage by -15% \n- Lasts 12sec.\n- Prevents gaining stacks of Burning Brand for duration.",
+          "effectKind": "sheet",
+          "shortEffect": "+53 Attack Speed",
+          "addOffense": {
+            "attackSpeed": 53
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 11,
+              "value": -15
+            },
+            {
+              "unit_attribute_id": 12,
+              "value": 15
+            },
+            {
+              "unit_attribute_id": 54,
+              "value": 53
+            },
+            {
+              "unit_attribute_id": 55,
+              "value": 53
+            },
+            {
+              "unit_attribute_id": 74,
+              "value": 53
+            },
+            {
+              "unit_attribute_id": 119,
+              "value": 53
+            }
+          ]
+        },
+        {
+          "id": 253,
+          "key": "occultism_p_macabre_reach",
+          "buffId": 7561,
+          "name": "Macabre Reach",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death28.png",
+          "desc": "Increases Melee, Ranged, and Magic Critical Damage +10%.",
+          "effectKind": "sheet",
+          "shortEffect": "+10% All Crit Dmg",
+          "addOffense": {
+            "meleeCritBonusPct": 10,
+            "rangedCritBonusPct": 10,
+            "magicCritBonusPct": 10
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 17,
+              "value": 100
+            },
+            {
+              "unit_attribute_id": 26,
+              "value": 100
+            },
+            {
+              "unit_attribute_id": 31,
+              "value": 100
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "key": "occultism_p_overpowered_spell_locus",
+          "buffId": 2970,
+          "name": "Overpowered Spell Locus",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death24.png",
+          "desc": "Increases all Skill Damage +15% for up to 6 seconds after receiving damage.\nMovement cancels the effect.\nDoes not apply to healing skills.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +15% Skill Dmg (6s)",
+          "buffData": []
+        },
+        {
+          "id": 40,
+          "key": "occultism_p_intensified_harm",
+          "buffId": 971,
+          "name": "Intensified Harm",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_death15.png",
+          "desc": "Increases Melee, Ranged, and Magic Critical Damage +25% for 6 seconds after receiving Critical Damage.\nThis ability has a 12 sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +25% Crit Dmg (6s)",
+          "buffData": []
+        },
+        {
+          "id": 254,
+          "key": "occultism_p_death_s_beckoning",
+          "buffId": 7563,
+          "name": "Death's Beckoning",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_death29.png",
+          "desc": "Decreases the cooldown of all Occultism skills -20%.\nIncreases Crippling Mire's targets +2 and grants a stack of Burning Brand for each enemy it hits beyond the first.",
+          "effectKind": "combat",
+          "shortEffect": "-20% Occultism CD",
+          "cooldownReduction": {
+            "occultism": 20
+          },
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "occultism_cursed_thorns",
+          "name": "Cursed Thorns",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred18.png",
+          "desc": "Infects an enemy with cursed seeds for . Causes deadly thorns to sprout in their footsteps after a 4 second delay, inflicting Magic damage on surrounding enemies as they burst from the ground. Slows any enemies that pass through the area, and deals continuous magic damage. Seeds sprout early if enemies step on them."
+        },
+        {
+          "key": "occultism_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "occultism_shadow_circle",
+          "name": "Shadow Circle",
+          "level": 55,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred16.png",
+          "desc": "Summons a Shadow Circle for , allowing the caster to teleport in front of any target within the circle. Any additional Abyssal Charges are consumed on casting, increasing the number of times the caster can teleport. If cast while at 6 Abyssal Charges, the caster may teleport an unlimited number of times for the duration of the spell."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "occultism_gleeful_destruction",
+          "name": "Gleeful Destruction",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18373,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred19.png",
+          "desc": "Mana Force, Hell Spear, Absorb Lifeforce, Summon Crows, and Crippling Mire each grant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "archery": {
+      "id": 6,
+      "slug": "archery",
+      "name": "Archery",
+      "actives": [
+        {
+          "key": "archery_charged_bolt",
+          "name": "Charged Bolt",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild02.png",
+          "desc": "Fires a charged arrow at an enemy dealing Ranged Damage and slowing Move Speed for .\nThe skill cannot be evaded, blocked, or parried.\nDamage is reduced -20% if the target is within 8m.",
+          "simSkillId": "archery_charged_bolt",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36468,
+              "icon": "assets/icons/icon_skill_wild27.png",
+              "desc": "Fires a charged arrow at an enemy, dealing 114 (89 + 200% Ranged Attack) Ranged Damage and slowing their Move Speed for 2.5s.\nThis skill's range is reduced -8m compared to regular Charged Bolt, but it deals +20% damage to targets within 8m.",
+              "simSkillId": "archery_charged_bolt_short"
+            },
+            {
+              "id": "gale",
+              "element": "Gale",
+              "short": "Gl",
+              "skillId": 36469,
+              "icon": "assets/icons/icon_skill_wild28.png",
+              "desc": "Fires a charged arrow at an enemy, dealing 55 (43 + 100% Ranged Attack) Ranged Damage and slowing their Move Speed for 2.5s.\nThis skill has a shorter Cooldown than regular Charged Bolt, but also deals less damage.\nThis skill cannot be evaded, blocked, or parried.\nDamage is reduced -20% if the enemy is within 8m.",
+              "simSkillId": "archery_charged_bolt_fast"
+            }
+          ]
+        },
+        {
+          "key": "archery_piercing_shot",
+          "name": "Piercing Shot",
+          "level": 3,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation01.png",
+          "desc": "Fires a serrated arrow, dealing an initial Ranged Damage and then inflicting Bleeding for Magic Damage over .\nDamage is reduced -20% if target is within 8m.",
+          "simSkillId": "archery_piercing_shot"
+        },
+        {
+          "key": "archery_endless_arrows",
+          "name": "Endless Arrows",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation25.png",
+          "desc": "Fires arrows that deal % of Ranged Attack as damage.\nDamage decreases -20% if target is within 8m.\nDoes not trigger a global cooldown. Hold down for continuous use.",
+          "simSkillId": "archery_endless_arrows",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 39663,
+              "icon": "assets/icons/icon_skill_wild35.png",
+              "desc": "Unleash a constant stream of arrows at a single enemy, dealing 21 (0 + 170% Ranged Attack) Ranged Damage per shot.\n\nThis skill has an increased Global Cooldown.\nHold down for continuous use.",
+              "simSkillId": "archery_endless_arrows_flame"
+            }
+          ]
+        },
+        {
+          "key": "archery_double_recurve",
+          "name": "Double Recurve",
+          "level": 15,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild08.png",
+          "desc": "Lasts ."
+        },
+        {
+          "key": "archery_deadeye",
+          "name": "Deadeye",
+          "level": 20,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild21.png",
+          "desc": "Deadeye buff lasts for 60 sec, but bonus damage ends with movement.\nDoesn't trigger a global cooldown."
+        },
+        {
+          "key": "archery_snare",
+          "name": "Snare",
+          "level": 25,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild14.png",
+          "desc": "Removes all Shackle effects from the caster and inflics Snare on enemies in a 5m area for .\nReduces targets' Evasion, Block, and Parry rates.\nDuration of Snare decreases -50% in PvP."
+        },
+        {
+          "key": "archery_float",
+          "name": "Float",
+          "level": 30,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild05.png",
+          "desc": "Lifts caster into the air for .\nIncreases ranged skill range +7m and damage +30%, but prevents Defense and Magic Defense from reducing received damage.\nPrevents movement; canceled by using again.\nCan't be used while Snared.\nPrevents the use of skills with cast times."
+        },
+        {
+          "key": "archery_boneyard",
+          "name": "Boneyard",
+          "level": 35,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic24.png",
+          "desc": "Inflicts Ranged damage on a target and all surrounding enemies in a 5m radius, confining them in a Bone Prison.\nInterrupts the target.\nThe Bone Prison disappears in 10 seconds if not destroyed.",
+          "simSkillId": "archery_boneyard"
+        },
+        {
+          "key": "archery_concussive_arrow",
+          "name": "Concussive Arrow",
+          "level": 40,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild15.png",
+          "desc": "Fires an arrow that explodes on contact, dealing Ranged Damage and Shackling all enemies within 6m of the target for . \nInterrupts the target.\nThis skill cannot be evaded, blocked, or parried.",
+          "simSkillId": "archery_concussive_arrow",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36470,
+              "icon": "assets/icons/icon_skill_wild29.png",
+              "desc": "Prepares an enhanced explosive arrow, dealing up to 583 (432 + 1200% Ranged Attack) Ranged Damage and Shackling all enemies within 6m of the target for 3.5s. \nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.\nUse this skill again while channeling to release the arrow early. The longer you channel, the more damage will be dealt.",
+              "simSkillId": "archery_concussive_arrow_charge"
+            },
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36471,
+              "icon": "assets/icons/icon_skill_wild30.png",
+              "desc": "Fires a smoke bomb that explodes directly in front of the caster, dealing 469 (432 + 300% Ranged Attack) Ranged Damage and Shackling all enemies within a 6m area for 3.5s. The caster is propelled 8m backwards after firing.\nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.\nThis skill cannot be used while Snared.",
+              "simSkillId": "archery_concussive_arrow_smoke"
+            }
+          ]
+        },
+        {
+          "key": "archery_missile_rain",
+          "name": "Missile Rain",
+          "level": 45,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild10.png",
+          "desc": "Showers a target area with arrows to deal Ranged Damage.",
+          "simSkillId": "archery_missile_rain",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36472,
+              "icon": "assets/icons/icon_skill_wild31.png",
+              "desc": "Shower a small area with burning arrows, inflicting 122 (96 + 210% Ranged Attack) Ranged Damage.\nThis skill deals more damage than regular Missle Rain, but has reduced range, cast speed, and area of effect.",
+              "simSkillId": "archery_missile_rain_flame"
+            },
+            {
+              "id": "gale",
+              "element": "Gale",
+              "short": "Gl",
+              "skillId": 36473,
+              "icon": "assets/icons/icon_skill_wild32.png",
+              "desc": "Shoots 10 volleys of 6 arrows each over 2 seconds, inflicting 104 (96 + 70% Ranged Attack) Ranged damage on enemies within this skill's range.\nKnocks back affected enemies within 8m, but deals 20% less damage within that range.\nThis skill counts as a Push effect.",
+              "simSkillId": "archery_missile_rain_gale"
+            }
+          ]
+        },
+        {
+          "key": "archery_intensity",
+          "name": "Intensity",
+          "level": 50,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild09.png",
+          "desc": "Gradually increases Ranged Critical Rate over . Grants immunity to Fear."
+        },
+        {
+          "key": "archery_snipe",
+          "name": "Snipe",
+          "level": 55,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild24.png",
+          "desc": "Shoots a powerful arrow of light at a chosen target, dealing Ranged damage to it and all enemies in the arrow's path.\nEnemies damaged by Snipe are immune to it for 6 seconds.",
+          "simSkillId": "archery_snipe"
+        }
+      ],
+      "passives": [
+        {
+          "id": 7,
+          "key": "archery_p_wild_instincts",
+          "buffId": 486,
+          "name": "Wild Instincts",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild03.png",
+          "desc": "Increases Move Speed +8%.",
+          "effectKind": "utility",
+          "shortEffect": "+8% Move Speed",
+          "buffData": [
+            {
+              "unit_attribute_id": 10,
+              "value": 80
+            }
+          ]
+        },
+        {
+          "id": 255,
+          "key": "archery_p_eagle_eyes",
+          "buffId": 7564,
+          "name": "Eagle Eyes",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild25.png",
+          "desc": "Increases Ranged Accuracy +5% and Ranged Critical Rate +5%.",
+          "effectKind": "sheet",
+          "shortEffect": "+5% Rng Crit & +5% Acc",
+          "addOffense": {
+            "rangedCritRatePct": 5,
+            "rangedAccuracyPct": 5
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 82,
+              "value": 50
+            },
+            {
+              "unit_attribute_id": 83,
+              "value": 50
+            }
+          ]
+        },
+        {
+          "id": 35,
+          "key": "archery_p_archery_expertise",
+          "buffId": 888,
+          "name": "Archery Expertise",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild16.png",
+          "desc": "Decreases cooldown for Piercing Shot, Charged Bolt, Stalker's Mark, Missile Rain, Toxic Shot, and Snipe skills -10%.",
+          "effectKind": "utility",
+          "shortEffect": "-1s Archery CDs",
+          "buffData": []
+        },
+        {
+          "id": 1,
+          "key": "archery_p_evasion",
+          "buffId": 479,
+          "name": "Evasion",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild11.png",
+          "desc": "Increases Evasion +10%.",
+          "effectKind": "sheet",
+          "shortEffect": "+10% Evasion",
+          "addDefense": {
+            "evasionPct": 10
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 180,
+              "value": 100
+            }
+          ]
+        },
+        {
+          "id": 34,
+          "key": "archery_p_marksman",
+          "buffId": 889,
+          "name": "Marksman",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild19.png",
+          "desc": "Increases the range of all bow skills 5m.\nIncreases Ranged Damage +17%.",
+          "effectKind": "sheet",
+          "shortEffect": "+17% Rng Skill Dmg, +5m",
+          "addOffense": {
+            "rangedSkillDamagePct": 17
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 52,
+              "value": 170
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "key": "archery_p_sharpshooting",
+          "buffId": 480,
+          "name": "Sharpshooting",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_wild07.png",
+          "desc": "Increases Ranged Critical Rate +3% and Ranged Critical Damage +15%.\nDeadeye and Float now grant the Feral Mark buff, allowing the caster to inflict Feral Aura on enemies with each attack.\n\nFeral Aura:\n- Reduces target's Defense -40 per stack.\n- Reduces target's Evasion, Block, and Parry rates -0.5% per stack.\n- Explodes at max stacks, dealing damage and tripping the target.\n- Stacks up to 30 times.",
+          "effectKind": "sheet",
+          "shortEffect": "+15% Rng Crit Dmg, +3% CR",
+          "addOffense": {
+            "rangedCritBonusPct": 15,
+            "rangedCritRatePct": 3
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 26,
+              "value": 150
+            },
+            {
+              "unit_attribute_id": 82,
+              "value": 30
+            }
+          ]
+        },
+        {
+          "id": 256,
+          "key": "archery_p_feral_claws",
+          "buffId": 7565,
+          "name": "Feral Claws",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild26.png",
+          "desc": "Increases Archery skill damage +15%.",
+          "effectKind": "combat",
+          "shortEffect": "+15% Archery Dmg (mult)",
+          "skillsetDamageBonusPct": {
+            "archery": 15
+          },
+          "dedupBuffId": "feral_claws",
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "archery_serpent_s_sight",
+          "name": "Serpent's Sight",
+          "level": 10,
+          "points": 0,
+          "icon": "assets/icons/icon_skill_hatred20.png",
+          "desc": "Enhance your archery with Abyssal magic, transforming your attacks and gaining unparalleled range. Increases the base range of all Bow skills to at least 50m for , but prevents movement.\nReplaces the Endless Arrows skill with Fang Bolt for the duration.\nDuration is reset for every Ranged Attack that hits, but all effects end if the caster receives damage."
+        },
+        {
+          "key": "archery_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "archery_hunting_pack",
+          "name": "Hunting Pack",
+          "level": 55,
+          "points": 0,
+          "icon": "assets/icons/icon_skill_hatred22.png",
+          "desc": "Summons Snowlion Spectres to charge through enemies in front of you, inflicting Physical damage and knocking them into the air. Any additional Abyssal Charges are consumed on casting, increasing the damage and number of Snowlions.\nIf cast while at 6 Abyssal Charges, affected enemies are temporarily prevented from using skills."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "archery_hateful_hunter",
+          "name": "Hateful Hunter",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18413,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred23.png",
+          "desc": "Charged Bolt, Piercing Shot, Concussive Arrow, Missile Rain, and Snipe each grant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "sorcery": {
+      "id": 7,
+      "slug": "sorcery",
+      "name": "Sorcery",
+      "actives": [
+        {
+          "key": "sorcery_flamebolt",
+          "name": "Flamebolt",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic01.png",
+          "desc": "Deals Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for .\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use.",
+          "simSkillId": "sorcery_flamebolt",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36474,
+              "icon": "assets/icons/icon_skill_magic34.png",
+              "desc": "Shoots a single powerful flamebolt, inflicting 131 (0 + 313% Magic Attack) Magic Damage and Burning the target for 3.2s.\nNo Cast Time if used while under the effects of Drop Back.\nHold down for continuous use.",
+              "simSkillId": "sorcery_flamebolt_flame"
+            },
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36475,
+              "icon": "assets/icons/icon_skill_magic35.png",
+              "desc": "Fires 3 bolts of electricity at a single target, dealing 33 (0 + 80% Magic Attack) Magic Damage.\r\nAttack 1: Inflicts Shock for 8s.\r\nAttack 3: Returns 20% of damage dealt to Enervated enemies as mana.\r\nAll three attacks deal +12% additional damage on Shocked targets.\r\nHold down for continuous use.",
+              "simSkillId": "sorcery_flamebolt_lightning"
+            }
+          ]
+        },
+        {
+          "key": "sorcery_freezing_arrow",
+          "name": "Freezing Arrow",
+          "level": 3,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic04.png",
+          "desc": "Fires an Ice Arrow at an enemy, dealing Magic damage and decreasing Move Speed for .",
+          "simSkillId": "sorcery_freezing_arrow"
+        },
+        {
+          "key": "sorcery_insulating_lens",
+          "name": "Insulating Lens",
+          "level": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic02.png",
+          "desc": "Creates a protection ward around the caster. Increases stealth detection +200%."
+        },
+        {
+          "key": "sorcery_arc_lightning",
+          "name": "Arc Lightning",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic05.png",
+          "desc": "Fires lightning bolts to deal Magic Damage and Shock an enemy.\nDeals Magic Damage over to Shocked enemies; also Shocks all other enemies within 2m. When this skill levels up, it increases damage, but also cast time.",
+          "simSkillId": "sorcery_arc_lightning"
+        },
+        {
+          "key": "sorcery_freezing_earth",
+          "name": "Freezing Earth",
+          "level": 20,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic10.png",
+          "desc": "Deals damage to all enemies within 8 meters with a chance to Snare for .\nSnare duration reduced -50% in PvP.",
+          "simSkillId": "sorcery_freezing_earth"
+        },
+        {
+          "key": "sorcery_searing_rain",
+          "name": "Searing Rain",
+          "level": 25,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic16.png",
+          "desc": "Rains down fire on all enemies in a 10-meter radius for 7 seconds, dealing Magic Damage.",
+          "simSkillId": "sorcery_searing_rain"
+        },
+        {
+          "key": "sorcery_frigid_tracks",
+          "name": "Frigid Tracks",
+          "level": 30,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic06.png",
+          "desc": "Freezes your footprints for . The ice Freezes any enemies who step on it, but melts in 4 seconds.",
+          "simSkillId": "sorcery_frigid_tracks"
+        },
+        {
+          "key": "sorcery_magic_circle",
+          "name": "Magic Circle",
+          "level": 35,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic15.png",
+          "desc": "Summons a Magic Circle around the caster for 20 seconds."
+        },
+        {
+          "key": "sorcery_chain_lightning",
+          "name": "Chain Lightning",
+          "level": 40,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic19.png",
+          "desc": "Fires lightning bolts to deal Magic Damage and Shock an enemy. May also affect other enemies within 5 meters.\nCan strike up to 5 times, dealing -50% less damage with each subsequent hit.",
+          "simSkillId": "sorcery_chain_lightning",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36476,
+              "icon": "assets/icons/icon_skill_magic37.png",
+              "desc": "Inflicts Consuming Flames on a single target, which deals 548 (432 + 280% Magic Attack) Magic Damage after 2 seconds and then travels to another enemy within 5m.\nThis effect repeats up to 4 times, inflicting 25% greater damage each time.",
+              "simSkillId": "sorcery_chain_lightning_flame"
+            },
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36477,
+              "icon": "assets/icons/icon_skill_magic36.png",
+              "desc": "Shoots a ball of ice that deals 548 (432 + 280% Magic Attack) Magic Damage to its target and then shatters, damaging and Snaring enemies in a 5m ring around the target.",
+              "simSkillId": "sorcery_chain_lightning_wave"
+            }
+          ]
+        },
+        {
+          "key": "sorcery_flame_barrier",
+          "name": "Flame Barrier",
+          "level": 45,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic22.png",
+          "desc": "Calls forth a wall of fire that deals Fire Damage and Slows for .",
+          "simSkillId": "sorcery_flame_barrier"
+        },
+        {
+          "key": "sorcery_meteor_strike",
+          "name": "Meteor Strike",
+          "level": 50,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic13.png",
+          "desc": "Calls down a meteor, dealing Magic Damage to all enemies in the target area.\nAlso inflicts Tripped on all enemies hit for 2.5 seconds.",
+          "simSkillId": "sorcery_meteor_strike",
+          "ancestrals": [
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36478,
+              "icon": "assets/icons/icon_skill_magic38.png",
+              "desc": "Summons a barrage of giant hailstones to obliterate an area, inflicting up to 472 (264 + 500% Magic Attack) Magic Damage per hailstone.\nInflicts Deep Freeze on all enemies hit 5 or more times, causing them to Sleep for 20 seconds.\nBeing damaged by a direct attck will free the targets early, but debuffs that deal damage over time will not end this effect.\nDeep Freeze duration reduced -50% in PvP. \nDoes no damage to targets under the effects of Deep Freeze.",
+              "simSkillId": "sorcery_meteor_strike_wave"
+            },
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36479,
+              "icon": "assets/icons/icon_skill_magic39.png",
+              "desc": "Summons a massive thunderbolt at the target location, dealing 1808 (1584 + 540% Magic Attack) Magic Damage to enemies within its range. Inflicts Greater Shock on all enemies in the area of effect, dealing additional damage over time and dramatically slowing their move and attack speeds for 2.5 seconds.",
+              "simSkillId": "sorcery_meteor_strike_lightning"
+            }
+          ]
+        },
+        {
+          "key": "sorcery_gods_whip",
+          "name": "Gods' Whip",
+          "level": 55,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic26.png",
+          "desc": "Calls down lighting on a target area to deal Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage but costing more mana.",
+          "simSkillId": "sorcery_gods_whip"
+        }
+      ],
+      "passives": [
+        {
+          "id": 15,
+          "key": "sorcery_p_mana_pool_increase",
+          "buffId": 536,
+          "name": "Mana Pool Increase",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic03.png",
+          "desc": "Increases max mana +20%.",
+          "effectKind": "sheet",
+          "shortEffect": "+20% Base Max Mana",
+          "mulMaxMana": 1.2,
+          "buffData": [
+            {
+              "unit_attribute_id": 7,
+              "value": 20
+            }
+          ]
+        },
+        {
+          "id": 38,
+          "key": "sorcery_p_magic_range_boost",
+          "buffId": 962,
+          "name": "Magic Range Boost",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic18.png",
+          "desc": "Increases the range for Sorcery skills +5m.",
+          "effectKind": "utility",
+          "shortEffect": "+5m Sorcery Range",
+          "buffData": []
+        },
+        {
+          "id": 39,
+          "key": "sorcery_p_efficient_sorcery",
+          "buffId": 964,
+          "name": "Efficient Sorcery",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic21.png",
+          "desc": "Decreases the mana cost for Sorcery skills -20%.",
+          "effectKind": "utility",
+          "shortEffect": "-15% Mana Cost",
+          "buffData": []
+        },
+        {
+          "id": 257,
+          "key": "sorcery_p_mana_flurry",
+          "buffId": 7566,
+          "name": "Mana Flurry",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic31.png",
+          "desc": "Decreases Cast Time for all skills -6%.\nGrants the Mana Fountain effect each time Flamebolt's third attack, Frigid Tracks, or Magic Circle is used.\n\nMana Fountain:\n- Increases attack speed +2% per stack.\n- Decreases Cast Time -2% per stack.\n- Decreases Sorcery Cooldowns -2% per stack.\n- Decreases Physical Defense -3% per stack.\n- Stacks up to 8 times.",
+          "effectKind": "sheet",
+          "shortEffect": "-6% Cast Time",
+          "addOffense": {
+            "castTimePct": -6
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 71,
+              "value": -60
+            }
+          ]
+        },
+        {
+          "id": 258,
+          "key": "sorcery_p_recuperation",
+          "buffId": 7567,
+          "name": "Recuperation",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic32.png",
+          "desc": "Decreases the duration of Sleep and Fear -10%.",
+          "effectKind": "utility",
+          "shortEffect": "-10% Sleep/Fear Duration",
+          "buffData": []
+        },
+        {
+          "id": 37,
+          "key": "sorcery_p_magic_precision",
+          "buffId": 963,
+          "name": "Magic Precision",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic20.png",
+          "desc": "Increases Magic Critical Rate +10%.",
+          "effectKind": "sheet",
+          "shortEffect": "+10% Magic Crit Rate",
+          "addOffense": {
+            "magicCritRatePct": 10
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 86,
+              "value": 100
+            }
+          ]
+        },
+        {
+          "id": 99,
+          "key": "sorcery_p_aranzeb_s_infusion",
+          "buffId": 2910,
+          "name": "Aranzeb's Infusion",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_magic25.png",
+          "desc": "Increases Sorcery skill damage +15%.",
+          "effectKind": "combat",
+          "shortEffect": "+15% Sorcery Dmg (mult)",
+          "skillsetDamageBonusPct": {
+            "sorcery": 15
+          },
+          "dedupBuffId": "aranzebs_infusion",
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "sorcery_void_leap",
+          "name": "Void Leap",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred24.png",
+          "desc": "Teleport to a random location away.\nNo cooldown. Spend Abyssal Charges to cast repeatedly.\nCan't be used while Snared."
+        },
+        {
+          "key": "sorcery_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "sorcery_serpent_strike",
+          "name": "Serpent Strike",
+          "level": 55,
+          "points": 0,
+          "icon": "assets/icons/icon_skill_hatred25.png",
+          "desc": "Summons a magical serpent that burrows underground, erupting beneath the target to inflict up to Magic Damage.\nCan use anywhere from 1-6 Abyssal Charges once channeling begins, increasing the damage dealt with each additional charge used.\nUse this skill again during channeling to stop channeling early."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "sorcery_wrathful_casting",
+          "name": "Wrathful Casting",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18414,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred26.png",
+          "desc": "Freezing Arrow, Arc Lightning, Searing Rain, Chain Lightning, and Meteor Strike each grant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "shadowplay": {
+      "id": 8,
+      "slug": "shadowplay",
+      "name": "Shadowplay",
+      "actives": [
+        {
+          "key": "shadowplay_rapid_strike",
+          "name": "Rapid Strike",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation23.png",
+          "desc": "A swift, repeatable attack, dealing Physical Damage to a single target.\nMarks the target with each hit, reducing their Skill Damage -1% and Move Speed -2% per stack. Inflicts Shaken each time it reaches 5 stacks, further reducing their Skill Damage, Move Speed, and Attack Speed.\nBackstabbing increases Melee Critical Rate +50%.\nDoes not trigger a global cooldown. Hold down for continuous use.",
+          "simSkillId": "shadowplay_rapid_strike"
+        },
+        {
+          "key": "shadowplay_overwhelm",
+          "name": "Overwhelm",
+          "level": 3,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation07.png",
+          "desc": "Triggers a leap toward an enemy that deals Physical Damage and stacks 1 Bloodthirst upon landing. Also Stuns the enemy for . Can't be used while Snared.",
+          "simSkillId": "shadowplay_overwhelm",
+          "ancestrals": [
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36588,
+              "icon": "assets/icons/icon_skill_vocation31.png",
+              "desc": "Triggers a leap toward an enemy that deals 586 (566 + 200% Melee Attack) Physical Damage.\nStuns the enemy for 2.4s and grants 1 stack of Bloodthirst.\nIf used while backstabbing, Grants +100% to all Critical Rates for the next skill used.\nCan't be used while Snared.",
+              "simSkillId": "shadowplay_overwhelm_gale"
+            },
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36589,
+              "icon": "assets/icons/icon_skill_vocation32.png",
+              "desc": "Triggers a leap directly over an enemy's head, dealing 586 (566 + 200% Melee Attack) Physical Damage as you pass and then continuing on to land 10m past them. \nStuns the enemy for 2.4s and grants 1 stack of Bloodthirst.\nCan't be used while Snared."
+            }
+          ]
+        },
+        {
+          "key": "shadowplay_drop_back",
+          "name": "Drop Back",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation15.png",
+          "desc": "Triggers a backwards leap to escape a dangerous area or back away from an enemy. Eliminates the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for . \nCan't be used while Snared.",
+          "simSkillId": "shadowplay_drop_back",
+          "ancestrals": [
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36590,
+              "icon": "assets/icons/icon_skill_vocation33.png",
+              "desc": "Triggers a leap forward to escape a dangerous area or close the distance between you and an enemy.\nGrants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s. \nCan't be used while Snared."
+            },
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36591,
+              "icon": "assets/icons/icon_skill_vocation34.png",
+              "desc": "Triggers a backwards leap to escape a dangerous area or back away from an enemy. \nGrants the Wave Drop Back buff, eliminating the Cast Time for Concussive Arrow, Mend, and Critical Discord for 2.5s.\nCan't be used while Snared.",
+              "simSkillId": "shadowplay_drop_back_wave"
+            }
+          ]
+        },
+        {
+          "key": "shadowplay_wallop",
+          "name": "Wallop",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation27.png",
+          "desc": "Launches four attacks in quick succession dealing Physical Damage.\nThe first attack interrupts the target.\nEvery successful attack decreases Physical Defense -120.\nGrants Bloodthirst for each of the first three attacks, then the fourth deals melee damage equal to times your stacked Bloodthirst.",
+          "simSkillId": "shadowplay_wallop"
+        },
+        {
+          "key": "shadowplay_stalker_s_mark",
+          "name": "Stalker's Mark",
+          "level": 20,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild17.png",
+          "desc": "Inflicts Ranged Damage and marks enemies for . \nMark Effect: \nDamage reduced -20% if target is within 8m.",
+          "simSkillId": "shadowplay_stalkers_mark"
+        },
+        {
+          "key": "shadowplay_stealth",
+          "name": "Stealth",
+          "level": 25,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation05.png",
+          "desc": "Prevents enemies from seeing you. Any actions other than moving will cause stealth to end."
+        },
+        {
+          "key": "shadowplay_toxic_shot",
+          "name": "Toxic Shot",
+          "level": 30,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_wild01.png",
+          "desc": "Fires a toxic arrow, dealing an initial Ranged Damage and then Poisoning the target for Magic Damage over .\nDamage reduced -20% if target is within 8m.",
+          "simSkillId": "shadowplay_toxic_shot"
+        },
+        {
+          "key": "shadowplay_pin_down",
+          "name": "Pin Down",
+          "level": 35,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation18.png",
+          "desc": "Pins an enemy to the ground, dealing Physical Damage. Direct hits stack up to 3 Bloodthirst.\nBackstabbing adds Bleeding on a target.",
+          "simSkillId": "shadowplay_pin_down"
+        },
+        {
+          "key": "shadowplay_shadowsmite",
+          "name": "Shadowsmite",
+          "level": 40,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation06.png",
+          "desc": "Launches a surprise attack, dealing Melee Physical damage equal to times your stacked Bloodthirst and Shackling your target for .\nBackstabbing adds Physical Damage equal to 400% of Melee Attack.",
+          "simSkillId": "shadowplay_shadowsmite",
+          "ancestrals": [
+            {
+              "id": "mist",
+              "element": "Mist",
+              "short": "Mi",
+              "skillId": 36593,
+              "icon": "assets/icons/icon_skill_vocation35.png",
+              "desc": "Launches a surprise attack, dealing Melee damage equal to 277 times your stacked Bloodthirst and Shackling your target for 5.8s.\nBackstabbing adds Physical Damage equal to 400% of Melee Attack.\nThis skill Trips targets that are under the effects of Provoke, but does not have a combo with Stun."
+            },
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36594,
+              "icon": "assets/icons/icon_skill_vocation36.png",
+              "desc": "Teleport behind an enemy within 6m and attempts to backstab them, dealing Melee Physical damage equal to 277 times your stacked Bloodthirst.\nBackstabbing increases Physical Damage by 400% times your Melee Attack."
+            }
+          ]
+        },
+        {
+          "key": "shadowplay_freerunner",
+          "name": "Freerunner",
+          "level": 45,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation11.png",
+          "desc": "Lasts ."
+        },
+        {
+          "key": "shadowplay_shadow_step",
+          "name": "Shadow Step",
+          "level": 50,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation16.png",
+          "desc": "Teleports caster behind an ally or enemy, reducing Aggro -50% for .\nIncreases Move Speed +50% for 3 seconds after casting.\nCan't be used while Snared, and does not allow the caster to pass through obstacles."
+        },
+        {
+          "key": "shadowplay_throw_dagger",
+          "name": "Throw Dagger",
+          "level": 55,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation28.png",
+          "desc": "Flings a dagger that deals damage to a single enemy, then ricochets to 5 additional enemies within a 7m radius of the initial target, dealing less damage each hit.\nEnemies hit: \nLasts .\nGrants 1 stack of Bloodthirst for each target hit, up to a maximum of 6 stacks.",
+          "simSkillId": "shadowplay_throw_dagger"
+        }
+      ],
+      "passives": [
+        {
+          "id": 20,
+          "key": "shadowplay_p_evasive_counterstrike",
+          "buffId": 560,
+          "name": "Evasive Counterstrike",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation04.png",
+          "desc": "Triggers a counterattack when a Melee Attack is evaded.\nStacks 2 Bloodthirst when attacked.\nThis ability has a 12 sec cooldown once triggered.",
+          "effectKind": "utility",
+          "shortEffect": "Reset Pin Down on Evade",
+          "buffData": []
+        },
+        {
+          "id": 9,
+          "key": "shadowplay_p_consecutive_evasion",
+          "buffId": 488,
+          "name": "Consecutive Evasion",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation08.png",
+          "desc": "Increases Melee Evasion +18% for 7 seconds after a successful Evasion against melee attacks.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +18% Melee Evade (7s)",
+          "buffData": []
+        },
+        {
+          "id": 33,
+          "key": "shadowplay_p_disregard",
+          "buffId": 863,
+          "name": "Disregard",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation17.png",
+          "desc": "Permanently decreases Aggro generation -20%.",
+          "effectKind": "utility",
+          "shortEffect": "-20% Aggro",
+          "buffData": [
+            {
+              "unit_attribute_id": 90,
+              "value": -20
+            }
+          ]
+        },
+        {
+          "id": 259,
+          "key": "shadowplay_p_loophole",
+          "buffId": 7570,
+          "name": "Loophole",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation29.png",
+          "desc": "Decreases received Ranged Damage -30% for 3 seconds after receiving a Ranged Critical Hit.\nThis ability has a 20 sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: -30% Recv Rng (3s)",
+          "buffData": []
+        },
+        {
+          "id": 6,
+          "key": "shadowplay_p_piercing",
+          "buffId": 483,
+          "name": "Piercing",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_vocation12.png",
+          "desc": "Increases Melee and Ranged Critical Rates +10% and Attack Speed +31 for 8 seconds after a successful Melee or Ranged Critical hit.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +10% Crit, +31 AtkSpd",
+          "linkedBuffId": "piercing",
+          "buffData": []
+        },
+        {
+          "id": 55,
+          "key": "shadowplay_p_bloodthirst_intensified",
+          "buffId": 1548,
+          "name": "Bloodthirst Intensified",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_buff66.png",
+          "desc": "Increases accumulated Bloodthirst +2 times.",
+          "effectKind": "utility",
+          "shortEffect": "+1 Bloodthirst per Stack",
+          "buffData": []
+        },
+        {
+          "id": 260,
+          "key": "shadowplay_p_shadow_mastery",
+          "buffId": 7572,
+          "name": "Shadow Mastery",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_vocation30.png",
+          "desc": "Decreases Shadowplay skill cooldown -20%.",
+          "effectKind": "combat",
+          "shortEffect": "-20% Shadowplay CD",
+          "cooldownReduction": {
+            "shadowplay": 20
+          },
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "shadowplay_venom_blades",
+          "name": "Venom Blades",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred27.png",
+          "desc": "Throws venomous knives at all enemies within a radius, dealing an initial Physical Damage and inficting the Deadly Poison debuff."
+        },
+        {
+          "key": "shadowplay_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "shadowplay_assassination",
+          "name": "Assassination",
+          "level": 55,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred38.png",
+          "desc": "Increases Shadowplay Skill Damage by +12% for 4sec, and causes the caster to become impossible to target during that time.\nCan only be used when the caster is invisible. \nAdditional Abyssal Charges are consumed on casting, extending the duration to a maximum of 8sec."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "shadowplay_murderous_intent",
+          "name": "Murderous Intent",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18415,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred28.png",
+          "desc": "Wallop, Stalker's Mark, Toxic Shot, Shadowsmite, and Throw Dagger each gant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "songcraft": {
+      "id": 9,
+      "slug": "songcraft",
+      "name": "Songcraft",
+      "actives": [
+        {
+          "key": "songcraft_critical_discord",
+          "name": "Critical Discord",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance14.png",
+          "desc": "Deals Magic Damage. Increases Critical Hit Rate and Critical Healing +2% for 3 seconds.\nHold down for continuous use.",
+          "simSkillId": "songcraft_critical_discord"
+        },
+        {
+          "key": "songcraft_startling_strain",
+          "name": "Startling Strain",
+          "level": 5,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance15.png",
+          "desc": "Stuns an enemy for with a special performance. After the Stun ends, the enemy is Charmed and susceptible to other Songcraft skill effects. Reduces caster's Cast Time -20% for 5 seconds. Does not stop a performance skill.",
+          "ancestrals": [
+            {
+              "id": "life",
+              "element": "Life",
+              "short": "Li",
+              "skillId": 36597,
+              "icon": "assets/icons/icon_skill_romance35.png",
+              "desc": "Magically improves the beneficial effects received from Perform skills +30% for 28s.\nCan be applied to the caster or a chosen ally.\nDecreases Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills."
+            },
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36598,
+              "icon": "assets/icons/icon_skill_romance36.png",
+              "desc": "Charms an enemy for 24s, making them more susceptible to other Songcraft skill effects.\nDecreases your Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills."
+            }
+          ]
+        },
+        {
+          "key": "songcraft_perform_quickstep",
+          "name": "[Perform] Quickstep",
+          "level": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance02.png",
+          "desc": "Plays a lighthearted song for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance."
+        },
+        {
+          "key": "songcraft_dissonance",
+          "name": "Dissonance",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance17.png",
+          "desc": "Plays clashing sounds to weaken and slow all enemies in a 5m radius.\n- Reduces Skill Damage -20%\n- Reduces Attack Speed -250.\n- Increases Cast Time +20%.\n- Reduces Magic Defense -320.\n- Deals Magic Damage after seconds.\n- Does not stop Perform skills.",
+          "simSkillId": "songcraft_dissonance"
+        },
+        {
+          "key": "songcraft_healing_hymn",
+          "name": "Healing Hymn",
+          "level": 20,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance29.png",
+          "desc": "Plays a healing song that instantly restores + Health to an ally.\nThe effect can travel to another 2 allies within 10m as long as they are not pets. Can continue to be transferred up to 3 times. \nDoes not stop performance skills.",
+          "simSkillId": "songcraft_healing_hymn",
+          "ancestrals": [
+            {
+              "id": "stone",
+              "element": "Stone",
+              "short": "St",
+              "skillId": 36595,
+              "icon": "assets/icons/icon_skill_romance33.png",
+              "desc": "Plays a beguiling song that Charms an enemy for 8s, making them more susceptible to other Songcraft skill effects.\nThis effect can travel to another 2 enemies within 10m, excluding pets. Can continue to be transferred up to 3 times.\nCharm duration increased by +50% on targets under the effects of Dissonance.\nThis skill does not stop ongoing Perform skills."
+            },
+            {
+              "id": "wave",
+              "element": "Wave",
+              "short": "Wv",
+              "skillId": 36596,
+              "icon": "assets/icons/icon_skill_romance34.png",
+              "desc": "Plays a revitalizing song that instantly restores a party member's Mana +120.\nThis effect can travel to another 2 party members within 10m, excluding you and pets. Can continue to be transferred up to 3 times.\nThis skill does not stop ongoing Perform skills."
+            }
+          ]
+        },
+        {
+          "key": "songcraft_hummingbird_ditty",
+          "name": "Hummingbird Ditty",
+          "level": 25,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance01.png",
+          "desc": "Applies to caster and nearby raid members for 30 minutes."
+        },
+        {
+          "key": "songcraft_perform_ode_to_recovery",
+          "name": "[Perform] Ode to Recovery",
+          "level": 30,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance05.png",
+          "desc": "Plays a healing song for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -20% during the performance."
+        },
+        {
+          "key": "songcraft_rhythmic_renewal",
+          "name": "Rhythmic Renewal",
+          "level": 35,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance26.png",
+          "desc": "Summons a healing spring that restores + health to caster and all nearby allies every second for 60 seconds."
+        },
+        {
+          "key": "songcraft_perform_bulwark_ballad",
+          "name": "[Perform] Bulwark Ballad",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance19.png",
+          "desc": "Plays a song of the earth for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance."
+        },
+        {
+          "key": "songcraft_perform_bloody_chantey",
+          "name": "[Perform] Bloody Chantey",
+          "level": 45,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance08.png",
+          "desc": "Plays a lively song for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills.\nDecreases Aggro -10% during the performance."
+        },
+        {
+          "key": "songcraft_alarm_call",
+          "name": "Alarm Call",
+          "level": 50,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance25.png",
+          "desc": "Lifts Stun and Sleep debuffs and grants immunity to allies within a 9m range every second for . Canceled by using another skill.\nCan be used while Stunned.",
+          "ancestrals": [
+            {
+              "id": "stone",
+              "element": "Stone",
+              "short": "St",
+              "skillId": 36628,
+              "icon": "assets/icons/icon_skill_romance37.png",
+              "desc": "Play an entrancing song, inflicting Sleep on all enemies within a 9m radius for up to 9s.\nSpell ends early if channeling is canceled or the caster moves, instantly awakening its targets."
+            },
+            {
+              "id": "life",
+              "element": "Life",
+              "short": "Li",
+              "skillId": 36629,
+              "icon": "assets/icons/icon_skill_romance38.png",
+              "desc": "Removes 1 harmful effect from every party member within a 9m radius every 3 seconds for 15s.\nCounts as an ongoing spell, but is canceled if another skill is used."
+            }
+          ]
+        },
+        {
+          "key": "songcraft_perform_grief_s_cadence",
+          "name": "[Perform] Grief's Cadence",
+          "level": 55,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance30.png",
+          "desc": "Plays a song of penitence for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance."
+        }
+      ],
+      "passives": [
+        {
+          "id": 43,
+          "key": "songcraft_p_syncopation",
+          "buffId": 1173,
+          "name": "Syncopation",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_magic09.png",
+          "desc": "Decreases the cast delay and the chance of interruption when hit -50%.",
+          "effectKind": "utility",
+          "shortEffect": "-100% Cast Pushback",
+          "buffData": [
+            {
+              "unit_attribute_id": 89,
+              "value": 100
+            }
+          ]
+        },
+        {
+          "id": 184,
+          "key": "songcraft_p_hold_the_note",
+          "buffId": 3840,
+          "name": "Hold the Note",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance28.png",
+          "desc": "Increases the performance time of Quickstep, Ode to Recovery, Bloody Chantey, Bulwark Ballad, and Grief's Cadence +15 seconds.",
+          "effectKind": "utility",
+          "shortEffect": "+10s Perform Duration",
+          "buffData": []
+        },
+        {
+          "id": 23,
+          "key": "songcraft_p_uptempo",
+          "buffId": 781,
+          "name": "Uptempo",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance16.png",
+          "desc": "Decreases Cast Time for all skills -5%.",
+          "effectKind": "sheet",
+          "shortEffect": "-5% Cast Time",
+          "addOffense": {
+            "castTimePct": -5
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 71,
+              "value": -50
+            }
+          ]
+        },
+        {
+          "id": 262,
+          "key": "songcraft_p_disciplined_performance",
+          "buffId": 7574,
+          "name": "Disciplined Performance",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance31.png",
+          "desc": "Decreases Received Magic Damage -30% for 3 seconds when Magic Critical Damage is received.\nThis ability has a 20 sec cooldown once triggered.\nPerformance skills also grant the Rhythm buff every 3 seconds.\n\nRhythm:\n- Increases Healing Power and Magic Attack +7 per stack.\n- Decreases Songcraft Cooldowns -0.4 seconds per stack.\n- Lasts 9 seconds.\n- Stacks up to 15 times.\n- Resets the cooldown of Startling Strain whenever a target you have Charmed is killed.",
+          "effectKind": "proc",
+          "shortEffect": "Rhythm Stacks, -30% Recv Magic",
+          "linkedBuffId": "rhythm_stacks",
+          "buffData": []
+        },
+        {
+          "id": 42,
+          "key": "songcraft_p_loudspeaker",
+          "buffId": 1156,
+          "name": "Loudspeaker",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance18.png",
+          "desc": "Increases the range for Quickstep, Ode to Recovery, Bloody Chantey, Bulwark Ballad, and Grief's Cadence to 22m.",
+          "effectKind": "utility",
+          "shortEffect": "+7m Perform Radius",
+          "buffData": []
+        },
+        {
+          "id": 261,
+          "key": "songcraft_p_allegretto",
+          "buffId": 7577,
+          "name": "Allegretto",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance32.png",
+          "desc": "Decreases Stun and Silence duration -10%.",
+          "effectKind": "utility",
+          "shortEffect": "-10% Stun/Silence Duration",
+          "buffData": []
+        },
+        {
+          "id": 12,
+          "key": "songcraft_p_zeal",
+          "buffId": 494,
+          "name": "Zeal",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_romance03.png",
+          "desc": "Every successful Critical Damage/Critical Healing effect increases all Critical Rates (including Healing) +5% and all Critical Damage/Critical Healing +75% for 6 seconds.\nThis ability has a 12 sec cooldown once triggered.",
+          "effectKind": "proc",
+          "shortEffect": "Proc: +5% CR, +75% CD (6s)",
+          "linkedBuffId": "zeal",
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "songcraft_abyssal_echoes",
+          "name": "Abyssal Echoes",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred29.png",
+          "desc": "Ends all currently active Perform skills, but creates diminished echoes of those abilities for up to 10 seconds. These echoes only affect the caster, and are not interrupted by casting non-perform skills. Using additional Perform skills during this time will end the echoes early.\nAs this skill levels up, the effects of the echoes improve."
+        },
+        {
+          "key": "songcraft_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "songcraft_polymorphic_resonance",
+          "name": "Polymorphic Resonance",
+          "level": 55,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred30.png",
+          "desc": "For up to 25 seconds, grants temporary immortality to allies within a 15m radius. When subjected to fatal damage, affected allies instead transform into animals and recover a small amount of Health, becoming temporarily immune to all debuffs.\nThis spell has an initial duration of 3 seconds, and consumes any additional Abyssal Charges over time to extend the duration 3 seconds per charge. If cast while at 6 Abyssal Charges, it has an initial duration of 5 seconds and each extra charge extends the duration 5 seconds instead.\nEffect ends when no charges remain or another ability is used."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "songcraft_seething_songs",
+          "name": "Seething Songs",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18416,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred32.png",
+          "desc": "Startling Strain, Dissonance, Healing Hymn, Rhythmic Renewal, and Alarm Call each gant 1 Abyssal Charge whenever they're used.",
+          "buffData": []
+        }
+      ]
+    },
+    "vitalism": {
+      "id": 10,
+      "slug": "vitalism",
+      "name": "Vitalism",
+      "actives": [
+        {
+          "key": "vitalism_holy_bolt",
+          "name": "Holy Bolt",
+          "level": 1,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_love32.png",
+          "desc": "Fires a bolt of holy light that deals Magic Damage.",
+          "simSkillId": "vitalism_holy_bolt"
+        },
+        {
+          "key": "vitalism_mirror_light",
+          "name": "Mirror Light",
+          "level": 3,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love02.png",
+          "desc": "Caster/allies: Cures one debuff and increases received healing +15% for .\nEnemies: Inflicts Snare for . Increases received damage +12% and decreases healing effectiveness -30% for . Snare duration reduced -50% in PvP."
+        },
+        {
+          "key": "vitalism_antithesis",
+          "name": "Antithesis",
+          "level": 10,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_love01.png",
+          "desc": "Allies/caster: Instantly restores + Health.\nEnemies: Deals Magic Damage.\nHold ALT to use on yourself.",
+          "ancestrals": [
+            {
+              "id": "life",
+              "element": "Life",
+              "short": "Li",
+              "skillId": 36630,
+              "icon": "assets/icons/icon_skill_love33.png",
+              "desc": "Instantly restores 908 (461 + 440% Healing Power) Health for you or an ally.\nThis skill has a longer range than regular Antithesis, but cannot be used to damage enemies. \nHold ALT to use the skill on yourself.",
+              "simSkillId": "vitalism_antithesis_mist_heal"
+            },
+            {
+              "id": "quake",
+              "element": "Quake",
+              "short": "Qk",
+              "skillId": 36631,
+              "icon": "assets/icons/icon_skill_love34.png",
+              "desc": "Instantly restores 613 (288 + 320% Healing Power) Health to all allies within a 6m radius of the target, and deals 1026 (864 + 160% Healing Power) Magic Damage to all enemies in the same area.\nCan be used on both allies or enemies.\nHold ALT to use the skill on yourself.\nDeals +35% extra damage to monsters.",
+              "simSkillId": "vitalism_antithesis_wave_heal",
+              "simSkillIds": [
+                "vitalism_antithesis_wave_heal",
+                "vitalism_antithesis_wave_damage"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "vitalism_resurgence",
+          "name": "Resurgence",
+          "level": 15,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_love03.png",
+          "desc": "Regenerates Health over for you or an ally.\nHold ALT to use the skill on yourself."
+        },
+        {
+          "key": "vitalism_revive",
+          "name": "Revive",
+          "level": 20,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love06.png",
+          "desc": "Revives an ally and restores the XP lost at death in the same amount as Nui's resurrection.\nRevived target: \nCan't be used during combat."
+        },
+        {
+          "key": "vitalism_skewer",
+          "name": "Skewer",
+          "level": 25,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_love05.png",
+          "desc": "Summons four skewers within a 20m circle at the target area, dealing Magic Damage and Impaling enemies for , preventing all actions. Skewers deal more damage where they overlap. When this skill levels up, it increases in both damage and cast time.",
+          "simSkillId": "vitalism_skewer",
+          "ancestrals": [
+            {
+              "id": "life",
+              "element": "Life",
+              "short": "Li",
+              "skillId": 36636,
+              "icon": "assets/icons/icon_skill_love37.png",
+              "desc": "Summons four skewers within a 20m circle at the target location, Impaling enemies for 2.6s and restoring 938 Health to allies. Skewers heal twice as much where they overlap."
+            },
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36637,
+              "icon": "assets/icons/icon_skill_love38_1.png",
+              "desc": "Summons Skewers in a 5m radius at the target location.Can be used up to 3 times in a row without casting delay, but the damage is reduced on consecutive casts.\nSkewers deal 1958 (1677 + 276% Healing Power) Magic Damage and Impale their targets for 2.6s, preventing all actions.\nDeals +35% extra damage to monsters.",
+              "simSkillId": "vitalism_skewer_multi"
+            }
+          ]
+        },
+        {
+          "key": "vitalism_mend",
+          "name": "Mend",
+          "level": 30,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_love07.png",
+          "desc": "Restores + health to up to 10 allies within a 20m radius.\n\nAffected allies are protected for a short period of time (does not stack with Insulating Lens).\n\nGrants immunity to Fear, but does not remove existing Fear effects.",
+          "simSkillId": "vitalism_mend"
+        },
+        {
+          "key": "vitalism_aranzeb_s_boon",
+          "name": "Aranzeb's Boon",
+          "level": 35,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love28.png",
+          "desc": "Applies to caster and nearby raid members for 30 minutes."
+        },
+        {
+          "key": "vitalism_renewal",
+          "name": "Renewal",
+          "level": 40,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_romance04.png",
+          "desc": "Calls forth energy from the land to bless the caster or an ally for 30sec. \nHold ALT to use on yourself."
+        },
+        {
+          "key": "vitalism_fervent_healing",
+          "name": "Fervent Healing",
+          "level": 45,
+          "points": 1,
+          "icon": "assets/icons/icon_skill_love21.png",
+          "desc": "Instantly restores Health for you or an ally. When used repeatedly, this skill heals 25% more Health, but at the cost of more Mana and a longer cooldown.\nCan be used up to 5 times in a row.\nHold ALT to use the skill on yourself.",
+          "simSkillId": "vitalism_fervent_healing",
+          "ancestrals": [
+            {
+              "id": "lightning",
+              "element": "Lightning",
+              "short": "Lt",
+              "skillId": 36632,
+              "icon": "assets/icons/icon_skill_love35.png",
+              "desc": "Instantly restores 312 (170 + 140% Healing Power) Health for you or an ally. This skill has no Cooldown, but the Mana cost increases by 50% of the base Mana cost per cast.\nMana cost resets 10 seconds after the most recent cast.",
+              "simSkillId": "vitalism_fervent_healing_nocd"
+            },
+            {
+              "id": "flame",
+              "element": "Flame",
+              "short": "Fl",
+              "skillId": 36635,
+              "icon": "assets/icons/icon_skill_love36.png",
+              "desc": "Restores 351 (311 + 40% Healing Power) Health every second for up to 25 seconds for you or an ally.\nUse this skill again while channeling to cast the spell early. The longer you channel, the more powerful the healing effect will be. \nHold ALT to use the skill on yourself.",
+              "simSkillId": "vitalism_resurgence_channel"
+            }
+          ]
+        },
+        {
+          "key": "vitalism_infuse",
+          "name": "Infuse",
+          "level": 50,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love27.png",
+          "desc": "Consumes caster's mana to immediately restore the mana of up to 10 allies within 20m. Restores 8-11% of each target's max mana."
+        },
+        {
+          "key": "vitalism_whirlwind_s_blessing",
+          "name": "Whirlwind's Blessing",
+          "level": 55,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love29.png",
+          "desc": "Increases Attack Speed +250 and Move Speed +20% for allies within 30m, and decreases Attack Speed -175 and Move Speed -15% for enemies for 30 seconds."
+        }
+      ],
+      "passives": [
+        {
+          "id": 22,
+          "key": "vitalism_p_painful_recharge",
+          "buffId": 753,
+          "name": "Painful Recharge",
+          "reqPoints": 2,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love14.png",
+          "desc": "Converts 3% of received damage to mana.",
+          "effectKind": "utility",
+          "shortEffect": "3% Recv Dmg -> Mana",
+          "buffData": []
+        },
+        {
+          "id": 19,
+          "key": "vitalism_p_quick_recovery",
+          "buffId": 558,
+          "name": "Quick Recovery",
+          "reqPoints": 4,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love04.png",
+          "desc": "Resets cooldowns on all Vitalism healing skills after receiving critical damage or critical healing. If Quick Recovery is triggered too often, it will be disabled for 12 seconds.",
+          "effectKind": "utility",
+          "shortEffect": "Reset Vitalism CD on Crit Taken",
+          "buffData": []
+        },
+        {
+          "id": 24,
+          "key": "vitalism_p_spirit_growth",
+          "buffId": 783,
+          "name": "Spirit Growth",
+          "reqPoints": 6,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love18.png",
+          "desc": "Increases Spirit +9%.",
+          "effectKind": "sheet",
+          "shortEffect": "+9% Spirit",
+          "mulAttributePct": {
+            "spi": 9
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 4,
+              "value": 9
+            }
+          ]
+        },
+        {
+          "id": 263,
+          "key": "vitalism_p_alms",
+          "buffId": 7585,
+          "name": "Alms",
+          "reqPoints": 7,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love30.png",
+          "desc": "Decreases Cast Time for all skills -6%.",
+          "effectKind": "sheet",
+          "shortEffect": "-6% Cast Time",
+          "addOffense": {
+            "castTimePct": -6
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 71,
+              "value": -60
+            }
+          ]
+        },
+        {
+          "id": 109,
+          "key": "vitalism_p_invigorated_healing",
+          "buffId": 3172,
+          "name": "Invigorated Healing",
+          "reqPoints": 8,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love08.png",
+          "desc": "Increases Critical Heal Bonus +25%.",
+          "effectKind": "sheet",
+          "shortEffect": "+25% Crit Heal Bonus",
+          "addOffense": {
+            "healCritBonusPct": 25
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 176,
+              "value": 250
+            }
+          ]
+        },
+        {
+          "id": 101,
+          "key": "vitalism_p_defiance",
+          "buffId": 2927,
+          "name": "Defiance",
+          "reqPoints": 9,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love26.png",
+          "desc": "Increases Magic Defense +500 for all allies within a 15m radius.\nGrants the Prayer effect every time Antithesis, Mend, or Fervent Healing is cast.\n\nPrayer:\n- Decreases Cast Time -2% per stack.\n- Triggers Sacrifice at 5 stacks.\n\nSacrifice:\n- Consumes 12-16% of current health when triggered.\n- Decreases Cast Time -10%.\n- Adds powerful bonus effects to Mend and Infuse.\n- Lasts 15sec.\n- Prevents gaining stacks of Prayer for duration.",
+          "effectKind": "sheet",
+          "shortEffect": "+500 Magic Def",
+          "addDefense": {
+            "magicDefense": 500
+          },
+          "buffData": [
+            {
+              "unit_attribute_id": 64,
+              "value": 500
+            }
+          ]
+        },
+        {
+          "id": 264,
+          "key": "vitalism_p_joyous_spirit",
+          "buffId": 7586,
+          "name": "Joyous Spirit",
+          "reqPoints": 10,
+          "points": 1,
+          "icon": "https://darugear.com/assets/icons/icon_skill_love31.png",
+          "desc": "Decreases Vitalism skill cooldown -20%. \nIncreases Post-Cast Mana Regen based on Spirit whenever damage is received while below 40% mana.",
+          "effectKind": "combat",
+          "shortEffect": "-20% Vitalism CD",
+          "cooldownReduction": {
+            "vitalism": 20
+          },
+          "buffData": []
+        }
+      ],
+      "hatredActives": [
+        {
+          "key": "vitalism_abyssal_petrification",
+          "name": "Abyssal Petrification",
+          "level": 10,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred39.png",
+          "desc": "Removes all debuffs and aggro from a selected target and protects them against all damage for , but prevents them from moving or taking actions for the duration. \nUsing this skill on a petrified target reverses the effects."
+        },
+        {
+          "key": "vitalism_rising_hatred",
+          "name": "Rising Hatred",
+          "level": 25,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred02.png",
+          "desc": "Increases maximum Abyssal Charges +2 for 12 seconds. Prevents charges from naturally depleting for the duration, and doubles charges gained through using skills.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+        },
+        {
+          "key": "vitalism_defy_death",
+          "name": "Defy Death",
+          "level": 55,
+          "points": 0,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred33.png",
+          "desc": "Revives up to 6 allies within 6m of the caster. All targets beyond the first must be in the same party or raid as the caster to be revived. Any additional charges are consumed on casting, increasing the health and mana of revived targets. \nConsuming 6 Abyssal Charges increases the affected range to 20m. \nCan be used in combat."
+        }
+      ],
+      "hatredPassives": [
+        {
+          "key": "vitalism_profane_prayers",
+          "name": "Profane Prayers",
+          "reqPoints": 0,
+          "points": 0,
+          "buffId": 18417,
+          "icon": "https://darugear.com/assets/icons/icon_skill_hatred35.png",
+          "desc": "Antithesis, Mirror Light, Mend, Fervent Healing, and Infuse each grant 1 Abyssal Charge whenever they're used on the caster or their allies.",
+          "buffData": []
+        }
+      ]
+    }
+  },
+  "classes": {
+    "name_1_2_3": "Hexblade",
+    "name_1_2_4": "Hex Warden",
+    "name_1_2_5": "Hordebreaker",
+    "name_1_2_6": "Dreadhunter",
+    "name_1_2_7": "Harbinger",
+    "name_1_2_8": "Shadowblade",
+    "name_1_2_9": "Dirgeweaver",
+    "name_1_2_10": "Dervish",
+    "name_1_3_4": "Abolisher",
+    "name_1_3_5": "Doomlord",
+    "name_1_3_6": "Liberator",
+    "name_1_3_7": "Crusader",
+    "name_1_3_8": "Blighter",
+    "name_1_3_9": "Dawncaller",
+    "name_1_3_10": "Paladin",
+    "name_1_4_5": "Bloodreaver",
+    "name_1_4_6": "Bonestalker",
+    "name_1_4_7": "Enforcer",
+    "name_1_4_8": "Darkrunner",
+    "name_1_4_9": "Herald",
+    "name_1_4_10": "Argent",
+    "name_1_5_6": "Dreadbow",
+    "name_1_5_7": "Ravager",
+    "name_1_5_8": "Executioner",
+    "name_1_5_9": "Lorebreaker",
+    "name_1_5_10": "Blackguard",
+    "name_1_6_7": "Fiendhunter",
+    "name_1_6_8": "Outrider",
+    "name_1_6_9": "Bloodskald",
+    "name_1_6_10": "Warpriest",
+    "name_1_7_8": "Hellweaver",
+    "name_1_7_9": "Spellsword",
+    "name_1_7_10": "Fleshshaper",
+    "name_1_8_9": "Blade Dancer",
+    "name_1_8_10": "Inquisitor",
+    "name_1_9_10": "Bloodthrall",
+    "name_2_3_4": "Dreambreaker",
+    "name_2_3_5": "Defiler",
+    "name_2_3_6": "Archon",
+    "name_2_3_7": "Cabalist",
+    "name_2_3_8": "Shadowknight",
+    "name_2_3_9": "Poxbane",
+    "name_2_3_10": "Shadowbane",
+    "name_2_4_5": "Nightcloak",
+    "name_2_4_6": "Arcane Hunter",
+    "name_2_4_7": "Arcanist",
+    "name_2_4_8": "Eidolon",
+    "name_2_4_9": "Enchantrix",
+    "name_2_4_10": "Hierophant",
+    "name_2_5_6": "Shadestriker",
+    "name_2_5_7": "Demonologist",
+    "name_2_5_8": "Shroudmaster",
+    "name_2_5_9": "Tombcaller",
+    "name_2_5_10": "Necromancer",
+    "name_2_6_7": "Stormcaster",
+    "name_2_6_8": "Trickster",
+    "name_2_6_9": "Hex Ranger",
+    "name_2_6_10": "Soulbow",
+    "name_2_7_8": "Daggerspell",
+    "name_2_7_9": "Lamentor",
+    "name_2_7_10": "Shaman",
+    "name_2_8_9": "Nightwitch",
+    "name_2_8_10": "Assassin",
+    "name_2_9_10": "Athame",
+    "name_3_4_5": "Skullknight",
+    "name_3_4_6": "Bastion",
+    "name_3_4_7": "Thaumaturge",
+    "name_3_4_8": "Nightblade",
+    "name_3_4_9": "Tomb Warden",
+    "name_3_4_10": "Templar",
+    "name_3_5_6": "Dreadstone",
+    "name_3_5_7": "Battlemage",
+    "name_3_5_8": "Dreadnaught",
+    "name_3_5_9": "Dark Aegis",
+    "name_3_5_10": "Justicar",
+    "name_3_6_7": "Farslayer",
+    "name_3_6_8": "Stone Arrow",
+    "name_3_6_9": "Honorguard",
+    "name_3_6_10": "Druid",
+    "name_3_7_8": "Swiftstone",
+    "name_3_7_9": "Earthsinger",
+    "name_3_7_10": "Scion",
+    "name_3_8_9": "Nightbearer",
+    "name_3_8_10": "Death Warden",
+    "name_3_9_10": "Caretaker",
+    "name_4_5_6": "Astral Ranger",
+    "name_4_5_7": "Revenant",
+    "name_4_5_8": "Planeshifter",
+    "name_4_5_9": "Phantasm",
+    "name_4_5_10": "Edgewalker",
+    "name_4_6_7": "Stormchaser",
+    "name_4_6_8": "Primeval",
+    "name_4_6_9": "Howler",
+    "name_4_6_10": "Oracle",
+    "name_4_7_8": "Enigmatist",
+    "name_4_7_9": "Spellsong",
+    "name_4_7_10": "Boneweaver",
+    "name_4_8_9": "Exorcist",
+    "name_4_8_10": "Soothsayer",
+    "name_4_9_10": "Cleric",
+    "name_5_6_7": "Spellbow",
+    "name_5_6_8": "Shadehunter",
+    "name_5_6_9": "Gravesinger",
+    "name_5_6_10": "Blood Arrow",
+    "name_5_7_8": "Reaper",
+    "name_5_7_9": "Requiem",
+    "name_5_7_10": "Cultist",
+    "name_5_8_9": "Nocturne",
+    "name_5_8_10": "Doombringer",
+    "name_5_9_10": "Sorrowsong",
+    "name_6_7_8": "Infiltrator",
+    "name_6_7_9": "Evoker",
+    "name_6_7_10": "Naturalist",
+    "name_6_8_9": "Ebonsong",
+    "name_6_8_10": "Ranger",
+    "name_6_9_10": "Soulsong",
+    "name_7_8_9": "Spellsinger",
+    "name_7_8_10": "Animist",
+    "name_7_9_10": "Gypsy",
+    "name_8_9_10": "Confessor"
+  }
+}

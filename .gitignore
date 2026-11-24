@@ -1,0 +1,18 @@
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Personal saved builds on disk (local-only; tracked starter builds live in example-builds/)
+builds/
+
+# Raw in-game addon dumps (already compiled into js/data/skills/*.json)
+addon/*.txt
+
+# Downloaded DaruGear CSV cache (re-fetched by tools/darugear_sync.py)
+tools/darugear_cache/
+
+# Atomic temp files & OS / OneDrive metadata
+*.tmp
+.DS_Store
+Thumbs.db
+desktop.ini

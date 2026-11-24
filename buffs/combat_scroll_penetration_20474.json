@@ -1,0 +1,14 @@
+{
+  "id": "combat_scroll_penetration_20474",
+  "aacBuffId": 20474,
+  "name": "Combat Scroll: Penetration",
+  "side": "attacker",
+  "isCustom": true,
+  "description": "Increases Defense Penetration +700 for 30m Persists through death. (AA Classic buff 20474; 30m)",
+  "icon": "assets/icons/icon_item_3544.png",
+  "addOffense": {
+    "defensePenetration": 700
+  },
+  "filename": "buffs/combat_scroll_penetration_20474.json",
+  "savedAt": "2026-11-24T03:33:55.218848+00:00"
+}

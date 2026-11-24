@@ -1,0 +1,725 @@
+{
+  "schemaVersion": 1,
+  "savedId": "example-skullknight-tank",
+  "filename": "example-builds/example-skullknight-tank.json",
+  "savedAt": "2026-01-01T00:00:00.000Z",
+  "isExample": true,
+  "name": "Example: Skullknight (Tank)",
+  "source": "example",
+  "metadata": {
+    "source": "example",
+    "darugearUrl": null,
+    "shareCode": null,
+    "className": "Skullknight",
+    "category": "tank",
+    "title": "1st Rank Knight",
+    "equipmentType": "shield",
+    "gearScore": 6510
+  },
+  "shareUrl": null,
+  "darugearUrl": null,
+  "shareCode": null,
+  "className": "Skullknight",
+  "level": 55,
+  "gearScore": 6510,
+  "maxHealth": 42600,
+  "maxMana": 14200,
+  "baseAttributes": {
+    "str": 158,
+    "agi": 8,
+    "sta": 458,
+    "int": 8,
+    "spi": 158
+  },
+  "attributes": {
+    "str": 240,
+    "agi": 60,
+    "sta": 1620,
+    "int": 310,
+    "spi": 280
+  },
+  "offense": {
+    "meleeAttack": 420,
+    "rangedAttack": 180,
+    "magicAttack": 610,
+    "healingPower": 60,
+    "meleeAccuracyPct": 100,
+    "rangedAccuracyPct": 100,
+    "magicAccuracyPct": 100,
+    "meleeCritRatePct": 15,
+    "rangedCritRatePct": 15,
+    "magicCritRatePct": 18.0,
+    "healCritRatePct": 10,
+    "meleeCritBonusPct": 50,
+    "rangedCritBonusPct": 50,
+    "magicCritBonusPct": 82.0,
+    "healCritBonusPct": 50,
+    "meleeSkillDamagePct": 0,
+    "rangedSkillDamagePct": 0,
+    "magicSkillDamagePct": 0,
+    "healingPct": 0,
+    "backstabMeleeDamagePct": 0,
+    "backstabRangedDamagePct": 0,
+    "backstabMagicDamagePct": 0,
+    "defensePenetration": 0,
+    "magicDefensePenetration": 950,
+    "shieldDefPenRatePct": 0,
+    "shieldDefPenPct": 0,
+    "focus": 0,
+    "attackSpeed": 0,
+    "castTimePct": 84.0
+  },
+  "defense": {
+    "physicalDefense": 17400,
+    "magicDefense": 11200,
+    "shieldPhysicalDefense": 3650,
+    "hasShield": true,
+    "dualWieldRangedParry": false,
+    "toughness": 4450,
+    "resilience": 5100,
+    "evasionPct": 8.0,
+    "parryPct": 12.0,
+    "rangedParryPct": 0,
+    "blockPct": 31.0,
+    "receivedMeleeDrPct": 14.0,
+    "receivedRangedDrPct": 14.0,
+    "receivedMagicDrPct": 14.0,
+    "fixedMeleeDr": 0,
+    "fixedRangedDr": 0,
+    "fixedMagicDr": 0,
+    "receivedHealingPct": 10.0
+  },
+  "modifiers": [],
+  "consumables": {},
+  "equipment": [
+    {
+      "slotId": 0,
+      "slotName": "Costume",
+      "itemId": 8000928,
+      "name": "Defense Basic Costume",
+      "type": "Cloth",
+      "gradeId": 10,
+      "gradeName": "Legendary",
+      "gradeColor": "#ffb326",
+      "icon": "assets/icons/icon_item_3288.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [],
+      "synthStats": [
+        "Max Health +1450",
+        "Physical Defense +620",
+        "Magic Defense +620",
+        "Received Damage -3.2%"
+      ]
+    },
+    {
+      "slotId": 1,
+      "slotName": "Head",
+      "itemId": 31467,
+      "name": "Ayanad Earth Helm",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_hm/nu_f_hm_metal173.png",
+      "ptemper": 110,
+      "mtemper": 100,
+      "temper": 110,
+      "lunafrost": {
+        "name": "Astral Earth Lunadrop",
+        "text": "Stamina +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 2,
+      "slotName": "Chest",
+      "itemId": 31468,
+      "name": "Ayanad Earth Cuirass",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_ar/nu_f_ar_metal173.png",
+      "ptemper": 110,
+      "mtemper": 100,
+      "temper": 110,
+      "lunafrost": {
+        "name": "Honorbold Warrior's Lunafrost",
+        "text": "Received Damage -3%"
+      },
+      "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 3,
+      "slotName": "Waist",
+      "itemId": 31473,
+      "name": "Ayanad Earth Tassets",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/icon_item_belt_metal_0012.png",
+      "ptemper": 108,
+      "mtemper": 100,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Earth Lunadrop",
+        "text": "Stamina +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 4,
+      "slotName": "Wrists",
+      "itemId": 31472,
+      "name": "Ayanad Earth Vambraces",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_arm_metal_0013.png",
+      "ptemper": 108,
+      "mtemper": 100,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Earth Lunadrop",
+        "text": "Stamina +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 5,
+      "slotName": "Hands",
+      "itemId": 31470,
+      "name": "Ayanad Earth Gauntlets",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_gv/nu_m_gv_metal173.png",
+      "ptemper": 109,
+      "mtemper": 100,
+      "temper": 109,
+      "lunafrost": {
+        "name": "Astral Earth Lunadrop",
+        "text": "Stamina +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 6,
+      "slotName": "Cloak",
+      "itemId": 43120,
+      "name": "Erenor Flaming Bastion Cloak",
+      "type": "Cloak",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_cp/nu_m_cp_cloth288.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [],
+      "synthStats": [
+        "Stamina +112",
+        "Magic Defense +480",
+        "Shield Block Rate +4.0%"
+      ]
+    },
+    {
+      "slotId": 7,
+      "slotName": "Legs",
+      "itemId": 31469,
+      "name": "Ayanad Earth Greaves",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_pt/nu_f_pt_metal173.png",
+      "ptemper": 110,
+      "mtemper": 100,
+      "temper": 110,
+      "lunafrost": {
+        "name": "Astral Earth Lunadrop",
+        "text": "Stamina +9"
+      },
+      "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 8,
+      "slotName": "Feet",
+      "itemId": 31471,
+      "name": "Ayanad Earth Sabatons",
+      "type": "Plate",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_bo/nu_m_bo_metal173.png",
+      "ptemper": 109,
+      "mtemper": 100,
+      "temper": 109,
+      "lunafrost": {
+        "name": "Flawless Assassin's Lunafrost",
+        "text": "Move Speed +5%"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 9,
+      "slotName": "Undergarments",
+      "itemId": 8001855,
+      "name": "Melee Black Cat Undergarments",
+      "type": "Synthesis Gear",
+      "gradeId": 10,
+      "gradeName": "Legendary",
+      "gradeColor": "#ffb326",
+      "icon": "assets/icons/costume_set/nu_f_in_pants008_df.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Astral Earth Lunadrop",
+        "text": "Stamina +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": [
+        "Max Health +1200",
+        "Resilience +480",
+        "Toughness +360"
+      ]
+    },
+    {
+      "slotId": 10,
+      "slotName": "Neck",
+      "itemId": 9001874,
+      "name": "Enlightened Ayanad Earth Necklace",
+      "type": "Necklace",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/aac/enlightened_earth_necklace.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Miraculous Distorted Lunafrost",
+        "text": "Magic Defense +59"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 11,
+      "slotName": "Earring",
+      "itemId": 9001893,
+      "name": "Enlightened Ayanad Earth Earring",
+      "type": "Earring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/aac/enlightened_earth_earring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Miraculous Distorted Lunafrost",
+        "text": "Magic Defense +59"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 12,
+      "slotName": "Earring",
+      "itemId": 18818,
+      "name": "Delphinad Earth Earring",
+      "type": "Earring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/icon_item_earring_0030.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Miraculous Distorted Lunafrost",
+        "text": "Magic Defense +59"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 13,
+      "slotName": "Ring",
+      "itemId": 9001881,
+      "name": "Enlightened Ayanad Earth Ring",
+      "type": "Ring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/aac/enlightened_earth_ring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Miraculous Distorted Lunafrost",
+        "text": "Magic Defense +59"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 14,
+      "slotName": "Ring",
+      "itemId": 9001881,
+      "name": "Enlightened Ayanad Earth Ring",
+      "type": "Ring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/aac/enlightened_earth_ring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Miraculous Distorted Lunafrost",
+        "text": "Magic Defense +59"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 15,
+      "slotName": "Right Hand Weapon",
+      "itemId": 31391,
+      "name": "Ayanad Wave Scepter",
+      "type": "Scepter",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_staff_1h_0080.png",
+      "ptemper": 100,
+      "mtemper": 109,
+      "temper": 109,
+      "lunafrost": null,
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 16,
+      "slotName": "Left Hand Weapon",
+      "itemId": 31416,
+      "name": "Ayanad Earth Shield",
+      "type": "Shield",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_shield_0090.png",
+      "ptemper": 112,
+      "mtemper": 100,
+      "temper": 112,
+      "lunafrost": {
+        "name": "Whole Barrier Lunafrost",
+        "text": "Shield Block Rate +2%"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Impenetrable",
+          "text": "Shield Block Rate +2%"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 17,
+      "slotName": "Ranged Weapon",
+      "itemId": 31410,
+      "name": "Ayanad Wave Bow",
+      "type": "Bow",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/icon_item_bow_0088.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 18,
+      "slotName": "Instrument",
+      "itemId": 31426,
+      "name": "Ayanad Earth Flute",
+      "type": "Flute",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/icon_item_ins_w_0028.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Miraculous Distorted Lunafrost",
+        "text": "Magic Defense +59"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Magic Defense",
+          "text": "Magic Defense +100"
+        }
+      ],
+      "synthStats": []
+    }
+  ],
+  "skillBuild": {
+    "trees": [
+      "occultism",
+      "defense",
+      "auramancy"
+    ],
+    "className": "Skullknight",
+    "actives": {
+      "occultism": [
+        "Mana Stars",
+        "Hell Spear",
+        "Crippling Mire",
+        "Summon Crows",
+        "Retribution",
+        "Stillness",
+        "Summon Wraith"
+      ],
+      "defense": [
+        "Shield Slam",
+        "Refreshment",
+        "Bull Rush",
+        "Boastful Roar",
+        "Redoubt",
+        "Ollo's Hammer",
+        "Invincibility",
+        "Imprison"
+      ],
+      "auramancy": [
+        "Thwart",
+        "Teleportation",
+        "Conversion Shield",
+        "Vicious Implosion",
+        "Shrug It Off",
+        "Liberation"
+      ]
+    },
+    "passives": {
+      "occultism": [
+        "Reprisal"
+      ],
+      "defense": [
+        "Supplemental Block",
+        "Shield of Steel",
+        "Toughen",
+        "Bear's Vigor",
+        "Guardian"
+      ],
+      "auramancy": []
+    },
+    "hatredTree": null,
+    "ancestrals": {}
+  }
+}

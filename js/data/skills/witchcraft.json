@@ -1,0 +1,209 @@
+{
+  "skillset": "witchcraft",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_witchcraft.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 6,
+  "skills": [
+    {
+      "id": "witchcraft_earthen_grip",
+      "skillset": "witchcraft",
+      "name": "Earthen Grip",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 14376,
+      "base": 806,
+      "scalingPct": 220,
+      "parseSource": "detailed_tooltip",
+      "description": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for 17s.\nDeals 897 (806 + 220% Magic Attack) Magic Damage on expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect.\nSnare duration reduced -50% in PvP.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 14376,
+          "base": 806,
+          "scalingPct": 220,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for 17s.\nDeals 897 (806 + 220% Magic Attack) Magic Damage on expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect.\nSnare duration reduced -50% in PvP."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 18.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_skill_illusion09.png"
+    },
+    {
+      "id": "witchcraft_earthen_grip_aoe",
+      "skillset": "witchcraft",
+      "name": "Earthen Grip (Quake)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36450,
+      "base": 806,
+      "scalingPct": 220,
+      "parseSource": "detailed_tooltip",
+      "description": "Calls forth hands from the ground that grab all enemies within 8m, inflicting Snare for 17s.\nDeals 897 (806 + 220% Magic Attack) Magic Damage upon expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nSnare duration reduced -50% in PvP.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36450,
+          "base": 806,
+          "scalingPct": 220,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls forth hands from the ground that grab all enemies within 8m, inflicting Snare for 17s.\nDeals 897 (806 + 220% Magic Attack) Magic Damage upon expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nSnare duration reduced -50% in PvP."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 18.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_skill_illusion27.png",
+      "ancestralElement": "quake"
+    },
+    {
+      "id": "witchcraft_enervate",
+      "skillset": "witchcraft",
+      "name": "Enervate",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "appliesAntiHealPct": -60
+      },
+      "skillId": 10159,
+      "base": 779,
+      "scalingPct": 160,
+      "parseSource": "detailed_tooltip",
+      "description": "Deals 845 (779 + 160% Magic Attack) Magic Damage and burns 528 mana over 5s. Decreases healing effectiveness -60% and increases duration of Stun and Trip +30%.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10159,
+          "base": 779,
+          "scalingPct": 160,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 845 (779 + 160% Magic Attack) Magic Damage and burns 528 mana over 5s. Decreases healing effectiveness -60% and increases duration of Stun and Trip +30%."
+        }
+      ],
+      "abilityLevel": 5,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_illusion03.png"
+    },
+    {
+      "id": "witchcraft_focal_concussion",
+      "skillset": "witchcraft",
+      "name": "Focal Concussion",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 11353,
+      "base": 424,
+      "scalingPct": 250,
+      "parseSource": "detailed_tooltip",
+      "description": "Deals 528 (424 + 250% Magic Attack) Magic Damage and Stuns an enemy for 1.5s.\nIf the target has any positive buffs, Focal Concussion removes one buff and deals additional damage when the Stun ends.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11353,
+          "base": 424,
+          "scalingPct": 250,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 528 (424 + 250% Magic Attack) Magic Damage and Stuns an enemy for 1.5s.\nIf the target has any positive buffs, Focal Concussion removes one buff and deals additional damage when the Stun ends."
+        }
+      ],
+      "abilityLevel": 45,
+      "cooldownSec": 27.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_illusion11.png"
+    },
+    {
+      "id": "witchcraft_focal_concussion_hollow",
+      "skillset": "witchcraft",
+      "name": "Hollow Focal Concussion",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "stuns": true,
+        "stripsBuffs": true
+      },
+      "skillId": 9011353,
+      "base": 424,
+      "scalingPct": 250,
+      "parseSource": "enlightened_preview_1_3_6",
+      "description": "Enlightened (Hollow): Deals Magic Damage and Stuns an enemy for 1.5s. Removes 1 positive buff (+1 extra per Baleful Recharge stack) and deals bonus pop damage when the Stun ends. (AA Classic 1.3.6 Enlightened Preview)",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 9011353,
+          "base": 424,
+          "scalingPct": 250,
+          "parseSource": "enlightened_preview_1_3_6",
+          "description": "Enlightened (Hollow): Deals Magic Damage and Stuns an enemy for 1.5s. Removes 1 positive buff (+1 extra per Baleful Recharge stack) and deals bonus pop damage when the Stun ends."
+        }
+      ],
+      "abilityLevel": 45,
+      "cooldownSec": 27.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_focal_concussion.png"
+    },
+    {
+      "id": "witchcraft_dahutas_breath",
+      "skillset": "witchcraft",
+      "name": "Dahuta's Breath",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 11443,
+      "base": 835,
+      "scalingPct": 300,
+      "parseSource": "detailed_tooltip",
+      "description": "Sends forth a wave that deals 959 (835 + 300% Magic Attack) Magic Damage and pushes enemies away from you.\nPushed enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill counts as a Push effect.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11443,
+          "base": 835,
+          "scalingPct": 300,
+          "parseSource": "detailed_tooltip",
+          "description": "Sends forth a wave that deals 959 (835 + 300% Magic Attack) Magic Damage and pushes enemies away from you.\nPushed enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill counts as a Push effect."
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 21.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_illusion22.png"
+    }
+  ]
+}

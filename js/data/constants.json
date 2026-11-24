@@ -1,0 +1,21 @@
+{
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "level": 55,
+  "defenseK": 7900,
+  "toughnessK": 8000,
+  "resilienceCritRateK": 32000,
+  "resilienceCritBonusK": 18000,
+  "focusNegationPctPerPoint": 0.0027,
+  "baseCritBonusPct": 50,
+  "maxCritBonusPct": 300,
+  "shieldBlockDamageMultiplier": 0.0,
+  "vitalismDamageUsesHealMul": true,
+  "verifiedAgainstLiveStats": {
+    "armor": 3975,
+    "armorPctLive": 33.4737,
+    "armorPctFormula": 33.4737,
+    "magicResist": 11612,
+    "magicResistPctLive": 59.5121,
+    "magicResistPctFormula": 59.5121
+  }
+}

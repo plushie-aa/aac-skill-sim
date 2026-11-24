@@ -1,0 +1,23 @@
+{
+  "id": "uni_boost_potion_6936",
+  "aacBuffId": 6936,
+  "name": "Uni-Boost Potion",
+  "side": "attacker",
+  "isCustom": true,
+  "description": "Attack Speed +42 Cast Time --10% Skill damage +3% XP gain +20% (AA Classic buff 6936; 60m; Utility: Melee Weapon Speed +42.0%, Ranged Weapon Speed +42.0%, Increased experience gain +20%)",
+  "icon": "assets/icons/icon_item_1548.png",
+  "addOffense": {
+    "castTimePct": -10,
+    "meleeSkillDamagePct": 3,
+    "rangedSkillDamagePct": 3,
+    "magicSkillDamagePct": 3,
+    "attackSpeed": 420
+  },
+  "unmappedModifiers": [
+    "Melee Weapon Speed +42.0%",
+    "Ranged Weapon Speed +42.0%",
+    "Increased experience gain +20%"
+  ],
+  "filename": "buffs/uni_boost_potion_6936.json",
+  "savedAt": "2026-11-24T03:33:55.018049+00:00"
+}

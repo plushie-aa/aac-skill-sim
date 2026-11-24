@@ -1,0 +1,2883 @@
+{
+  "source": "https://aa-classic.com/data/skills/<id>.json",
+  "fetchedCount": 115,
+  "missingIds": [],
+  "skills": {
+    "10135": {
+      "id": 10135,
+      "name": "Hell Spear",
+      "ability": "death",
+      "abilityLevel": 10,
+      "cooldownMs": 27000,
+      "cooldownText": "27s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death06.png",
+      "appliedBuffs": [
+        {
+          "buffId": 87,
+          "name": "Hell Spear",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Impales for #{duration}."
+        },
+        {
+          "buffId": 15002,
+          "name": "Burning Brand",
+          "kind": "buff",
+          "durationMs": 6000,
+          "description": "- Increases Occultism skill damage +2% per stack.\n- Decreases channeling time of Absorb Lifeforce -3% per stack.\n- Triggers Deathmark Aura at 15 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "10151": {
+      "id": 10151,
+      "name": "Freezing Earth",
+      "ability": "magic",
+      "abilityLevel": 20,
+      "cooldownMs": 36000,
+      "cooldownText": "36s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic10.png",
+      "appliedBuffs": [
+        {
+          "buffId": 94,
+          "name": "Ice Shard",
+          "kind": "debuff",
+          "durationMs": 700,
+          "description": "Freezes legs and prevents movement."
+        },
+        {
+          "buffId": 247,
+          "name": "Freeze",
+          "kind": "debuff",
+          "durationMs": 4000,
+          "description": "Freezes, then gradually thaws."
+        }
+      ]
+    },
+    "10159": {
+      "id": 10159,
+      "name": "Enervate",
+      "ability": "illusion",
+      "abilityLevel": 5,
+      "cooldownMs": 24000,
+      "cooldownText": "24s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_illusion03.png",
+      "appliedBuffs": [
+        {
+          "buffId": 101,
+          "name": "Enervated",
+          "kind": "debuff",
+          "durationMs": 5000,
+          "description": "Decreases mana |cFFFF9C27#{total_min_mana_burn}-#{total_max_mana_burn}|r for #{duration}. Decreases healing effectiveness |cFFFF9C27-60%|r. Increases the duration of Stun and Trip |cFFFF9C27+30%|r."
+        },
+        {
+          "buffId": 2835,
+          "name": "Enervated",
+          "kind": "debuff",
+          "durationMs": 5000,
+          "description": "Decreases mana and health #{total_min_mana_burn}-#{total_max_mana_burn} for #{duration}.\nDecreases Healing effectiveness -60%.\nIncreases the duration of Stun and Trip +30%."
+        }
+      ]
+    },
+    "10201": {
+      "id": 10201,
+      "name": "Crippling Mire",
+      "ability": "death",
+      "abilityLevel": 25,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death11.png",
+      "appliedBuffs": []
+    },
+    "10399": {
+      "id": 10399,
+      "name": "Shield Slam",
+      "ability": "adamant",
+      "abilityLevel": 1,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_adamant01.png",
+      "appliedBuffs": [
+        {
+          "buffId": 501,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Stunned for #{duration}."
+        }
+      ]
+    },
+    "10434": {
+      "id": 10434,
+      "name": "Summon Wraith",
+      "ability": "death",
+      "abilityLevel": 50,
+      "cooldownMs": 60000,
+      "cooldownText": "1m",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death13.png",
+      "appliedBuffs": []
+    },
+    "10481": {
+      "id": 10481,
+      "name": "Toxic Shot",
+      "ability": "vocation",
+      "abilityLevel": 30,
+      "cooldownMs": 9000,
+      "cooldownText": "9s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild01.png",
+      "appliedBuffs": [
+        {
+          "buffId": 196,
+          "name": "Venom",
+          "kind": "debuff",
+          "durationMs": 6000,
+          "description": "Deals #{total_min_damage}-#{total_max_damage} damage over time."
+        },
+        {
+          "buffId": 18135,
+          "name": "Venom",
+          "kind": "debuff",
+          "durationMs": 6000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over |nc;6sec|r. Decreases Attack Speed |nc;-87|r and increasing Cast Time |nc;+8%|r."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "10496": {
+      "id": 10496,
+      "name": "Shadowsmite",
+      "ability": "vocation",
+      "abilityLevel": 40,
+      "cooldownMs": 24000,
+      "cooldownText": "24s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation06.png",
+      "appliedBuffs": [
+        {
+          "buffId": 206,
+          "name": "Shackle",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Disables Melee and Ranged skills for #{duration}."
+        },
+        {
+          "buffId": 21,
+          "name": "Tripped (Strong)",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Tripped for #{duration}."
+        }
+      ]
+    },
+    "10501": {
+      "id": 10501,
+      "name": "Bull Rush",
+      "ability": "adamant",
+      "abilityLevel": 10,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_adamant28.png",
+      "appliedBuffs": [
+        {
+          "buffId": 257,
+          "name": "Silence",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Silences for #{duration}."
+        },
+        {
+          "buffId": 505,
+          "name": "Tripped",
+          "kind": "debuff",
+          "durationMs": 2300,
+          "description": "Tripped and unable to get up for #{duration}."
+        },
+        {
+          "buffId": 3532,
+          "name": "Aggro Boost",
+          "kind": "buff",
+          "durationMs": 5000,
+          "description": "Doubles your Aggro for #{duration}."
+        },
+        {
+          "buffId": 425,
+          "name": "Casting Interrupted",
+          "kind": "buff",
+          "durationMs": 1000,
+          "description": "Casting Interrupted"
+        }
+      ]
+    },
+    "10534": {
+      "id": 10534,
+      "name": "Antithesis",
+      "ability": "love",
+      "abilityLevel": 10,
+      "cooldownMs": 5000,
+      "cooldownText": "5s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_love01.png",
+      "appliedBuffs": [
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "10547": {
+      "id": 10547,
+      "name": "Resurgence",
+      "ability": "love",
+      "abilityLevel": 15,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love03.png",
+      "appliedBuffs": [
+        {
+          "buffId": 220,
+          "name": "Resurgence",
+          "kind": "buff",
+          "durationMs": 10000,
+          "description": "Recovers #{total_min_heal}-#{total_max_heal} health over #{duration}."
+        },
+        {
+          "buffId": 17417,
+          "name": "Resurgence",
+          "kind": "buff",
+          "durationMs": 10000,
+          "description": "Recovers #{total_min_heal}-#{total_max_heal} health over #{duration}."
+        }
+      ]
+    },
+    "10644": {
+      "id": 10644,
+      "name": "Sunder Earth",
+      "ability": "fight",
+      "abilityLevel": 15,
+      "cooldownMs": 21000,
+      "cooldownText": "21s",
+      "castTimeMs": 1000,
+      "castTimeText": "1s",
+      "icon": "icon_skill_fight04.png",
+      "appliedBuffs": [
+        {
+          "buffId": 240,
+          "name": "Slow",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed -60% for #{duration}."
+        }
+      ]
+    },
+    "10648": {
+      "id": 10648,
+      "name": "Overwhelm",
+      "ability": "vocation",
+      "abilityLevel": 3,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation07.png",
+      "appliedBuffs": [
+        {
+          "buffId": 243,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 1300,
+          "description": "Stuns the enemy for #{duration}."
+        },
+        {
+          "buffId": 1763,
+          "name": "Bloodthirst Shock",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Temporarily rooted by the Bloodthirst shock attack."
+        }
+      ]
+    },
+    "10664": {
+      "id": 10664,
+      "name": "Meteor Strike",
+      "ability": "magic",
+      "abilityLevel": 50,
+      "cooldownMs": 45000,
+      "cooldownText": "45s",
+      "castTimeMs": 5000,
+      "castTimeText": "5s",
+      "icon": "icon_skill_magic13.png",
+      "appliedBuffs": [
+        {
+          "buffId": 19979,
+          "name": "Meteor Impact",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Trips for #{duration}."
+        },
+        {
+          "buffId": 1403,
+          "name": "Burning",
+          "kind": "debuff",
+          "durationMs": 3200,
+          "description": "Engulfed in flames."
+        },
+        {
+          "buffId": 20019,
+          "name": "Meteor Impact",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Trips for #{duration}."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "10667": {
+      "id": 10667,
+      "name": "Freezing Arrow",
+      "ability": "magic",
+      "abilityLevel": 3,
+      "cooldownMs": 6000,
+      "cooldownText": "6s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_magic04.png",
+      "appliedBuffs": [
+        {
+          "buffId": 247,
+          "name": "Freeze",
+          "kind": "debuff",
+          "durationMs": 4000,
+          "description": "Freezes, then gradually thaws."
+        },
+        {
+          "buffId": 2279,
+          "name": "Deep Freeze",
+          "kind": "debuff",
+          "durationMs": 20000,
+          "description": "Deeply frozen.\nPuts the target to sleep and inflicts Magic Damage when it is removed."
+        }
+      ]
+    },
+    "10670": {
+      "id": 10670,
+      "name": "Arc Lightning",
+      "ability": "magic",
+      "abilityLevel": 15,
+      "cooldownMs": 20000,
+      "cooldownText": "20s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_magic05.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "10710": {
+      "id": 10710,
+      "name": "Vicious Implosion",
+      "ability": "will",
+      "abilityLevel": 15,
+      "cooldownMs": 15000,
+      "cooldownText": "15s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_will04.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3200,
+          "name": "Vacuum Pull",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Pulled towards the caster."
+        },
+        {
+          "buffId": 797,
+          "name": "Cancel Inspire",
+          "kind": "hidden",
+          "durationMs": 990,
+          "description": "Releases charged energy."
+        }
+      ]
+    },
+    "10720": {
+      "id": 10720,
+      "name": "Mend",
+      "ability": "love",
+      "abilityLevel": 30,
+      "cooldownMs": 24000,
+      "cooldownText": "24s",
+      "castTimeMs": 3000,
+      "castTimeText": "3s",
+      "icon": "icon_skill_love07.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3655,
+          "name": "Mend",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        },
+        {
+          "buffId": 11267,
+          "name": "Omnipotent Ward (Rank 1)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C27300|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11268,
+          "name": "Omnipotent Ward (Rank 2)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C27510|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11269,
+          "name": "Omnipotent Ward (Rank 3)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C27755|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11270,
+          "name": "Omnipotent Ward (Rank 4)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C271,035|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11271,
+          "name": "Omnipotent Ward (Rank 5)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C271,350|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11272,
+          "name": "Omnipotent Ward (Rank 6)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C271,700|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11273,
+          "name": "Omnipotent Ward (Rank 7)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C272,085|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11296,
+          "name": "Omnipotent Ward (Rank 8)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C272,505|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11297,
+          "name": "Omnipotent Ward (Rank 9)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C272,960|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 11298,
+          "name": "Omnipotent Ward (Rank 10)",
+          "kind": "buff",
+          "durationMs": 3500,
+          "description": "Temporarily absorbs |cFFFF9C273,450|r damage and grants immunity to Fear for its duration."
+        },
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        },
+        {
+          "buffId": 17925,
+          "name": "Renewal",
+          "kind": "buff",
+          "durationMs": 30000,
+          "description": "Grants a |cFFFF9C2725%|r chance to trigger Gradual Recovery whenever damaged by an attack, healing the user over #{duration}. Ends when Gradual Recovery is triggered."
+        }
+      ]
+    },
+    "10752": {
+      "id": 10752,
+      "name": "Flamebolt",
+      "ability": "magic",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 1000,
+      "castTimeText": "1s",
+      "icon": "icon_skill_magic01.png",
+      "appliedBuffs": [
+        {
+          "buffId": 1403,
+          "name": "Burning",
+          "kind": "debuff",
+          "durationMs": 3200,
+          "description": "Engulfed in flames."
+        }
+      ]
+    },
+    "11353": {
+      "id": 11353,
+      "name": "Focal Concussion",
+      "ability": "illusion",
+      "abilityLevel": 45,
+      "cooldownMs": 27000,
+      "cooldownText": "27s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_illusion11.png",
+      "appliedBuffs": [
+        {
+          "buffId": 449,
+          "name": "Focal Concussion",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Stunned for #{duration} due to Focal Concussion."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "11395": {
+      "id": 11395,
+      "name": "Summon Crows",
+      "ability": "death",
+      "abilityLevel": 20,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death09.png",
+      "appliedBuffs": [
+        {
+          "buffId": 470,
+          "name": "Crow Attack",
+          "kind": "debuff",
+          "durationMs": 5000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} continuous damage for #{duration}."
+        },
+        {
+          "buffId": 20951,
+          "name": "Venom",
+          "kind": "debuff",
+          "durationMs": 6000,
+          "description": "Deals #{total_min_damage}-#{total_max_damage} damage over time."
+        },
+        {
+          "buffId": 15002,
+          "name": "Burning Brand",
+          "kind": "buff",
+          "durationMs": 6000,
+          "description": "- Increases Occultism skill damage +2% per stack.\n- Decreases channeling time of Absorb Lifeforce -3% per stack.\n- Triggers Deathmark Aura at 15 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "11441": {
+      "id": 11441,
+      "name": "Absorb Lifeforce",
+      "ability": "death",
+      "abilityLevel": 15,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death05.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3667,
+          "name": "Absorb Lifeforce",
+          "kind": "debuff",
+          "durationMs": 6500,
+          "description": "Absorbs #{total_min_damage}-#{total_max_damage} health for a max of |cFFFF9C276.5 seconds|r."
+        }
+      ]
+    },
+    "11443": {
+      "id": 11443,
+      "name": "Dahuta's Breath",
+      "ability": "illusion",
+      "abilityLevel": 50,
+      "cooldownMs": 21000,
+      "cooldownText": "21s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_illusion22.png",
+      "appliedBuffs": [
+        {
+          "buffId": 1366,
+          "name": "Dahuta's Breath",
+          "kind": "debuff",
+          "durationMs": 700,
+          "description": "Dahuta's Breath"
+        }
+      ]
+    },
+    "11918": {
+      "id": 11918,
+      "name": "Charge",
+      "ability": "fight",
+      "abilityLevel": 3,
+      "cooldownMs": 12000,
+      "cooldownText": "12s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight14.png",
+      "appliedBuffs": [
+        {
+          "buffId": 2458,
+          "name": "Snare",
+          "kind": "debuff",
+          "durationMs": 3500,
+          "description": "Snared by the ambush attack."
+        }
+      ]
+    },
+    "11933": {
+      "id": 11933,
+      "name": "Concussive Arrow",
+      "ability": "wild",
+      "abilityLevel": 40,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 1500,
+      "castTimeText": "1s",
+      "icon": "icon_skill_wild15.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3187,
+          "name": "Shackle",
+          "kind": "debuff",
+          "durationMs": 3500,
+          "description": "Disables Melee and Ranged skills for #{duration}."
+        },
+        {
+          "buffId": 1763,
+          "name": "Bloodthirst Shock",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Temporarily rooted by the Bloodthirst shock attack."
+        }
+      ]
+    },
+    "11939": {
+      "id": 11939,
+      "name": "Searing Rain",
+      "ability": "magic",
+      "abilityLevel": 25,
+      "cooldownMs": 39000,
+      "cooldownText": "39s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_magic16.png",
+      "appliedBuffs": []
+    },
+    "11943": {
+      "id": 11943,
+      "name": "Dissonance",
+      "ability": "romance",
+      "abilityLevel": 15,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_romance17.png",
+      "appliedBuffs": [
+        {
+          "buffId": 777,
+          "name": "Dissonance",
+          "kind": "debuff",
+          "durationMs": 6000,
+          "description": "Skill Damage -20%\nAttack Speed --25\nMagic Defense |cFFFF9C27-320|r\nCast Time +20% for #{duration}.\nInflicts #{avg_damage}#{detail_spell_damage} when the effect ends."
+        }
+      ]
+    },
+    "11948": {
+      "id": 11948,
+      "name": "Rhythmic Renewal",
+      "ability": "romance",
+      "abilityLevel": 35,
+      "cooldownMs": 90000,
+      "cooldownText": "1m 30s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_romance26.png",
+      "appliedBuffs": [
+        {
+          "buffId": 780,
+          "name": "Rhythmic Renewal",
+          "kind": "buff",
+          "durationMs": 60000,
+          "description": "Restores health from a healing spring."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "11967": {
+      "id": 11967,
+      "name": "Chain Lightning",
+      "ability": "magic",
+      "abilityLevel": 40,
+      "cooldownMs": 36000,
+      "cooldownText": "36s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic19.png",
+      "appliedBuffs": []
+    },
+    "11973": {
+      "id": 11973,
+      "name": "Critical Discord",
+      "ability": "romance",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 1000,
+      "castTimeText": "1s",
+      "icon": "icon_skill_romance14.png",
+      "appliedBuffs": []
+    },
+    "12026": {
+      "id": 12026,
+      "name": "Precision Strike",
+      "ability": "fight",
+      "abilityLevel": 35,
+      "cooldownMs": 21000,
+      "cooldownText": "21s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight15.png",
+      "appliedBuffs": [
+        {
+          "buffId": 13761,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a91",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2735%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+24%|r."
+        },
+        {
+          "buffId": 13762,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a92",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2740%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+26%|r."
+        },
+        {
+          "buffId": 13763,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a93",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2745%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+28%|r."
+        },
+        {
+          "buffId": 13764,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a94",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2750%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+30%|r."
+        },
+        {
+          "buffId": 13765,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a95",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2755%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+32%|r."
+        },
+        {
+          "buffId": 13766,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a96",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2760%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+34%|r."
+        },
+        {
+          "buffId": 13767,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a97",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2765%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+36%|r."
+        },
+        {
+          "buffId": 13768,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a98",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2770%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+38%|r."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "12029": {
+      "id": 12029,
+      "name": "Wallop",
+      "ability": "vocation",
+      "abilityLevel": 15,
+      "cooldownMs": 12000,
+      "cooldownText": "12s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation27.png",
+      "appliedBuffs": [
+        {
+          "buffId": 16576,
+          "name": "Armor Penetration",
+          "kind": "debuff",
+          "durationMs": 10000,
+          "description": "Decreases Physical Defense |cFFFF9C27-120|r for every stack for #{duration}.\nCan stack up to 5 times."
+        },
+        {
+          "buffId": 18136,
+          "name": "Root",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Inflicts Root and prevents movement."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "12046": {
+      "id": 12046,
+      "name": "Revitalizing Cheer",
+      "ability": "adamant",
+      "abilityLevel": 25,
+      "cooldownMs": 45000,
+      "cooldownText": "45s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_adamant14.png",
+      "appliedBuffs": [
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "12139": {
+      "id": 12139,
+      "name": "Stalker's Mark",
+      "ability": "vocation",
+      "abilityLevel": 20,
+      "cooldownMs": 27000,
+      "cooldownText": "27s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild17.png",
+      "appliedBuffs": [
+        {
+          "buffId": 886,
+          "name": "Stalker's Mark (Rank 1)",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases received healing |cFFFF9C27-60%|r.\nDeals damage equal to |cFFFF9C2750|r times the number of attacks suffered during the mark's duration when it expires."
+        },
+        {
+          "buffId": 2445,
+          "name": "Stalker's Mark (Rank 2)",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases received healing |cFFFF9C27-60%|r.\nDeals damage equal to |cFFFF9C2760|r times the number of attacks suffered during the mark's duration when it expires."
+        },
+        {
+          "buffId": 2446,
+          "name": "Stalker's Mark (Rank 3)",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases received healing |cFFFF9C27-60%|r.\nDeals damage equal to |cFFFF9C2770|r times the number of attacks suffered during the mark's duration when it expires."
+        },
+        {
+          "buffId": 7659,
+          "name": "Stalker's Mark (Rank 4)",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases received healing |cFFFF9C27-60%|r.\nDeals damage equal to |cFFFF9C2780|r times the number of attacks suffered during the mark's duration when it expires."
+        },
+        {
+          "buffId": 13777,
+          "name": "Stalker's Mark (Rank 5)",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases received healing |cFFFF9C27-60%|r.\nDeals damage equal to |cFFFF9C2790|r times the number of attacks suffered during the mark's duration when it expires."
+        },
+        {
+          "buffId": 13778,
+          "name": "Stalker's Mark (Rank 6)",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases received healing |cFFFF9C27-60%|r.\nDeals damage equal to |cFFFF9C27100|r times the number of attacks suffered during the mark's duration when it expires."
+        },
+        {
+          "buffId": 18146,
+          "name": "Decreases Defense",
+          "kind": "debuff",
+          "durationMs": 15000,
+          "description": "Decreases Physical Defense |nc;-390|r for #{duration}."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "12759": {
+      "id": 12759,
+      "name": "Mana Force",
+      "ability": "death",
+      "abilityLevel": 3,
+      "cooldownMs": 60000,
+      "cooldownText": "1m",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death14.png",
+      "appliedBuffs": [
+        {
+          "buffId": 4813,
+          "name": "Mana Force",
+          "kind": "debuff",
+          "durationMs": 1000,
+          "description": "Drains target's mana and pushes it away from the caster."
+        },
+        {
+          "buffId": 1226,
+          "name": "Mana Force",
+          "kind": "debuff",
+          "durationMs": 1000,
+          "description": "Drains target's mana and pushes it away from the caster."
+        },
+        {
+          "buffId": 3743,
+          "name": "Mana Force",
+          "kind": "debuff",
+          "durationMs": 1000,
+          "description": "Drains target's mana and pushes it away from the caster."
+        }
+      ]
+    },
+    "13281": {
+      "id": 13281,
+      "name": "Missile Rain",
+      "ability": "wild",
+      "abilityLevel": 45,
+      "cooldownMs": 22000,
+      "cooldownText": "22s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_wild10.png",
+      "appliedBuffs": []
+    },
+    "13282": {
+      "id": 13282,
+      "name": "Whirlwind Slash",
+      "ability": "fight",
+      "abilityLevel": 10,
+      "cooldownMs": 12000,
+      "cooldownText": "12s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight09.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3666,
+          "name": "Tripped",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Tripped for #{duration}."
+        }
+      ]
+    },
+    "13286": {
+      "id": 13286,
+      "name": "Skewer",
+      "ability": "love",
+      "abilityLevel": 25,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 1500,
+      "castTimeText": "1s",
+      "icon": "icon_skill_love05.png",
+      "appliedBuffs": [
+        {
+          "buffId": 439,
+          "name": "Skewer",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Impales for #{duration}."
+        }
+      ]
+    },
+    "13315": {
+      "id": 13315,
+      "name": "Tiger Strike",
+      "ability": "fight",
+      "abilityLevel": 50,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight18.png",
+      "appliedBuffs": []
+    },
+    "13344": {
+      "id": 13344,
+      "name": "Pin Down",
+      "ability": "vocation",
+      "abilityLevel": 35,
+      "cooldownMs": 21000,
+      "cooldownText": "21s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation18.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3842,
+          "name": "\uc5f0\ucd9c\uc6a9 \ub290\ub824\uc9d0",
+          "kind": "hidden",
+          "durationMs": 700,
+          "description": "Level 3 Slash, Stab down"
+        },
+        {
+          "buffId": 242,
+          "name": "Bleeding (Rank 1)",
+          "kind": "debuff",
+          "durationMs": 14000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over\n #{duration}."
+        },
+        {
+          "buffId": 514,
+          "name": "Bleeding (Rank 2)",
+          "kind": "debuff",
+          "durationMs": 12000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 515,
+          "name": "Bleeding (Rank 3)",
+          "kind": "debuff",
+          "durationMs": 10000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 516,
+          "name": "Bleeding (Rank 4)",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 517,
+          "name": "Bleeding (Rank 5)",
+          "kind": "debuff",
+          "durationMs": 6000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        }
+      ]
+    },
+    "13564": {
+      "id": 13564,
+      "name": "Piercing Shot",
+      "ability": "wild",
+      "abilityLevel": 3,
+      "cooldownMs": 12000,
+      "cooldownText": "12s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation01.png",
+      "appliedBuffs": [
+        {
+          "buffId": 242,
+          "name": "Bleeding (Rank 1)",
+          "kind": "debuff",
+          "durationMs": 14000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over\n #{duration}."
+        },
+        {
+          "buffId": 514,
+          "name": "Bleeding (Rank 2)",
+          "kind": "debuff",
+          "durationMs": 12000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 515,
+          "name": "Bleeding (Rank 3)",
+          "kind": "debuff",
+          "durationMs": 10000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 516,
+          "name": "Bleeding (Rank 4)",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 517,
+          "name": "Bleeding (Rank 5)",
+          "kind": "debuff",
+          "durationMs": 6000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} damage over #{duration}."
+        },
+        {
+          "buffId": 2726,
+          "name": "Slow",
+          "kind": "debuff",
+          "durationMs": 4000,
+          "description": "Decreases Move Speed for #{duration}."
+        },
+        {
+          "buffId": 18136,
+          "name": "Root",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Inflicts Root and prevents movement."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "14376": {
+      "id": 14376,
+      "name": "Earthen Grip",
+      "ability": "illusion",
+      "abilityLevel": 1,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 1000,
+      "castTimeText": "1s",
+      "icon": "icon_skill_illusion09.png",
+      "appliedBuffs": [
+        {
+          "buffId": 82,
+          "name": "Earthen Grip",
+          "kind": "debuff",
+          "durationMs": 11900,
+          "description": "Snares for #{duration}.\nEffect ends upon receiving damage."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "14760": {
+      "id": 14760,
+      "name": "Boneyard",
+      "ability": "wild",
+      "abilityLevel": 35,
+      "cooldownMs": 45000,
+      "cooldownText": "45s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic24.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18136,
+          "name": "Root",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Inflicts Root and prevents movement."
+        }
+      ]
+    },
+    "14774": {
+      "id": 14774,
+      "name": "Flame Barrier",
+      "ability": "magic",
+      "abilityLevel": 45,
+      "cooldownMs": 33000,
+      "cooldownText": "33s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic22.png",
+      "appliedBuffs": [
+        {
+          "buffId": 1987,
+          "name": "Flame",
+          "kind": "debuff",
+          "durationMs": 5000,
+          "description": "Engulfs a target in flames and deals #{total_min_damage}-#{total_max_damage} Magic Damage over time."
+        }
+      ]
+    },
+    "14810": {
+      "id": 14810,
+      "name": "Mana Stars",
+      "ability": "death",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death25.png",
+      "appliedBuffs": [
+        {
+          "buffId": 4677,
+          "name": "Mana Stars Damage Boost",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": "Increases Mana Stars damage +2% each stack; stacks up to 10 times."
+        },
+        {
+          "buffId": 2921,
+          "name": "Fetter",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed -2% and skill damage -1%."
+        }
+      ]
+    },
+    "14835": {
+      "id": 14835,
+      "name": "Endless Arrows",
+      "ability": "wild",
+      "abilityLevel": 10,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation25.png",
+      "appliedBuffs": []
+    },
+    "14929": {
+      "id": 14929,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 10000,
+      "cooldownText": "10s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love21.png",
+      "appliedBuffs": [
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        }
+      ]
+    },
+    "14930": {
+      "id": 14930,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love22.png",
+      "appliedBuffs": [
+        {
+          "buffId": 16948,
+          "name": "Manage Fervent Healing Cooldown",
+          "kind": "hidden",
+          "durationMs": 2000,
+          "description": "Manage Fervent Healing Cooldown Buff"
+        }
+      ]
+    },
+    "14931": {
+      "id": 14931,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love23.png",
+      "appliedBuffs": [
+        {
+          "buffId": 16948,
+          "name": "Manage Fervent Healing Cooldown",
+          "kind": "hidden",
+          "durationMs": 2000,
+          "description": "Manage Fervent Healing Cooldown Buff"
+        }
+      ]
+    },
+    "14932": {
+      "id": 14932,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love24.png",
+      "appliedBuffs": [
+        {
+          "buffId": 17111,
+          "name": "Use Fervent Healing",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": "Use Fervent Healing\n5 Combo"
+        },
+        {
+          "buffId": 16948,
+          "name": "Manage Fervent Healing Cooldown",
+          "kind": "hidden",
+          "durationMs": 2000,
+          "description": "Manage Fervent Healing Cooldown Buff"
+        }
+      ]
+    },
+    "14933": {
+      "id": 14933,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love25.png",
+      "appliedBuffs": []
+    },
+    "16210": {
+      "id": 16210,
+      "name": "Charged Bolt",
+      "ability": "wild",
+      "abilityLevel": 1,
+      "cooldownMs": 10000,
+      "cooldownText": "10s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild02.png",
+      "appliedBuffs": [
+        {
+          "buffId": 2723,
+          "name": "Slow",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Decreases Move Speed -30% for #{duration}."
+        },
+        {
+          "buffId": 509,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Stunned for #{duration} by a shockwave."
+        },
+        {
+          "buffId": 17421,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Stunned for #{duration} by a shockwave."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "17413": {
+      "id": 17413,
+      "name": "Healing Hymn",
+      "ability": "romance",
+      "abilityLevel": 20,
+      "cooldownMs": 15000,
+      "cooldownText": "15s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_romance29.png",
+      "appliedBuffs": []
+    },
+    "18125": {
+      "id": 18125,
+      "name": "Rapid Strike",
+      "ability": "vocation",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation23.png",
+      "appliedBuffs": [
+        {
+          "buffId": 6924,
+          "name": "Marked",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-2%|r and skill damage |cFFFF9C27-1%|r."
+        }
+      ]
+    },
+    "18131": {
+      "id": 18131,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight27.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3842,
+          "name": "\uc5f0\ucd9c\uc6a9 \ub290\ub824\uc9d0",
+          "kind": "hidden",
+          "durationMs": 700,
+          "description": "Level 3 Slash, Stab down"
+        }
+      ]
+    },
+    "18132": {
+      "id": 18132,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight02.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        },
+        {
+          "buffId": 141,
+          "name": "Tripped",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Tripped and unable to get up for #{duration}."
+        }
+      ]
+    },
+    "18222": {
+      "id": 18222,
+      "name": "Comet's Boon",
+      "ability": "will",
+      "abilityLevel": 5,
+      "cooldownMs": 12000,
+      "cooldownText": "12s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_will01.png",
+      "appliedBuffs": []
+    },
+    "18757": {
+      "id": 18757,
+      "name": "Ollo's Hammer",
+      "ability": "adamant",
+      "abilityLevel": 35,
+      "cooldownMs": 42000,
+      "cooldownText": "42s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_will26.png",
+      "appliedBuffs": [
+        {
+          "buffId": 4078,
+          "name": "Tripped",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Tripped and unable to get up for #{duration}."
+        }
+      ]
+    },
+    "23587": {
+      "id": 23587,
+      "name": "Behind Enemy Lines",
+      "ability": "fight",
+      "abilityLevel": 55,
+      "cooldownMs": 21000,
+      "cooldownText": "21s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight28.png",
+      "appliedBuffs": [
+        {
+          "buffId": 2458,
+          "name": "Snare",
+          "kind": "debuff",
+          "durationMs": 3500,
+          "description": "Snared by the ambush attack."
+        },
+        {
+          "buffId": 828,
+          "name": "Distressed",
+          "kind": "debuff",
+          "durationMs": 7000,
+          "description": "Decreases Move Speed |cFFFF9C27-45%|r; decreases Skill Damage |cFFFF9C27-20%|r, Attack Speed --25, and Healing Effectiveness |cFFFF9C27-60%|r."
+        },
+        {
+          "buffId": 7543,
+          "name": "Reckless Charge",
+          "kind": "buff",
+          "durationMs": 4000,
+          "description": "Using Charge, Tiger Strike, or Behind Enemy Lines decreases received Physical Damage |cFFFF9C27-15%|r, and decreases the duration of Shackle, Slow, Snare, and Impale |cFFFF9C27-35%|r for 4 seconds."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "23591": {
+      "id": 23591,
+      "name": "Death's Vengeance",
+      "ability": "death",
+      "abilityLevel": 55,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 3000,
+      "castTimeText": "3s",
+      "icon": "icon_skill_death27.png",
+      "appliedBuffs": [
+        {
+          "buffId": 6961,
+          "name": "Death's Vengeance",
+          "kind": "buff",
+          "durationMs": 0,
+          "description": "Inflicts powerful Magic Damage in the surroundings as it dies."
+        }
+      ]
+    },
+    "23592": {
+      "id": 23592,
+      "name": "Snipe",
+      "ability": "wild",
+      "abilityLevel": 55,
+      "cooldownMs": 27000,
+      "cooldownText": "27s",
+      "castTimeMs": 1500,
+      "castTimeText": "1s",
+      "icon": "icon_skill_wild24.png",
+      "appliedBuffs": []
+    },
+    "23593": {
+      "id": 23593,
+      "name": "Gods' Whip",
+      "ability": "magic",
+      "abilityLevel": 55,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic26.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "23594": {
+      "id": 23594,
+      "name": "Throw Dagger",
+      "ability": "vocation",
+      "abilityLevel": 55,
+      "cooldownMs": 35000,
+      "cooldownText": "35s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation28.png",
+      "appliedBuffs": [
+        {
+          "buffId": 6829,
+          "name": "Dagger",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Attack Speed --66.6 and Move Speed |cFFFF9C27-60%|r, and increases Cast Time|cFFFF9C27+60%|r."
+        }
+      ]
+    },
+    "23646": {
+      "id": 23646,
+      "name": "Gods' Whip",
+      "ability": "magic",
+      "abilityLevel": 55,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic27.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "23647": {
+      "id": 23647,
+      "name": "Gods' Whip",
+      "ability": "magic",
+      "abilityLevel": 55,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic28.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "23648": {
+      "id": 23648,
+      "name": "Gods' Whip",
+      "ability": "magic",
+      "abilityLevel": 55,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic29.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "23649": {
+      "id": 23649,
+      "name": "Gods' Whip",
+      "ability": "magic",
+      "abilityLevel": 55,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic30.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "24894": {
+      "id": 24894,
+      "name": "Flamebolt",
+      "ability": "magic",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic33.png",
+      "appliedBuffs": []
+    },
+    "24895": {
+      "id": 24895,
+      "name": "Flamebolt",
+      "ability": "magic",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic01.png",
+      "appliedBuffs": [
+        {
+          "buffId": 2287,
+          "name": "Conflagration",
+          "kind": "debuff",
+          "durationMs": 7000,
+          "description": "Engulfs a target in a conflagration that deals #{total_min_damage}-#{total_max_damage} Magic Damage over time."
+        },
+        {
+          "buffId": 15024,
+          "name": "Mana Fountain",
+          "kind": "buff",
+          "durationMs": 8000,
+          "description": "- Increases Attack Speed +2\n- Decreases Cast Time |cFFFF9C27-2%|r\n- Decreases Sorcery skill cooldowns |cFFFF9C27-2%|r\n- Decreases Physical Defense |cFFFF9C27-3%|r\n- Stacks up to 8 times"
+        }
+      ]
+    },
+    "32040": {
+      "id": 32040,
+      "name": "Whirlwind Slash",
+      "ability": "fight",
+      "abilityLevel": 10,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight32.png",
+      "appliedBuffs": []
+    },
+    "32049": {
+      "id": 32049,
+      "name": "Whirlwind Slash",
+      "ability": "fight",
+      "abilityLevel": 10,
+      "cooldownMs": 3000,
+      "cooldownText": "3s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight33.png",
+      "appliedBuffs": []
+    },
+    "33345": {
+      "id": 33345,
+      "name": "Holy Bolt",
+      "ability": "love",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 1500,
+      "castTimeText": "1s",
+      "icon": "icon_skill_love32.png",
+      "appliedBuffs": []
+    },
+    "34090": {
+      "id": 34090,
+      "name": "Abyssal Wave",
+      "ability": "will",
+      "abilityLevel": 55,
+      "cooldownMs": 14000,
+      "cooldownText": "14s",
+      "castTimeMs": 1000,
+      "castTimeText": "1s",
+      "icon": "icon_skill_hatred13.png",
+      "appliedBuffs": []
+    },
+    "34120": {
+      "id": 34120,
+      "name": "Swordfall",
+      "ability": "fight",
+      "abilityLevel": 55,
+      "cooldownMs": 14000,
+      "cooldownText": "14s",
+      "castTimeMs": 4000,
+      "castTimeText": "4s",
+      "icon": "icon_skill_hatred04.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18401,
+          "name": "Impaling Spear",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Impales for #{duration}."
+        }
+      ]
+    },
+    "34288": {
+      "id": 34288,
+      "name": "Hunting Pack",
+      "ability": "wild",
+      "abilityLevel": 55,
+      "cooldownMs": 12000,
+      "cooldownText": "12s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_hatred22.png",
+      "appliedBuffs": []
+    },
+    "34291": {
+      "id": 34291,
+      "name": "Serpent Strike",
+      "ability": "magic",
+      "abilityLevel": 55,
+      "cooldownMs": 22000,
+      "cooldownText": "22s",
+      "castTimeMs": 6000,
+      "castTimeText": "6s",
+      "icon": "icon_skill_hatred25.png",
+      "appliedBuffs": []
+    },
+    "36401": {
+      "id": 36401,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight34.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        },
+        {
+          "buffId": 141,
+          "name": "Tripped",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Tripped and unable to get up for #{duration}."
+        }
+      ]
+    },
+    "36402": {
+      "id": 36402,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight34_1.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        }
+      ]
+    },
+    "36403": {
+      "id": 36403,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight34_2.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        },
+        {
+          "buffId": 3842,
+          "name": "\uc5f0\ucd9c\uc6a9 \ub290\ub824\uc9d0",
+          "kind": "hidden",
+          "durationMs": 700,
+          "description": "Level 3 Slash, Stab down"
+        }
+      ]
+    },
+    "36404": {
+      "id": 36404,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight35.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        },
+        {
+          "buffId": 141,
+          "name": "Tripped",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Tripped and unable to get up for #{duration}."
+        }
+      ]
+    },
+    "36405": {
+      "id": 36405,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight35_1.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        }
+      ]
+    },
+    "36406": {
+      "id": 36406,
+      "name": "Triple Slash",
+      "ability": "fight",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight35_2.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3761,
+          "name": "Shaken",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed |cFFFF9C27-27%|r, Skill Damage |cFFFF9C27-8%|r, and Attack Speed --7.5."
+        },
+        {
+          "buffId": 3842,
+          "name": "\uc5f0\ucd9c\uc6a9 \ub290\ub824\uc9d0",
+          "kind": "hidden",
+          "durationMs": 700,
+          "description": "Level 3 Slash, Stab down"
+        }
+      ]
+    },
+    "36446": {
+      "id": 36446,
+      "name": "Precision Strike",
+      "ability": "fight",
+      "abilityLevel": 35,
+      "cooldownMs": 21000,
+      "cooldownText": "21s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight36.png",
+      "appliedBuffs": [
+        {
+          "buffId": 21466,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a96",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage +|cFFFF9C2760%|r. \nIncreases Melee Critical Hit Rate +|cFFFF9C2734%|r when attacking targets with less than |cFFFF9C2730%|r max Health."
+        },
+        {
+          "buffId": 21467,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a97",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Melee Critical Damage +|cFFFF9C2765%|r.\nIncreases Melee Critical Rate +|cFFFF9C2736%|r when attacking targets below |cFFFF9C2730%|r max Health."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36447": {
+      "id": 36447,
+      "name": "Precision Strike",
+      "ability": "fight",
+      "abilityLevel": 35,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight37.png",
+      "appliedBuffs": [
+        {
+          "buffId": 13766,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a96",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2760%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+34%|r."
+        },
+        {
+          "buffId": 13767,
+          "name": "\uacb0\uc815\ud0c0 \ud234\ud301\uc6a97",
+          "kind": "hidden",
+          "durationMs": 500,
+          "description": "Increases Critical Damage |cFFFF9C2765%|r. Backstabbing increases Melee Critical Rate |cFFFF9C27+36%|r."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36448": {
+      "id": 36448,
+      "name": "Tiger Strike",
+      "ability": "fight",
+      "abilityLevel": 50,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight38.png",
+      "appliedBuffs": []
+    },
+    "36449": {
+      "id": 36449,
+      "name": "Tiger Strike",
+      "ability": "fight",
+      "abilityLevel": 50,
+      "cooldownMs": 28000,
+      "cooldownText": "28s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_fight39.png",
+      "appliedBuffs": []
+    },
+    "36450": {
+      "id": 36450,
+      "name": "Earthen Grip",
+      "ability": "illusion",
+      "abilityLevel": 1,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 1000,
+      "castTimeText": "1s",
+      "icon": "icon_skill_illusion27.png",
+      "appliedBuffs": [
+        {
+          "buffId": 21397,
+          "name": "Earthen Grip",
+          "kind": "debuff",
+          "durationMs": 11900,
+          "description": "Snares for #{duration}.\nEffect ends upon receiving damage."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36456": {
+      "id": 36456,
+      "name": "Shield Slam",
+      "ability": "adamant",
+      "abilityLevel": 1,
+      "cooldownMs": 4000,
+      "cooldownText": "4s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_adamant33.png",
+      "appliedBuffs": [
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        },
+        {
+          "buffId": 425,
+          "name": "Casting Interrupted",
+          "kind": "buff",
+          "durationMs": 1000,
+          "description": "Casting Interrupted"
+        }
+      ]
+    },
+    "36457": {
+      "id": 36457,
+      "name": "Shield Slam",
+      "ability": "adamant",
+      "abilityLevel": 1,
+      "cooldownMs": 45000,
+      "cooldownText": "45s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_adamant34.png",
+      "appliedBuffs": [
+        {
+          "buffId": 501,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Stunned for #{duration}."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36468": {
+      "id": 36468,
+      "name": "Charged Bolt",
+      "ability": "wild",
+      "abilityLevel": 1,
+      "cooldownMs": 10000,
+      "cooldownText": "10s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild27.png",
+      "appliedBuffs": [
+        {
+          "buffId": 2723,
+          "name": "Slow",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Decreases Move Speed -30% for #{duration}."
+        },
+        {
+          "buffId": 509,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Stunned for #{duration} by a shockwave."
+        },
+        {
+          "buffId": 17421,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Stunned for #{duration} by a shockwave."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36469": {
+      "id": 36469,
+      "name": "Charged Bolt",
+      "ability": "wild",
+      "abilityLevel": 1,
+      "cooldownMs": 6000,
+      "cooldownText": "6s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild28.png",
+      "appliedBuffs": [
+        {
+          "buffId": 2723,
+          "name": "Slow",
+          "kind": "debuff",
+          "durationMs": 2500,
+          "description": "Decreases Move Speed -30% for #{duration}."
+        },
+        {
+          "buffId": 509,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Stunned for #{duration} by a shockwave."
+        },
+        {
+          "buffId": 17421,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Stunned for #{duration} by a shockwave."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36470": {
+      "id": 36470,
+      "name": "Concussive Arrow",
+      "ability": "wild",
+      "abilityLevel": 40,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 4000,
+      "castTimeText": "4s",
+      "icon": "icon_skill_wild29.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3187,
+          "name": "Shackle",
+          "kind": "debuff",
+          "durationMs": 3500,
+          "description": "Disables Melee and Ranged skills for #{duration}."
+        },
+        {
+          "buffId": 1763,
+          "name": "Bloodthirst Shock",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Temporarily rooted by the Bloodthirst shock attack."
+        }
+      ]
+    },
+    "36471": {
+      "id": 36471,
+      "name": "Concussive Arrow",
+      "ability": "wild",
+      "abilityLevel": 40,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild30.png",
+      "appliedBuffs": [
+        {
+          "buffId": 3187,
+          "name": "Shackle",
+          "kind": "debuff",
+          "durationMs": 3500,
+          "description": "Disables Melee and Ranged skills for #{duration}."
+        },
+        {
+          "buffId": 1763,
+          "name": "Bloodthirst Shock",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Temporarily rooted by the Bloodthirst shock attack."
+        }
+      ]
+    },
+    "36472": {
+      "id": 36472,
+      "name": "Missile Rain",
+      "ability": "wild",
+      "abilityLevel": 45,
+      "cooldownMs": 22000,
+      "cooldownText": "22s",
+      "castTimeMs": 3000,
+      "castTimeText": "3s",
+      "icon": "icon_skill_wild31.png",
+      "appliedBuffs": []
+    },
+    "36473": {
+      "id": 36473,
+      "name": "Missile Rain",
+      "ability": "wild",
+      "abilityLevel": 45,
+      "cooldownMs": 22000,
+      "cooldownText": "22s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild32.png",
+      "appliedBuffs": []
+    },
+    "36474": {
+      "id": 36474,
+      "name": "Flamebolt",
+      "ability": "magic",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 1500,
+      "castTimeText": "1s",
+      "icon": "icon_skill_magic34.png",
+      "appliedBuffs": [
+        {
+          "buffId": 1403,
+          "name": "Burning",
+          "kind": "debuff",
+          "durationMs": 3200,
+          "description": "Engulfed in flames."
+        },
+        {
+          "buffId": 2287,
+          "name": "Conflagration",
+          "kind": "debuff",
+          "durationMs": 7000,
+          "description": "Engulfs a target in a conflagration that deals #{total_min_damage}-#{total_max_damage} Magic Damage over time."
+        },
+        {
+          "buffId": 15024,
+          "name": "Mana Fountain",
+          "kind": "buff",
+          "durationMs": 8000,
+          "description": "- Increases Attack Speed +2\n- Decreases Cast Time |cFFFF9C27-2%|r\n- Decreases Sorcery skill cooldowns |cFFFF9C27-2%|r\n- Decreases Physical Defense |cFFFF9C27-3%|r\n- Stacks up to 8 times"
+        }
+      ]
+    },
+    "36475": {
+      "id": 36475,
+      "name": "Flamebolt",
+      "ability": "magic",
+      "abilityLevel": 1,
+      "cooldownMs": 1700,
+      "cooldownText": "1s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic35.png",
+      "appliedBuffs": [
+        {
+          "buffId": 250,
+          "name": "Electric Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage on you and allies within |cFFFF9C272m|r over #{duration}."
+        }
+      ]
+    },
+    "36476": {
+      "id": 36476,
+      "name": "Chain Lightning",
+      "ability": "magic",
+      "abilityLevel": 40,
+      "cooldownMs": 36000,
+      "cooldownText": "36s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic37.png",
+      "appliedBuffs": []
+    },
+    "36477": {
+      "id": 36477,
+      "name": "Chain Lightning",
+      "ability": "magic",
+      "abilityLevel": 40,
+      "cooldownMs": 36000,
+      "cooldownText": "36s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic36.png",
+      "appliedBuffs": []
+    },
+    "36478": {
+      "id": 36478,
+      "name": "Meteor Strike",
+      "ability": "magic",
+      "abilityLevel": 50,
+      "cooldownMs": 45000,
+      "cooldownText": "45s",
+      "castTimeMs": 5000,
+      "castTimeText": "5s",
+      "icon": "icon_skill_magic38.png",
+      "appliedBuffs": [
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36479": {
+      "id": 36479,
+      "name": "Meteor Strike",
+      "ability": "magic",
+      "abilityLevel": 50,
+      "cooldownMs": 45000,
+      "cooldownText": "45s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_magic39.png",
+      "appliedBuffs": [
+        {
+          "buffId": 21557,
+          "name": "Greater Shock",
+          "kind": "debuff",
+          "durationMs": 8000,
+          "description": "Inflicts #{total_min_damage}-#{total_max_damage} Magic Damage over #{duration}, and spreads to allies within a 2m radius.\nDecreases Attack Speed -|cFFFF9C27666|r and Move Speed -|cFFFF9C2790%|r, recovering gradually over the duration."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36586": {
+      "id": 36586,
+      "name": "Hell Spear",
+      "ability": "death",
+      "abilityLevel": 10,
+      "cooldownMs": 27000,
+      "cooldownText": "27s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death33.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18380,
+          "name": "Hell Spear",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Impales for #{duration}."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        },
+        {
+          "buffId": 15002,
+          "name": "Burning Brand",
+          "kind": "buff",
+          "durationMs": 6000,
+          "description": "- Increases Occultism skill damage +2% per stack.\n- Decreases channeling time of Absorb Lifeforce -3% per stack.\n- Triggers Deathmark Aura at 15 stacks."
+        }
+      ]
+    },
+    "36587": {
+      "id": 36587,
+      "name": "Hell Spears",
+      "ability": "death",
+      "abilityLevel": 10,
+      "cooldownMs": 27000,
+      "cooldownText": "27s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death32.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18354,
+          "name": "Hell Spear",
+          "kind": "debuff",
+          "durationMs": 1500,
+          "description": "Impales for #{duration}."
+        },
+        {
+          "buffId": 15002,
+          "name": "Burning Brand",
+          "kind": "buff",
+          "durationMs": 6000,
+          "description": "- Increases Occultism skill damage +2% per stack.\n- Decreases channeling time of Absorb Lifeforce -3% per stack.\n- Triggers Deathmark Aura at 15 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36588": {
+      "id": 36588,
+      "name": "Overwhelm",
+      "ability": "vocation",
+      "abilityLevel": 3,
+      "cooldownMs": 26000,
+      "cooldownText": "26s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_vocation31.png",
+      "appliedBuffs": [
+        {
+          "buffId": 243,
+          "name": "Stun",
+          "kind": "debuff",
+          "durationMs": 1300,
+          "description": "Stuns the enemy for #{duration}."
+        },
+        {
+          "buffId": 1763,
+          "name": "Bloodthirst Shock",
+          "kind": "hidden",
+          "durationMs": 300,
+          "description": "Temporarily rooted by the Bloodthirst shock attack."
+        }
+      ]
+    },
+    "36620": {
+      "id": 36620,
+      "name": "Mana Stars",
+      "ability": "death",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death30.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18449,
+          "name": "Mana Stars Move Speed Boost",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": "Increases Move Speed +2% per stack, stacking up to 10 times."
+        },
+        {
+          "buffId": 2921,
+          "name": "Fetter",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed -2% and skill damage -1%."
+        }
+      ]
+    },
+    "36623": {
+      "id": 36623,
+      "name": "Mana Stars",
+      "ability": "death",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death31.png",
+      "appliedBuffs": [
+        {
+          "buffId": 4677,
+          "name": "Mana Stars Damage Boost",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": "Increases Mana Stars damage +2% each stack; stacks up to 10 times."
+        },
+        {
+          "buffId": 2921,
+          "name": "Fetter",
+          "kind": "debuff",
+          "durationMs": 3000,
+          "description": "Decreases Move Speed -2% and skill damage -1%."
+        }
+      ]
+    },
+    "36627": {
+      "id": 36627,
+      "name": "Summon Wraith",
+      "ability": "death",
+      "abilityLevel": 50,
+      "cooldownMs": 90000,
+      "cooldownText": "1m 30s",
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_death35.png",
+      "appliedBuffs": []
+    },
+    "36630": {
+      "id": 36630,
+      "name": "Antithesis",
+      "ability": "love",
+      "abilityLevel": 10,
+      "cooldownMs": 5000,
+      "cooldownText": "5s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_love33.png",
+      "appliedBuffs": [
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36631": {
+      "id": 36631,
+      "name": "Antithesis",
+      "ability": "love",
+      "abilityLevel": 10,
+      "cooldownMs": 5000,
+      "cooldownText": "5s",
+      "castTimeMs": 2000,
+      "castTimeText": "2s",
+      "icon": "icon_skill_love34.png",
+      "appliedBuffs": [
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        }
+      ]
+    },
+    "36632": {
+      "id": 36632,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love35.png",
+      "appliedBuffs": [
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        },
+        {
+          "buffId": 20446,
+          "name": "\ubd84\ub178 \uc218\uae09",
+          "kind": "hidden",
+          "durationMs": 1000,
+          "description": ""
+        },
+        {
+          "buffId": 18390,
+          "name": "Lightning Fervent Healing",
+          "kind": "debuff",
+          "durationMs": 10000,
+          "description": "Increases the Mana Cost of Lightning Fervent Healing +50% per stack."
+        }
+      ]
+    },
+    "36635": {
+      "id": 36635,
+      "name": "Fervent Healing",
+      "ability": "love",
+      "abilityLevel": 45,
+      "cooldownMs": 30000,
+      "cooldownText": "30s",
+      "castTimeMs": 4000,
+      "castTimeText": "4s",
+      "icon": "icon_skill_love36.png",
+      "appliedBuffs": [
+        {
+          "buffId": 15053,
+          "name": "Prayer",
+          "kind": "buff",
+          "durationMs": 12000,
+          "description": "Decreases Cast Time |cFFFF9C27-2%|r per stack.\nTriggers |cFFFF9C27Sacrifice|r at 5 stacks."
+        }
+      ]
+    },
+    "36637": {
+      "id": 36637,
+      "name": "Skewer",
+      "ability": "love",
+      "abilityLevel": 25,
+      "cooldownMs": 18000,
+      "cooldownText": "18s",
+      "castTimeMs": 1500,
+      "castTimeText": "1s",
+      "icon": "icon_skill_love38_1.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18420,
+          "name": "Skewer",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Impales for #{duration}."
+        }
+      ]
+    },
+    "36638": {
+      "id": 36638,
+      "name": "Skewer",
+      "ability": "love",
+      "abilityLevel": 25,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love38_2.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18420,
+          "name": "Skewer",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Impales for #{duration}."
+        }
+      ]
+    },
+    "36639": {
+      "id": 36639,
+      "name": "Skewer",
+      "ability": "love",
+      "abilityLevel": 25,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_love38_3.png",
+      "appliedBuffs": [
+        {
+          "buffId": 18420,
+          "name": "Skewer",
+          "kind": "debuff",
+          "durationMs": 2000,
+          "description": "Impales for #{duration}."
+        }
+      ]
+    },
+    "39663": {
+      "id": 39663,
+      "name": "Endless Arrows",
+      "ability": "wild",
+      "abilityLevel": 1,
+      "cooldownMs": 0,
+      "cooldownText": null,
+      "castTimeMs": 0,
+      "castTimeText": null,
+      "icon": "icon_skill_wild35.png",
+      "appliedBuffs": [
+        {
+          "buffId": 24239,
+          "name": "",
+          "kind": "hidden",
+          "durationMs": 3000,
+          "description": ""
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "useAhPrices": true,
+  "tierGrades": {
+    "obsidian_t7_weapon": {
+      "Celestial": 35000,
+      "Divine": 85000,
+      "Epic": 220000,
+      "Legendary": 600000,
+      "Mythic": 1350000
+    },
+    "obsidian_t6_weapon": {
+      "Celestial": 18000,
+      "Divine": 45000,
+      "Epic": 120000,
+      "Legendary": 500000,
+      "Mythic": 1200000
+    },
+    "ayanad_weapon": {
+      "Celestial": 22000,
+      "Divine": 55000,
+      "Epic": 150000,
+      "Legendary": 420000,
+      "Mythic": 900000
+    },
+    "boss_weapon": {
+      "Celestial": 65000,
+      "Divine": 120000,
+      "Epic": 260000,
+      "Legendary": 650000,
+      "Mythic": 1400000
+    },
+    "obsidian_t7_armor": {
+      "Celestial": 12000,
+      "Divine": 25000,
+      "Epic": 65000,
+      "Legendary": 180000,
+      "Mythic": 420000
+    },
+    "obsidian_t6_armor": {
+      "Celestial": 6000,
+      "Divine": 12000,
+      "Epic": 32000,
+      "Legendary": 95000,
+      "Mythic": 220000
+    },
+    "ayanad_armor": {
+      "Celestial": 8000,
+      "Divine": 18000,
+      "Epic": 48000,
+      "Legendary": 135000,
+      "Mythic": 320000
+    },
+    "delphinad_gear": {
+      "Celestial": 4000,
+      "Divine": 9000,
+      "Epic": 22000,
+      "Legendary": 60000,
+      "Mythic": 140000
+    },
+    "enlightened_accessory": {
+      "Celestial": 12000,
+      "Divine": 28000,
+      "Epic": 65000,
+      "Legendary": 160000,
+      "Mythic": 350000
+    },
+    "ayanad_accessory": {
+      "Celestial": 6000,
+      "Divine": 15000,
+      "Epic": 38000,
+      "Legendary": 95000,
+      "Mythic": 210000
+    },
+    "quest_accessory": {
+      "Celestial": 0,
+      "Divine": 0,
+      "Epic": 0,
+      "Legendary": 0,
+      "Mythic": 0
+    },
+    "instrument": {
+      "Celestial": 5000,
+      "Divine": 12000,
+      "Epic": 35000,
+      "Legendary": 95000,
+      "Mythic": 220000
+    },
+    "cloak": {
+      "Celestial": 1000,
+      "Divine": 2000,
+      "Epic": 5000,
+      "Legendary": 10000,
+      "Mythic": 20000
+    },
+    "costume_undergarment": {
+      "Celestial": 4000,
+      "Divine": 8000,
+      "Epic": 18000,
+      "Legendary": 35000,
+      "Mythic": 50000
+    },
+    "other_gear": {
+      "Celestial": 2000,
+      "Divine": 4500,
+      "Epic": 10000,
+      "Legendary": 25000,
+      "Mythic": 60000
+    }
+  },
+  "gemGroups": {
+    "helmet_toughness": 100000,
+    "skill_specific": 15000,
+    "offense_t3": 1000,
+    "defense_t3": 1000,
+    "pvp_tough_resil": 10,
+    "refined_t2": 1800,
+    "other_gem": 1500
+  },
+  "frostGroups": {
+    "erenor_charm_frost": 12000,
+    "flawless_distorted_frost": 50,
+    "standard_frost": 60
+  },
+  "itemOverrides": {
+    "Holy Ynys Guardian Ring|Unique": 0,
+    "Archeum Evernight Necklace (Rank 11)|Epic": 0,
+    "Archeum Daeier Necklace (Rank 12)|Legendary": 0
+  },
+  "gemOverrides": {
+    "Lucid Gale Lunagem: Aggro|Right Hand Weapon": 50
+  },
+  "frostOverrides": {}
+}

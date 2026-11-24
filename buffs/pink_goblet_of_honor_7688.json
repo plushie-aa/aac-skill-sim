@@ -1,0 +1,15 @@
+{
+  "id": "pink_goblet_of_honor_7688",
+  "aacBuffId": 7688,
+  "name": "Pink Goblet of Honor",
+  "side": "attacker",
+  "isCustom": true,
+  "description": "Increases Melee and Ranged Attack +15%. Persists despite death. (AA Classic buff 7688; 30m)",
+  "icon": "assets/icons/icon_item_1327.png",
+  "mulOffense": {
+    "rangedAttack": 1.3225,
+    "meleeAttack": 1.15
+  },
+  "filename": "buffs/pink_goblet_of_honor_7688.json",
+  "savedAt": "2026-11-24T03:33:54.646426+00:00"
+}

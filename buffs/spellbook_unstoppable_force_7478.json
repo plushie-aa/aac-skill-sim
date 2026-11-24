@@ -1,0 +1,16 @@
+{
+  "id": "spellbook_unstoppable_force_7478",
+  "aacBuffId": 7478,
+  "name": "Spellbook: Unstoppable Force",
+  "side": "attacker",
+  "isCustom": true,
+  "description": "Increases Melee, Ranged, and Magic Attack +69. Persists through death. Only Spellbook effect can apply at a time. (AA Classic buff 7478; 30m)",
+  "icon": "assets/icons/icon_item_1836.png",
+  "addOffense": {
+    "meleeAttack": 69,
+    "rangedAttack": 69,
+    "magicAttack": 69
+  },
+  "filename": "buffs/spellbook_unstoppable_force_7478.json",
+  "savedAt": "2026-11-24T03:33:54.835300+00:00"
+}

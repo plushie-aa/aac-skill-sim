@@ -1,0 +1,11 @@
+{
+  "id": "tangy_soda_701",
+  "aacBuffId": 701,
+  "name": "Tangy Soda",
+  "side": "attacker",
+  "isCustom": true,
+  "description": "Increases max health +1040. Persists through death. (AA Classic buff 701; 30m)",
+  "icon": "assets/icons/icon_item_0198.png",
+  "filename": "buffs/tangy_soda_701.json",
+  "savedAt": "2026-11-24T01:13:07.785677+00:00"
+}

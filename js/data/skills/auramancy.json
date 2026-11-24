@@ -1,0 +1,198 @@
+{
+  "skillset": "auramancy",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_auramancy.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 5,
+  "skills": [
+    {
+      "id": "auramancy_comets_boon",
+      "skillset": "auramancy",
+      "name": "Comet's Boon",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 18222,
+      "base": 1224,
+      "scalingPct": 221,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a flash of light that deals 1315 (1224 + 221% Magic Attack) Magic Damage to all enemies hit.\nIncreases the Move Speed of all allies it passes.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 18222,
+          "base": 1224,
+          "scalingPct": 221,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a flash of light that deals 1315 (1224 + 221% Magic Attack) Magic Damage to all enemies hit.\nIncreases the Move Speed of all allies it passes."
+        }
+      ],
+      "abilityLevel": 5,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will01.png",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base instant utility)"
+    },
+    {
+      "id": "auramancy_vicious_implosion",
+      "skillset": "auramancy",
+      "name": "Vicious Implosion",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "combos": [
+          "+52% damage per Inspire stack (up to 3)"
+        ]
+      },
+      "skillId": 10710,
+      "base": 864,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Triggers a sudden, powerful implosion, pulling enemies within 10 meters towards you and dealing 947  (864 + 200% Magic Attack)Magic Damage.\nPulled enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.",
+      "rankCount": 2,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1 (Alt Dump)",
+          "skillId": 10710,
+          "base": 792,
+          "scalingPct": 200,
+          "parseSource": "live_alt_dump",
+          "description": "Live AA Classic alt dump: 792 + 200% magicAttack."
+        },
+        {
+          "rank": 2,
+          "label": "Max (Lv 55 Dump)",
+          "arg2": 0,
+          "skillId": 10710,
+          "base": 864,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Triggers a sudden, powerful implosion, pulling enemies within 10 meters towards you and dealing 947  (864 + 200% Magic Attack)Magic Damage.\nPulled enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills."
+        }
+      ],
+      "abilityLevel": 15,
+      "cooldownSec": 15.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will04.png"
+    },
+    {
+      "id": "auramancy_abyssal_wave",
+      "skillset": "auramancy",
+      "name": "Abyssal Wave",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 34090,
+      "base": 778,
+      "scalingPct": 180,
+      "parseSource": "detailed_tooltip",
+      "description": "Shoots a wave of force up to 20m in front of you. Inflicts 852 (778 + 180% Magic Attack) Magic Damage and knocks back all enemies it touches.\nPushed enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.\nAny additional Abyssal Charges are consumed on casting, increasing the number of waves. Being struck by multiple waves in a row dramatically decreases enemies' Move Speed.\nThis skill counts as a Push effect.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 34090,
+          "base": 778,
+          "scalingPct": 180,
+          "parseSource": "detailed_tooltip",
+          "description": "Shoots a wave of force up to 20m in front of you. Inflicts 852 (778 + 180% Magic Attack) Magic Damage and knocks back all enemies it touches.\nPushed enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.\nAny additional Abyssal Charges are consumed on casting, increasing the number of waves. Being struck by multiple waves in a row dramatically decreases enemies' Move Speed.\nThis skill counts as a Push effect."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 14.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_skill_hatred13.png"
+    },
+    {
+      "id": "auramancy_spell_shield",
+      "skillset": "auramancy",
+      "name": "Spell Shield",
+      "variant": "base",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0,
+      "gcdNote": "No GCD (off-GCD instant buff; removes Antithesis cast time for 8s)",
+      "flags": {
+        "noGcd": true
+      },
+      "comboEffect": {
+        "id": "spell_shield",
+        "label": "Spell Shield",
+        "summary": "Instant Antithesis (8s)",
+        "durationSec": 8.0,
+        "removesCastTimeFor": [
+          "vitalism_antithesis_heal",
+          "vitalism_antithesis_damage",
+          "vitalism_antithesis_mist_heal",
+          "vitalism_antithesis_wave_heal",
+          "vitalism_antithesis_wave_damage"
+        ]
+      },
+      "skillId": 11869,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Reduces received Magic Damage and Received Healing for 8s. Does not trigger a global cooldown.\nCombo: Removes the cast time of Antithesis while active.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 11869,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Reduces received Magic Damage and Received Healing for 8s. Does not trigger a global cooldown.\nCombo: Removes the cast time of Antithesis while active."
+        }
+      ],
+      "abilityLevel": 25,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will14.png"
+    },
+    {
+      "id": "auramancy_comets_boon_hollow",
+      "skillset": "auramancy",
+      "name": "Hollow Comet's Boon",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base; Enlightened Hollow Auramancy Mark)",
+      "base": 1224,
+      "scalingPct": 221,
+      "parseSource": "hollow_preview",
+      "description": "Enlightened Hollow Auramancy Mark: Fires three flashes of light in a cone, dealing Magic Damage to all enemies hit.\nIncreases Move Speed and Inspires allies it passes through; Slows enemies it passes through.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "base": 1224,
+          "scalingPct": 221,
+          "description": "Enlightened Hollow Auramancy Mark: Fires three flashes of light in a cone, dealing Magic Damage to all enemies hit. Increases Move Speed and Inspires allies; Slows enemies."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_comets_boon.png"
+    }
+  ]
+}

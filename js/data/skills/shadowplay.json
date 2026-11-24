@@ -1,0 +1,472 @@
+{
+  "skillset": "shadowplay",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_shadowplay.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 13,
+  "skills": [
+    {
+      "id": "shadowplay_rapid_strike",
+      "skillset": "shadowplay",
+      "name": "Rapid Strike",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "noGcd": true,
+        "backstabCritRateBonusPct": 50
+      },
+      "skillId": 18125,
+      "base": 0,
+      "scalingPct": 75,
+      "parseSource": "detailed_tooltip",
+      "description": "A swift, repeatable attack, dealing 6 (0 + 75% Melee Attack) Physical Damage to a single target.\nMarks the target with each hit, reducing their Skill Damage -1% and Move Speed -2% per stack. Inflicts Shaken each time it reaches 5 stacks, further reducing their Skill Damage, Move Speed, and Attack Speed.\nBackstabbing increases Melee Critical Rate +50%.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 18125,
+          "base": 0,
+          "scalingPct": 75,
+          "parseSource": "detailed_tooltip",
+          "description": "A swift, repeatable attack, dealing 6 (0 + 75% Melee Attack) Physical Damage to a single target.\nMarks the target with each hit, reducing their Skill Damage -1% and Move Speed -2% per stack. Inflicts Shaken each time it reaches 5 stacks, further reducing their Skill Damage, Move Speed, and Attack Speed.\nBackstabbing increases Melee Critical Rate +50%.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation23.png",
+      "gcdSec": 0.4,
+      "gcdNote": "Reduced GCD (0.40s base, continuous melee filler)"
+    },
+    {
+      "id": "shadowplay_overwhelm",
+      "skillset": "shadowplay",
+      "name": "Overwhelm",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 10648,
+      "base": 566,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Triggers a leap toward an enemy that deals 586 (566 + 200% Melee Attack) Physical Damage and stacks 1 Bloodthirst upon landing. Also Stuns the enemy for 2.4s. Can't be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10648,
+          "base": 566,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Triggers a leap toward an enemy that deals 586 (566 + 200% Melee Attack) Physical Damage and stacks 1 Bloodthirst upon landing. Also Stuns the enemy for 2.4s. Can't be used while Snared."
+        }
+      ],
+      "abilityLevel": 3,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation07.png"
+    },
+    {
+      "id": "shadowplay_overwhelm_gale",
+      "skillset": "shadowplay",
+      "name": "Overwhelm (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 36588,
+      "base": 566,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Triggers a leap toward an enemy that deals 586 (566 + 200% Melee Attack) Physical Damage.\nStuns the enemy for 2.4s and grants 1 stack of Bloodthirst.\nIf used while backstabbing, Grants +100% to all Critical Rates for the next skill used.\nCan't be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36588,
+          "base": 566,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Triggers a leap toward an enemy that deals 586 (566 + 200% Melee Attack) Physical Damage.\nStuns the enemy for 2.4s and grants 1 stack of Bloodthirst.\nIf used while backstabbing, Grants +100% to all Critical Rates for the next skill used.\nCan't be used while Snared."
+        }
+      ],
+      "abilityLevel": 3,
+      "cooldownSec": 26.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation31.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "shadowplay_wallop",
+      "skillset": "shadowplay",
+      "name": "Wallop",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "shredsPhysicalDefensePerHit": 120,
+        "hitCount": 4
+      },
+      "skillId": 12029,
+      "base": 1671,
+      "scalingPct": 380,
+      "parseSource": "detailed_tooltip",
+      "description": "Launches four attacks in quick succession dealing 1710 (1671 + 380% Melee Attack) Physical Damage.\nThe first attack Staggers the target, briefly stopping movement and canceling all Cast Time and Channeled skills.\nEvery successful attack decreases Physical Defense -120.\nGrants Bloodthirst for each of the first three attacks, then the fourth deals melee damage equal to 192 times your stacked Bloodthirst.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 12029,
+          "base": 1671,
+          "scalingPct": 380,
+          "parseSource": "detailed_tooltip",
+          "description": "Launches four attacks in quick succession dealing 1710 (1671 + 380% Melee Attack) Physical Damage.\nThe first attack Staggers the target, briefly stopping movement and canceling all Cast Time and Channeled skills.\nEvery successful attack decreases Physical Defense -120.\nGrants Bloodthirst for each of the first three attacks, then the fourth deals melee damage equal to 192 times your stacked Bloodthirst."
+        }
+      ],
+      "abilityLevel": 15,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation27.png"
+    },
+    {
+      "id": "shadowplay_stalkers_mark",
+      "skillset": "shadowplay",
+      "name": "Stalker's Mark",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "rangePenaltyBelow8mPct": -20,
+        "appliesAntiHealPct": -60
+      },
+      "skillId": 12139,
+      "base": 237,
+      "scalingPct": 100,
+      "parseSource": "detailed_tooltip",
+      "description": "Inflicts 249 (237 + 100% Ranged Attack) Ranged Damage and marks enemies for 15s. \nMark Effect: Decreases received healing -60%.\nDeals damage equal to 80 times the number of attacks suffered during the mark's duration when it expires. \nDamage reduced -20% if target is within 8m.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 12139,
+          "base": 237,
+          "scalingPct": 100,
+          "parseSource": "detailed_tooltip",
+          "description": "Inflicts 249 (237 + 100% Ranged Attack) Ranged Damage and marks enemies for 15s. \nMark Effect: Decreases received healing -60%.\nDeals damage equal to 80 times the number of attacks suffered during the mark's duration when it expires. \nDamage reduced -20% if target is within 8m."
+        }
+      ],
+      "abilityLevel": 20,
+      "cooldownSec": 27.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild17.png"
+    },
+    {
+      "id": "shadowplay_toxic_shot",
+      "skillset": "shadowplay",
+      "name": "Toxic Shot",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "rangePenaltyBelow8mPct": -20,
+        "hasPoisonDot": true
+      },
+      "skillId": 10481,
+      "base": 708,
+      "scalingPct": 270,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a toxic arrow, dealing an initial 742 (708 + 270% Ranged Attack) Ranged Damage and then Poisoning the target for 406 Magic Damage over 6s.\nDamage reduced -20% if target is within 8m.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10481,
+          "base": 708,
+          "scalingPct": 270,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a toxic arrow, dealing an initial 742 (708 + 270% Ranged Attack) Ranged Damage and then Poisoning the target for 406 Magic Damage over 6s.\nDamage reduced -20% if target is within 8m."
+        }
+      ],
+      "abilityLevel": 30,
+      "cooldownSec": 9.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild01.png"
+    },
+    {
+      "id": "shadowplay_pin_down",
+      "skillset": "shadowplay",
+      "name": "Pin Down",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 13344,
+      "base": 278,
+      "scalingPct": 300,
+      "parseSource": "detailed_tooltip",
+      "description": "Inflicts a deep wound that deals 308 (278 + 300% Melee Attack) Physical Damage. Direct hits stack up to 3 Bloodthirst.\nBackstabbing inflicts Bleeding on the target.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 13344,
+          "base": 278,
+          "scalingPct": 300,
+          "parseSource": "detailed_tooltip",
+          "description": "Inflicts a deep wound that deals 308 (278 + 300% Melee Attack) Physical Damage. Direct hits stack up to 3 Bloodthirst.\nBackstabbing inflicts Bleeding on the target."
+        }
+      ],
+      "abilityLevel": 35,
+      "cooldownSec": 21.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation18.png"
+    },
+    {
+      "id": "shadowplay_shadowsmite",
+      "skillset": "shadowplay",
+      "name": "Shadowsmite",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "bloodthirstBasePerStack": 277,
+        "backstabMeleeAttackPct": 400
+      },
+      "skillId": 10496,
+      "base": 0,
+      "scalingPct": 0,
+      "parseSource": "shadowsmite",
+      "description": "Launches a surprise attack, dealing Melee Physical damage equal to 277 times your stacked Bloodthirst and Shackling your target for 5.8s.\nBackstabbing adds Physical Damage equal to 400% of Melee Attack.",
+      "bloodthirstPerStack": 277,
+      "backstabScalingPct": 400,
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10496,
+          "base": 0,
+          "scalingPct": 0,
+          "bloodthirstPerStack": 277,
+          "backstabScalingPct": 400,
+          "parseSource": "shadowsmite",
+          "description": "Launches a surprise attack, dealing Melee Physical damage equal to 277 times your stacked Bloodthirst and Shackling your target for 5.8s.\nBackstabbing adds Physical Damage equal to 400% of Melee Attack."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation06.png"
+    },
+    {
+      "id": "shadowplay_throw_dagger",
+      "skillset": "shadowplay",
+      "name": "Throw Dagger",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 23594,
+      "base": 576,
+      "scalingPct": 350,
+      "parseSource": "detailed_tooltip",
+      "description": "Flings a dagger that deals 612 (576 + 350% Melee Attack) damage to a single enemy, then ricochets to 5 additional enemies within a 7m radius of the initial target, dealing less damage each hit.\nEnemies hit: Decreases Attack Speed -666 and Move Speed -60%, and increases Cast Time+60%. \nLasts 3s.\nGrants 1 stack of Bloodthirst for each target hit, up to a maximum of 6 stacks.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 23594,
+          "base": 576,
+          "scalingPct": 350,
+          "parseSource": "detailed_tooltip",
+          "description": "Flings a dagger that deals 612 (576 + 350% Melee Attack) damage to a single enemy, then ricochets to 5 additional enemies within a 7m radius of the initial target, dealing less damage each hit.\nEnemies hit: Decreases Attack Speed -666 and Move Speed -60%, and increases Cast Time+60%. \nLasts 3s.\nGrants 1 stack of Bloodthirst for each target hit, up to a maximum of 6 stacks."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 35.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation28.png"
+    },
+    {
+      "id": "shadowplay_drop_back",
+      "skillset": "shadowplay",
+      "name": "Drop Back",
+      "variant": "base",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base; removes cast time on Flamebolt, Earthen Grip & Sunder Earth for 2.5s)",
+      "flags": {},
+      "comboEffect": {
+        "id": "drop_back",
+        "label": "Drop Back",
+        "summary": "Instant Flamebolt / Earthen Grip / Sunder (2.5s)",
+        "durationSec": 2.5,
+        "removesCastTimeFor": [
+          "sorcery_flamebolt",
+          "sorcery_flamebolt_flame",
+          "battlerage_sunder_earth",
+          "witchcraft_earthen_grip",
+          "witchcraft_earthen_grip_aoe"
+        ],
+        "overrideGcdSecBySkill": {
+          "sorcery_flamebolt_flame": 0.6
+        }
+      },
+      "skillId": 12049,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Triggers a backwards leap. Grants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s.\nCan't be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 12049,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Triggers a backwards leap. Grants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s.\nCan't be used while Snared."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation15.png"
+    },
+    {
+      "id": "shadowplay_drop_back_wave",
+      "skillset": "shadowplay",
+      "name": "Drop Back (Wave)",
+      "variant": "ancestral",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base; removes cast time on Concussive Arrow, Mend & Critical Discord for 2.5s)",
+      "flags": {},
+      "comboEffect": {
+        "id": "drop_back_wave",
+        "label": "Wave Drop Back",
+        "summary": "Instant Mend / Concussive / Crit Discord (2.5s)",
+        "durationSec": 2.5,
+        "removesCastTimeFor": [
+          "vitalism_mend",
+          "archery_concussive_arrow",
+          "archery_concussive_arrow_charge",
+          "songcraft_critical_discord"
+        ]
+      },
+      "skillId": 36591,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Triggers a backwards leap. Grants the Wave Drop Back buff, eliminating the Cast Time for Concussive Arrow, Mend, and Critical Discord for 2.5s.\nCan't be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36591,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Triggers a backwards leap. Grants the Wave Drop Back buff, eliminating the Cast Time for Concussive Arrow, Mend, and Critical Discord for 2.5s.\nCan't be used while Snared."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation34.png",
+      "ancestralElement": "wave"
+    },
+    {
+      "id": "shadowplay_throw_dagger_hollow_ranged",
+      "skillset": "shadowplay",
+      "name": "Hollow Throw Dagger (Dagger · Ranged)",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "base": 576,
+      "scalingPct": 350,
+      "parseSource": "hollow_preview",
+      "description": "Enlightened Hollow Shadowplay Mark (Dagger equipped): Changes Throw Dagger to Ranged Damage.\nConsumes Bloodthirst stacks when used, gaining +1 additional ricochet target per Bloodthirst stack consumed.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "base": 576,
+          "scalingPct": 350,
+          "description": "Enlightened Hollow Shadowplay Mark (Dagger): Ranged Damage Throw Dagger. Consumes Bloodthirst for +1 target per stack."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 35.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_throw_dagger.png"
+    },
+    {
+      "id": "shadowplay_throw_dagger_hollow_magic",
+      "skillset": "shadowplay",
+      "name": "Hollow Throw Dagger (Scepter · Magic)",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "base": 576,
+      "scalingPct": 350,
+      "parseSource": "hollow_preview",
+      "description": "Enlightened Hollow Shadowplay Mark (Scepter equipped): Changes Throw Dagger to Magic Damage.\nConsumes Bloodthirst stacks when used, gaining +1 additional ricochet target per Bloodthirst stack consumed.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "base": 576,
+          "scalingPct": 350,
+          "description": "Enlightened Hollow Shadowplay Mark (Scepter): Magic Damage Throw Dagger. Consumes Bloodthirst for +1 target per stack."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 35.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_throw_dagger.png"
+    }
+  ]
+}

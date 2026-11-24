@@ -1,0 +1,16 @@
+{
+  "id": "special_combat_boost_ward_14788",
+  "aacBuffId": 14788,
+  "name": "Special Combat Boost: Ward",
+  "side": "defender",
+  "isCustom": true,
+  "description": "Decreases received damage -5%. Persists despite death. (AA Classic buff 14788; 60m)",
+  "icon": "assets/icons/icon_item_1153.png",
+  "addDefense": {
+    "receivedMeleeDrPct": 5,
+    "receivedRangedDrPct": 5,
+    "receivedMagicDrPct": 5
+  },
+  "filename": "buffs/special_combat_boost_ward_14788.json",
+  "savedAt": "2026-11-23T21:14:11.414687+00:00"
+}

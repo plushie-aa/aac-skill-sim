@@ -1,0 +1,642 @@
+{
+  "skillset": "archery",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_archery.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 18,
+  "skills": [
+    {
+      "id": "archery_charged_bolt",
+      "skillset": "archery",
+      "name": "Charged Bolt",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "unavoidable": true,
+        "rangePenaltyBelow8mPct": -20
+      },
+      "skillId": 16210,
+      "base": 893,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a charged arrow at an enemy dealing 1181 (919 + 206% Ranged Attack) Ranged Damage and slowing Move Speed for 2.5s.\nThe skill cannot be evaded, blocked, or parried.\nDamage is reduced -20% if the target is within 8m.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 16210,
+          "base": 893,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a charged arrow at an enemy dealing 1181 (919 + 206% Ranged Attack) Ranged Damage and slowing Move Speed for 2.5s.\nThe skill cannot be evaded, blocked, or parried.\nDamage is reduced -20% if the target is within 8m."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 10.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild02.png"
+    },
+    {
+      "id": "archery_charged_bolt_short",
+      "skillset": "archery",
+      "name": "Charged Bolt (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "unavoidable": true
+      },
+      "skillId": 36468,
+      "base": 893,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a charged arrow at an enemy, dealing 1181 (919 + 206% Ranged Attack) Ranged Damage and slowing their Move Speed for 2.5s.\nThis skill's range is reduced -8m compared to regular Charged Bolt, but it deals +20% damage to targets within 8m.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36468,
+          "base": 893,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a charged arrow at an enemy, dealing 1181 (919 + 206% Ranged Attack) Ranged Damage and slowing their Move Speed for 2.5s.\nThis skill's range is reduced -8m compared to regular Charged Bolt, but it deals +20% damage to targets within 8m."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 10.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild27.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "archery_charged_bolt_fast",
+      "skillset": "archery",
+      "name": "Charged Bolt (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "unavoidable": true
+      },
+      "skillId": 36469,
+      "base": 432,
+      "scalingPct": 100,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a charged arrow at an enemy, dealing 575 (444 + 103% Ranged Attack) Ranged Damage and slowing their Move Speed for 2.5s.\nThis skill has a shorter Cooldown than regular Charged Bolt, but also deals less damage.\nThis skill cannot be evaded, blocked, or parried.\nDamage is reduced -20% if the enemy is within 8m.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36469,
+          "base": 432,
+          "scalingPct": 100,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a charged arrow at an enemy, dealing 575 (444 + 103% Ranged Attack) Ranged Damage and slowing their Move Speed for 2.5s.\nThis skill has a shorter Cooldown than regular Charged Bolt, but also deals less damage.\nThis skill cannot be evaded, blocked, or parried.\nDamage is reduced -20% if the enemy is within 8m."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 6.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild28.png",
+      "ancestralElement": "gale"
+    },
+    {
+      "id": "archery_piercing_shot",
+      "skillset": "archery",
+      "name": "Piercing Shot",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "rangePenaltyBelow8mPct": -20,
+        "hasBleedDot": true
+      },
+      "skillId": 13564,
+      "base": 259,
+      "scalingPct": 270,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a serrated arrow, dealing an initial 620 (266 + 278% Ranged Attack) Ranged Damage and then inflicting Bleeding for 1005 Magic Damage over 14s.\nDamage is reduced -20% if target is within 8m.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 13564,
+          "base": 259,
+          "scalingPct": 270,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a serrated arrow, dealing an initial 620 (266 + 278% Ranged Attack) Ranged Damage and then inflicting Bleeding for 1005 Magic Damage over 14s.\nDamage is reduced -20% if target is within 8m."
+        }
+      ],
+      "abilityLevel": 3,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation01.png"
+    },
+    {
+      "id": "archery_endless_arrows",
+      "skillset": "archery",
+      "name": "Endless Arrows",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "noGcd": true,
+        "rangePenaltyBelow8mPct": -20
+      },
+      "skillId": 14835,
+      "base": 0,
+      "scalingPct": 52.0,
+      "parseSource": "percent_of_stat",
+      "description": "Fires arrows that deal 53% of Ranged Attack as damage.\r\nDamage decreases -20% if target is within 8m.\r\nDoes not trigger a global cooldown. Hold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 14835,
+          "base": 0,
+          "scalingPct": 52.0,
+          "parseSource": "percent_of_stat",
+          "description": "Fires arrows that deal 53% of Ranged Attack as damage.\r\nDamage decreases -20% if target is within 8m.\r\nDoes not trigger a global cooldown. Hold down for continuous use."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation25.png",
+      "gcdSec": 0,
+      "gcdNote": "No GCD; continuous rapid-fire (~0.20s/arrow base, scales with Atk Spd & ping)",
+      "fireIntervalSec": 0.2
+    },
+    {
+      "id": "archery_endless_arrows_flame",
+      "skillset": "archery",
+      "name": "Endless Arrows (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 39663,
+      "base": 0,
+      "scalingPct": 170,
+      "parseSource": "detailed_tooltip",
+      "description": "Unleash a constant stream of arrows at a single enemy, dealing 222 (0 + 175% Ranged Attack) Ranged Damage per shot.\n\nThis skill has an increased Global Cooldown.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 39663,
+          "base": 0,
+          "scalingPct": 170,
+          "parseSource": "detailed_tooltip",
+          "description": "Unleash a constant stream of arrows at a single enemy, dealing 222 (0 + 175% Ranged Attack) Ranged Damage per shot.\n\nThis skill has an increased Global Cooldown.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild35.png",
+      "gcdSec": 0.6,
+      "gcdNote": "Reduced GCD (0.60s base; slower than base Endless Arrows)",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "archery_boneyard",
+      "skillset": "archery",
+      "name": "Boneyard",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 14760,
+      "base": 432,
+      "scalingPct": 250,
+      "parseSource": "detailed_tooltip",
+      "description": "Inflicts 771 (444 + 257% Ranged Attack) Ranged damage on a target and all surrounding enemies in a 5m radius, confining them in a Bone Prison.\nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThe Bone Prison disappears in 10 seconds if not destroyed.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 14760,
+          "base": 432,
+          "scalingPct": 250,
+          "parseSource": "detailed_tooltip",
+          "description": "Inflicts 771 (444 + 257% Ranged Attack) Ranged damage on a target and all surrounding enemies in a 5m radius, confining them in a Bone Prison.\nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThe Bone Prison disappears in 10 seconds if not destroyed."
+        }
+      ],
+      "abilityLevel": 35,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic24.png"
+    },
+    {
+      "id": "archery_concussive_arrow",
+      "skillset": "archery",
+      "name": "Concussive Arrow",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "unavoidable": true
+      },
+      "skillId": 11933,
+      "base": 547,
+      "scalingPct": 450,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires an arrow that explodes on contact, dealing 1152 (563 + 463% Ranged Attack) Ranged Damage and Shackling all enemies within 6m of the target for 3.5s. \nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11933,
+          "base": 547,
+          "scalingPct": 450,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires an arrow that explodes on contact, dealing 1152 (563 + 463% Ranged Attack) Ranged Damage and Shackling all enemies within 6m of the target for 3.5s. \nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 30.0,
+      "castTimeSec": 1.5,
+      "icon": "icon_skill_wild15.png"
+    },
+    {
+      "id": "archery_concussive_arrow_charge",
+      "skillset": "archery",
+      "name": "Concussive Arrow (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "unavoidable": true
+      },
+      "skillId": 36470,
+      "base": 547,
+      "scalingPct": 1200,
+      "parseSource": "detailed_tooltip",
+      "description": "Prepares an enhanced explosive arrow, dealing up to 2135 (563 + 1236% Ranged Attack) Ranged Damage and Shackling all enemies within 6m of the target for 3.5s. \nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.\nUse this skill again while channeling to release the arrow early. The longer you channel, the more damage will be dealt.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36470,
+          "base": 547,
+          "scalingPct": 1200,
+          "parseSource": "detailed_tooltip",
+          "description": "Prepares an enhanced explosive arrow, dealing up to 2135 (563 + 1236% Ranged Attack) Ranged Damage and Shackling all enemies within 6m of the target for 3.5s. \nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.\nUse this skill again while channeling to release the arrow early. The longer you channel, the more damage will be dealt."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 30.0,
+      "castTimeSec": 4.0,
+      "icon": "icon_skill_wild29.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "archery_concussive_arrow_smoke",
+      "skillset": "archery",
+      "name": "Concussive Arrow (Mist)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "flags": {
+        "unavoidable": true
+      },
+      "skillId": 36471,
+      "base": 547,
+      "scalingPct": 300,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires a smoke bomb that explodes directly in front of the caster, dealing 955 (563 + 309% Ranged Attack) Ranged Damage and Shackling all enemies within a 6m area for 3.5s. The caster is propelled 8m backwards after firing.\nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.\nThis skill cannot be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36471,
+          "base": 547,
+          "scalingPct": 300,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires a smoke bomb that explodes directly in front of the caster, dealing 955 (563 + 309% Ranged Attack) Ranged Damage and Shackling all enemies within a 6m area for 3.5s. The caster is propelled 8m backwards after firing.\nStaggers all affected enemies, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill cannot be evaded, blocked, or parried.\nThis skill cannot be used while Snared."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild30.png",
+      "ancestralElement": "mist"
+    },
+    {
+      "id": "archery_missile_rain",
+      "skillset": "archery",
+      "name": "Missile Rain",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 13281,
+      "base": 161,
+      "scalingPct": 196,
+      "parseSource": "detailed_tooltip",
+      "description": "Showers a target area with arrows to deal 422 (165 + 201% Ranged Attack) Ranged Damage.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 13281,
+          "base": 161,
+          "scalingPct": 196,
+          "parseSource": "detailed_tooltip",
+          "description": "Showers a target area with arrows to deal 422 (165 + 201% Ranged Attack) Ranged Damage."
+        }
+      ],
+      "abilityLevel": 45,
+      "cooldownSec": 22.0,
+      "castTimeSec": 2.0,
+      "icon": "icon_skill_wild10.png"
+    },
+    {
+      "id": "archery_missile_rain_flame",
+      "skillset": "archery",
+      "name": "Missile Rain (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 36472,
+      "base": 161,
+      "scalingPct": 294,
+      "parseSource": "detailed_tooltip",
+      "description": "Shower a small area with burning arrows, inflicting 550 (165 + 302% Ranged Attack) Ranged Damage.\nThis skill deals more damage than regular Missle Rain, but has reduced range, cast speed, and area of effect.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36472,
+          "base": 161,
+          "scalingPct": 294,
+          "parseSource": "detailed_tooltip",
+          "description": "Shower a small area with burning arrows, inflicting 550 (165 + 302% Ranged Attack) Ranged Damage.\nThis skill deals more damage than regular Missle Rain, but has reduced range, cast speed, and area of effect."
+        }
+      ],
+      "abilityLevel": 45,
+      "cooldownSec": 22.0,
+      "castTimeSec": 3.0,
+      "icon": "icon_skill_wild31.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "archery_missile_rain_gale",
+      "skillset": "archery",
+      "name": "Missile Rain (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 36473,
+      "base": 115,
+      "scalingPct": 70,
+      "parseSource": "detailed_tooltip",
+      "description": "Shoots 10 volleys of 6 arrows each over 2 seconds, inflicting 210 (118 + 72% Ranged Attack) Ranged damage on enemies within this skill's range.\nKnocks back affected enemies within 8m, but deals 20% less damage within that range.\nThis skill counts as a Push effect.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36473,
+          "base": 115,
+          "scalingPct": 70,
+          "parseSource": "detailed_tooltip",
+          "description": "Shoots 10 volleys of 6 arrows each over 2 seconds, inflicting 210 (118 + 72% Ranged Attack) Ranged damage on enemies within this skill's range.\nKnocks back affected enemies within 8m, but deals 20% less damage within that range.\nThis skill counts as a Push effect."
+        }
+      ],
+      "abilityLevel": 45,
+      "cooldownSec": 22.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_wild32.png",
+      "ancestralElement": "gale"
+    },
+    {
+      "id": "archery_snipe",
+      "skillset": "archery",
+      "name": "Snipe",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 23592,
+      "base": 576,
+      "scalingPct": 600,
+      "parseSource": "detailed_tooltip",
+      "description": "Shoots a powerful arrow of light at a chosen target, dealing 1379 (593 + 618% Ranged Attack) Ranged damage to it and all enemies in the arrow's path.\nEnemies damaged by Snipe are immune to it for 6 seconds.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 23592,
+          "base": 576,
+          "scalingPct": 600,
+          "parseSource": "detailed_tooltip",
+          "description": "Shoots a powerful arrow of light at a chosen target, dealing 1379 (593 + 618% Ranged Attack) Ranged damage to it and all enemies in the arrow's path.\nEnemies damaged by Snipe are immune to it for 6 seconds."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 27.0,
+      "castTimeSec": 1.5,
+      "icon": "icon_skill_wild24.png"
+    },
+    {
+      "id": "archery_hunting_pack",
+      "skillset": "archery",
+      "name": "Hunting Pack",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "skillId": 34288,
+      "base": 864,
+      "scalingPct": 120,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons Snowlion Spectres to charge through enemies in front of you, inflicting 1046 (889 + 123% Ranged Attack) Physical damage and launching them into the air. Any additional Abyssal Charges are consumed on casting, increasing the damage and number of Snowlions.\nIf cast while at 6 Abyssal Charges, affected enemies are temporarily prevented from using skills.\nThis skill counts as a Push effect.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 34288,
+          "base": 864,
+          "scalingPct": 120,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons Snowlion Spectres to charge through enemies in front of you, inflicting 1046 (889 + 123% Ranged Attack) Physical damage and launching them into the air. Any additional Abyssal Charges are consumed on casting, increasing the damage and number of Snowlions.\nIf cast while at 6 Abyssal Charges, affected enemies are temporarily prevented from using skills.\nThis skill counts as a Push effect."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_hatred22.png"
+    },
+    {
+      "id": "archery_serpents_sight",
+      "skillset": "archery",
+      "name": "Serpent's Sight",
+      "variant": "abyssal",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "rangedAttack",
+      "flags": {},
+      "comboEffect": {
+        "id": "serpents_sight",
+        "label": "Serpent's Sight",
+        "summary": "50m Range + Fang Bolt (5s)",
+        "durationSec": 5.0
+      },
+      "skillId": 34092,
+      "base": 0,
+      "scalingPct": 0,
+      "parseSource": "aaclassic_db",
+      "description": "Enhance your archery with Abyssal magic, transforming your attacks and gaining unparalleled range. Increases the base range of all Bow skills to at least 50m for 5s, but prevents movement.\nReplaces Endless Arrows with Fang Bolt for the duration.\nDuration resets for every Ranged Attack that hits, but all effects end if the caster receives damage.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34092,
+          "base": 0,
+          "scalingPct": 0,
+          "parseSource": "aaclassic_db",
+          "description": "Increases the base range of all Bow skills to at least 50m for 5s, prevents movement, and replaces Endless Arrows with Fang Bolt. Duration resets on Ranged hit; canceled on taking damage."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 10.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_skill_hatred20.png"
+    },
+    {
+      "id": "archery_fang_bolt",
+      "skillset": "archery",
+      "name": "Fang Bolt",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "multiplierStat": "ranged_damage_mul",
+      "gcdSec": 1.0,
+      "gcdNote": "Standard GCD (1.0s base, scales with Attack Speed; replaces Endless Arrows during Serpent's Sight)",
+      "flags": {
+        "rangePenaltyBelow8mPct": -20
+      },
+      "skillId": 34285,
+      "base": 0,
+      "scalingPct": 312.0,
+      "parseSource": "percent_of_stat",
+      "description": "Replaces Endless Arrows while Serpent's Sight is active.\nFires heavy Abyssal arrows that deal 312% of Ranged Attack as Physical damage.\nDamage decreases -20% if target is within 8m.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34285,
+          "base": 0,
+          "scalingPct": 312.0,
+          "parseSource": "percent_of_stat",
+          "description": "Replaces Endless Arrows while Serpent's Sight is active.\nFires heavy Abyssal arrows that deal 312% of Ranged Attack as Physical damage.\nDamage decreases -20% if target is within 8m.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_hatred21.png"
+    },
+    {
+      "id": "archery_hollow_deadeye",
+      "skillset": "archery",
+      "name": "Hollow Deadeye (100 Stacks)",
+      "variant": "hollow",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "rangedAttack",
+      "gcdSec": 0,
+      "gcdNote": "No GCD (Enlightened Hollow Archery Mark; at 100 movement stacks, next Snipe is instant cast)",
+      "flags": {
+        "noGcd": true
+      },
+      "comboEffect": {
+        "id": "hollow_deadeye",
+        "label": "Hollow Deadeye (100x)",
+        "summary": "Instant Snipe (60s)",
+        "durationSec": 60.0,
+        "removesCastTimeFor": [
+          "archery_snipe"
+        ]
+      },
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Enlightened Hollow Archery Mark: Deadeye becomes stronger as you move (up to +160 Ranged Attack at 100 stacks). Bonus drops if stationary for 1s.\nCombo: Upon reaching 100 movement stacks, your next Snipe becomes instant cast.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Enlightened Hollow Archery Mark: Deadeye becomes stronger as you move (up to +160 Ranged Attack at 100 stacks). Upon reaching 100 stacks, your next Snipe is instant cast."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_deadeye.png"
+    }
+  ]
+}

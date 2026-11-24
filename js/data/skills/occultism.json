@@ -1,0 +1,502 @@
+{
+  "skillset": "occultism",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_occultism.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 14,
+  "skills": [
+    {
+      "id": "occultism_mana_stars",
+      "skillset": "occultism",
+      "name": "Mana Stars",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "noGcd": true,
+        "stackDamageBonusPct": 2,
+        "maxStacks": 10
+      },
+      "skillId": 14810,
+      "base": 0,
+      "scalingPct": 50,
+      "parseSource": "detailed_tooltip",
+      "description": "Launches your mana as a razor-sharp crystal, dealing 20 (0 + 50% Magic Attack) Magic Damage. \nEach consecutive Mana Star increases in damage +2%, up to a max of 20%.\nEach Mana Star inflicts Fetter on the target, reducing their damage  -1% and move speed -2% per stack. Stacks up to 20 times.\nDoes not cause a global cooldown. Hold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 14810,
+          "base": 0,
+          "scalingPct": 50,
+          "parseSource": "detailed_tooltip",
+          "description": "Launches your mana as a razor-sharp crystal, dealing 20 (0 + 50% Magic Attack) Magic Damage. \nEach consecutive Mana Star increases in damage +2%, up to a max of 20%.\nEach Mana Star inflicts Fetter on the target, reducing their damage  -1% and move speed -2% per stack. Stacks up to 20 times.\nDoes not cause a global cooldown. Hold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death25.png",
+      "gcdSec": 0,
+      "gcdNote": "No GCD; continuous rapid-fire (~0.30s/star base, scales with Atk Spd & ping)",
+      "fireIntervalSec": 0.3
+    },
+    {
+      "id": "occultism_mana_stars_gale",
+      "skillset": "occultism",
+      "name": "Mana Stars (Wave)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "noGcd": true
+      },
+      "skillId": 36620,
+      "base": 0,
+      "scalingPct": 50,
+      "parseSource": "detailed_tooltip",
+      "description": "Launches your mana as painful bursts of energy, dealing 20 (0 + 50% Magic Attack) Magic Damage. Each consecutive Mana Star increases the caster's Move Speed +2%, up to  a max of +20%.\nEach projectile also inflicts Fetter on the target, reducing their damage -1% and Move Speed -2% per stack. Stacks up to 20 times.\nDoes not cause a global cooldown. Hold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36620,
+          "base": 0,
+          "scalingPct": 50,
+          "parseSource": "detailed_tooltip",
+          "description": "Launches your mana as painful bursts of energy, dealing 20 (0 + 50% Magic Attack) Magic Damage. Each consecutive Mana Star increases the caster's Move Speed +2%, up to  a max of +20%.\nEach projectile also inflicts Fetter on the target, reducing their damage -1% and Move Speed -2% per stack. Stacks up to 20 times.\nDoes not cause a global cooldown. Hold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death30.png",
+      "gcdSec": 0,
+      "gcdNote": "No GCD; continuous rapid-fire (~0.30s/star base)",
+      "fireIntervalSec": 0.3,
+      "ancestralElement": "wave"
+    },
+    {
+      "id": "occultism_mana_stars_flame",
+      "skillset": "occultism",
+      "name": "Mana Stars (Quake)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "noGcd": true,
+        "stackDamageBonusPct": 2,
+        "maxStacks": 10
+      },
+      "skillId": 36623,
+      "base": 0,
+      "scalingPct": 50,
+      "parseSource": "detailed_tooltip",
+      "description": "Launches your mana as explosive orbs, dealing 20 (0 + 50% Magic Attack) Magic Damage to all enemies in a 6m radius around the target. Each consecutive Mana Star increases in damage +2%, up to a max of 20%.\nInflicts Fetter on each enemy hit, reducing their damage -1% and Move Speed -2% per stack. Stacks up to 20 times.\nWhen using Caster's Enrichment, this skill grants a stack of Burning Brand for each enemy hit.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36623,
+          "base": 0,
+          "scalingPct": 50,
+          "parseSource": "detailed_tooltip",
+          "description": "Launches your mana as explosive orbs, dealing 20 (0 + 50% Magic Attack) Magic Damage to all enemies in a 6m radius around the target. Each consecutive Mana Star increases in damage +2%, up to a max of 20%.\nInflicts Fetter on each enemy hit, reducing their damage -1% and Move Speed -2% per stack. Stacks up to 20 times.\nWhen using Caster's Enrichment, this skill grants a stack of Burning Brand for each enemy hit.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death31.png",
+      "gcdSec": 0,
+      "gcdNote": "No GCD; continuous AoE fire (~0.45s/orb base)",
+      "fireIntervalSec": 0.45,
+      "ancestralElement": "quake"
+    },
+    {
+      "id": "occultism_mana_force",
+      "skillset": "occultism",
+      "name": "Mana Force",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 12759,
+      "base": 278,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Pushes an enemy away, dealing 361 (278 + 200% Magic Attack) Magic Damage. Restores Mana equal to half that amount.\nPushed enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill counts as a Push effect.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 12759,
+          "base": 278,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Pushes an enemy away, dealing 361 (278 + 200% Magic Attack) Magic Damage. Restores Mana equal to half that amount.\nPushed enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.\nThis skill counts as a Push effect."
+        }
+      ],
+      "abilityLevel": 3,
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death14.png"
+    },
+    {
+      "id": "occultism_hell_spear",
+      "skillset": "occultism",
+      "name": "Hell Spear",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 10135,
+      "base": 864,
+      "scalingPct": 279,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons spears from the underworld to pierce all enemies within 6m.\nDeals 980 (864 + 279% Magic Attack) Magic Damage and Impales targets for 2.6s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10135,
+          "base": 864,
+          "scalingPct": 279,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons spears from the underworld to pierce all enemies within 6m.\nDeals 980 (864 + 279% Magic Attack) Magic Damage and Impales targets for 2.6s."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 27.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death06.png"
+    },
+    {
+      "id": "occultism_hell_spear_single",
+      "skillset": "occultism",
+      "name": "Hell Spear (Mist)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36586,
+      "base": 864,
+      "scalingPct": 279,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a single Hell Spear at the target's location.\nInflicts 980 (864 + 279% Magic Attack) Magic Damage and Impales the target for 2.6s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36586,
+          "base": 864,
+          "scalingPct": 279,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons a single Hell Spear at the target's location.\nInflicts 980 (864 + 279% Magic Attack) Magic Damage and Impales the target for 2.6s."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 27.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death33.png",
+      "ancestralElement": "mist"
+    },
+    {
+      "id": "occultism_hell_spear_flame",
+      "skillset": "occultism",
+      "name": "Hell Spear (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36587,
+      "base": 1440,
+      "scalingPct": 469,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons burning Hell Spears in a 6m radius after a 2 second delay.\nInflicts 1635 (1440 + 469% Magic Attack) Magic Damage and Impales enemies for 2.6s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36587,
+          "base": 1440,
+          "scalingPct": 469,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons burning Hell Spears in a 6m radius after a 2 second delay.\nInflicts 1635 (1440 + 469% Magic Attack) Magic Damage and Impales enemies for 2.6s."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 27.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death32.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "occultism_absorb_lifeforce",
+      "skillset": "occultism",
+      "name": "Absorb Lifeforce",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 6.5
+      },
+      "skillId": 11441,
+      "base": 1152,
+      "scalingPct": 350,
+      "parseSource": "detailed_tooltip",
+      "description": "Inflicts a debuff which deals 1297 (1152 + 350% Magic Attack) Magic Damage to the enemy over 6.5 seconds, healing the caster for half the amount.\nInflicts an additional +140% on pets.\nThis debuff ends early if the caster stops channeling, or if the target moves far enough away from the caster.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11441,
+          "base": 1152,
+          "scalingPct": 350,
+          "parseSource": "detailed_tooltip",
+          "description": "Inflicts a debuff which deals 1297 (1152 + 350% Magic Attack) Magic Damage to the enemy over 6.5 seconds, healing the caster for half the amount.\nInflicts an additional +140% on pets.\nThis debuff ends early if the caster stops channeling, or if the target moves far enough away from the caster."
+        }
+      ],
+      "abilityLevel": 15,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death05.png"
+    },
+    {
+      "id": "occultism_summon_crows",
+      "skillset": "occultism",
+      "name": "Summon Crows",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 5
+      },
+      "skillId": 11395,
+      "base": 576,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons crows to attack all enemies within 5m. Reduces enemies' Physical Accuracy -30% and deals 659 (576 + 200% Magic Attack) Magic Damage over 5s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11395,
+          "base": 576,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons crows to attack all enemies within 5m. Reduces enemies' Physical Accuracy -30% and deals 659 (576 + 200% Magic Attack) Magic Damage over 5s."
+        }
+      ],
+      "abilityLevel": 20,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death09.png"
+    },
+    {
+      "id": "occultism_crippling_mire",
+      "skillset": "occultism",
+      "name": "Crippling Mire",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 4.5
+      },
+      "skillId": 10201,
+      "base": 1440,
+      "scalingPct": 400,
+      "parseSource": "detailed_tooltip",
+      "description": "Forms a painful link with the target, inflicting 1606 (1440 + 400% Magic Attack) continuous Magic damage and decreasing Move Speed -50% for 4.5 seconds.\nCounts as an ongoing spell, but is canceled if that target moves far enough away from the caster.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10201,
+          "base": 1440,
+          "scalingPct": 400,
+          "parseSource": "detailed_tooltip",
+          "description": "Forms a painful link with the target, inflicting 1606 (1440 + 400% Magic Attack) continuous Magic damage and decreasing Move Speed -50% for 4.5 seconds.\nCounts as an ongoing spell, but is canceled if that target moves far enough away from the caster."
+        }
+      ],
+      "abilityLevel": 25,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death11.png"
+    },
+    {
+      "id": "occultism_summon_wraith",
+      "skillset": "occultism",
+      "name": "Summon Wraith (per sec)",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 9,
+        "perTickFormula": true
+      },
+      "skillId": 10434,
+      "base": 288,
+      "scalingPct": 140,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a wraith that deals 346  (288 + 140% Magic Attack) magic damage per second for a maximum of 9 seconds to all enemies within 7m. It also inflicts enemies with Wraith Curse to reduce movement speed, attack speed, and casting speed.\n\nSpell ends early if channeling is canceled or the caster moves.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10434,
+          "base": 288,
+          "scalingPct": 140,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons a wraith that deals 346  (288 + 140% Magic Attack) magic damage per second for a maximum of 9 seconds to all enemies within 7m. It also inflicts enemies with Wraith Curse to reduce movement speed, attack speed, and casting speed.\n\nSpell ends early if channeling is canceled or the caster moves."
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death13.png"
+    },
+    {
+      "id": "occultism_summon_wraith_burst",
+      "skillset": "occultism",
+      "name": "Summon Wraith (Mist)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36627,
+      "base": 576,
+      "scalingPct": 240,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a corporeal Wraith at the target location, dealing a single burst of 675 (576 + 240% Magic Attack) Magic Damage to all enemies in a 7m radius. It then inflicts Wraith Curse in the area for up to 9 seconds, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nCannot be used in conjunction with Mist Banshee Wail (Witchcraft)",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36627,
+          "base": 576,
+          "scalingPct": 240,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons a corporeal Wraith at the target location, dealing a single burst of 675 (576 + 240% Magic Attack) Magic Damage to all enemies in a 7m radius. It then inflicts Wraith Curse in the area for up to 9 seconds, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nCannot be used in conjunction with Mist Banshee Wail (Witchcraft)"
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 90.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death35.png",
+      "ancestralElement": "mist"
+    },
+    {
+      "id": "occultism_deaths_vengeance",
+      "skillset": "occultism",
+      "name": "Death's Vengeance",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 23591,
+      "base": 2016,
+      "scalingPct": 300,
+      "parseSource": "detailed_tooltip",
+      "description": "As you die, blasts your remaining energy to deal 2140 (2016 + 300% Magic Attack) Magic Damage to enemies within 15m.\nTargets who die within 3 seconds of receiving this damage will also explode.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 23591,
+          "base": 2016,
+          "scalingPct": 300,
+          "parseSource": "detailed_tooltip",
+          "description": "As you die, blasts your remaining energy to deal 2140 (2016 + 300% Magic Attack) Magic Damage to enemies within 15m.\nTargets who die within 3 seconds of receiving this damage will also explode."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 0.0,
+      "castTimeSec": 3.0,
+      "icon": "icon_skill_death27.png"
+    },
+    {
+      "id": "occultism_absorb_lifeforce_hollow",
+      "skillset": "occultism",
+      "name": "Hollow Absorb Lifeforce",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 5
+      },
+      "base": 384,
+      "scalingPct": 350,
+      "parseSource": "hollow_preview",
+      "description": "Enlightened Hollow Occultism Mark: Inflicts a non-channeled tether debuff (like Crippling Mire) dealing Magic Damage over 5s and healing the caster for 50% of damage dealt.\nDeals +140% additional damage to pets and penetrates immunity effects on pets.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "base": 384,
+          "scalingPct": 350,
+          "description": "Enlightened Hollow Occultism Mark: Non-channeled tether dealing Magic Damage over 5s, healing caster for 50% of damage dealt, and dealing +140% damage to pets."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_absorb_lifeforce.png"
+    }
+  ]
+}

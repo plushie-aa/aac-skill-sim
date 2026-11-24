@@ -1,0 +1,214 @@
+{
+  "activeId": "sorcery_mage_burst",
+  "combos": [
+    {
+      "id": "darkrunner_burst",
+      "label": "Darkrunner Burst",
+      "steps": [
+        {
+          "skillId": "battlerage_charge",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "battlerage_triple_slash",
+          "isBackstab": false,
+          "targetIsCCd": true,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "battlerage_precision_strike",
+          "isBackstab": true,
+          "targetIsCCd": true,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "battlerage_tiger_strike",
+          "isBackstab": false,
+          "targetIsCCd": true,
+          "targetBelow30Pct": true,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        }
+      ]
+    },
+    {
+      "id": "sorcery_mage_burst",
+      "label": "Sorcery Mage Burst",
+      "steps": [
+        {
+          "skillId": "sorcery_chain_lightning",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 30,
+          "delaySec": 0
+        },
+        {
+          "skillId": "sorcery_arc_lightning",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 30,
+          "delaySec": 0
+        }
+      ]
+    },
+    {
+      "id": "archery_kite_burst",
+      "label": "Archery Kite Burst",
+      "steps": [
+        {
+          "skillId": "shadowplay_stalkers_mark",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "archery_charged_bolt",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "archery_piercing_shot",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 26,
+          "delaySec": 0
+        },
+        {
+          "skillId": "shadowplay_drop_back_wave",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "archery_concussive_arrow",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "archery_snipe",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        }
+      ]
+    },
+    {
+      "id": "healer_emergency_save",
+      "label": "Healer Emergency Save",
+      "steps": [
+        {
+          "skillId": "vitalism_resurgence",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "auramancy_spell_shield",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "vitalism_antithesis_heal",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "vitalism_fervent_healing",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        }
+      ]
+    },
+    {
+      "id": "tank_initiator_cc",
+      "label": "Tank Initiator CC",
+      "steps": [
+        {
+          "skillId": "defense_shield_slam",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "defense_bull_rush",
+          "isBackstab": false,
+          "targetIsCCd": true,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 30,
+          "delaySec": 0
+        },
+        {
+          "skillId": "occultism_hell_spear",
+          "isBackstab": false,
+          "targetIsCCd": true,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        },
+        {
+          "skillId": "defense_ollos_hammer",
+          "isBackstab": false,
+          "targetIsCCd": true,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "skillId": "sorcery_chain_lightning",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 30,
+      "delaySec": 0
+    },
+    {
+      "skillId": "sorcery_arc_lightning",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 30,
+      "delaySec": 0
+    }
+  ],
+  "updatedAt": 1795403401835
+}

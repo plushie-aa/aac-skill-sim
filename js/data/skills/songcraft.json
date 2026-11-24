@@ -1,0 +1,301 @@
+{
+  "skillset": "songcraft",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_songcraft.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 7,
+  "skills": [
+    {
+      "id": "songcraft_critical_discord",
+      "skillset": "songcraft",
+      "name": "Critical Discord",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 11973,
+      "base": 537,
+      "scalingPct": 280,
+      "parseSource": "detailed_tooltip",
+      "description": "Deals 653 (537 + 280% Magic Attack) Magic Damage. Increases Magic Critical Rate and Critical Heal Rate +2% for 3 seconds.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11973,
+          "base": 537,
+          "scalingPct": 280,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 653 (537 + 280% Magic Attack) Magic Damage. Increases Magic Critical Rate and Critical Heal Rate +2% for 3 seconds.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_skill_romance14.png"
+    },
+    {
+      "id": "songcraft_critical_discord_hollow",
+      "skillset": "songcraft",
+      "name": "Hollow Critical Discord",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "instantAtRhythm15": true
+      },
+      "skillId": 9011973,
+      "base": 537,
+      "scalingPct": 280,
+      "parseSource": "enlightened_preview_1_3_6",
+      "description": "Enlightened (Hollow): Deals AoE Magic Damage to up to 10 enemies within 5m and inflicts Charmed for 8s. Has a 4.0s cast time, but becomes Instant Cast at 15 stacks of Rhythm. (AA Classic 1.3.6 Enlightened Preview)",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 9011973,
+          "base": 537,
+          "scalingPct": 280,
+          "parseSource": "enlightened_preview_1_3_6",
+          "description": "Enlightened (Hollow): Deals AoE Magic Damage to up to 10 enemies within 5m and inflicts Charmed for 8s. Has a 4.0s cast time, but becomes Instant Cast at 15 stacks of Rhythm."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 4.0,
+      "icon": "icon_hollow_critical_discord.png"
+    },
+    {
+      "id": "songcraft_dissonance",
+      "skillset": "songcraft",
+      "name": "Dissonance",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "shredsMagicDefense": 320,
+        "reducesEnemySkillDamagePct": -20
+      },
+      "skillId": 11943,
+      "base": 1132,
+      "scalingPct": 260,
+      "parseSource": "detailed_tooltip",
+      "description": "Plays clashing sounds to weaken and slow all enemies in a 5m radius.\n- Reduces Skill Damage -20%\n- Reduces Attack Speed -250.\n- Increases Cast Time +20%.\n- Reduces Magic Defense -320.\n- Deals 1240 (1132 + 260% Magic Attack) Magic Damage after 6s seconds.\n- Does not stop ongoing Perform skills.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11943,
+          "base": 1132,
+          "scalingPct": 260,
+          "parseSource": "detailed_tooltip",
+          "description": "Plays clashing sounds to weaken and slow all enemies in a 5m radius.\n- Reduces Skill Damage -20%\n- Reduces Attack Speed -250.\n- Increases Cast Time +20%.\n- Reduces Magic Defense -320.\n- Deals 1240 (1132 + 260% Magic Attack) Magic Damage after 6s seconds.\n- Does not stop ongoing Perform skills."
+        }
+      ],
+      "abilityLevel": 15,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance17.png"
+    },
+    {
+      "id": "songcraft_healing_hymn",
+      "skillset": "songcraft",
+      "name": "Healing Hymn",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "multiplierStat": "heal_mul",
+      "skillId": 17413,
+      "base": 139,
+      "scalingPct": 120,
+      "parseSource": "detailed_tooltip",
+      "description": "Plays a healing song that instantly restores +260 (139 + 120% Healing Power) Health to an ally.\nThe effect can travel to another 2 allies within 10m as long as they are not pets. Can continue to be transferred up to 3 times. \nThis skill does not stop ongoing Perform skills.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 17413,
+          "base": 139,
+          "scalingPct": 120,
+          "parseSource": "detailed_tooltip",
+          "description": "Plays a healing song that instantly restores +260 (139 + 120% Healing Power) Health to an ally.\nThe effect can travel to another 2 allies within 10m as long as they are not pets. Can continue to be transferred up to 3 times. \nThis skill does not stop ongoing Perform skills."
+        }
+      ],
+      "abilityLevel": 20,
+      "cooldownSec": 15.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance29.png"
+    },
+    {
+      "id": "songcraft_ode_to_recovery",
+      "skillset": "songcraft",
+      "name": "Ode to Recovery (per sec)",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "multiplierStat": "heal_mul",
+      "gcdSec": 0.5,
+      "gcdNote": "Perform song \u2014 reduced GCD (0.50s base)",
+      "flags": {
+        "isHot": true,
+        "isPerform": true,
+        "durationSec": 15,
+        "perTickFormula": true
+      },
+      "skillId": 10724,
+      "base": 8,
+      "scalingPct": 70,
+      "parseSource": "live_buff_two_point",
+      "description": "Restores 1178-1179 health every second and increases Healing Power +130.0. (Live AA Classic 1.3.6 Ranks 1-5 solved from ode_dump_1.txt & ode_dump_2.txt.)",
+      "rankCount": 5,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 10724,
+          "buffId": 833,
+          "base": 3,
+          "scalingPct": 15,
+          "parseSource": "live_buff_two_point",
+          "description": "Restores 254-254 health every second and increases Healing Power +30.0. (Live AA Classic Rank 1: 3 + 15% Healing Power per sec)"
+        },
+        {
+          "rank": 2,
+          "label": "Rank 2",
+          "skillId": 10724,
+          "buffId": 834,
+          "base": 4,
+          "scalingPct": 25,
+          "parseSource": "live_buff_two_point",
+          "description": "Restores 422-423 health every second and increases Healing Power +55.0. (Live AA Classic Rank 2: 4 + 25% Healing Power per sec)"
+        },
+        {
+          "rank": 3,
+          "label": "Rank 3",
+          "skillId": 10724,
+          "buffId": 835,
+          "base": 5,
+          "scalingPct": 37.5,
+          "parseSource": "live_buff_two_point",
+          "description": "Restores 633-633 health every second and increases Healing Power +80.0. (Live AA Classic Rank 3: 5 + 37.5% Healing Power per sec)"
+        },
+        {
+          "rank": 4,
+          "label": "Rank 4",
+          "skillId": 10724,
+          "buffId": 13783,
+          "base": 6,
+          "scalingPct": 52.5,
+          "parseSource": "live_buff_two_point",
+          "description": "Restores 885-885 health every second and increases Healing Power +105.0. (Live AA Classic Rank 4: 6 + 52.5% Healing Power per sec)"
+        },
+        {
+          "rank": 5,
+          "label": "Rank 5 (Max)",
+          "skillId": 10724,
+          "buffId": 13784,
+          "base": 8,
+          "scalingPct": 70,
+          "parseSource": "live_buff_two_point",
+          "description": "Restores 1178-1179 health every second and increases Healing Power +130.0. (Live AA Classic Rank 5: 8 + 70% Healing Power per sec)"
+        }
+      ],
+      "abilityLevel": 30,
+      "cooldownSec": 2.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance05.png"
+    },
+    {
+      "id": "songcraft_ode_to_recovery_life",
+      "skillset": "songcraft",
+      "name": "Ode to Recovery (Life \u00b7 per sec)",
+      "variant": "ancestral",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "multiplierStat": "heal_mul",
+      "gcdSec": 0.5,
+      "gcdNote": "Perform song \u2014 reduced GCD (0.50s base)",
+      "flags": {
+        "isHot": true,
+        "isPerform": true,
+        "durationSec": 15,
+        "perTickFormula": true
+      },
+      "skillId": 10724,
+      "base": 14,
+      "scalingPct": 13,
+      "parseSource": "live_buff_two_point",
+      "description": "Restores 232-234 health per sec (14 + 13% Healing Power across Ranks 1-5), and increases Healing Power +39..+169 and Received Healing +11.7%..+68.9%.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Ranks 1-5 (1s tick)",
+          "skillId": 10724,
+          "buffId": 21455,
+          "base": 14,
+          "scalingPct": 13,
+          "parseSource": "live_buff_two_point",
+          "description": "Restores 232-234 health per sec (14 + 13% Healing Power), and increases Healing Power +169.0 and Received Healing +42.9% - 68.9% at Rank 5."
+        }
+      ],
+      "abilityLevel": 30,
+      "cooldownSec": 2.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance05.png"
+    },
+    {
+      "id": "songcraft_rhythmic_renewal",
+      "skillset": "songcraft",
+      "name": "Rhythmic Renewal (per sec)",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "multiplierStat": "heal_mul",
+      "flags": {
+        "isHot": true,
+        "durationSec": 60,
+        "perTickFormula": true
+      },
+      "skillId": 11948,
+      "base": 37,
+      "scalingPct": 13.31,
+      "parseSource": "linear_two_point_preserved_ratio",
+      "description": "Summons a healing spring that restores +51 health to caster and all nearby allies every second for 60 seconds.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11948,
+          "base": 37,
+          "scalingPct": 13.31,
+          "parseSource": "linear_two_point_preserved_ratio",
+          "description": "Summons a healing spring that restores +51 health to caster and all nearby allies every second for 60 seconds."
+        }
+      ],
+      "abilityLevel": 35,
+      "cooldownSec": 90.0,
+      "castTimeSec": 2.0,
+      "icon": "icon_skill_romance26.png"
+    }
+  ]
+}

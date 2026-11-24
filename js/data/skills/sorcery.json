@@ -1,0 +1,738 @@
+{
+  "skillset": "sorcery",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_sorcery.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 18,
+  "skills": [
+    {
+      "id": "sorcery_flamebolt",
+      "skillset": "sorcery",
+      "name": "Flamebolt",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "combos": [
+          "+12% damage vs Freezing targets"
+        ]
+      },
+      "hits": [
+        {
+          "skillId": 10752,
+          "label": "Cast 1",
+          "base": 0,
+          "scalingPct": 209,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 87 (0 + 209% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for 3.2s.\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+        },
+        {
+          "skillId": 24894,
+          "label": "Cast 2",
+          "base": 0,
+          "scalingPct": 120,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 49 (0 + 120% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for .\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+        },
+        {
+          "skillId": 24895,
+          "label": "Cast 3",
+          "base": 0,
+          "scalingPct": 80,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 33 (0 + 80% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for 7s.\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+        }
+      ],
+      "description": "Deals 87 (0 + 209% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for 3.2s.\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "hits": [
+            {
+              "skillId": 10752,
+              "label": "Cast 1",
+              "base": 0,
+              "scalingPct": 209,
+              "parseSource": "detailed_tooltip",
+              "description": "Deals 87 (0 + 209% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for 3.2s.\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+            },
+            {
+              "skillId": 24894,
+              "label": "Cast 2",
+              "base": 0,
+              "scalingPct": 120,
+              "parseSource": "detailed_tooltip",
+              "description": "Deals 49 (0 + 120% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for .\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+            },
+            {
+              "skillId": 24895,
+              "label": "Cast 3",
+              "base": 0,
+              "scalingPct": 80,
+              "parseSource": "detailed_tooltip",
+              "description": "Deals 33 (0 + 80% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for 7s.\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+            }
+          ],
+          "description": "Deals 87 (0 + 209% Magic Attack) Magic Damage to an enemy.\nCan be used up to 3 times in a row without triggering a cooldown.\nAttack 1: Inflicts Burning for 3.2s.\nAttack 3: Converts 20% of damage dealt to Enervated enemies to mana; inflicts Conflagration on Burning enemies. \nAll 3 attacks deal +12% additional damage to targets under freezing effects.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_skill_magic01.png",
+      "gcdSec": 1.0,
+      "gcdNote": "1.0s cast + 2 rapid reduced-GCD follow-up bolts (~1.0s post-cast chain; instant under Drop Back)"
+    },
+    {
+      "id": "sorcery_flamebolt_flame",
+      "skillset": "sorcery",
+      "name": "Flamebolt (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36474,
+      "base": 0,
+      "scalingPct": 313,
+      "parseSource": "detailed_tooltip",
+      "description": "Shoots a single powerful flamebolt, inflicting 131 (0 + 313% Magic Attack) Magic Damage and Burning the target for 3.2s.\nNo Cast Time if used while under the effects of Drop Back.\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36474,
+          "base": 0,
+          "scalingPct": 313,
+          "parseSource": "detailed_tooltip",
+          "description": "Shoots a single powerful flamebolt, inflicting 131 (0 + 313% Magic Attack) Magic Damage and Burning the target for 3.2s.\nNo Cast Time if used while under the effects of Drop Back.\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 0.0,
+      "castTimeSec": 1.5,
+      "icon": "icon_skill_magic34.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "sorcery_flamebolt_lightning",
+      "skillset": "sorcery",
+      "name": "Flamebolt (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "repeatCount": 3,
+      "skillId": 36475,
+      "base": 0,
+      "scalingPct": 80,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires 3 bolts of electricity at a single target, dealing 33 (0 + 80% Magic Attack) Magic Damage.\r\nAttack 1: Inflicts Shock for 8s.\r\nAttack 3: Returns 20% of damage dealt to Enervated enemies as mana.\r\nAll three attacks deal +12% additional damage on Shocked targets.\r\nHold down for continuous use.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36475,
+          "base": 0,
+          "scalingPct": 80,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires 3 bolts of electricity at a single target, dealing 33 (0 + 80% Magic Attack) Magic Damage.\r\nAttack 1: Inflicts Shock for 8s.\r\nAttack 3: Returns 20% of damage dealt to Enervated enemies as mana.\r\nAll three attacks deal +12% additional damage on Shocked targets.\r\nHold down for continuous use."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 1.7,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic35.png",
+      "gcdSec": 0.6,
+      "gcdNote": "Reduced GCD (0.60s base for 3 instant bolts)",
+      "ancestralElement": "lightning"
+    },
+    {
+      "id": "sorcery_freezing_arrow",
+      "skillset": "sorcery",
+      "name": "Freezing Arrow",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 10667,
+      "base": 991,
+      "scalingPct": 372,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires an Ice Arrow at an enemy, dealing 1145 (991 + 372% Magic Attack) Magic damage and decreasing Move Speed for 4s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10667,
+          "base": 991,
+          "scalingPct": 372,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires an Ice Arrow at an enemy, dealing 1145 (991 + 372% Magic Attack) Magic damage and decreasing Move Speed for 4s."
+        }
+      ],
+      "abilityLevel": 3,
+      "cooldownSec": 6.0,
+      "castTimeSec": 2.0,
+      "icon": "icon_skill_magic04.png"
+    },
+    {
+      "id": "sorcery_arc_lightning",
+      "skillset": "sorcery",
+      "name": "Arc Lightning",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 10670,
+      "base": 898,
+      "scalingPct": 624,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires lightning bolts to deal 1157 (898 + 624% Magic Attack) Magic Damage and Shock an enemy.\nDeals 386 Magic Damage over 8s to Shocked enemies; also Shocks all other enemies within 2m. When this skill levels up, it increases damage, but also cast time.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10670,
+          "base": 898,
+          "scalingPct": 624,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires lightning bolts to deal 1157 (898 + 624% Magic Attack) Magic Damage and Shock an enemy.\nDeals 386 Magic Damage over 8s to Shocked enemies; also Shocks all other enemies within 2m. When this skill levels up, it increases damage, but also cast time."
+        }
+      ],
+      "abilityLevel": 15,
+      "cooldownSec": 20.0,
+      "castTimeSec": 2.0,
+      "icon": "icon_skill_magic05.png"
+    },
+    {
+      "id": "sorcery_freezing_earth",
+      "skillset": "sorcery",
+      "name": "Freezing Earth",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 10151,
+      "base": 633,
+      "scalingPct": 238,
+      "parseSource": "detailed_tooltip",
+      "description": "Deals 732 (633 + 238% Magic Attack) damage to all enemies within 8 meters with a chance to Snare for 6.2s.\nSnare duration reduced -50% in PvP.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10151,
+          "base": 633,
+          "scalingPct": 238,
+          "parseSource": "detailed_tooltip",
+          "description": "Deals 732 (633 + 238% Magic Attack) damage to all enemies within 8 meters with a chance to Snare for 6.2s.\nSnare duration reduced -50% in PvP."
+        }
+      ],
+      "abilityLevel": 20,
+      "cooldownSec": 36.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic10.png"
+    },
+    {
+      "id": "sorcery_searing_rain",
+      "skillset": "sorcery",
+      "name": "Searing Rain",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 11939,
+      "base": 259,
+      "scalingPct": 260,
+      "parseSource": "detailed_tooltip",
+      "description": "Rains down fire on all enemies in a 10-meter radius for 7 seconds, dealing 367 (259 + 260% Magic Attack) Magic Damage.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11939,
+          "base": 259,
+          "scalingPct": 260,
+          "parseSource": "detailed_tooltip",
+          "description": "Rains down fire on all enemies in a 10-meter radius for 7 seconds, dealing 367 (259 + 260% Magic Attack) Magic Damage."
+        }
+      ],
+      "abilityLevel": 25,
+      "cooldownSec": 39.0,
+      "castTimeSec": 2.0,
+      "icon": "icon_skill_magic16.png"
+    },
+    {
+      "id": "sorcery_searing_rain_hollow",
+      "skillset": "sorcery",
+      "name": "Hollow Searing Rain",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isChanneled": true,
+        "durationSec": 7,
+        "ccImmuneWhileChanneling": true
+      },
+      "skillId": 9011939,
+      "base": 259,
+      "scalingPct": 260,
+      "parseSource": "enlightened_preview_1_3_6",
+      "description": "Enlightened (Hollow): Rains down fire in a 10m radius up to 20m away for 7s, dealing Magic Damage per wave. Grants Crowd Control immunity while channeling. (AA Classic 1.3.6 Enlightened Preview)",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 9011939,
+          "base": 259,
+          "scalingPct": 260,
+          "parseSource": "enlightened_preview_1_3_6",
+          "description": "Enlightened (Hollow): Rains down fire in a 10m radius up to 20m away for 7s, dealing Magic Damage per wave. Grants Crowd Control immunity while channeling."
+        }
+      ],
+      "abilityLevel": 25,
+      "cooldownSec": 39.0,
+      "castTimeSec": 2.0,
+      "icon": "icon_hollow_searing_rain.png"
+    },
+    {
+      "id": "sorcery_chain_lightning",
+      "skillset": "sorcery",
+      "name": "Chain Lightning",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "chainBounceDecayPct": -50,
+        "maxBounces": 5
+      },
+      "skillId": 11967,
+      "base": 576,
+      "scalingPct": 280,
+      "parseSource": "detailed_tooltip",
+      "description": "Fires lightning bolts to deal 692 (576 + 280% Magic Attack) Magic Damage and Shock an enemy. May also affect other enemies within 5 meters.\nCan strike up to 5 times, dealing -50% less damage with each subsequent hit.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 11967,
+          "base": 576,
+          "scalingPct": 280,
+          "parseSource": "detailed_tooltip",
+          "description": "Fires lightning bolts to deal 692 (576 + 280% Magic Attack) Magic Damage and Shock an enemy. May also affect other enemies within 5 meters.\nCan strike up to 5 times, dealing -50% less damage with each subsequent hit."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 36.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic19.png"
+    },
+    {
+      "id": "sorcery_chain_lightning_flame",
+      "skillset": "sorcery",
+      "name": "Chain Lightning (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36476,
+      "base": 576,
+      "scalingPct": 280,
+      "parseSource": "detailed_tooltip",
+      "description": "Inflicts Consuming Flames on a single target, which deals 692 (576 + 280% Magic Attack) Magic Damage after 2 seconds and then travels to another enemy within 5m.\nThis effect repeats up to 4 times, inflicting 25% greater damage each time.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36476,
+          "base": 576,
+          "scalingPct": 280,
+          "parseSource": "detailed_tooltip",
+          "description": "Inflicts Consuming Flames on a single target, which deals 692 (576 + 280% Magic Attack) Magic Damage after 2 seconds and then travels to another enemy within 5m.\nThis effect repeats up to 4 times, inflicting 25% greater damage each time."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 36.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic37.png",
+      "ancestralElement": "flame"
+    },
+    {
+      "id": "sorcery_chain_lightning_wave",
+      "skillset": "sorcery",
+      "name": "Chain Lightning (Wave)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36477,
+      "base": 576,
+      "scalingPct": 280,
+      "parseSource": "detailed_tooltip",
+      "description": "Shoots a ball of ice that deals 692 (576 + 280% Magic Attack) Magic Damage to its target and then shatters, damaging and Snaring enemies in a 5m ring around the target.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36477,
+          "base": 576,
+          "scalingPct": 280,
+          "parseSource": "detailed_tooltip",
+          "description": "Shoots a ball of ice that deals 692 (576 + 280% Magic Attack) Magic Damage to its target and then shatters, damaging and Snaring enemies in a 5m ring around the target."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 36.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic36.png",
+      "ancestralElement": "wave"
+    },
+    {
+      "id": "sorcery_flame_barrier",
+      "skillset": "sorcery",
+      "name": "Flame Barrier",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 14774,
+      "base": 576,
+      "scalingPct": 150,
+      "parseSource": "detailed_tooltip",
+      "description": "Calls forth a wall of fire that deals 638 (576 + 150% Magic Attack) Fire Damage and Slows for 5s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 14774,
+          "base": 576,
+          "scalingPct": 150,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls forth a wall of fire that deals 638 (576 + 150% Magic Attack) Fire Damage and Slows for 5s."
+        }
+      ],
+      "abilityLevel": 45,
+      "cooldownSec": 33.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic22.png"
+    },
+    {
+      "id": "sorcery_meteor_strike",
+      "skillset": "sorcery",
+      "name": "Meteor Strike",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 10664,
+      "base": 1728,
+      "scalingPct": 900,
+      "parseSource": "detailed_tooltip",
+      "description": "Calls down a meteor, dealing 2102 (1728 + 900% Magic Attack) Magic Damage to all enemies in the target area.\nAlso inflicts Tripped on all enemies hit for 2.5 seconds.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10664,
+          "base": 1728,
+          "scalingPct": 900,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls down a meteor, dealing 2102 (1728 + 900% Magic Attack) Magic Damage to all enemies in the target area.\nAlso inflicts Tripped on all enemies hit for 2.5 seconds."
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 45.0,
+      "castTimeSec": 5.0,
+      "icon": "icon_skill_magic13.png"
+    },
+    {
+      "id": "sorcery_meteor_strike_wave",
+      "skillset": "sorcery",
+      "name": "Meteor Strike (Wave)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36478,
+      "base": 288,
+      "scalingPct": 500,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a barrage of giant hailstones to obliterate an area, inflicting up to 496 (288 + 500% Magic Attack) Magic Damage per hailstone.\nInflicts Deep Freeze on all enemies hit 5 or more times, causing them to Sleep for 20 seconds.\nBeing damaged by a direct attck will free the targets early, but debuffs that deal damage over time will not end this effect.\nDeep Freeze duration reduced -50% in PvP. \nDoes no damage to targets under the effects of Deep Freeze.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36478,
+          "base": 288,
+          "scalingPct": 500,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons a barrage of giant hailstones to obliterate an area, inflicting up to 496 (288 + 500% Magic Attack) Magic Damage per hailstone.\nInflicts Deep Freeze on all enemies hit 5 or more times, causing them to Sleep for 20 seconds.\nBeing damaged by a direct attck will free the targets early, but debuffs that deal damage over time will not end this effect.\nDeep Freeze duration reduced -50% in PvP. \nDoes no damage to targets under the effects of Deep Freeze."
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 45.0,
+      "castTimeSec": 5.0,
+      "icon": "icon_skill_magic38.png",
+      "ancestralElement": "wave"
+    },
+    {
+      "id": "sorcery_meteor_strike_lightning",
+      "skillset": "sorcery",
+      "name": "Meteor Strike (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36479,
+      "base": 1728,
+      "scalingPct": 540,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a massive thunderbolt at the target location, dealing 1952 (1728 + 540% Magic Attack) Magic Damage to enemies within its range. Inflicts Greater Shock on all enemies in the area of effect, dealing additional damage over time and dramatically slowing their move and attack speeds for 2.5 seconds.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36479,
+          "base": 1728,
+          "scalingPct": 540,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons a massive thunderbolt at the target location, dealing 1952 (1728 + 540% Magic Attack) Magic Damage to enemies within its range. Inflicts Greater Shock on all enemies in the area of effect, dealing additional damage over time and dramatically slowing their move and attack speeds for 2.5 seconds."
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic39.png",
+      "ancestralElement": "lightning"
+    },
+    {
+      "id": "sorcery_gods_whip",
+      "skillset": "sorcery",
+      "name": "Gods' Whip",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "hits": [
+        {
+          "skillId": 23593,
+          "label": "Strike 1",
+          "base": 201,
+          "scalingPct": 120,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls down lighting on a target area to deal 250 (201 + 120% Magic Attack) Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage but costing more mana."
+        },
+        {
+          "skillId": 23646,
+          "label": "Strike 2",
+          "base": 201,
+          "scalingPct": 140,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls down lighting on a target area to deal 259 (201 + 140% Magic Attack) Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+        },
+        {
+          "skillId": 23647,
+          "label": "Strike 3",
+          "base": 288,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls down lighting on a target area to deal 371 (288 + 200% Magic Attack) Magic Damage to enemies in a 5m radius and inflict Electric Shock on them.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+        },
+        {
+          "skillId": 23648,
+          "label": "Strike 4",
+          "base": 345,
+          "scalingPct": 240,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls down lighting on a target area to deal 444 (345 + 240% Magic Attack) Magic Damage to enemies in a 5m radius and inflict Electric Shock on them.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+        },
+        {
+          "skillId": 23649,
+          "label": "Strike 5",
+          "base": 432,
+          "scalingPct": 270,
+          "parseSource": "detailed_tooltip",
+          "description": "Calls down lighting on a target area to deal 544 (432 + 270% Magic Attack) Magic Damage to enemies in a 4m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+        }
+      ],
+      "description": "Calls down lighting on a target area to deal 250 (201 + 120% Magic Attack) Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage but costing more mana.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "hits": [
+            {
+              "skillId": 23593,
+              "label": "Strike 1",
+              "base": 201,
+              "scalingPct": 120,
+              "parseSource": "detailed_tooltip",
+              "description": "Calls down lighting on a target area to deal 250 (201 + 120% Magic Attack) Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage but costing more mana."
+            },
+            {
+              "skillId": 23646,
+              "label": "Strike 2",
+              "base": 201,
+              "scalingPct": 140,
+              "parseSource": "detailed_tooltip",
+              "description": "Calls down lighting on a target area to deal 259 (201 + 140% Magic Attack) Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+            },
+            {
+              "skillId": 23647,
+              "label": "Strike 3",
+              "base": 288,
+              "scalingPct": 200,
+              "parseSource": "detailed_tooltip",
+              "description": "Calls down lighting on a target area to deal 371 (288 + 200% Magic Attack) Magic Damage to enemies in a 5m radius and inflict Electric Shock on them.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+            },
+            {
+              "skillId": 23648,
+              "label": "Strike 4",
+              "base": 345,
+              "scalingPct": 240,
+              "parseSource": "detailed_tooltip",
+              "description": "Calls down lighting on a target area to deal 444 (345 + 240% Magic Attack) Magic Damage to enemies in a 5m radius and inflict Electric Shock on them.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+            },
+            {
+              "skillId": 23649,
+              "label": "Strike 5",
+              "base": 432,
+              "scalingPct": 270,
+              "parseSource": "detailed_tooltip",
+              "description": "Calls down lighting on a target area to deal 544 (432 + 270% Magic Attack) Magic Damage to enemies in a 4m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage, but costing more mana."
+            }
+          ],
+          "description": "Calls down lighting on a target area to deal 250 (201 + 120% Magic Attack) Magic Damage to enemies in a 6m radius; inflicts Electric Shock on enemies within a 5m radius.\nCan be used consecutively up to 5 times, with each attack dealing more damage but costing more mana."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic26.png",
+      "gcdSec": 1.5,
+      "gcdNote": "5 rapid weaveable strikes (~0.30s/whip; check Off-GCD on woven instants)"
+    },
+    {
+      "id": "sorcery_serpent_strike",
+      "skillset": "sorcery",
+      "name": "Serpent Strike",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 34291,
+      "base": 3744,
+      "scalingPct": 1080,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a magical serpent that burrows underground, erupting beneath the target to inflict up to 4193 (3744 + 1080% Magic Attack) Magic Damage.\nCan use anywhere from 1-6 Abyssal Charges once channeling begins, increasing the damage dealt with each additional charge used.\nUse this skill again during channeling to stop channeling early.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 34291,
+          "base": 3744,
+          "scalingPct": 1080,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons a magical serpent that burrows underground, erupting beneath the target to inflict up to 4193 (3744 + 1080% Magic Attack) Magic Damage.\nCan use anywhere from 1-6 Abyssal Charges once channeling begins, increasing the damage dealt with each additional charge used.\nUse this skill again during channeling to stop channeling early."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 22.0,
+      "castTimeSec": 6.0,
+      "icon": "icon_skill_hatred25.png"
+    },
+    {
+      "id": "sorcery_frigid_tracks",
+      "skillset": "sorcery",
+      "name": "Frigid Tracks",
+      "variant": "base",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base; removes Freezing Arrow cast time for 10s)",
+      "flags": {},
+      "comboEffect": {
+        "id": "frigid_tracks",
+        "label": "Frigid Tracks",
+        "summary": "Instant Freezing Arrow (10s)",
+        "durationSec": 10.0,
+        "removesCastTimeFor": [
+          "sorcery_freezing_arrow"
+        ]
+      },
+      "skillId": 11314,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Freezes the ground beneath your feet for 10s.\nCombo: Removes the cast time of Freezing Arrow while active.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 11314,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Freezes the ground beneath your feet for 10s.\nCombo: Removes the cast time of Freezing Arrow while active."
+        }
+      ],
+      "abilityLevel": 35,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_magic06.png"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "loadouts": [
+    {
+      "id": "custom_plate-mage_mwsthxfl",
+      "label": "Plate Mage",
+      "tokens": [
+        "bloody_chantey:2",
+        "zeal",
+        "amarendra_iv_s_blessing_16547",
+        "general_title",
+        "aranzebs_infusion",
+        "bulwark_ballad:2",
+        "health_lift:6",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_sausage",
+        "jujube": "jujube_juice",
+        "spellbook": "authority_wisdom",
+        "potion_r3": "ancient_library_relic",
+        "vaughn": "vaughns_potent_stout",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_cloth-mage_mwsvf6ky",
+      "label": "Cloth Mage",
+      "tokens": [
+        "bloody_chantey:2",
+        "zeal",
+        "amarendra_iv_s_blessing_16547",
+        "general_title",
+        "aranzebs_infusion",
+        "bulwark_ballad:2",
+        "health_lift:6",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_sausage",
+        "jujube": "jujube_juice",
+        "spellbook": "authority_wisdom",
+        "potion_r3": "kingdoms_heart",
+        "vaughn": "vaughns_potent_stout",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_leather-archer_mwsvrxmz",
+      "label": "Leather Archer",
+      "tokens": [
+        "feral_claws",
+        "zeal",
+        "andrion_ii_s_blessing_16541",
+        "general_title",
+        "bloody_chantey:2",
+        "freerunner:4",
+        "intensity:5",
+        "hollow_deadeye:100",
+        "double_recurve:5",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_ham",
+        "jujube": "jujube_juice",
+        "spellbook": "authority_power",
+        "potion_r3": "kingdoms_heart",
+        "vaughn": "vaughns_potent_stout",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_leather-melee_mwsxztg0",
+      "label": "Leather Melee",
+      "tokens": [
+        "weapon_mastery",
+        "andrion_ii_s_blessing_16541",
+        "zeal",
+        "delirium_5:5",
+        "battle_focus:4",
+        "bloody_chantey:2",
+        "sapphire_watchers_dagger:20",
+        "doomshadow_nodachi",
+        "general_title",
+        "bulwark_ballad:2",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_ham",
+        "jujube": "jujube_juice",
+        "spellbook": "authority_power",
+        "potion_r3": "kingdoms_heart",
+        "vaughn": "vaughns_potent_stout",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_defensive-healer_mwtgo5nt",
+      "label": "Defensive Healer",
+      "tokens": [
+        "bloody_chantey:2",
+        "zeal",
+        "amarendra_iv_s_blessing_16547",
+        "general_title",
+        "aranzebs_infusion",
+        "bulwark_ballad:2",
+        "ode_to_recovery_r5:4",
+        "health_lift:6",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_delight",
+        "jujube": "jujube_juice",
+        "spellbook": "bulwark_toughness",
+        "potion_r3": "kingdoms_heart",
+        "vaughn": "vaughns_soothing_tonic",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_offensive-healer_mwtgoowl",
+      "label": "Offensive Healer",
+      "tokens": [
+        "bloody_chantey:2",
+        "zeal",
+        "amarendra_iv_s_blessing_16547",
+        "general_title",
+        "aranzebs_infusion",
+        "bulwark_ballad:2",
+        "ode_to_recovery_r5:4",
+        "health_lift:6",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_delight",
+        "jujube": "jujube_juice",
+        "spellbook": "bulwark_wisdom",
+        "potion_r3": "kingdoms_heart",
+        "vaughn": "vaughns_soothing_tonic",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_cloth-tank_mwtr5no1",
+      "label": "Cloth Tank",
+      "tokens": [
+        "amarendra_iv_s_blessing_16547",
+        "bulwark_ballad:2",
+        "refreshment:8",
+        "general_title",
+        "aranzebs_boon:5",
+        "drum_to_the_arena_5700",
+        "bloody_chantey:2"
+      ],
+      "consumables": {
+        "manual": "combat_manual_flame",
+        "jujube": "jujube_juice",
+        "food": "pigglewiggle_delight",
+        "potion_r3": "kingdoms_heart",
+        "spellbook": "bulwark_toughness",
+        "vaughn": "vaughns_potent_stout",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_plate-tank_mwtrlmek",
+      "label": "Plate Tank",
+      "tokens": [
+        "amarendra_iv_s_blessing_16547",
+        "bulwark_ballad:2",
+        "refreshment:8",
+        "general_title",
+        "aranzebs_boon:5",
+        "drum_to_the_arena_5700",
+        "bloody_chantey:2"
+      ],
+      "consumables": {
+        "manual": "combat_manual_flame",
+        "jujube": "jujube_juice",
+        "food": "pigglewiggle_delight",
+        "potion_r3": "ancient_library_relic",
+        "spellbook": "bulwark_toughness",
+        "vaughn": "vaughns_potent_stout",
+        "talisman": "judges_mercurial_movement"
+      }
+    },
+    {
+      "id": "custom_plate-melee_mwttuyez",
+      "label": "Plate Melee",
+      "tokens": [
+        "weapon_mastery",
+        "andrion_ii_s_blessing_16541",
+        "zeal",
+        "delirium_5:5",
+        "battle_focus:4",
+        "bloody_chantey:2",
+        "sapphire_watchers_dagger:20",
+        "doomshadow_nodachi",
+        "general_title",
+        "drum_to_the_arena_5700"
+      ],
+      "consumables": {
+        "food": "pigglewiggle_ham",
+        "jujube": "jujube_juice",
+        "spellbook": "authority_power",
+        "potion_r3": "ancient_library_relic",
+        "vaughn": "vaughns_potent_stout",
+        "manual": "combat_manual_temper",
+        "talisman": "judges_mercurial_movement"
+      }
+    }
+  ]
+}

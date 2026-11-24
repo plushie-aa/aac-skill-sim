@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArcheAge Classic Skill Simulator</title>
+    <link rel="stylesheet" href="css/styles.css?v=33" />
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <h1>ArcheAge Classic Skill Simulator</h1>
+            </div>
+            <div class="bookmarklet-bar">
+                <button id="copyShareLinkBtn" type="button" class="sm" title="Copy a shareable comparison permalink encoding Build A, Build B, Defender, active tab &amp; buffs">&#128279; Share Link</button>
+                <button id="toggleCompactBuildsBtn" type="button" class="sm" title="Collapse the 3 character cards into a thin single-row bar">Compact Builds &#9652;</button>
+                <button id="openBuffPullBtn" type="button" class="sm primary" title="Fetch any ArcheAge Classic buff by ID from aa-classic.com and save it locally">+ Pull Buff ID</button>
+                <button id="openSettingsBtn" type="button" class="sm" title="Settings, Display Options &amp; DaruGear Sync">&#9881; Settings</button>
+            </div>
+        </header>
+
+        <!-- 3 Character Cards: Build A, Build B, Target / Defender -->
+        <section class="char-grid" id="charGrid"></section>
+
+        <!-- Build A vs. B Live Stat Diff Strip -->
+        <section class="build-diff-strip" id="buildDiffStrip"></section>
+
+        <!-- Simulation Output Workspace -->
+        <section class="sim-panel">
+            <div class="mode-tabs">
+                <button class="mode-tab active" data-mode="skills" type="button">Skill Breakdown (Build A vs B)</button>
+                <button class="mode-tab" data-mode="rotation" type="button">Rotation / Combo (TTK)</button>
+                <button class="mode-tab" data-mode="healing" type="button">Healing Simulation (A vs B)</button>
+                <button class="mode-tab" data-mode="sweep" type="button">Defense / Resilience Sweep (Break-Even)</button>
+                <button class="mode-tab" data-mode="defender" type="button">Defender A vs B (Survivability)</button>
+                <button class="mode-tab" data-mode="matrix" type="button">Matchup Matrix (All Builds)</button>
+                <button class="mode-tab" data-mode="gearbuilder" type="button">Gear Builder (20-Slot)</button>
+                <button class="mode-tab" data-mode="skillbuilder" type="button">Skill Builder (Passives)</button>
+                <button class="mode-tab" data-mode="economy" type="button">Economy (Build Cost)</button>
+            </div>
+
+            <!-- Unified Skill & Rank Selector (shared across all modes) -->
+            <div class="skill-browser" id="skillBrowser">
+                <div class="skill-browser-top">
+                    <div class="pill-bar" id="skillsetPills"></div>
+                    <div class="skill-browser-filters">
+                        <div class="search-wrap">
+                            <input type="text" id="skillSearch" placeholder="Search any skill... (/)" autocomplete="off" />
+                            <button type="button" id="clearSearchBtn" class="clear-btn hidden" title="Clear search">&times;</button>
+                        </div>
+                        <div class="seg-group" id="variantPills" title="Filter by skill variant">
+                            <button type="button" class="seg-btn" data-variant="all">All</button>
+                            <button type="button" class="seg-btn active" data-variant="base">Base</button>
+                            <button type="button" class="seg-btn" data-variant="abyssal">Abyssal</button>
+                            <button type="button" class="seg-btn" data-variant="ancestral">Ancestral</button>
+                            <button type="button" class="seg-btn" data-variant="hollow">Hollow</button>
+                        </div>
+                        <div class="seg-group" id="scopePills" title="Focus selected skill or compare all matching">
+                            <button type="button" class="seg-btn active" data-scope="single">Selected Skill</button>
+                            <button type="button" class="seg-btn" data-scope="all" id="compareAllScopeBtn">Compare All</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scrollable Visual Skill Card Grid -->
+                <div class="skill-cards-wrap" id="skillCardsWrap">
+                    <div class="skill-cards-grid" id="skillCardsGrid"></div>
+                </div>
+
+                <!-- Dedicated Skill Rank Selector Bar -->
+                <div class="rank-bar" id="rankBar"></div>
+
+                <!-- Custom Skill Formula Editor (shown when + Custom is active) -->
+                <div class="custom-skill-panel hidden" id="customSkillBar">
+                    <div class="custom-skill-header">
+                        <span class="stat-group-label" style="margin:0">Custom Skill Formula</span>
+                        <button type="button" class="sm" id="backToSkillsBtn">&larr; Back to Skill List</button>
+                    </div>
+                    <div class="custom-skill-fields">
+                        <div class="control-item">
+                            <label for="customSkillName">Name</label>
+                            <input type="text" id="customSkillName" value="Custom Skill" style="width:165px" />
+                        </div>
+                        <div class="control-item">
+                            <label for="customSkillKind">Type</label>
+                            <select id="customSkillKind">
+                                <option value="physical_melee">Physical (Melee Atk)</option>
+                                <option value="physical_ranged">Physical (Ranged Atk)</option>
+                                <option value="magic_spell">Magic (Magic Atk)</option>
+                                <option value="magic_heal">Magic (Healing Power)</option>
+                                <option value="heal">Heal (Healing Power)</option>
+                            </select>
+                        </div>
+                        <div class="control-item">
+                            <label for="customSkillBase">Base</label>
+                            <input type="number" id="customSkillBase" value="500" step="25" />
+                        </div>
+                        <div class="control-item">
+                            <label for="customSkillPct">Scaling %</label>
+                            <input type="number" id="customSkillPct" value="300" step="10" />
+                        </div>
+                        <div class="control-item">
+                            <label for="customSkillHits">Hits</label>
+                            <input type="number" id="customSkillHits" value="1" min="1" max="20" />
+                        </div>
+                        <div class="control-item">
+                            <input type="checkbox" id="customSkillUnavoidable" />
+                            <label for="customSkillUnavoidable">Unavoidable</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Situational Combat Flags (applies to all modes) -->
+            <div class="controls-bar" id="contextControls">
+                <div class="control-item">
+                    <input type="checkbox" id="ctxBackstab" />
+                    <label for="ctxBackstab">Backstab</label>
+                </div>
+                <div class="control-item">
+                    <input type="checkbox" id="ctxCC" />
+                    <label for="ctxCC">Target CC'd</label>
+                </div>
+                <div class="control-item">
+                    <input type="checkbox" id="ctxWithin8m" />
+                    <label for="ctxWithin8m">Within 8m</label>
+                </div>
+                <div class="control-item">
+                    <input type="checkbox" id="ctxBelow30" />
+                    <label for="ctxBelow30">Target &lt;30% HP</label>
+                </div>
+                <div class="control-item">
+                    <input type="checkbox" id="ctxPvE" />
+                    <label for="ctxPvE">PvE Target</label>
+                </div>
+                <div class="control-item" title="Include secondary Bleed/Poison/Shock DoTs (Piercing Shot, Toxic Shot, Arc Lightning), Wallop 4th-hit Bloodthirst finisher, and Stalker's Mark expiry burst">
+                    <input type="checkbox" id="ctxSecondaryEffects" />
+                    <label for="ctxSecondaryEffects">Secondary DoTs / Finishers</label>
+                </div>
+                <div class="control-item">
+                    <label for="ctxComboPct">Combo +%</label>
+                    <input type="number" id="ctxComboPct" value="0" step="5" />
+                </div>
+                <div class="control-item">
+                    <label for="ctxBloodthirst">Bloodthirst</label>
+                    <input type="number" id="ctxBloodthirst" value="10" min="0" max="30" />
+                </div>
+                <div class="control-item">
+                    <label for="ctxMettle">Mettle</label>
+                    <input type="number" id="ctxMettle" value="0" min="0" max="5000" step="100" />
+                </div>
+            </div>
+
+            <!-- Target Combo Debuffs / Statuses Bar (Skill Breakdown, Healing, Sweep, Defender) -->
+            <div class="combo-status-bar" id="comboStatusBar"></div>
+
+            <!-- Controls for Sweep Mode -->
+            <div class="controls-bar hidden" id="sweepControls">
+                <div class="control-item">
+                    <label for="sweepStat">Sweep Stat</label>
+                    <select id="sweepStat">
+                        <option value="physicalDefense">Physical Defense</option>
+                        <option value="magicDefense">Magic Defense</option>
+                        <option value="resilience">Resilience</option>
+                        <option value="toughness">Toughness</option>
+                    </select>
+                </div>
+                <div class="control-item">
+                    <label for="sweepMetric">Metric</label>
+                    <select id="sweepMetric">
+                        <option value="expected">Expected (Avg)</option>
+                        <option value="normal">Normal Hit</option>
+                        <option value="crit">Crit Hit</option>
+                    </select>
+                </div>
+                <div class="control-item">
+                    <label for="sweepStart">Start</label>
+                    <input type="number" id="sweepStart" value="0" min="0" step="500" />
+                </div>
+                <div class="control-item">
+                    <label for="sweepEnd">End</label>
+                    <input type="number" id="sweepEnd" value="24000" min="1000" step="1000" />
+                </div>
+                <div class="control-item">
+                    <label for="sweepStep">Step</label>
+                    <input type="number" id="sweepStep" value="1000" min="100" step="100" />
+                </div>
+            </div>
+
+            <!-- Dynamic Output Container -->
+            <div id="simOutput"></div>
+        </section>
+    </div>
+
+    <!-- Import / Export JSON Modal -->
+    <div class="modal-backdrop" id="importModal">
+        <div class="modal">
+            <div class="modal-header-row">
+                <h3 id="importModalTitle">Import Build JSON</h3>
+                <button type="button" class="sm" id="importFileBtn">Load .json / .txt File&hellip;</button>
+                <input type="file" id="importFileInput" accept=".json,.txt" class="hidden" />
+            </div>
+            <div class="hint-inline">
+                Paste a <strong>DaruGear link</strong> (<code>https://darugear.com/?s=...</code>) or share code below to import full gear, stats, buffs &amp; skills directly — no bookmarklet needed! You can also paste JSON or load a <code>.json</code> / <code>skill_dump_1.txt</code> file.
+            </div>
+            <div class="modal-name-row">
+                <label for="importDarugearInput">DaruGear URL</label>
+                <input type="text" id="importDarugearInput" placeholder="https://darugear.com/?s=XXXXXX or share code (no bookmarklet needed)" />
+                <button type="button" class="sm primary" id="importFetchDgBtn" title="Fetch full gear, calculated stats, buffs, and skill build directly from DaruGear">Fetch URL</button>
+            </div>
+            <div class="modal-name-row">
+                <label for="importNameInput">Build Name</label>
+                <input type="text" id="importNameInput" placeholder="Optional custom name (defaults to imported name)" />
+            </div>
+            <textarea id="importTextarea" placeholder='Paste a DaruGear URL (https://darugear.com/?s=...) above, or paste build JSON here...'></textarea>
+            <label class="modal-save-check">
+                <input type="checkbox" id="importSaveDiskCheck" checked />
+                <span id="importSaveDiskLabel">Also save build to disk (<code>builds/&lt;name&gt;.json</code>)</span>
+            </label>
+            <div id="importFeedback"></div>
+            <div class="modal-actions">
+                <button type="button" id="importCancelBtn">Cancel</button>
+                <button type="button" class="primary" id="importApplyBtn">Import Build</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pull Buff from AA Classic ID Modal -->
+    <div class="modal-backdrop" id="buffImportModal">
+        <div class="modal modal-buff-pull">
+            <div class="modal-header-row">
+                <h3>Pull Buff from AA Classic ID</h3>
+                <span class="hint-inline">Saves to <code>buffs/*.json</code> &amp; downloads icon locally</span>
+            </div>
+            <div class="buff-fetch-row">
+                <input type="text" id="buffIdInput" placeholder="Buff ID or URL (e.g. 1668, 18409, or aa-classic.com/database/buffs/18409)" />
+                <button type="button" class="primary" id="buffFetchBtn">Fetch Buff</button>
+            </div>
+            <div id="buffFetchFeedback"></div>
+            <div id="buffPreviewArea" class="buff-preview-area hidden">
+                <div class="buff-preview-head">
+                    <img id="buffPreviewIcon" class="buff-preview-icon hidden" src="" alt="" />
+                    <div class="buff-preview-meta">
+                        <div class="buff-preview-title-row">
+                            <input type="text" id="buffPreviewName" class="buff-preview-name" />
+                            <span id="buffPreviewIdTag" class="buff-id-tag"></span>
+                        </div>
+                        <div id="buffPreviewDesc" class="hint-inline"></div>
+                    </div>
+                </div>
+                <div class="buff-preview-controls">
+                    <label>
+                        <span>Side</span>
+                        <select id="buffPreviewSide">
+                            <option value="attacker">Attacker (Build A / B)</option>
+                            <option value="defender">Defender (Target / Def)</option>
+                            <option value="both">Both (Attacker &amp; Defender)</option>
+                        </select>
+                    </label>
+                    <label>
+                        <span>Category</span>
+                        <select id="buffPreviewKind">
+                            <option value="buff">Buff</option>
+                            <option value="debuff">Debuff</option>
+                        </select>
+                    </label>
+                </div>
+                <div id="buffPreviewStats" class="buff-preview-stats"></div>
+                <details class="buff-json-details">
+                    <summary>Edit stat JSON before saving (optional — useful for tick/scripted buffs)</summary>
+                    <textarea id="buffPreviewJson" class="buff-json-textarea"></textarea>
+                </details>
+            </div>
+            <div class="hint-inline">
+                CLI equivalent: <code>python tools/import_buff.py 1668 18409</code>
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="buffCancelBtn">Close</button>
+                <button type="button" class="primary" id="buffSaveBtn" disabled>Save &amp; Add to Simulator</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Skill to Rotation Modal -->
+    <div class="modal-backdrop" id="rotSkillPickerModal">
+        <div class="modal modal-skill-picker">
+            <div class="modal-header-row">
+                <h3>Add Skills to Combo</h3>
+                <span class="hint-inline">Click skills to append in order &bull; click Done when finished</span>
+            </div>
+            <div class="rot-picker-controls">
+                <input type="text" id="rotPickerSearch" placeholder="Search skills by name or skillset..." autocomplete="off" />
+                <div class="seg-group" id="rotPickerVariantPills">
+                    <button type="button" class="seg-btn active" data-rp-variant="all">All</button>
+                    <button type="button" class="seg-btn" data-rp-variant="base">Base</button>
+                    <button type="button" class="seg-btn" data-rp-variant="abyssal">Abyssal</button>
+                    <button type="button" class="seg-btn" data-rp-variant="ancestral">Ancestral</button>
+                    <button type="button" class="seg-btn" data-rp-variant="hollow">Hollow</button>
+                </div>
+            </div>
+            <div class="pill-bar" id="rotPickerTreePills"></div>
+            <div class="rot-picker-body" id="rotPickerBody"></div>
+            <div class="rot-picker-queue" id="rotPickerQueue"></div>
+            <div class="modal-actions">
+                <button type="button" id="rotPickerUndoBtn" class="sm">Undo Last</button>
+                <button type="button" class="primary" id="rotPickerDoneBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Compare: 1-to-1 Gear, Lunagems & Costume Swapper Modal -->
+    <div class="modal-backdrop" id="gearSwapModal">
+        <div class="modal modal-gear-swap">
+            <div class="modal-header-row">
+                <h3>Quick Compare &mdash; 1-to-1 Gear, Lunagems &amp; Costume Swapper</h3>
+                <div class="gs-top-actions">
+                    <div class="seg-group" id="gsTargetSlotPills">
+                        <button type="button" class="seg-btn" data-gs-slot="A">Edit Build A</button>
+                        <button type="button" class="seg-btn active" data-gs-slot="B">Edit Build B</button>
+                    </div>
+                    <button type="button" class="sm" id="gsCloneAtoBBtn" title="Clone Build A (stats, gear &amp; buffs) into Build B as a clean baseline">Clone A &rarr; B</button>
+                </div>
+            </div>
+            <div class="gs-body" id="gearSwapBody"></div>
+            <div class="gs-preview-bar" id="gearSwapPreview"></div>
+            <div class="modal-actions">
+                <button type="button" class="primary" id="gsDoneBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings & DaruGear Sync Modal -->
+    <div class="modal-backdrop" id="settingsModal">
+        <div class="modal modal-settings">
+            <div class="modal-header-row">
+                <h3>&#9881; Simulator Settings</h3>
+                <span class="settings-override-badge hidden" id="settingsFormulaBadge" title="Custom formula overrides are active">Custom Formulas</span>
+            </div>
+
+            <div class="settings-tabs" role="tablist">
+                <button type="button" class="settings-tab-btn active" data-settings-tab="general">Display &amp; Rounding</button>
+                <button type="button" class="settings-tab-btn" data-settings-tab="buffs">Buff Defaults</button>
+                <button type="button" class="settings-tab-btn" data-settings-tab="formulas">Formulas</button>
+                <button type="button" class="settings-tab-btn" data-settings-tab="sync">Sync &amp; Backup</button>
+            </div>
+
+            <div class="settings-body">
+                <!-- Tab 1: Display & Rounding -->
+                <div class="settings-pane" data-settings-pane="general">
+                    <div class="settings-section-lbl">Display &amp; Readability</div>
+                    <label class="settings-toggle-card" for="settingsAdvancedModeChk">
+                        <div class="settings-toggle-text">
+                            <strong>Advanced Options (Show All Stats &amp; Math Details)</strong>
+                            <span class="settings-sync-desc">When off, hides granular sub-stats, marginal stat weight tables, extra stat drawers, and formula footnotes for a cleaner UI.</span>
+                        </div>
+                        <span class="settings-switch">
+                            <input type="checkbox" id="settingsAdvancedModeChk" />
+                            <span class="settings-switch-track"></span>
+                        </span>
+                    </label>
+
+                    <label class="settings-toggle-card" for="settingsHideOffSpecChk" style="margin-top:8px">
+                        <div class="settings-toggle-text">
+                            <strong>Hide Off-Spec Attack Tiles on Character Cards</strong>
+                            <span class="settings-sync-desc">Shows only the relevant Effective Attack / Healing Power tile(s) matching each build&rsquo;s Category (e.g. Melee only for Melee builds).</span>
+                        </div>
+                        <span class="settings-switch">
+                            <input type="checkbox" id="settingsHideOffSpecChk" />
+                            <span class="settings-switch-track"></span>
+                        </span>
+                    </label>
+
+                    <div class="settings-section-lbl" style="margin-top:14px">Number Format &amp; Rounding</div>
+                    <div class="settings-form-grid">
+                        <label class="settings-field">
+                            <span>Large Number Format</span>
+                            <select id="settingsNumberFormat">
+                                <option value="exact">Exact (e.g. 548,912)</option>
+                                <option value="abbrev">Abbreviated (e.g. 548.9k / 1.13M)</option>
+                            </select>
+                            <small>Applies to EHP, damage, HP &amp; display readouts (&ge; 10,000).</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Percentage &amp; Rate Decimals</span>
+                            <select id="settingsDecimalPlaces">
+                                <option value="0">0 decimals (42%)</option>
+                                <option value="1">1 decimal (42.3%)</option>
+                                <option value="2">2 decimals (42.35%)</option>
+                            </select>
+                            <small>Controls rounding on % deltas, crit rates, and HP lost %.</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Defender Comparison Primary Metric</span>
+                            <select id="settingsDefMetric">
+                                <option value="hp_pct">% of Max HP Lost (Recommended)</option>
+                                <option value="raw">Raw Damage Taken</option>
+                            </select>
+                            <small>Chooses the headline metric and winner highlight in Defender A vs B.</small>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Category Default Buff Loadouts -->
+                <div class="settings-pane hidden" data-settings-pane="buffs">
+                    <div class="settings-section-lbl">Archetype &amp; Armor Default Buff Loadouts</div>
+                    <p class="hint-inline" style="margin:0 0 10px">
+                        Assign a saved buff preset (from <code>buffs/loadouts.json</code>) to each build Category, with optional <strong>Plate</strong>, <strong>Leather</strong>, and <strong>Cloth</strong> armor variants. Each build auto-detects its Category and dominant Armor Type from equipped gear.
+                    </p>
+                    <label class="settings-toggle-card" for="settingsAutoApplyCatBuffsChk">
+                        <div class="settings-toggle-text">
+                            <strong>Auto-Apply Category &amp; Armor Defaults on Load &amp; Import</strong>
+                            <span class="settings-sync-desc">Whenever you load a saved build or import a DaruGear link, automatically apply its matching Plate/Leather/Cloth variant (or Category fallback) configured below.</span>
+                        </div>
+                        <span class="settings-switch">
+                            <input type="checkbox" id="settingsAutoApplyCatBuffsChk" />
+                            <span class="settings-switch-track"></span>
+                        </span>
+                    </label>
+
+                    <div id="settingsCatLoadoutsGrid" class="settings-cat-grid" style="margin-top:10px"></div>
+
+                    <div class="settings-add-cat-bar" style="margin-top:10px">
+                        <input type="text" id="settingsNewCatName" placeholder="New custom archetype (e.g. Raid Bard, Offensive Healer, Bruiser)" maxlength="40" />
+                        <input type="text" id="settingsNewCatHint" placeholder="Short description (optional)" maxlength="80" />
+                        <button type="button" class="sm primary" id="settingsAddCatBtn">+ Add Archetype</button>
+                    </div>
+
+                    <div class="settings-actions-inline" style="margin-top:12px">
+                        <button type="button" class="primary sm" id="settingsApplyCatNowBtn">Apply Defaults to Active Slots Now</button>
+                        <button type="button" class="sm" id="settingsAutoFillCatBtn" title="Automatically match saved presets like Plate Mage, Cloth Mage, Leather Melee, Plate Tank to their corresponding slots">&#10024; Auto-Match Presets</button>
+                        <span class="hint-inline">Create or edit presets in any Character Card &rarr; <strong>Buffs</strong> &rarr; <strong>+ Save Set</strong>.</span>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Formula Overrides -->
+                <div class="settings-pane hidden" data-settings-pane="formulas">
+                    <div class="settings-section-lbl">Combat Formula Constants (What-If / Patch Testing)</div>
+                    <p class="hint-inline" style="margin:0 0 10px">
+                        Override AA Classic 3.5 combat constants in real time without touching code. All EHP, damage, rotation, and matrix views recalculate immediately.
+                    </p>
+                    <div class="settings-form-grid">
+                        <label class="settings-field settings-field-full">
+                            <span>Avoidance Roll Model (Evasion / Parry / Block)</span>
+                            <select id="settingsFormulaAvoidModel">
+                                <option value="additive">Additive Single-Roll Table (AA Classic 3.5 Default)</option>
+                                <option value="multiplicative">Multiplicative Independent Rolls (1 &minus; (1&minus;E)(1&minus;P)(1&minus;B))</option>
+                            </select>
+                            <small>Additive caps combined E+P+B cleanly in priority order; Multiplicative rolls each check independently.</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Defense K <em class="settings-def-hint">(default: 7900)</em></span>
+                            <input type="number" step="100" min="100" id="settingsFormulaDefenseK" placeholder="7900" />
+                            <small>Mitigation = Def / (Def + K)</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Toughness K <em class="settings-def-hint">(default: 1600)</em></span>
+                            <input type="number" step="50" min="50" id="settingsFormulaToughnessK" placeholder="1600" />
+                            <small>PvP DR = Tough / (Tough + K)</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Resilience Crit Rate K <em class="settings-def-hint">(default: 10000)</em></span>
+                            <input type="number" step="100" min="100" id="settingsFormulaResilCrK" placeholder="10000" />
+                            <small>Crit Rate Red % = Resil / (Resil + K)</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Resilience Crit Bonus K <em class="settings-def-hint">(default: 5600)</em></span>
+                            <input type="number" step="100" min="100" id="settingsFormulaResilCdK" placeholder="5600" />
+                            <small>Crit Bonus Red % = 1.6 &times; Resil / (Resil + K)</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Focus Negation % / Point <em class="settings-def-hint">(default: 0.005)</em></span>
+                            <input type="number" step="0.0005" min="0" max="1" id="settingsFormulaFocusPerPt" placeholder="0.005" />
+                            <small>0.005 = 10% total negation at 2,000 Focus</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Shield Block Dmg Multiplier <em class="settings-def-hint">(default: 0)</em></span>
+                            <input type="number" step="0.05" min="0" max="1" id="settingsFormulaBlockMult" placeholder="0" />
+                            <small>0 = full block (0% dmg); 0.4 = 60% damage reduction</small>
+                        </label>
+                        <label class="settings-field">
+                            <span>Max Crit Bonus Cap % <em class="settings-def-hint">(default: 300)</em></span>
+                            <input type="number" step="10" min="50" max="1000" id="settingsFormulaMaxCritBonus" placeholder="300" />
+                            <small>Hard cap on total Critical Damage Bonus %</small>
+                        </label>
+                    </div>
+                    <div class="settings-actions-inline" style="margin-top:12px">
+                        <button type="button" class="sm" id="settingsFormulaResetBtn">&#8634; Reset to AA Classic 3.5 Defaults</button>
+                        <span class="hint-inline" id="settingsFormulaStatus">Using AA Classic 3.5 default constants.</span>
+                    </div>
+                </div>
+
+                <!-- Tab 4: DaruGear Sync, Backup & Tools -->
+                <div class="settings-pane hidden" data-settings-pane="sync">
+                    <div class="settings-section-lbl">Workspace Backup &amp; Restore</div>
+                    <div class="settings-sync-card">
+                        <div class="settings-sync-head">
+                            <strong>Full Workspace Snapshot (.json)</strong>
+                            <div class="settings-tools-row">
+                                <button type="button" class="sm primary" id="settingsExportBackupBtn">&darr; Export Backup (.json)</button>
+                                <button type="button" class="sm" id="settingsImportBackupBtn">&uarr; Import Backup (.json)</button>
+                                <input type="file" id="settingsImportBackupFile" accept=".json" class="hidden" />
+                            </div>
+                        </div>
+                        <div class="settings-sync-desc">Exports or restores all saved builds, custom buffs, buff loadouts, saved combos/rotations, and simulator settings in one portable JSON file.</div>
+                        <div class="settings-sync-meta" id="settingsBackupMeta">Ready</div>
+                    </div>
+
+                    <div class="settings-section-lbl" style="margin-top:14px">DaruGear &amp; Economy Data Sync</div>
+                    <div id="settingsSyncStaticNotice" class="msg-warn hidden" style="margin-bottom:8px">
+                        <strong>Static hosting mode:</strong> DaruGear CSV scraping, Auction House price scraping &amp; live buff-ID pulling require running locally with <code>python tools/serve.py</code>. Workspace Backup Export/Import, direct DaruGear URL import, bundled AH price snapshots, and browser storage for builds, presets &amp; combos work fully here.
+                    </div>
+                    <div class="settings-sync-bar-row">
+                        <button type="button" class="primary" id="settingsResyncAllBtn">&#8635; Resync All from DaruGear (Gear + Skills + Builds)</button>
+                        <label class="gs-inline-field" title="Leave blank to auto-detect the latest DaruGear extract_dump version (e.g. v35)">
+                            Version
+                            <input type="text" id="settingsVersionInput" placeholder="Auto" style="width:82px" />
+                        </label>
+                    </div>
+                    <div class="settings-sync-grid">
+                        <div class="settings-sync-card">
+                            <div class="settings-sync-head">
+                                <strong>Stored Gear Catalog</strong>
+                                <button type="button" class="sm primary" id="settingsResyncGearBtn">&#8635; Update Gear</button>
+                            </div>
+                            <div class="settings-sync-desc">Scrapes weapons, armor, accessories, gliders, lunagems, lunafrosts, synthesis pools, set effects, armor grade buffs &amp; titles from DaruGear.</div>
+                            <div class="settings-sync-meta" id="settingsGearMeta">Loading status...</div>
+                        </div>
+                        <div class="settings-sync-card">
+                            <div class="settings-sync-head">
+                                <strong>Stored Skills &amp; Passives</strong>
+                                <button type="button" class="sm primary" id="settingsResyncSkillsBtn">&#8635; Update Skills</button>
+                            </div>
+                            <div class="settings-sync-desc">Scrapes active skills, passives &amp; class names from DaruGear while preserving AA Classic Ancestral variants and simulator passive hooks.</div>
+                            <div class="settings-sync-meta" id="settingsSkillsMeta">Loading status...</div>
+                        </div>
+                        <div class="settings-sync-card">
+                            <div class="settings-sync-head">
+                                <strong>Saved Builds (DaruGear Links)</strong>
+                                <button type="button" class="sm primary" id="settingsResyncBuildsBtn">&#8635; Resync DaruGear Builds</button>
+                            </div>
+                            <div class="settings-sync-desc">Re-pulls every saved build that has a DaruGear share code, recalculating latest stats &amp; gear while keeping your custom names, categories, buffs &amp; consumables.</div>
+                            <div class="settings-sync-meta" id="settingsBuildsMeta">Loading status...</div>
+                        </div>
+                        <div class="settings-sync-card">
+                            <div class="settings-sync-head">
+                                <strong>Auction House Prices (sermeatball.com)</strong>
+                                <button type="button" class="sm primary" id="settingsResyncEconomyBtn">&#8635; Sync AH Prices</button>
+                            </div>
+                            <div class="settings-sync-desc">Opt-in scrape of ArcheAge Classic Auction House price history (lunagems, lunafrosts &amp; gear) from <code>sermeatball.com</code> for the Economy tab. Never runs automatically and preserves your manual overrides.</div>
+                            <div class="settings-sync-meta" id="settingsEconomyMeta">Loading status...</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section-lbl" style="margin-top:14px">DaruGear Tools (Bookmarklet)</div>
+                    <div class="settings-sync-card">
+                        <div class="settings-tools-row">
+                            <a id="bookmarkletLink" class="bookmarklet-pill" href="#" title="Drag this button to your browser bookmarks bar, then click it on darugear.com">
+                                &#9733; Export from DaruGear
+                            </a>
+                            <button id="copyBookmarkletBtn" type="button" class="sm">Copy Bookmarklet Code</button>
+                        </div>
+                        <div class="settings-sync-desc">Optional fallback if you want to export directly from an open <code>darugear.com</code> tab (drag the star pill to your bookmarks bar). Direct URL fetching in the Import modal works without this.</div>
+                    </div>
+
+                    <div id="settingsSyncLog" class="settings-sync-log hidden" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" id="settingsCloseBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastBar" class="toast-bar hidden" role="status" aria-live="polite"></div>
+
+    <script type="module" src="js/ui/app.js?v=61"></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+{
+  "skillset": "defense",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "per_skillset_naked (skill_dump_defense.txt)",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 7,
+  "skills": [
+    {
+      "id": "defense_shield_slam",
+      "skillset": "defense",
+      "name": "Shield Slam",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 10399,
+      "base": 576,
+      "scalingPct": 130,
+      "parseSource": "detailed_tooltip",
+      "description": "Swings your shield at an enemy, dealing 759  (593 + 133% Melee Attack) Physical Damage and Stunning them for 2.6s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10399,
+          "base": 576,
+          "scalingPct": 130,
+          "parseSource": "detailed_tooltip",
+          "description": "Swings your shield at an enemy, dealing 759  (593 + 133% Melee Attack) Physical Damage and Stunning them for 2.6s."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant01.png"
+    },
+    {
+      "id": "defense_shield_slam_quick",
+      "skillset": "defense",
+      "name": "Shield Slam (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 36456,
+      "base": 461,
+      "scalingPct": 50,
+      "parseSource": "detailed_tooltip",
+      "description": "Strike an enemy with your shield, dealing 537 (474 + 51% Melee Attack) Physical Damage. Interrupts the target, canceling all Cast Time, Channeled, and Ongoing skills.\nThis skill has a dramatically shorter Cooldown than regular Shield Slam, but deals less damage and does not Stun.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36456,
+          "base": 461,
+          "scalingPct": 50,
+          "parseSource": "detailed_tooltip",
+          "description": "Strike an enemy with your shield, dealing 537 (474 + 51% Melee Attack) Physical Damage. Interrupts the target, canceling all Cast Time, Channeled, and Ongoing skills.\nThis skill has a dramatically shorter Cooldown than regular Shield Slam, but deals less damage and does not Stun."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 4.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant33.png",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base quick interrupt)",
+      "ancestralElement": "gale"
+    },
+    {
+      "id": "defense_shield_slam_arc",
+      "skillset": "defense",
+      "name": "Shield Slam (Quake)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 36457,
+      "base": 576,
+      "scalingPct": 130,
+      "parseSource": "detailed_tooltip",
+      "description": "Swing your shield in an arc, dealing 759 (593 + 133% Melee Attack) Physical Damage to multiple enemies in front of you and Stunning them for 2.6s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 36457,
+          "base": 576,
+          "scalingPct": 130,
+          "parseSource": "detailed_tooltip",
+          "description": "Swing your shield in an arc, dealing 759 (593 + 133% Melee Attack) Physical Damage to multiple enemies in front of you and Stunning them for 2.6s."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant34.png",
+      "ancestralElement": "quake"
+    },
+    {
+      "id": "defense_bull_rush",
+      "skillset": "defense",
+      "name": "Bull Rush",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 10501,
+      "base": 720,
+      "scalingPct": 130,
+      "parseSource": "detailed_tooltip",
+      "description": "Ram the enemy with a disruptive shield attack, inflicting 907 (741 + 133% Melee Attack) Physical Damage and Silencing the target for 5.8s. \nInterrupts the target, canceling all Cast Time, Channeled, and Ongoing skills.\nIncreases Aggro generation +200% for 5 seconds afterwards.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 10501,
+          "base": 720,
+          "scalingPct": 130,
+          "parseSource": "detailed_tooltip",
+          "description": "Ram the enemy with a disruptive shield attack, inflicting 907 (741 + 133% Melee Attack) Physical Damage and Silencing the target for 5.8s. \nInterrupts the target, canceling all Cast Time, Channeled, and Ongoing skills.\nIncreases Aggro generation +200% for 5 seconds afterwards."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant28.png"
+    },
+    {
+      "id": "defense_ollos_hammer",
+      "skillset": "defense",
+      "name": "Ollo's Hammer",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 18757,
+      "base": 696,
+      "scalingPct": 230,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons Ollo's hammer and hurls it toward a location; inflicts Trip on an enemy for 2.5s if it hits.\nAlso deals 1011 (716 + 236% Melee Attack) Physical Damage to all enemies within 3m of the target location.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 18757,
+          "base": 696,
+          "scalingPct": 230,
+          "parseSource": "detailed_tooltip",
+          "description": "Summons Ollo's hammer and hurls it toward a location; inflicts Trip on an enemy for 2.5s if it hits.\nAlso deals 1011 (716 + 236% Melee Attack) Physical Damage to all enemies within 3m of the target location."
+        }
+      ],
+      "abilityLevel": 35,
+      "cooldownSec": 42.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will26.png"
+    },
+    {
+      "id": "defense_revitalizing_cheer",
+      "skillset": "defense",
+      "name": "Revitalizing Cheer",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "multiplierStat": "heal_mul",
+      "flags": {
+        "mettleScalePct": 50
+      },
+      "skillId": 12046,
+      "base": 575,
+      "scalingPct": 99.94,
+      "parseSource": "linear_two_point_preserved_ratio",
+      "description": "Restores +617 Health plus an amount equal to 50% of your stacked Mettle.\nConsumes all stacked Mettle and cures one debuff.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "arg2": 0,
+          "skillId": 12046,
+          "base": 575,
+          "scalingPct": 99.94,
+          "parseSource": "linear_two_point_preserved_ratio",
+          "description": "Restores +617 Health plus an amount equal to 50% of your stacked Mettle.\nConsumes all stacked Mettle and cures one debuff."
+        }
+      ],
+      "abilityLevel": 25,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant14.png",
+      "gcdSec": 0,
+      "gcdNote": "No GCD (off-GCD instant self-heal; usable during GCD)"
+    },
+    {
+      "id": "defense_ollos_hammer_hollow",
+      "skillset": "defense",
+      "name": "Hollow Ollo's Hammer",
+      "variant": "hollow",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "base": 480,
+      "scalingPct": 230,
+      "parseSource": "hollow_preview",
+      "description": "Enlightened Hollow Defense Mark: Summons Ollo's Shield and hurls it toward a target location, dealing Physical Damage within 3m and inflicting Disarm for 3s.\nOnce the shield lands, emanates a protective shield every second absorbing up to 3,000 damage for nearby allies.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "base": 480,
+          "scalingPct": 230,
+          "description": "Enlightened Hollow Defense Mark: Hurls Ollo's Shield, dealing Physical Damage within 3m, Disarming enemies for 3s, and emanating a 3,000-damage shield every second for allies."
+        }
+      ],
+      "abilityLevel": 55,
+      "cooldownSec": 42.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_hollow_ollos_hammer.png"
+    }
+  ]
+}

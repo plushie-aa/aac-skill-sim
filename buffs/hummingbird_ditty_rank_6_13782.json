@@ -1,0 +1,14 @@
+{
+  "id": "hummingbird_ditty_rank_6_13782",
+  "aacBuffId": 13782,
+  "name": "Hummingbird Ditty (Rank 6)",
+  "side": "attacker",
+  "isCustom": true,
+  "description": "Reduces Cast Time -11%. (AA Classic buff 13782; 30m)",
+  "icon": "assets/icons/icon_skill_romance01.png",
+  "addOffense": {
+    "castTimePct": -11
+  },
+  "filename": "buffs/hummingbird_ditty_rank_6_13782.json",
+  "savedAt": "2026-11-23T22:18:13.354154+00:00"
+}

@@ -1,0 +1,682 @@
+{
+  "schemaVersion": 1,
+  "savedId": "example-spellsinger-mage",
+  "filename": "example-builds/example-spellsinger-mage.json",
+  "savedAt": "2026-01-01T00:00:00.000Z",
+  "isExample": true,
+  "name": "Example: Spellsinger (Mage)",
+  "source": "example",
+  "metadata": {
+    "source": "example",
+    "darugearUrl": null,
+    "shareCode": null,
+    "className": "Spellsinger",
+    "category": "mage",
+    "title": "1st Rank Knight",
+    "equipmentType": "two_hand",
+    "gearScore": 6480
+  },
+  "shareUrl": null,
+  "darugearUrl": null,
+  "shareCode": null,
+  "className": "Spellsinger",
+  "level": 55,
+  "gearScore": 6480,
+  "maxHealth": 25200,
+  "maxMana": 22800,
+  "baseAttributes": {
+    "str": 8,
+    "agi": 158,
+    "sta": 158,
+    "int": 458,
+    "spi": 8
+  },
+  "attributes": {
+    "str": 45,
+    "agi": 220,
+    "sta": 710,
+    "int": 1390,
+    "spi": 120
+  },
+  "offense": {
+    "meleeAttack": 180,
+    "rangedAttack": 180,
+    "magicAttack": 1360,
+    "healingPower": 60,
+    "meleeAccuracyPct": 100,
+    "rangedAccuracyPct": 100,
+    "magicAccuracyPct": 100,
+    "meleeCritRatePct": 15,
+    "rangedCritRatePct": 15,
+    "magicCritRatePct": 41.0,
+    "healCritRatePct": 10,
+    "meleeCritBonusPct": 50,
+    "rangedCritBonusPct": 50,
+    "magicCritBonusPct": 196.0,
+    "healCritBonusPct": 50,
+    "meleeSkillDamagePct": 0,
+    "rangedSkillDamagePct": 0,
+    "magicSkillDamagePct": 16.5,
+    "healingPct": 0,
+    "backstabMeleeDamagePct": 0,
+    "backstabRangedDamagePct": 0,
+    "backstabMagicDamagePct": 0,
+    "defensePenetration": 0,
+    "magicDefensePenetration": 2450,
+    "shieldDefPenRatePct": 0,
+    "shieldDefPenPct": 0,
+    "focus": 0,
+    "attackSpeed": 120,
+    "castTimePct": 68.0
+  },
+  "defense": {
+    "physicalDefense": 5450,
+    "magicDefense": 12900,
+    "shieldPhysicalDefense": 0,
+    "hasShield": false,
+    "dualWieldRangedParry": false,
+    "toughness": 3620,
+    "resilience": 4680,
+    "evasionPct": 10.5,
+    "parryPct": 6.0,
+    "rangedParryPct": 0,
+    "blockPct": 0,
+    "receivedMeleeDrPct": 9.0,
+    "receivedRangedDrPct": 9.0,
+    "receivedMagicDrPct": 12.0,
+    "fixedMeleeDr": 0,
+    "fixedRangedDr": 0,
+    "fixedMagicDr": 0,
+    "receivedHealingPct": 0
+  },
+  "modifiers": [],
+  "consumables": {},
+  "equipment": [
+    {
+      "slotId": 0,
+      "slotName": "Costume",
+      "itemId": 8000926,
+      "name": "Magic Basic Costume",
+      "type": "Synthesis Gear",
+      "gradeId": 10,
+      "gradeName": "Legendary",
+      "gradeColor": "#ffb326",
+      "icon": "assets/icons/icon_item_3288.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [],
+      "synthStats": [
+        "Magic Attack +58",
+        "Magic Critical Rate +4.4%",
+        "Magic Critical Damage +24.0%",
+        "Magic Defense Penetration +620"
+      ]
+    },
+    {
+      "slotId": 1,
+      "slotName": "Head",
+      "itemId": 31565,
+      "name": "Ayanad Wave Hood",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_hm/nu_f_hm_cloth173.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Wave Lunadrop",
+        "text": "Intelligence +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 2,
+      "slotName": "Chest",
+      "itemId": 31566,
+      "name": "Ayanad Wave Shirt",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_ar/nu_f_ar_cloth172.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Honorbold Warrior's Lunafrost",
+        "text": "Received Damage -3%"
+      },
+      "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 3,
+      "slotName": "Waist",
+      "itemId": 31571,
+      "name": "Ayanad Wave Sash",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/icon_item_belt_cloth_0011.png",
+      "ptemper": 106,
+      "mtemper": 106,
+      "temper": 106,
+      "lunafrost": {
+        "name": "Astral Wave Lunadrop",
+        "text": "Intelligence +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 4,
+      "slotName": "Wrists",
+      "itemId": 31570,
+      "name": "Ayanad Wave Sleeves",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/icon_item_arm_cloth_0015.png",
+      "ptemper": 106,
+      "mtemper": 106,
+      "temper": 106,
+      "lunafrost": {
+        "name": "Astral Wave Lunadrop",
+        "text": "Intelligence +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 5,
+      "slotName": "Hands",
+      "itemId": 31568,
+      "name": "Ayanad Wave Gloves",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_gv/nu_m_gv_cloth172.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Wave Lunadrop",
+        "text": "Intelligence +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 6,
+      "slotName": "Cloak",
+      "itemId": 43116,
+      "name": "Erenor Flaming Windsong Cloak",
+      "type": "Cloak",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_cp/nu_m_cp_cloth286.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": null,
+      "lunagems": [],
+      "synthStats": [
+        "Intelligence +102",
+        "Stamina +62",
+        "Magic Critical Damage +15.0%"
+      ]
+    },
+    {
+      "slotId": 7,
+      "slotName": "Legs",
+      "itemId": 31567,
+      "name": "Ayanad Wave Pants",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_pt/nu_m_pt_cloth172.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Astral Wave Lunadrop",
+        "text": "Intelligence +9"
+      },
+      "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 8,
+      "slotName": "Feet",
+      "itemId": 31569,
+      "name": "Ayanad Wave Shoes",
+      "type": "Cloth",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/costume_bo/nu_f_bo_cloth172.png",
+      "ptemper": 108,
+      "mtemper": 108,
+      "temper": 108,
+      "lunafrost": {
+        "name": "Flawless Wave Lunafrost",
+        "text": "Stat #66 +12"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 9,
+      "slotName": "Undergarments",
+      "itemId": 8001857,
+      "name": "Magic Black Cat Undergarments",
+      "type": "Synthesis Gear",
+      "gradeId": 10,
+      "gradeName": "Legendary",
+      "gradeColor": "#ffb326",
+      "icon": "assets/icons/costume_set/nu_f_in_pants008_df.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Astral Wave Lunadrop",
+        "text": "Intelligence +9"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        }
+      ],
+      "synthStats": [
+        "Magic Critical Damage +19.0%",
+        "Magic Defense Penetration +560",
+        "Cast Time -3.5%"
+      ]
+    },
+    {
+      "slotId": 10,
+      "slotName": "Neck",
+      "itemId": 9001876,
+      "name": "Enlightened Ayanad Wave Necklace",
+      "type": "Necklace",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_wave_necklace.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Transcendent Lunafrost",
+        "text": "Magic Attack +3; Magic Defense +53"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 11,
+      "slotName": "Earring",
+      "itemId": 9001888,
+      "name": "Enlightened Ayanad Wave Earring",
+      "type": "Earring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_wave_earring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Transcendent Lunafrost",
+        "text": "Magic Attack +3; Magic Defense +53"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 12,
+      "slotName": "Earring",
+      "itemId": 18821,
+      "name": "Delphinad Wave Earring",
+      "type": "Earring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/icon_item_earring_0033.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Transcendent Lunafrost",
+        "text": "Magic Attack +3; Magic Defense +53"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 13,
+      "slotName": "Ring",
+      "itemId": 9001883,
+      "name": "Enlightened Ayanad Wave Ring",
+      "type": "Ring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_wave_ring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Transcendent Lunafrost",
+        "text": "Magic Attack +3; Magic Defense +53"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 14,
+      "slotName": "Ring",
+      "itemId": 9001883,
+      "name": "Enlightened Ayanad Wave Ring",
+      "type": "Ring",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_wave_ring.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Transcendent Lunafrost",
+        "text": "Magic Attack +3; Magic Defense +53"
+      },
+      "lunagems": [],
+      "synthStats": []
+    },
+    {
+      "slotId": 15,
+      "slotName": "Right Hand Weapon",
+      "itemId": 31402,
+      "name": "Ayanad Wave Staff",
+      "type": "Staff",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "icon": "https://darugear.com/assets/icons/icon_item_staff_2h_0047.png",
+      "ptemper": 100,
+      "mtemper": 113,
+      "temper": 113,
+      "lunafrost": null,
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Destruction",
+          "text": "Magic Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Destruction",
+          "text": "Magic Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Destruction",
+          "text": "Magic Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Destruction",
+          "text": "Magic Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Destruction",
+          "text": "Magic Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Destruction",
+          "text": "Magic Critical Damage +4%"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 17,
+      "slotName": "Ranged Weapon",
+      "itemId": 31410,
+      "name": "Ayanad Wave Bow",
+      "type": "Bow",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "assets/icons/icon_item_bow_0088.png",
+      "ptemper": 100,
+      "mtemper": 106,
+      "temper": 106,
+      "lunafrost": null,
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        }
+      ],
+      "synthStats": []
+    },
+    {
+      "slotId": 18,
+      "slotName": "Instrument",
+      "itemId": 31427,
+      "name": "Ayanad Wave Flute",
+      "type": "Flute",
+      "gradeId": 8,
+      "gradeName": "Divine",
+      "gradeColor": "#d9a466",
+      "icon": "https://darugear.com/assets/icons/icon_item_ins_w_0037.png",
+      "ptemper": 100,
+      "mtemper": 100,
+      "temper": 100,
+      "lunafrost": {
+        "name": "Distorted Transcendent Lunafrost",
+        "text": "Magic Attack +3; Magic Defense +53"
+      },
+      "lunagems": [
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Breakthrough",
+          "text": "Magic Defense Pen +60"
+        }
+      ],
+      "synthStats": []
+    }
+  ],
+  "skillBuild": {
+    "trees": [
+      "sorcery",
+      "songcraft",
+      "shadowplay"
+    ],
+    "className": "Spellsinger",
+    "actives": {
+      "sorcery": [
+        "Flamebolt",
+        "Freezing Arrow",
+        "Insulating Lens",
+        "Arc Lightning",
+        "Freezing Earth",
+        "Searing Rain",
+        "Chain Lightning",
+        "Gods' Whip",
+        "Meteor Strike"
+      ],
+      "songcraft": [
+        "Critical Discord",
+        "Startling Strain",
+        "Quickstep",
+        "Bloody Chantey",
+        "Hummingbird Ditty"
+      ],
+      "shadowplay": [
+        "Drop Back",
+        "Stealth",
+        "Shadowstep",
+        "Freerunner"
+      ]
+    },
+    "passives": {
+      "sorcery": [
+        "Mana Pool Increase",
+        "Magic Range Boost",
+        "Efficient Sorcery",
+        "Mana Flurry",
+        "Aranzeb's Infusion"
+      ],
+      "songcraft": [
+        "Zeal",
+        "Disciplined Performance"
+      ],
+      "shadowplay": []
+    },
+    "hatredTree": null,
+    "ancestrals": {}
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "builds": {
+    "syncedAt": "2026-11-24T03:34:13.767798+00:00",
+    "updated": 18,
+    "total": 18
+  },
+  "gearCatalog": {
+    "version": "v35",
+    "syncedAt": "2026-11-24T03:33:28.876336+00:00",
+    "counts": {
+      "weapons": 2047,
+      "armors": 4147,
+      "accessories": 894,
+      "totalItems": 7088,
+      "lunagems": 259,
+      "lunafrosts": 352,
+      "titles": 291,
+      "equipmentBuffs": 33,
+      "setEffects": 422,
+      "synthCategories": 70
+    }
+  },
+  "skills": {
+    "version": "v35",
+    "syncedAt": "2026-11-24T03:33:29.934348+00:00",
+    "counts": {
+      "trees": 10,
+      "actives": 150,
+      "passives": 80,
+      "ancestrals": 61,
+      "classes": 120
+    }
+  },
+  "economy": {
+    "source": "sermeatball.com",
+    "sourceUrl": "https://sermeatball.com/auction/item-price-history",
+    "syncedAt": "2026-11-24T02:38:32.878467+00:00",
+    "counts": {
+      "items": 2229,
+      "gems": 144,
+      "frosts": 117,
+      "total": 2490,
+      "buildsMatchedItems": 82,
+      "buildsTotalItems": 161,
+      "buildsMatchedGems": 37,
+      "buildsTotalGems": 45,
+      "buildsMatchedFrosts": 14,
+      "buildsTotalFrosts": 56
+    }
+  }
+}

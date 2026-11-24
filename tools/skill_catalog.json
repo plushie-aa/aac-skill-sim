@@ -1,0 +1,1096 @@
+{
+  "schemaVersion": 1,
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "skills": [
+    {
+      "id": "battlerage_triple_slash",
+      "skillset": "battlerage",
+      "name": "Triple Slash",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "hits": [
+        { "label": "Strike 1", "skillId": 18132 },
+        { "label": "Strike 2", "skillId": 18132 },
+        { "label": "Strike 3", "skillId": 18131 }
+      ],
+      "flags": { "noGcd": true, "combos": ["+damage vs Tripped (Strike 2)"] }
+    },
+    {
+      "id": "battlerage_triple_slash_lightning",
+      "skillset": "battlerage",
+      "name": "Triple Slash (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "hits": [
+        { "label": "Strike 1", "skillId": 36401 },
+        { "label": "Strike 2", "skillId": 36402 },
+        { "label": "Strike 3", "skillId": 36403 }
+      ]
+    },
+    {
+      "id": "battlerage_triple_slash_quake",
+      "skillset": "battlerage",
+      "name": "Triple Slash (Quake)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "hits": [
+        { "label": "Strike 1", "skillId": 36404 },
+        { "label": "Strike 2", "skillId": 36405 },
+        { "label": "Strike 3", "skillId": 36406 }
+      ]
+    },
+    {
+      "id": "battlerage_charge",
+      "skillset": "battlerage",
+      "name": "Charge",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 11918
+    },
+    {
+      "id": "battlerage_whirlwind_slash",
+      "skillset": "battlerage",
+      "name": "Whirlwind Slash",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "hits": [
+        { "label": "Strike 1", "skillId": 13282 },
+        { "label": "Strike 2", "skillId": 32040 },
+        { "label": "Strike 3", "skillId": 32049 }
+      ],
+      "flags": { "combos": ["+damage vs Shaken (Strike 1)", "+damage vs Tripped (Strike 2)"] }
+    },
+    {
+      "id": "battlerage_sunder_earth",
+      "skillset": "battlerage",
+      "name": "Sunder Earth",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 10644
+    },
+    {
+      "id": "battlerage_precision_strike",
+      "skillset": "battlerage",
+      "name": "Precision Strike",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 12026,
+      "flags": { "critDamageBonusPct": 60, "backstabCritRateBonusPct": 34 }
+    },
+    {
+      "id": "battlerage_precision_strike_gale",
+      "skillset": "battlerage",
+      "name": "Precision Strike (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36446,
+      "flags": { "critDamageBonusPct": 60, "executeCritRateBonusPct": 34 }
+    },
+    {
+      "id": "battlerage_precision_strike_lightning",
+      "skillset": "battlerage",
+      "name": "Precision Strike (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36447,
+      "flags": { "critDamageBonusPct": 60, "backstabCritRateBonusPct": 34 }
+    },
+    {
+      "id": "battlerage_tiger_strike",
+      "skillset": "battlerage",
+      "name": "Tiger Strike",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 13315,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "battlerage_tiger_strike_lightning",
+      "skillset": "battlerage",
+      "name": "Tiger Strike (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36448,
+      "repeatCount": 3,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "battlerage_tiger_strike_earth",
+      "skillset": "battlerage",
+      "name": "Tiger Strike (Earth)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36449,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "battlerage_behind_enemy_lines",
+      "skillset": "battlerage",
+      "name": "Behind Enemy Lines",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 23587
+    },
+    {
+      "id": "battlerage_swordfall",
+      "skillset": "battlerage",
+      "name": "Swordfall",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 34120
+    },
+
+    {
+      "id": "witchcraft_earthen_grip",
+      "skillset": "witchcraft",
+      "name": "Earthen Grip",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 14376
+    },
+    {
+      "id": "witchcraft_earthen_grip_aoe",
+      "skillset": "witchcraft",
+      "name": "Earthen Grip (Ancestral AoE)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36450
+    },
+    {
+      "id": "witchcraft_enervate",
+      "skillset": "witchcraft",
+      "name": "Enervate",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10159,
+      "flags": { "appliesAntiHealPct": -60 }
+    },
+    {
+      "id": "witchcraft_focal_concussion",
+      "skillset": "witchcraft",
+      "name": "Focal Concussion",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11353
+    },
+    {
+      "id": "witchcraft_dahutas_breath",
+      "skillset": "witchcraft",
+      "name": "Dahuta's Breath",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11443
+    },
+
+    {
+      "id": "defense_shield_slam",
+      "skillset": "defense",
+      "name": "Shield Slam",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 10399
+    },
+    {
+      "id": "defense_shield_slam_quick",
+      "skillset": "defense",
+      "name": "Shield Slam (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36456
+    },
+    {
+      "id": "defense_shield_slam_arc",
+      "skillset": "defense",
+      "name": "Shield Slam (Quake)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36457
+    },
+    {
+      "id": "defense_bull_rush",
+      "skillset": "defense",
+      "name": "Bull Rush",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 10501
+    },
+    {
+      "id": "defense_ollos_hammer",
+      "skillset": "defense",
+      "name": "Ollo's Hammer",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 18757
+    },
+    {
+      "id": "defense_revitalizing_cheer",
+      "skillset": "defense",
+      "name": "Revitalizing Cheer",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 12046,
+      "parseMode": "linear_two_point",
+      "flags": { "mettleScalePct": 50 }
+    },
+
+    {
+      "id": "auramancy_comets_boon",
+      "skillset": "auramancy",
+      "name": "Comet's Boon",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 18222
+    },
+    {
+      "id": "auramancy_vicious_implosion",
+      "skillset": "auramancy",
+      "name": "Vicious Implosion",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10710,
+      "flags": { "combos": ["+52% damage per Inspire stack (up to 3)"] }
+    },
+    {
+      "id": "auramancy_abyssal_wave",
+      "skillset": "auramancy",
+      "name": "Abyssal Wave",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 34090
+    },
+
+    {
+      "id": "occultism_mana_stars",
+      "skillset": "occultism",
+      "name": "Mana Stars",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 14810,
+      "flags": { "noGcd": true, "stackDamageBonusPct": 2, "maxStacks": 10 }
+    },
+    {
+      "id": "occultism_mana_stars_gale",
+      "skillset": "occultism",
+      "name": "Mana Stars (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36620,
+      "flags": { "noGcd": true }
+    },
+    {
+      "id": "occultism_mana_stars_flame",
+      "skillset": "occultism",
+      "name": "Mana Stars (Flame AoE)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36623,
+      "flags": { "noGcd": true, "stackDamageBonusPct": 2, "maxStacks": 10 }
+    },
+    {
+      "id": "occultism_mana_force",
+      "skillset": "occultism",
+      "name": "Mana Force",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 12759
+    },
+    {
+      "id": "occultism_hell_spear",
+      "skillset": "occultism",
+      "name": "Hell Spear",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10135
+    },
+    {
+      "id": "occultism_hell_spear_single",
+      "skillset": "occultism",
+      "name": "Hell Spear (Ancestral Single)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36586
+    },
+    {
+      "id": "occultism_hell_spear_flame",
+      "skillset": "occultism",
+      "name": "Hell Spear (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36587
+    },
+    {
+      "id": "occultism_absorb_lifeforce",
+      "skillset": "occultism",
+      "name": "Absorb Lifeforce",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11441,
+      "flags": { "isDot": true, "durationSec": 6.5 }
+    },
+    {
+      "id": "occultism_summon_crows",
+      "skillset": "occultism",
+      "name": "Summon Crows",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11395,
+      "flags": { "isDot": true, "durationSec": 5 }
+    },
+    {
+      "id": "occultism_crippling_mire",
+      "skillset": "occultism",
+      "name": "Crippling Mire",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10201,
+      "flags": { "isDot": true, "durationSec": 4.5 }
+    },
+    {
+      "id": "occultism_summon_wraith",
+      "skillset": "occultism",
+      "name": "Summon Wraith (per sec)",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10434,
+      "flags": { "isDot": true, "durationSec": 9, "perTickFormula": true }
+    },
+    {
+      "id": "occultism_summon_wraith_burst",
+      "skillset": "occultism",
+      "name": "Summon Wraith (Ancestral Burst)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36627
+    },
+    {
+      "id": "occultism_deaths_vengeance",
+      "skillset": "occultism",
+      "name": "Death's Vengeance",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 23591
+    },
+
+    {
+      "id": "archery_charged_bolt",
+      "skillset": "archery",
+      "name": "Charged Bolt",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 16210,
+      "flags": { "unavoidable": true, "rangePenaltyBelow8mPct": -20 }
+    },
+    {
+      "id": "archery_charged_bolt_short",
+      "skillset": "archery",
+      "name": "Charged Bolt (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 36468,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "archery_charged_bolt_fast",
+      "skillset": "archery",
+      "name": "Charged Bolt (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 36469,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "archery_piercing_shot",
+      "skillset": "archery",
+      "name": "Piercing Shot",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 13564,
+      "flags": { "rangePenaltyBelow8mPct": -20, "hasBleedDot": true }
+    },
+    {
+      "id": "archery_endless_arrows",
+      "skillset": "archery",
+      "name": "Endless Arrows",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 14835,
+      "parseMode": "percent_of_stat",
+      "flags": { "noGcd": true, "rangePenaltyBelow8mPct": -20 }
+    },
+    {
+      "id": "archery_endless_arrows_flame",
+      "skillset": "archery",
+      "name": "Endless Arrows (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 39663
+    },
+    {
+      "id": "archery_boneyard",
+      "skillset": "archery",
+      "name": "Boneyard",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 14760
+    },
+    {
+      "id": "archery_concussive_arrow",
+      "skillset": "archery",
+      "name": "Concussive Arrow",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 11933,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "archery_concussive_arrow_charge",
+      "skillset": "archery",
+      "name": "Concussive Arrow (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 36470,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "archery_concussive_arrow_smoke",
+      "skillset": "archery",
+      "name": "Concussive Arrow (Mist)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 36471,
+      "flags": { "unavoidable": true }
+    },
+    {
+      "id": "archery_missile_rain",
+      "skillset": "archery",
+      "name": "Missile Rain",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 13281
+    },
+    {
+      "id": "archery_missile_rain_flame",
+      "skillset": "archery",
+      "name": "Missile Rain (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 36472
+    },
+    {
+      "id": "archery_missile_rain_gale",
+      "skillset": "archery",
+      "name": "Missile Rain (Gale)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 36473
+    },
+    {
+      "id": "archery_snipe",
+      "skillset": "archery",
+      "name": "Snipe",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 23592
+    },
+    {
+      "id": "archery_hunting_pack",
+      "skillset": "archery",
+      "name": "Hunting Pack",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 34288
+    },
+
+    {
+      "id": "sorcery_flamebolt",
+      "skillset": "sorcery",
+      "name": "Flamebolt",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "hits": [
+        { "label": "Cast 1", "skillId": 10752 },
+        { "label": "Cast 2", "skillId": 24894 },
+        { "label": "Cast 3", "skillId": 24895 }
+      ],
+      "flags": { "combos": ["+12% damage vs Freezing targets"] }
+    },
+    {
+      "id": "sorcery_flamebolt_flame",
+      "skillset": "sorcery",
+      "name": "Flamebolt (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36474
+    },
+    {
+      "id": "sorcery_flamebolt_lightning",
+      "skillset": "sorcery",
+      "name": "Flamebolt (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36475,
+      "repeatCount": 3
+    },
+    {
+      "id": "sorcery_freezing_arrow",
+      "skillset": "sorcery",
+      "name": "Freezing Arrow",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10667
+    },
+    {
+      "id": "sorcery_arc_lightning",
+      "skillset": "sorcery",
+      "name": "Arc Lightning",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10670
+    },
+    {
+      "id": "sorcery_freezing_earth",
+      "skillset": "sorcery",
+      "name": "Freezing Earth",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10151
+    },
+    {
+      "id": "sorcery_searing_rain",
+      "skillset": "sorcery",
+      "name": "Searing Rain",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11939
+    },
+    {
+      "id": "sorcery_chain_lightning",
+      "skillset": "sorcery",
+      "name": "Chain Lightning",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11967,
+      "flags": { "chainBounceDecayPct": -50, "maxBounces": 5 }
+    },
+    {
+      "id": "sorcery_chain_lightning_flame",
+      "skillset": "sorcery",
+      "name": "Chain Lightning (Flame)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36476
+    },
+    {
+      "id": "sorcery_chain_lightning_wave",
+      "skillset": "sorcery",
+      "name": "Chain Lightning (Wave)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36477
+    },
+    {
+      "id": "sorcery_flame_barrier",
+      "skillset": "sorcery",
+      "name": "Flame Barrier",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 14774
+    },
+    {
+      "id": "sorcery_meteor_strike",
+      "skillset": "sorcery",
+      "name": "Meteor Strike",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 10664
+    },
+    {
+      "id": "sorcery_meteor_strike_wave",
+      "skillset": "sorcery",
+      "name": "Meteor Strike (Wave Hail)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36478
+    },
+    {
+      "id": "sorcery_meteor_strike_lightning",
+      "skillset": "sorcery",
+      "name": "Meteor Strike (Lightning)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 36479
+    },
+    {
+      "id": "sorcery_gods_whip",
+      "skillset": "sorcery",
+      "name": "Gods' Whip",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "hits": [
+        { "label": "Strike 1", "skillId": 23593 },
+        { "label": "Strike 2", "skillId": 23646 },
+        { "label": "Strike 3", "skillId": 23647 },
+        { "label": "Strike 4", "skillId": 23648 },
+        { "label": "Strike 5", "skillId": 23649 }
+      ]
+    },
+    {
+      "id": "sorcery_serpent_strike",
+      "skillset": "sorcery",
+      "name": "Serpent Strike",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 34291
+    },
+
+    {
+      "id": "shadowplay_rapid_strike",
+      "skillset": "shadowplay",
+      "name": "Rapid Strike",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 18125,
+      "flags": { "noGcd": true, "backstabCritRateBonusPct": 50 }
+    },
+    {
+      "id": "shadowplay_overwhelm",
+      "skillset": "shadowplay",
+      "name": "Overwhelm",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 10648
+    },
+    {
+      "id": "shadowplay_overwhelm_gale",
+      "skillset": "shadowplay",
+      "name": "Overwhelm (Ancestral Backstab)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 36588
+    },
+    {
+      "id": "shadowplay_wallop",
+      "skillset": "shadowplay",
+      "name": "Wallop",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 12029,
+      "flags": { "shredsPhysicalDefensePerHit": 120, "hitCount": 4 }
+    },
+    {
+      "id": "shadowplay_stalkers_mark",
+      "skillset": "shadowplay",
+      "name": "Stalker's Mark",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 12139,
+      "flags": { "rangePenaltyBelow8mPct": -20, "appliesAntiHealPct": -60 }
+    },
+    {
+      "id": "shadowplay_toxic_shot",
+      "skillset": "shadowplay",
+      "name": "Toxic Shot",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "rangedAttack",
+      "skillId": 10481,
+      "flags": { "rangePenaltyBelow8mPct": -20, "hasPoisonDot": true }
+    },
+    {
+      "id": "shadowplay_pin_down",
+      "skillset": "shadowplay",
+      "name": "Pin Down",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 13344
+    },
+    {
+      "id": "shadowplay_shadowsmite",
+      "skillset": "shadowplay",
+      "name": "Shadowsmite",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 10496,
+      "parseMode": "shadowsmite",
+      "flags": { "bloodthirstBasePerStack": 277, "backstabMeleeAttackPct": 400 }
+    },
+    {
+      "id": "shadowplay_throw_dagger",
+      "skillset": "shadowplay",
+      "name": "Throw Dagger",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "skillId": 23594
+    },
+
+    {
+      "id": "songcraft_critical_discord",
+      "skillset": "songcraft",
+      "name": "Critical Discord",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11973
+    },
+    {
+      "id": "songcraft_dissonance",
+      "skillset": "songcraft",
+      "name": "Dissonance",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "skillId": 11943,
+      "flags": { "shredsMagicDefense": 320, "reducesEnemySkillDamagePct": -20 }
+    },
+    {
+      "id": "songcraft_healing_hymn",
+      "skillset": "songcraft",
+      "name": "Healing Hymn",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 17413
+    },
+    {
+      "id": "songcraft_ode_to_recovery",
+      "skillset": "songcraft",
+      "name": "Ode to Recovery (per sec)",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 10724,
+      "parseMode": "static_formula",
+      "staticBase": 119,
+      "staticScalingPct": 10,
+      "flags": { "isHot": true, "isPerform": true, "durationSec": 15, "perTickFormula": true }
+    },
+    {
+      "id": "songcraft_rhythmic_renewal",
+      "skillset": "songcraft",
+      "name": "Rhythmic Renewal (per sec)",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 11948,
+      "parseMode": "linear_two_point",
+      "flags": { "isHot": true, "durationSec": 60, "perTickFormula": true }
+    },
+
+    {
+      "id": "vitalism_holy_bolt",
+      "skillset": "vitalism",
+      "name": "Holy Bolt",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "healingPower",
+      "skillId": 33345,
+      "flags": { "pveBonusPct": 40 }
+    },
+    {
+      "id": "vitalism_antithesis_heal",
+      "skillset": "vitalism",
+      "name": "Antithesis (Heal)",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 10534,
+      "formulaIndex": 0
+    },
+    {
+      "id": "vitalism_antithesis_damage",
+      "skillset": "vitalism",
+      "name": "Antithesis (Damage)",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "healingPower",
+      "skillId": 10534,
+      "formulaIndex": 1,
+      "flags": { "pveBonusPct": 35 }
+    },
+    {
+      "id": "vitalism_antithesis_mist_heal",
+      "skillset": "vitalism",
+      "name": "Antithesis (Mist Heal)",
+      "variant": "ancestral",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 36630
+    },
+    {
+      "id": "vitalism_antithesis_wave_heal",
+      "skillset": "vitalism",
+      "name": "Antithesis (Wave AoE Heal)",
+      "variant": "ancestral",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 36631,
+      "formulaIndex": 0
+    },
+    {
+      "id": "vitalism_antithesis_wave_damage",
+      "skillset": "vitalism",
+      "name": "Antithesis (Wave AoE Damage)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "healingPower",
+      "skillId": 36631,
+      "formulaIndex": 1
+    },
+    {
+      "id": "vitalism_resurgence",
+      "skillset": "vitalism",
+      "name": "Resurgence (Total 10s)",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 10547,
+      "flags": { "isHot": true, "durationSec": 10 }
+    },
+    {
+      "id": "vitalism_resurgence_channel",
+      "skillset": "vitalism",
+      "name": "Resurgence (Ancestral per sec)",
+      "variant": "ancestral",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 36635,
+      "flags": { "isHot": true, "durationSec": 25, "perTickFormula": true }
+    },
+    {
+      "id": "vitalism_skewer",
+      "skillset": "vitalism",
+      "name": "Skewer",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "healingPower",
+      "skillId": 13286,
+      "flags": { "pveBonusPct": 35 }
+    },
+    {
+      "id": "vitalism_skewer_multi",
+      "skillset": "vitalism",
+      "name": "Skewer (Ancestral 3-Cast)",
+      "variant": "ancestral",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "healingPower",
+      "hits": [
+        { "label": "Cast 1", "skillId": 36637 },
+        { "label": "Cast 2", "skillId": 36638 },
+        { "label": "Cast 3", "skillId": 36639 }
+      ]
+    },
+    {
+      "id": "vitalism_mend",
+      "skillset": "vitalism",
+      "name": "Mend",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 10720,
+      "parseMode": "linear_two_point"
+    },
+    {
+      "id": "vitalism_fervent_healing",
+      "skillset": "vitalism",
+      "name": "Fervent Healing",
+      "variant": "base",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "hits": [
+        { "label": "Cast 1 (1.00x)", "skillId": 14929 },
+        { "label": "Cast 2 (1.25x)", "skillId": 14930 },
+        { "label": "Cast 3 (1.50x)", "skillId": 14931 },
+        { "label": "Cast 4 (1.75x)", "skillId": 14932 },
+        { "label": "Cast 5 (2.00x)", "skillId": 14933 }
+      ]
+    },
+    {
+      "id": "vitalism_fervent_healing_nocd",
+      "skillset": "vitalism",
+      "name": "Fervent Healing (Ancestral No-CD)",
+      "variant": "ancestral",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "skillId": 36632
+    }
+  ]
+}

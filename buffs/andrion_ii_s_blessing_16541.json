@@ -1,0 +1,46 @@
+{
+  "id": "andrion_ii_s_blessing_16541",
+  "aacBuffId": 16541,
+  "name": "Andrion II's Blessing",
+  "side": "both",
+  "isCustom": true,
+  "description": "Melee Attack +10 Ranged Attack +10 Magic Attack +10 Healing Power +10000 Received Melee Damage --6% Received Ranged Damage --6% Received Magic Damage --6% Production Time -5% All proficiencies +2000 Does not stack with other territories' blessings. (AA Classic buff 16541; 4320m; Utility: Alchemy Proficiency +2000, Construction Proficiency +2000, Cooking Proficiency +2000, Handicraft Proficiency +2000)",
+  "icon": "assets/icons/icon_skill_buff329.png",
+  "addOffense": {
+    "meleeAttack": 10,
+    "rangedAttack": 10,
+    "magicAttack": 10,
+    "healingPower": 10
+  },
+  "addDefense": {
+    "receivedMeleeDrPct": 6,
+    "receivedMagicDrPct": 6,
+    "receivedRangedDrPct": 6
+  },
+  "unmappedModifiers": [
+    "Alchemy Proficiency +2000",
+    "Construction Proficiency +2000",
+    "Cooking Proficiency +2000",
+    "Handicraft Proficiency +2000",
+    "Husbandry Proficiency +2000",
+    "Farming Proficiency +2000",
+    "Fishing Proficiency +2000",
+    "Logging Proficiency +2000",
+    "Gathering Proficiency +2000",
+    "Machinery Proficiency +2000",
+    "Metalwork Proficiency +2000",
+    "Printing Proficiency +2000",
+    "Mining Proficiency +2000",
+    "Masonry Proficiency +2000",
+    "Tailoring Proficiency +2000",
+    "Leathercraft Proficiency +2000",
+    "Weaponry Proficiency +2000",
+    "Carpentry Proficiency +2000",
+    "Larceny Proficiency +2000",
+    "Commerce Proficiency +2000",
+    "Artistry Proficiency +2000",
+    "Actability exploration +2000"
+  ],
+  "filename": "buffs/andrion_ii_s_blessing_16541.json",
+  "savedAt": "2026-11-22T16:31:46.252101+00:00"
+}

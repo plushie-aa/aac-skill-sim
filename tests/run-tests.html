@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>damage-sim Engine Tests</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #14171f; color: #e6ebf5; padding: 24px; }
+        .pass { color: #5eead4; }
+        .fail { color: #f87171; }
+        pre { background: #1e2433; padding: 12px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h1>ArcheAge Classic 1.3.6 Engine Verification</h1>
+    <div id="summary">Running tests...</div>
+    <ul id="results"></ul>
+    <script type="module">
+        import { runAllTests } from "./engine.test.js";
+        const results = await runAllTests();
+        const passed = results.filter((r) => r.pass).length;
+        const summary = document.getElementById("summary");
+        summary.textContent = `${passed} / ${results.length} tests passed`;
+        summary.className = passed === results.length ? "pass" : "fail";
+        const ul = document.getElementById("results");
+        for (const r of results) {
+            const li = document.createElement("li");
+            li.className = r.pass ? "pass" : "fail";
+            li.textContent = `${r.pass ? "PASS" : "FAIL"}: ${r.name}${r.error ? " — " + r.error : ""}`;
+            ul.appendChild(li);
+        }
+        window.__TEST_RESULTS__ = { passed, total: results.length, results };
+    </script>
+</body>
+</html>
