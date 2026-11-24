@@ -2,7 +2,9 @@
 
 HTML + vanilla JavaScript (ES Modules) damage, gear, and build economy simulator for ArcheAge Classic.
 
-## Quick Start
+Open it now in your browser at [the github page.](https://plushie-aa.github.io/aac-skill-sim/)
+
+## Local Install Quick Start
 
 Run the bundled Python dev server from the repo root (enables saving builds/combos/buff presets/economy prices to disk, direct DaruGear URL fetching, AA Classic Buff ID importing, and live DaruGear resync):
 
@@ -10,18 +12,11 @@ Run the bundled Python dev server from the repo root (enables saving builds/comb
 python tools/serve.py --host 127.0.0.1 --port 8765
 ```
 
-*(Any static server such as `python -m http.server 8765 --bind 127.0.0.1` or GitHub Pages also works — server-only controls are automatically disabled, and edits to builds, buff loadouts, combos, settings, and economy prices persist in `localStorage`.)*
+*(Any static server such as `python -m http.server 8765 --bind 127.0.0.1` or GitHub Pages also works — server-only controls are automatically disabled, and edits persist in `localStorage`.)*
 
 Then open:
 - **Simulator:** `http://127.0.0.1:8765/index.html`
 - **Engine Unit Tests:** `http://127.0.0.1:8765/tests/run-tests.html` (`44 / 44` tests)
-
-## Deploying to GitHub Pages
-
-A ready-to-use GitHub Actions workflow is included at `.github/workflows/pages.yml`:
-1. Push this repository to GitHub (`main` branch).
-2. In your repository **Settings → Pages**, set **Source** to **GitHub Actions**.
-3. Pushing to `main` (or running the workflow manually) automatically stages and deploys the static simulator bundle with `example-builds/` (excluding personal `builds/`, `tools/`, and `addon/`), running strictly on browser `localStorage`.
 
 ## Sharing Comparisons & Shortcuts
 
