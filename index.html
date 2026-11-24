@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ArcheAge Classic Skill Simulator</title>
-    <link rel="stylesheet" href="css/styles.css?v=33" />
+    <link rel="stylesheet" href="css/styles.css?v=34" />
 </head>
 <body>
     <div class="app-shell">
@@ -343,6 +343,7 @@
                 <button type="button" class="settings-tab-btn" data-settings-tab="buffs">Buff Defaults</button>
                 <button type="button" class="settings-tab-btn" data-settings-tab="formulas">Formulas</button>
                 <button type="button" class="settings-tab-btn" data-settings-tab="sync">Sync &amp; Backup</button>
+                <button type="button" class="settings-tab-btn" data-settings-tab="credits">Credits</button>
             </div>
 
             <div class="settings-body">
@@ -564,6 +565,76 @@
                     </div>
 
                     <div id="settingsSyncLog" class="settings-sync-log hidden" aria-live="polite"></div>
+                </div>
+
+                <!-- Tab 5: Credits, Links & License -->
+                <div class="settings-pane hidden" data-settings-pane="credits">
+                    <div class="settings-section-lbl">About &amp; Author</div>
+                    <div class="settings-sync-card credits-card">
+                        <div class="settings-sync-head">
+                            <strong>ArcheAge Classic Skill &amp; Damage Simulator</strong>
+                            <span class="credits-author-pill">Created by Plushie</span>
+                        </div>
+                        <div class="credits-links-row">
+                            <a class="credits-link-btn primary" href="https://github.com/plushie-aa/aac-skill-sim" target="_blank" rel="noopener noreferrer">GitHub Repository &#8599;</a>
+                            <a class="credits-link-btn" href="https://plushie-aa.github.io/aac-skill-sim/" target="_blank" rel="noopener noreferrer">GitHub Pages Live App &#8599;</a>
+                            <a class="credits-link-btn" href="https://github.com/plushie-aa/aac-skill-sim/issues" target="_blank" rel="noopener noreferrer">Issues &amp; Feedback &#8599;</a>
+                        </div>
+                    </div>
+
+                    <div class="settings-section-lbl" style="margin-top:14px">Data Sources &amp; Community Credits</div>
+                    <div class="settings-sync-card credits-card">
+                        <ul class="credits-list">
+                            <li>
+                                <a href="https://aa-classic.com/" target="_blank" rel="noopener noreferrer">ArcheAge Classic (aa-classic.com)</a>
+                                &mdash; game mechanics, live buff database, and icons
+                            </li>
+                            <li>
+                                <a href="https://darugear.com/" target="_blank" rel="noopener noreferrer">DaruGear (darugear.com)</a>
+                                &mdash; 20-slot gear catalog, skill builder tables, and build share-link import compatibility
+                            </li>
+                            <li>
+                                <a href="https://sermeatball.com/auction/item-price-history" target="_blank" rel="noopener noreferrer">SerMeatball (sermeatball.com)</a>
+                                &mdash; optional Auction House price history summaries used in the Economy tab
+                            </li>
+                            <li>
+                                <strong>Michael Client</strong> &mdash; in-game Lua addon helper library used by <code>addon/skill_dumper/</code>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="settings-section-lbl" style="margin-top:14px">License</div>
+                    <div class="settings-sync-card credits-card">
+                        <div class="settings-sync-head">
+                            <strong>MIT License</strong>
+                            <a class="credits-inline-link" href="https://github.com/plushie-aa/aac-skill-sim/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">View LICENSE &#8599;</a>
+                        </div>
+                        <div class="settings-sync-desc">Copyright &copy; 2026 Plushie. Free to use, modify, and redistribute under the terms of the MIT License.</div>
+                        <details class="credits-license-details">
+                            <summary>Read full MIT License text</summary>
+                            <pre class="credits-license-pre">MIT License
+
+Copyright (c) 2026 Plushie
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+                        </details>
+                    </div>
                 </div>
             </div>
 
