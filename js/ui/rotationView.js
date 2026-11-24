@@ -418,7 +418,7 @@ export function renderRotationView(out) {
         </div>
 
         <div class="table-wrap">
-            <table>
+            <table class="mobile-card-table">
                 <thead>
                     <tr>
                         <th># &amp; Skill</th>
@@ -490,25 +490,25 @@ export function renderRotationView(out) {
                                         </div>
                                     </div>
                                 </td>
-                                <td>${fmtWin(sA)}</td>
-                                <td class="val-a">${sA.isUtility ? `<span class="skill-meta">Combo Buff</span>` : fmtInt(sA.result.expected)}</td>
-                                <td>${hitCritStr(sA.result)}</td>
-                                <td>${fmtWin(sB)}</td>
-                                <td class="val-b">${sB.isUtility ? `<span class="skill-meta">Combo Buff</span>` : fmtInt(sB.result.expected)}</td>
-                                <td>${hitCritStr(sB.result)}</td>
-                                <td class="${sA.isUtility ? "delta-tie" : dCls}">${sA.isUtility ? "&mdash;" : fmtDeltaPct(dPct)}</td>
+                                <td data-label="A Window">${fmtWin(sA)}</td>
+                                <td class="val-a" data-label="A Expected">${sA.isUtility ? `<span class="skill-meta">Combo Buff</span>` : fmtInt(sA.result.expected)}</td>
+                                <td data-label="A Hit / Crit">${hitCritStr(sA.result)}</td>
+                                <td data-label="B Window">${fmtWin(sB)}</td>
+                                <td class="val-b" data-label="B Expected">${sB.isUtility ? `<span class="skill-meta">Combo Buff</span>` : fmtInt(sB.result.expected)}</td>
+                                <td data-label="B Hit / Crit">${hitCritStr(sB.result)}</td>
+                                <td class="${sA.isUtility ? "delta-tie" : dCls}" data-label="A vs B">${sA.isUtility ? "&mdash;" : fmtDeltaPct(dPct)}</td>
                             </tr>`;
                         })
                         .join("")}
                     <tr class="rot-total-row">
                         <td>Total (${rA.stepCount} steps &bull; Target HP ${fmtInt(rA.targetMaxHp)}${shieldNote})</td>
-                        <td>${fmtDec(rA.totalDurationSec, 2)}s</td>
-                        <td class="val-a">${fmtInt(rA.totalExpected)} (${fmtDec(rA.pctOfTargetHp)}%)</td>
-                        <td>${fmtInt(rA.windowRate)} ${rateUnit}</td>
-                        <td>${fmtDec(rB.totalDurationSec, 2)}s</td>
-                        <td class="val-b">${fmtInt(rB.totalExpected)} (${fmtDec(rB.pctOfTargetHp)}%)</td>
-                        <td>${fmtInt(rB.windowRate)} ${rateUnit}</td>
-                        <td class="${cmp.deltaExpectedPct > 0.05 ? "delta-pos" : cmp.deltaExpectedPct < -0.05 ? "delta-neg" : "delta-tie"}">${fmtDeltaPct(cmp.deltaExpectedPct)}</td>
+                        <td data-label="A Time">${fmtDec(rA.totalDurationSec, 2)}s</td>
+                        <td class="val-a" data-label="A Total">${fmtInt(rA.totalExpected)} (${fmtDec(rA.pctOfTargetHp)}%)</td>
+                        <td data-label="A ${rateUnit}">${fmtInt(rA.windowRate)} ${rateUnit}</td>
+                        <td data-label="B Time">${fmtDec(rB.totalDurationSec, 2)}s</td>
+                        <td class="val-b" data-label="B Total">${fmtInt(rB.totalExpected)} (${fmtDec(rB.pctOfTargetHp)}%)</td>
+                        <td data-label="B ${rateUnit}">${fmtInt(rB.windowRate)} ${rateUnit}</td>
+                        <td class="${cmp.deltaExpectedPct > 0.05 ? "delta-pos" : cmp.deltaExpectedPct < -0.05 ? "delta-neg" : "delta-tie"}" data-label="A vs B">${fmtDeltaPct(cmp.deltaExpectedPct)}</td>
                     </tr>
                 </tbody>
             </table>

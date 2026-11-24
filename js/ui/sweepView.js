@@ -202,7 +202,7 @@ export function renderSweepView(out) {
         <div class="chart-container">${renderSvgChart(points, breakEvens, statLabel, { overlayCritNonCrit: overlayOn, metric })}</div>
 
         <div class="table-wrap">
-            <table>
+            <table class="mobile-card-table">
                 <thead>
                     <tr>
                         <th>${escHtml(statLabel)}</th>
@@ -220,26 +220,26 @@ export function renderSweepView(out) {
                             const ed = pctDiff(p.expectedA, p.expectedB);
                             return `
                         <tr>
-                            <td>${fmtInt(p.statValue)}</td>
-                            <td>
+                            <td><strong>${escHtml(statLabel)}: ${fmtInt(p.statValue)}</strong></td>
+                            <td data-label="Non-Crit (A / B)">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtInt(p.normalA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(p.normalB)}</span>
                                     <span class="def-cmp-delta ${dCls(nd)}">${fmtDeltaPct(nd)}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Crit (A / B)">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtInt(p.critA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(p.critB)}</span>
                                     <span class="def-cmp-delta ${dCls(cd)}">${fmtDeltaPct(cd)}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Expected (A / B)">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtInt(p.expectedA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(p.expectedB)}</span>
                                     <span class="def-cmp-delta ${dCls(ed)}">${fmtDeltaPct(ed)}</span>
                                 </div>
                             </td>
-                            <td>${p.winner === "A" ? escHtml(state.buildA.name) : p.winner === "B" ? escHtml(state.buildB.name) : "Tie"}</td>
+                            <td data-label="Winner">${p.winner === "A" ? escHtml(state.buildA.name) : p.winner === "B" ? escHtml(state.buildB.name) : "Tie"}</td>
                         </tr>`;
                         })
                         .join("")}

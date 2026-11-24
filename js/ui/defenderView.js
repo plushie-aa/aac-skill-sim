@@ -130,7 +130,7 @@ function renderDefenderEhpSection({
                 <div class="skill-meta">${sub}</div>
                 <div class="skill-meta">Mit DR: ${fmtDec(eA.vsAttackerDrPct)}% vs ${fmtDec(eB.vsAttackerDrPct)}%${avoidMeta}</div>
             </td>
-            <td>
+            <td data-label="Non-Crit EHP (A / B)">
                 <div class="def-cmp-main">
                     <span class="val-a">${fmtInt(eA.vsAttackerNonCritEhp)}</span>
                     <span class="def-cmp-sep">/</span>
@@ -139,7 +139,7 @@ function renderDefenderEhpSection({
                 </div>
                 <div class="skill-meta">0% crit (pure mit${showAvoid && !effectiveDisableAvoid ? " + avoid" : ""})</div>
             </td>
-            <td>
+            <td data-label="Crit EHP (A / B)">
                 <div class="def-cmp-main">
                     <span class="val-a">${fmtInt(eA.vsAttackerCritEhp)}</span>
                     <span class="def-cmp-sep">/</span>
@@ -148,7 +148,7 @@ function renderDefenderEhpSection({
                 </div>
                 <div class="skill-meta">Crit hit: ${fmtDec(eA.vsAttackerCritHitMult, 2)}&times; vs ${fmtDec(eB.vsAttackerCritHitMult, 2)}&times;</div>
             </td>
-            <td>
+            <td class="mct-full" data-label="Expected EHP (A / B)">
                 <div class="def-cmp-main">
                     <span class="val-a">${fmtInt(eA.vsAttackerEhp)}</span>
                     <span class="def-cmp-sep">/</span>
@@ -248,7 +248,7 @@ function renderDefenderEhpSection({
         <div class="ehp-compare-box">
             <div class="stat-group-label">Effective HP (EHP): Non-Crit vs Crit vs Expected (vs ${escHtml(effAttacker.name)}${effectiveDisableAvoid ? " &bull; Avoidance Disabled" : ""})</div>
             <div class="table-wrap">
-                <table>
+                <table class="mobile-card-table">
                     <thead>
                         <tr>
                             <th>EHP Type</th>
@@ -292,7 +292,7 @@ function renderDefenderEhpSection({
                 </table>
             </div>
             <div class="table-wrap" style="margin-top:8px">
-                <table>
+                <table class="mobile-card-table mct-cols-3">
                     <thead>
                         <tr>
                             <th>Resilience &amp; Healing Efficiency</th>
@@ -304,21 +304,21 @@ function renderDefenderEhpSection({
                     <tbody>
                         <tr>
                             <td><strong>Resilience Crit Defense</strong> <span class="skill-meta">(Crit Rate / Crit Damage reduction)</span></td>
-                            <td class="val-a">-${fmtDec(ehpA.critDefense.critRateReductionPct)}% CR / -${fmtDec(ehpA.critDefense.critBonusReductionPct)}% CD</td>
-                            <td class="val-b">-${fmtDec(ehpB.critDefense.critRateReductionPct)}% CR / -${fmtDec(ehpB.critDefense.critBonusReductionPct)}% CD</td>
-                            <td class="delta-tie">${ehpA.critDefense.resilience - ehpB.critDefense.resilience >= 0 ? "+" : ""}${fmtInt(ehpA.critDefense.resilience - ehpB.critDefense.resilience)} Resil</td>
+                            <td class="val-a" data-label="Build A">-${fmtDec(ehpA.critDefense.critRateReductionPct)}% CR / -${fmtDec(ehpA.critDefense.critBonusReductionPct)}% CD</td>
+                            <td class="val-b" data-label="Build B">-${fmtDec(ehpB.critDefense.critRateReductionPct)}% CR / -${fmtDec(ehpB.critDefense.critBonusReductionPct)}% CD</td>
+                            <td class="delta-tie" data-label="A vs B">${ehpA.critDefense.resilience - ehpB.critDefense.resilience >= 0 ? "+" : ""}${fmtInt(ehpA.critDefense.resilience - ehpB.critDefense.resilience)} Resil</td>
                         </tr>
                         <tr>
                             <td><strong>Healing Efficiency (Melee)</strong> <span class="skill-meta">(Melee EHP restored per 1,000 raw heal; neutral)</span></td>
-                            <td class="val-a">${fmtInt(ehpA.healingReceived.effectiveHpPer1kHealMelee)} EHP <span class="skill-meta">(${fmtDec(ehpA.healingReceived.healMultiplier, 2)}&times;)</span></td>
-                            <td class="val-b">${fmtInt(ehpB.healingReceived.effectiveHpPer1kHealMelee)} EHP <span class="skill-meta">(${fmtDec(ehpB.healingReceived.healMultiplier, 2)}&times;)</span></td>
-                            <td class="${ehpCls(healEffMeleeDiff)}">${fmtDeltaPct(healEffMeleeDiff)}</td>
+                            <td class="val-a" data-label="Build A">${fmtInt(ehpA.healingReceived.effectiveHpPer1kHealMelee)} EHP <span class="skill-meta">(${fmtDec(ehpA.healingReceived.healMultiplier, 2)}&times;)</span></td>
+                            <td class="val-b" data-label="Build B">${fmtInt(ehpB.healingReceived.effectiveHpPer1kHealMelee)} EHP <span class="skill-meta">(${fmtDec(ehpB.healingReceived.healMultiplier, 2)}&times;)</span></td>
+                            <td class="${ehpCls(healEffMeleeDiff)}" data-label="A vs B">${fmtDeltaPct(healEffMeleeDiff)}</td>
                         </tr>
                         <tr>
                             <td><strong>Healing Efficiency (Magic)</strong> <span class="skill-meta">(Magic EHP restored per 1,000 raw heal; neutral)</span></td>
-                            <td class="val-a">${fmtInt(ehpA.healingReceived.effectiveHpPer1kHealMagic)} EHP <span class="skill-meta">(${fmtDec(ehpA.healingReceived.healMultiplier, 2)}&times;)</span></td>
-                            <td class="val-b">${fmtInt(ehpB.healingReceived.effectiveHpPer1kHealMagic)} EHP <span class="skill-meta">(${fmtDec(ehpB.healingReceived.healMultiplier, 2)}&times;)</span></td>
-                            <td class="${ehpCls(healEffMagicDiff)}">${fmtDeltaPct(healEffMagicDiff)}</td>
+                            <td class="val-a" data-label="Build A">${fmtInt(ehpA.healingReceived.effectiveHpPer1kHealMagic)} EHP <span class="skill-meta">(${fmtDec(ehpA.healingReceived.healMultiplier, 2)}&times;)</span></td>
+                            <td class="val-b" data-label="Build B">${fmtInt(ehpB.healingReceived.effectiveHpPer1kHealMagic)} EHP <span class="skill-meta">(${fmtDec(ehpB.healingReceived.healMultiplier, 2)}&times;)</span></td>
+                            <td class="${ehpCls(healEffMagicDiff)}" data-label="A vs B">${fmtDeltaPct(healEffMagicDiff)}</td>
                         </tr>
                         ${flameRowHtml}
                         ${absorbRowHtml}
@@ -501,7 +501,7 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
                         </div>
                     </div>
                 </td>
-                <td title="Raw delta: ${fmtDeltaPct(stepRawDiff)} | % HP delta: ${fmtDeltaPct(stepHpDiff)}">
+                <td data-label="Step Expected (A / B)" title="Raw delta: ${fmtDeltaPct(stepRawDiff)} | % HP delta: ${fmtDeltaPct(stepHpDiff)}">
                     <div class="def-cmp-main">
                         <span class="val-a">${fmtInt(expA)}</span>
                         <span class="def-cmp-sep">/</span>
@@ -510,7 +510,7 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
                     </div>
                     <div class="skill-meta">${fmtDec(hpStepA)}% vs ${fmtDec(hpStepB)}% HP</div>
                 </td>
-                <td>
+                <td data-label="Cumulative Taken">
                     <div class="def-cmp-main">
                         <span class="val-a">${fmtInt(cumA)}</span>
                         <span class="def-cmp-sep">/</span>
@@ -518,7 +518,7 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
                     </div>
                     <div class="skill-meta">${fmtDec(cumHpA)}% vs ${fmtDec(cumHpB)}% Max HP</div>
                 </td>
-                <td class="skill-meta">
+                <td class="skill-meta mct-full" data-label="Hit / Crit (A / B)">
                     <div>${hitInfo}</div>
                     <div>Crit: ${fmtDec(crA, 0)}% / ${fmtDec(crB, 0)}%</div>
                 </td>
@@ -588,7 +588,7 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
             <details class="def-combo-steps-details" open>
                 <summary>Per-Step Incoming Combo Breakdown (${cA.stepCount} step${cA.stepCount === 1 ? "" : "s"})</summary>
                 <div class="table-wrap" style="margin-top:6px">
-                    <table>
+                    <table class="mobile-card-table mct-skip-rank">
                         <thead>
                             <tr>
                                 <th style="width:28px">#</th>
@@ -607,10 +607,10 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
 }
 
 function renderDefenderSkillsTable(rows, primaryRaw) {
-    const fmtSkillTakenCell = (dmgA, dmgB, hpA, hpB, hpDiff, rawDiff) => {
+    const fmtSkillTakenCell = (label, dmgA, dmgB, hpA, hpB, hpDiff, rawDiff, full = false) => {
         const mainDiff = primaryRaw ? rawDiff : hpDiff;
         return `
-        <td title="Raw dmg delta: ${fmtDeltaPct(rawDiff)} | % HP lost delta: ${fmtDeltaPct(hpDiff)}">
+        <td class="${full ? "mct-full" : ""}" data-label="${label}" title="Raw dmg delta: ${fmtDeltaPct(rawDiff)} | % HP lost delta: ${fmtDeltaPct(hpDiff)}">
             <div class="def-cmp-main">
                 <span class="val-a">${fmtInt(dmgA)}</span>
                 <span class="def-cmp-sep">/</span>
@@ -637,16 +637,16 @@ function renderDefenderSkillsTable(rows, primaryRaw) {
                         </div>
                     </div>
                 </td>
-                ${fmtSkillTakenCell(r.resVsA.normal, r.resVsB.normal, r.normalHpA, r.normalHpB, r.normalHpDiffPct, r.normalDiffPct)}
-                ${fmtSkillTakenCell(r.resVsA.crit, r.resVsB.crit, r.critHpA, r.critHpB, r.critHpDiffPct, r.critDiffPct)}
-                ${fmtSkillTakenCell(r.resVsA.expected, r.resVsB.expected, r.resVsA.pctOfDefenderHp.expected, r.resVsB.pctOfDefenderHp.expected, r.hpDiffPct, r.diffPct)}
+                ${fmtSkillTakenCell("Non-Crit (A / B)", r.resVsA.normal, r.resVsB.normal, r.normalHpA, r.normalHpB, r.normalHpDiffPct, r.normalDiffPct)}
+                ${fmtSkillTakenCell("Crit (A / B)", r.resVsA.crit, r.resVsB.crit, r.critHpA, r.critHpB, r.critHpDiffPct, r.critDiffPct)}
+                ${fmtSkillTakenCell("Expected Avg (A / B)", r.resVsA.expected, r.resVsB.expected, r.resVsA.pctOfDefenderHp.expected, r.resVsB.pctOfDefenderHp.expected, r.hpDiffPct, r.diffPct, true)}
             </tr>`;
         })
         .join("");
 
     return `
         <div class="table-wrap">
-            <table>
+            <table class="mobile-card-table">
                 <thead>
                     <tr>
                         <th>Incoming Skill</th>

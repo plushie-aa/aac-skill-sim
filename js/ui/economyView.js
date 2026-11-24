@@ -255,8 +255,9 @@ function sermeatballItemUrl(itemId) {
 }
 
 function renderSlotCellHtml(entry, slotKey) {
+    const slotLbl = slotKey === "A" ? "Build A" : "Build B";
     if (!entry) {
-        return `<td class="econ-slot-cell econ-empty"><span class="skill-meta">&mdash; Empty &mdash;</span></td>`;
+        return `<td class="econ-slot-cell econ-empty mct-full" data-label="${slotLbl}"><span class="skill-meta">&mdash; Empty &mdash;</span></td>`;
     }
     const gInfo = resolveGearGradeInfo(entry.gradeId, entry.gradeName, entry.gradeColor);
     const icHtml = renderGradedGearIconHtml({
@@ -306,7 +307,7 @@ function renderSlotCellHtml(entry, slotKey) {
     const inpCls = entry.isItemOverride ? "is-override" : entry.isAhItem ? "is-ah" : "";
 
     return `
-    <td class="econ-slot-cell">
+    <td class="econ-slot-cell mct-full" data-label="${slotLbl}">
         <div class="econ-item-head">
             <div class="table-skill-cell">
                 ${icHtml}
@@ -337,7 +338,7 @@ function renderTierMatrixHtml(priceBook) {
         const row = priceBook.tierGrades[tier.id] || {};
         const cells = ECONOMY_GRADES.map((g) => {
             const val = row[g.id] ?? 0;
-            return `<td><input type="number" class="econ-matrix-inp" min="0" step="1000" value="${val}" data-econ-tier="${escHtml(tier.id)}" data-econ-grade="${escHtml(g.id)}" /></td>`;
+            return `<td data-label="${escHtml(g.label)}"><input type="number" class="econ-matrix-inp" min="0" step="1000" value="${val}" data-econ-tier="${escHtml(tier.id)}" data-econ-grade="${escHtml(g.id)}" /></td>`;
         }).join("");
         return `
         <tr>
@@ -351,7 +352,7 @@ function renderTierMatrixHtml(priceBook) {
 
     return `
     <div class="table-wrap">
-        <table class="econ-price-table">
+        <table class="econ-price-table mobile-card-table mct-cols-3">
             <thead>
                 <tr>
                     <th>Gear Tier / Category</th>
@@ -569,7 +570,7 @@ function renderAhPricesBrowserHtml(ahPrices) {
     ${
         shown.length > 0
             ? `<div class="table-wrap">
-                <table class="econ-price-table">
+                <table class="econ-price-table mobile-card-table mct-skip-rank">
                     <thead>
                         <tr>
                             <th style="width:90px">Type</th>
@@ -587,10 +588,10 @@ function renderAhPricesBrowserHtml(ahPrices) {
                         <tr>
                             <td><span class="stag stag-tree">${escHtml(r.badge)}</span></td>
                             <td><strong>${escHtml(r.name)}</strong></td>
-                            <td><strong style="color:#fbbf24">${fmtGold(r.gold)}</strong></td>
-                            <td class="skill-meta">${escHtml(fmtAhSourceLabel(r.src))}${r.latest !== r.gold ? ` (lat ${fmtGold(r.latest)})` : ""}</td>
-                            <td>${r.vol30d > 0 ? fmtInt(r.vol30d) : "&mdash;"}</td>
-                            <td><a class="econ-ah-badge" href="${escHtml(sermeatballItemUrl(r.itemId))}" target="_blank" rel="noopener noreferrer">Chart &nearr;</a></td>
+                            <td data-label="Market Price"><strong style="color:#fbbf24">${fmtGold(r.gold)}</strong></td>
+                            <td class="skill-meta" data-label="Basis">${escHtml(fmtAhSourceLabel(r.src))}${r.latest !== r.gold ? ` (lat ${fmtGold(r.latest)})` : ""}</td>
+                            <td data-label="30d Vol">${r.vol30d > 0 ? fmtInt(r.vol30d) : "&mdash;"}</td>
+                            <td data-label="History"><a class="econ-ah-badge" href="${escHtml(sermeatballItemUrl(r.itemId))}" target="_blank" rel="noopener noreferrer">Chart &nearr;</a></td>
                         </tr>`
                             )
                             .join("")}
@@ -671,10 +672,10 @@ function renderUpgradeAdvisorHtml(priceBook, catalog, ahPrices, disableAvoid) {
                     ${kindBadge} <strong>${escHtml(it.label)}</strong> ${srcBadge}
                     <div class="skill-meta">${escHtml(it.effectLabel)}</div>
                 </td>
-                <td style="white-space:nowrap"><strong>${fmtGold(it.goldCost)}</strong></td>
-                <td class="delta-pos" style="white-space:nowrap">+${fmtInt(it.rawGain)}${unitSuffix}</td>
-                <td class="delta-pos" style="white-space:nowrap"><strong>+${fmtDec(it.gainPct, 2)}%</strong></td>
-                <td style="white-space:nowrap"><strong class="${isTop ? "delta-pos" : ""}">${fmtGold(it.goldPer1Pct)}</strong> <span class="skill-meta">/ +1%</span></td>
+                <td style="white-space:nowrap" data-label="Est. Cost"><strong>${fmtGold(it.goldCost)}</strong></td>
+                <td class="delta-pos" style="white-space:nowrap" data-label="Raw Gain">+${fmtInt(it.rawGain)}${unitSuffix}</td>
+                <td class="delta-pos" style="white-space:nowrap" data-label="% Gain"><strong>+${fmtDec(it.gainPct, 2)}%</strong></td>
+                <td style="white-space:nowrap" data-label="Gold / +1%"><strong class="${isTop ? "delta-pos" : ""}">${fmtGold(it.goldPer1Pct)}</strong> <span class="skill-meta">/ +1%</span></td>
             </tr>`;
         })
         .join("");
@@ -697,7 +698,7 @@ function renderUpgradeAdvisorHtml(priceBook, catalog, ahPrices, disableAvoid) {
         ${
             rowsHtml
                 ? `<div class="table-wrap" style="margin-top:8px">
-                    <table class="econ-price-table">
+                    <table class="econ-price-table mobile-card-table mct-skip-rank">
                         <thead>
                             <tr>
                                 <th style="width:36px">#</th>
@@ -769,7 +770,7 @@ export function renderEconomyView(out) {
                           <td class="econ-slot-name"><strong>${escHtml(slotName)}</strong></td>
                           ${renderSlotCellHtml(eA, "A")}
                           ${renderSlotCellHtml(eB, "B")}
-                          <td class="${dCls}" style="white-space:nowrap;font-weight:700">${fmtGoldDelta(d)}</td>
+                          <td class="${dCls} mct-full" data-label="Δ (A − B)" style="white-space:nowrap;font-weight:700">${fmtGoldDelta(d)}</td>
                       </tr>`;
                   })
                   .join("")
@@ -806,12 +807,12 @@ export function renderEconomyView(out) {
         <tr>
             <td>${idx + 1}</td>
             <td><strong>${escHtml(est.name)}</strong></td>
-            <td>${est.gearScore > 0 ? fmtInt(est.gearScore) : "&mdash;"}</td>
-            <td>${fmtGold(est.baseGearGold)}</td>
-            <td>${fmtGold(est.lunagemsGold)} <span class="skill-meta">(${est.totalGemsCount})</span></td>
-            <td>${fmtGold(est.lunafrostsGold)}</td>
-            <td><strong>${fmtGold(est.totalGold)}</strong></td>
-            <td>${est.goldPerGs > 0 ? `${fmtDec(est.goldPerGs, 1)}g/GS` : "&mdash;"}</td>
+            <td data-label="GS">${est.gearScore > 0 ? fmtInt(est.gearScore) : "&mdash;"}</td>
+            <td data-label="Base Gear">${fmtGold(est.baseGearGold)}</td>
+            <td data-label="Lunagems">${fmtGold(est.lunagemsGold)} <span class="skill-meta">(${est.totalGemsCount})</span></td>
+            <td data-label="Lunafrosts">${fmtGold(est.lunafrostsGold)}</td>
+            <td data-label="Total Gold"><strong>${fmtGold(est.totalGold)}</strong></td>
+            <td data-label="Gold / GS">${est.goldPerGs > 0 ? `${fmtDec(est.goldPerGs, 1)}g/GS` : "&mdash;"}</td>
         </tr>`
         )
         .join("");
@@ -886,7 +887,7 @@ export function renderEconomyView(out) {
                 </div>
             </div>
             <div class="table-wrap" style="margin-top:8px">
-                <table class="econ-compare-table">
+                <table class="econ-compare-table mobile-card-table">
                     <thead>
                         <tr>
                             <th style="width:110px">Slot</th>
@@ -921,7 +922,7 @@ export function renderEconomyView(out) {
         <details class="econ-section-box econ-leaderboard">
             <summary class="stat-group-label" style="cursor:pointer;margin:0">All Saved Builds Cost Leaderboard (${savedCosts.length} builds with gear)</summary>
             <div class="table-wrap" style="margin-top:8px">
-                <table>
+                <table class="mobile-card-table mct-skip-rank mct-cols-3">
                     <thead>
                         <tr>
                             <th style="width:36px">#</th>

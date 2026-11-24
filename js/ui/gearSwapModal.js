@@ -234,12 +234,12 @@ export function renderGearSwapModal() {
                 return `
                 <tr class="${isCur ? "gs-whatif-cur" : ""}">
                     <td><strong>${tName}</strong>${isCur ? ` <span class="stag stag-rank">Current</span>` : ""}</td>
-                    <td>${fmtInt(ev.eff.defense.physicalDefense)}</td>
-                    <td>${fmtInt(ev.eff.defense.magicDefense)}</td>
-                    <td>${fmtInt(ev.eff.maxHealth)}</td>
-                    <td>${fmtInt(ev.meleeEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.meleeEhp, baseEval.meleeEhp)})</span></td>
-                    <td>${fmtInt(ev.magicEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.magicEhp, baseEval.magicEhp)})</span></td>
-                    <td>${isCur ? `<span class="skill-meta">Active</span>` : `<button type="button" class="sm" data-armor-type-swap="${tName}">Apply</button>`}</td>
+                    <td data-label="PDef">${fmtInt(ev.eff.defense.physicalDefense)}</td>
+                    <td data-label="MDef">${fmtInt(ev.eff.defense.magicDefense)}</td>
+                    <td data-label="Max HP">${fmtInt(ev.eff.maxHealth)}</td>
+                    <td data-label="Melee EHP">${fmtInt(ev.meleeEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.meleeEhp, baseEval.meleeEhp)})</span></td>
+                    <td data-label="Magic EHP">${fmtInt(ev.magicEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.magicEhp, baseEval.magicEhp)})</span></td>
+                    <td class="mct-full">${isCur ? `<span class="skill-meta">Active</span>` : `<button type="button" class="sm" data-armor-type-swap="${tName}">Apply</button>`}</td>
                 </tr>`;
             })
             .join("");
@@ -262,12 +262,12 @@ export function renderGearSwapModal() {
             return `
             <tr class="${isCur ? "gs-whatif-cur" : ""}">
                 <td><strong>${escHtml(arch.shortLabel)}</strong>${isCur ? ` <span class="stag stag-rank">Current</span>` : ""}</td>
-                <td>${fmtInt(domAtk)}</td>
-                <td>${fmtDec(ev.gcdSec, 2)}s / ${fmtDec(ev.eff.offense.castTimePct, 0)}%</td>
-                <td>${fmtInt(ev.skillExp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.skillExp, baseEval.skillExp)})</span></td>
-                <td>${fmtInt(ev.meleeEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.meleeEhp, baseEval.meleeEhp)})</span></td>
-                <td>${fmtInt(ev.magicEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.magicEhp, baseEval.magicEhp)})</span></td>
-                <td>${isCur ? `<span class="skill-meta">Active</span>` : `<button type="button" class="sm" data-wep-arch-swap="${escHtml(arch.id)}">Apply</button>`}</td>
+                <td data-label="Top Atk/HPwr">${fmtInt(domAtk)}</td>
+                <td data-label="GCD / Cast">${fmtDec(ev.gcdSec, 2)}s / ${fmtDec(ev.eff.offense.castTimePct, 0)}%</td>
+                <td data-label="Skill Exp">${fmtInt(ev.skillExp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.skillExp, baseEval.skillExp)})</span></td>
+                <td data-label="Melee EHP">${fmtInt(ev.meleeEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.meleeEhp, baseEval.meleeEhp)})</span></td>
+                <td data-label="Magic EHP">${fmtInt(ev.magicEhp)} <span class="skill-meta">(${fmtWhatIfDelta(ev.magicEhp, baseEval.magicEhp)})</span></td>
+                <td class="mct-full">${isCur ? `<span class="skill-meta">Active</span>` : `<button type="button" class="sm" data-wep-arch-swap="${escHtml(arch.id)}">Apply</button>`}</td>
             </tr>`;
         }).join("");
 
@@ -280,7 +280,7 @@ export function renderGearSwapModal() {
                     </div>
                     <div class="gs-whatif-grid">
                         <div class="table-wrap">
-                            <table class="gs-whatif-table">
+                            <table class="gs-whatif-table mobile-card-table mct-cols-3">
                                 <thead>
                                     <tr>
                                         <th>Armor Type</th>
@@ -296,7 +296,7 @@ export function renderGearSwapModal() {
                             </table>
                         </div>
                         <div class="table-wrap">
-                            <table class="gs-whatif-table">
+                            <table class="gs-whatif-table mobile-card-table mct-cols-3">
                                 <thead>
                                     <tr>
                                         <th>Weapon Setup</th>

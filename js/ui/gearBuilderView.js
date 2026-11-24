@@ -759,6 +759,14 @@ export function renderGearBuilderView(out) {
                 state.gearBuilderSearch = "";
                 ui.renderSimulation();
             }
+            if (typeof window !== "undefined" && window.innerWidth <= 768) {
+                requestAnimationFrame(() => {
+                    document.querySelector(".gb-editor-panel")?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
+                });
+            }
         });
     });
 

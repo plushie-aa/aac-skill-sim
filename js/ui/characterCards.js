@@ -1985,7 +1985,7 @@ export function renderBuildDiffStrip() {
     const gearDiffTableHtml =
         gearDiffs.length > 0
             ? `<div class="diff-gear-table-wrap">
-                   <table class="diff-gear-table">
+                   <table class="diff-gear-table mobile-card-table">
                        <thead>
                            <tr>
                                <th style="width:105px">Changed Slot (${gearDiffs.length})</th>
@@ -2012,15 +2012,15 @@ export function renderBuildDiffStrip() {
                                    return `
                            <tr>
                                <td><strong>${escHtml(g.slotName)}</strong></td>
-                               <td>
+                               <td class="mct-full" data-label="Build A">
                                    <div class="diff-gear-name"${g.colorA ? ` style="color:${escHtml(g.colorA)}"` : ""}>${escHtml(g.lblA)}</div>
                                    ${g.metaA || g.costA !== null ? `<div class="diff-gear-meta">${escHtml(g.metaA)}${g.costA !== null ? `${g.metaA ? " · " : ""}<span class="gb-pd-gold">${fmtInt(g.costA)}g</span>` : ""}</div>` : ""}
                                </td>
-                               <td>
+                               <td class="mct-full" data-label="Build B">
                                    <div class="diff-gear-name"${g.colorB ? ` style="color:${escHtml(g.colorB)}"` : ""}>${escHtml(g.lblB)}</div>
                                    ${g.metaB || g.costB !== null ? `<div class="diff-gear-meta">${escHtml(g.metaB)}${g.costB !== null ? `${g.metaB ? " · " : ""}<span class="gb-pd-gold">${fmtInt(g.costB)}g</span>` : ""}</div>` : ""}
                                </td>
-                               <td class="${dGoldCls}" style="font-weight:700;white-space:nowrap">${dGoldStr}</td>
+                               <td class="${dGoldCls} mct-full" data-label="Δ Gold" style="font-weight:700;white-space:nowrap">${dGoldStr}</td>
                            </tr>`;
                                })
                                .join("")}

@@ -152,7 +152,7 @@ export function renderBuildComparison(out) {
         </div>
 
         <div class="table-wrap">
-            <table>
+            <table class="mobile-card-table mct-cols-3">
                 <thead>
                     <tr>
                         <th>Skill</th>
@@ -216,15 +216,15 @@ export function renderBuildComparison(out) {
                                         </div>
                                     </div>
                                 </td>
-                                <td>${fmtInt(r.resultA.normal)}</td>
-                                <td>${fmtInt(r.resultA.crit)}</td>
-                                <td class="val-a">${fmtInt(r.resultA.expected)}</td>
-                                <td class="val-a">${fmtRateCell(r.resultA)}</td>
-                                <td>${fmtInt(r.resultB.normal)}</td>
-                                <td>${fmtInt(r.resultB.crit)}</td>
-                                <td class="val-b">${fmtInt(r.resultB.expected)}</td>
-                                <td class="val-b">${fmtRateCell(r.resultB)}</td>
-                                <td class="${dCls}">${fmtDeltaPct(r.deltaPct)}</td>
+                                <td data-label="A Normal">${fmtInt(r.resultA.normal)}</td>
+                                <td data-label="A Crit">${fmtInt(r.resultA.crit)}</td>
+                                <td class="val-a" data-label="A Expected">${fmtInt(r.resultA.expected)}</td>
+                                <td class="val-a" data-label="A Avg ${rateUnit}">${fmtRateCell(r.resultA)}</td>
+                                <td data-label="B Normal">${fmtInt(r.resultB.normal)}</td>
+                                <td data-label="B Crit">${fmtInt(r.resultB.crit)}</td>
+                                <td class="val-b" data-label="B Expected">${fmtInt(r.resultB.expected)}</td>
+                                <td class="val-b" data-label="B Avg ${rateUnit}">${fmtRateCell(r.resultB)}</td>
+                                <td class="${dCls}" data-label="A vs B">${fmtDeltaPct(r.deltaPct)}</td>
                             </tr>`;
                         })
                         .join("")}

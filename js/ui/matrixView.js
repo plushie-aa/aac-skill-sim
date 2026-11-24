@@ -993,7 +993,7 @@ export function renderMatrixView(out) {
                     if (r.opponentMeta?.className) metaParts.push(r.opponentMeta.className);
                     const metaLine =
                         metaParts.length > 0 ? `<div class="skill-meta">${escHtml(metaParts.join(" · "))}</div>` : "";
-                    const buffCellHtml = `<td class="matrix-buff-cell">${buildRowBuffSelectHtml(r.opponentId, oppBuild || { name: r.opponentName }, resolvedBuffs)}</td>`;
+                    const buffCellHtml = `<td class="matrix-buff-cell mct-full" data-label="Buffs">${buildRowBuffSelectHtml(r.opponentId, oppBuild || { name: r.opponentName }, resolvedBuffs)}</td>`;
 
                     if (isRot) {
                         return `
@@ -1003,31 +1003,31 @@ export function renderMatrixView(out) {
                                 ${metaLine}
                             </td>
                             ${buffCellHtml}
-                            <td>
+                            <td data-label="Non-Crit (A / B)">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtInt(r.normalA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(r.normalB)}</span>
                                     <span class="def-cmp-delta ${dCls(r.normalDeltaPct)}">${fmtDeltaPct(r.normalDeltaPct)}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Crit (A / B)">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtInt(r.critA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(r.critB)}</span>
                                     <span class="def-cmp-delta ${dCls(r.critDeltaPct)}">${fmtDeltaPct(r.critDeltaPct)}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Expected Burst">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtInt(r.expectedA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(r.expectedB)}</span>
                                     <span class="def-cmp-delta ${dCls(r.expectedDeltaPct)}">${fmtDeltaPct(r.expectedDeltaPct)}</span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Kill % (A / B)">
                                 <div class="def-cmp-main">
                                     <span class="val-a">${fmtDec(r.killProbA, 0)}%</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtDec(r.killProbB, 0)}%</span>
                                 </div>
                                 ${r.ttkA != null ? `<div class="skill-meta">TTK ${fmtDec(r.ttkA, 1)}s / ${fmtDec(r.ttkB, 1)}s</div>` : ""}
                             </td>
-                            <td>${winTxt}</td>
+                            <td data-label="Winner">${winTxt}</td>
                         </tr>`;
                     }
 
@@ -1042,28 +1042,28 @@ export function renderMatrixView(out) {
                             ${metaLine}
                         </td>
                         ${buffCellHtml}
-                        <td>
+                        <td data-label="Non-Crit (A / B)">
                             <div class="def-cmp-main">
                                 <span class="val-a">${fmtInt(r.normalA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(r.normalB)}</span>
                                 <span class="def-cmp-delta ${dCls(r.normalDeltaPct)}">${fmtDeltaPct(r.normalDeltaPct)}</span>
                             </div>
                             ${hpSub(r.normalHpA, r.normalHpB)}
                         </td>
-                        <td>
+                        <td data-label="Crit (A / B)">
                             <div class="def-cmp-main">
                                 <span class="val-a">${fmtInt(r.critA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(r.critB)}</span>
                                 <span class="def-cmp-delta ${dCls(r.critDeltaPct)}">${fmtDeltaPct(r.critDeltaPct)}</span>
                             </div>
                             ${hpSub(r.critHpA, r.critHpB)}
                         </td>
-                        <td>
+                        <td data-label="Expected (A / B)">
                             <div class="def-cmp-main">
                                 <span class="val-a">${fmtInt(r.expectedA)}</span><span class="def-cmp-sep">/</span><span class="val-b">${fmtInt(r.expectedB)}</span>
                                 <span class="def-cmp-delta ${dCls(r.expectedDeltaPct)}">${fmtDeltaPct(r.expectedDeltaPct)}</span>
                             </div>
                             ${hpSub(r.expectedHpA ?? r.pctHpA, r.expectedHpB ?? r.pctHpB)}
                         </td>
-                        <td>${winTxt}</td>
+                        <td data-label="Winner">${winTxt}</td>
                     </tr>`;
                 })
                 .join("");
@@ -1096,7 +1096,7 @@ export function renderMatrixView(out) {
             </div>
 
             <div class="table-wrap">
-                <table>
+                <table class="mobile-card-table">
                     <thead><tr>${colHeaders}</tr></thead>
                     <tbody>${rowsHtml}</tbody>
                 </table>

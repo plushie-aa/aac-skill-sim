@@ -468,7 +468,7 @@ export const state = {
     defenderComboShield: 0,
     settings: loadSimSettings(),
     cardTab: { A: "summary", B: "summary", defender: "summary" }, // "summary" | "stats" | "buffs" | "gear"
-    buildsCollapsed: false,
+    buildsCollapsed: typeof window !== "undefined" && window.innerWidth <= 768,
     skillPickerCollapsed: false,
     buffActiveOnly: {
         A: false,
