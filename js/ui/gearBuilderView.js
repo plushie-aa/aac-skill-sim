@@ -34,12 +34,12 @@ import {
     getArmorSetPresets,
     getAvailableSynthPool,
     getGearCatalog,
+    getItemSpecialEffect,
     getItemTypesForSlot,
     getMaxSocketsForSlotAndGrade,
     getPlayerStatMigration,
     getSynthPoolIndexForStat,
     getSynthSlotCountForGrade,
-    getT7ObsidianSpecialEffect,
     loadGearCatalog,
     normalizeEconomyPriceBook,
     recalculateCharacterFromGearBuilder,
@@ -184,9 +184,9 @@ function formatCatalogItemVariantHint(it) {
             parts.push(`+${effLabels.join(", ")}`);
         }
     }
-    const t7 = getT7ObsidianSpecialEffect(it.id);
-    if (t7?.shortText) {
-        parts.push(`★ ${t7.shortText}`);
+    const sp = getItemSpecialEffect(it.id);
+    if (sp?.shortText) {
+        parts.push(`★ ${sp.shortText}`);
     }
     return parts.join(" · ");
 }

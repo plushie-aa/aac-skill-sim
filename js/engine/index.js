@@ -7,8 +7,11 @@ export {
     T7_OBSIDIAN_SPECIAL_EFFECTS,
     computeActiveSetEffectSummaries,
     computeGearItemGrantedStats,
+    getEquippedSpecialEffects,
     getEquippedT7ObsidianEffects,
+    getItemSpecialEffect,
     getT7ObsidianSpecialEffect,
+    registerItemSpecialEffects,
     resolveCostumeCharmInfo,
 } from "../adapters/darugear_calc.js";
 export {

@@ -834,11 +834,28 @@ export const T7_OBSIDIAN_SPECIAL_EFFECTS = Object.freeze({
 });
 
 /**
- * Resolve the T7 Obsidian special effect metadata for an item ID, catalog item,
- * DaruGear slot, or equipment summary entry. Returns null for non-T7 items.
+ * Runtime registry of all 500+ AA Classic item special effects (loaded from
+ * `js/data/gear_catalog/item_special_effects.json`: Warrior Medal Instruments like
+ * Aria of Archery / Anthem of Battlerage, Auroria Armor, T4–T7 Obsidian, Veiled Terror,
+ * Hermit's Glare/Heart, World Bosses, Dungeon Gear, Dream Ring, Ayanad Earring, Hero Cloaks, etc.).
+ * T7_OBSIDIAN_SPECIAL_EFFECTS always serves as a built-in synchronous fallback.
  */
-export function getT7ObsidianSpecialEffect(itemOrId) {
-    if (itemOrId == null) return null;
+const _registeredSpecialEffects = new Map();
+
+export function registerItemSpecialEffects(effectsMap) {
+    if (!effectsMap || typeof effectsMap !== "object") return 0;
+    let count = 0;
+    for (const [rawId, entry] of Object.entries(effectsMap)) {
+        const id = Number(rawId);
+        if (!Number.isFinite(id) || id <= 0 || !entry || typeof entry !== "object") continue;
+        _registeredSpecialEffects.set(id, entry);
+        count++;
+    }
+    return count;
+}
+
+function extractNumericItemId(itemOrId) {
+    if (itemOrId == null) return 0;
     let rawId = itemOrId;
     if (typeof itemOrId === "object") {
         rawId =
@@ -848,28 +865,53 @@ export function getT7ObsidianSpecialEffect(itemOrId) {
             itemOrId.id;
     }
     const id = Number(rawId);
-    if (!Number.isFinite(id) || id <= 0) return null;
+    return Number.isFinite(id) && id > 0 ? id : 0;
+}
+
+/**
+ * Resolve any special equip / proc / use effect metadata for an item ID, catalog item,
+ * DaruGear slot, or equipment summary entry. Covers all 524+ AA Classic special items
+ * (T4–T7 Obsidian, Warrior Medal Instruments, Auroria Armor, World Boss, Dungeon & Accessory gear).
+ */
+export function getItemSpecialEffect(itemOrId) {
+    const id = extractNumericItemId(itemOrId);
+    if (!id) return null;
+    if (_registeredSpecialEffects.has(id)) return _registeredSpecialEffects.get(id);
+    const t7 = T7_OBSIDIAN_SPECIAL_EFFECTS[id];
+    if (t7) return { label: "T7 Obsidian Effect", ...t7 };
+    return null;
+}
+
+/**
+ * Resolve the T7 Obsidian special effect metadata for an item ID, catalog item,
+ * DaruGear slot, or equipment summary entry. Returns null for non-T7 items.
+ */
+export function getT7ObsidianSpecialEffect(itemOrId) {
+    const id = extractNumericItemId(itemOrId);
+    if (!id) return null;
     return T7_OBSIDIAN_SPECIAL_EFFECTS[id] || null;
 }
 
 /**
- * Collect all equipped T7 Obsidian special effects from either a character object
- * (`character.equipment` + `character.rawDaruGear.slots`) or a raw `slots` array.
+ * Collect all equipped special item effects (T4–T7 Obsidian, Warrior Medal Instruments,
+ * Auroria Armor, Veiled Terror, Hermit's Glare, World Boss & Dungeon gear, etc.)
+ * from either a character object (`character.equipment` + `character.rawDaruGear.slots`)
+ * or a raw `slots` array.
  */
-export function getEquippedT7ObsidianEffects(characterOrSlots) {
+export function getEquippedSpecialEffects(characterOrSlots) {
     const out = [];
     const seenIds = new Set();
-    const pushIfT7 = (rawId, slotId, slotName, name) => {
+    const pushIfSpecial = (rawId, slotId, slotName, name) => {
         const id = Number(rawId);
         if (!Number.isFinite(id) || id <= 0 || seenIds.has(id)) return;
-        const effect = T7_OBSIDIAN_SPECIAL_EFFECTS[id];
+        const effect = getItemSpecialEffect(id);
         if (!effect) return;
         seenIds.add(id);
         out.push({
             itemId: id,
             slotId: slotId != null ? Number(slotId) : null,
-            slotName: String(slotName || "Weapon").trim(),
-            name: String(name || "T7 Obsidian").trim(),
+            slotName: String(slotName || "Gear").trim(),
+            name: String(name || "Special Item").trim(),
             effect,
         });
     };
@@ -877,7 +919,7 @@ export function getEquippedT7ObsidianEffects(characterOrSlots) {
     if (Array.isArray(characterOrSlots)) {
         for (const s of characterOrSlots) {
             const eq = s?.item?.equipment;
-            if (eq) pushIfT7(eq.id, s.id, s.name, eq.name);
+            if (eq) pushIfSpecial(eq.id, s.id, s.name, eq.name);
         }
         return out;
     }
@@ -885,13 +927,13 @@ export function getEquippedT7ObsidianEffects(characterOrSlots) {
     if (characterOrSlots && typeof characterOrSlots === "object") {
         if (Array.isArray(characterOrSlots.equipment)) {
             for (const eq of characterOrSlots.equipment) {
-                if (eq) pushIfT7(eq.itemId ?? eq.id, eq.slotId, eq.slotName, eq.name);
+                if (eq) pushIfSpecial(eq.itemId ?? eq.id, eq.slotId, eq.slotName, eq.name);
             }
         }
         if (Array.isArray(characterOrSlots.rawDaruGear?.slots)) {
             for (const s of characterOrSlots.rawDaruGear.slots) {
                 const eq = s?.item?.equipment;
-                if (eq) pushIfT7(eq.id, s.id, s.name, eq.name);
+                if (eq) pushIfSpecial(eq.id, s.id, s.name, eq.name);
             }
         }
     }
@@ -899,8 +941,15 @@ export function getEquippedT7ObsidianEffects(characterOrSlots) {
 }
 
 /**
+ * Backward-compatible alias for `getEquippedSpecialEffects`.
+ */
+export function getEquippedT7ObsidianEffects(characterOrSlots) {
+    return getEquippedSpecialEffects(characterOrSlots);
+}
+
+/**
  * Compute all active Equipment Set, Erenor Lunafrost Set (3/4/6pc), Costume Charm
- * Enlightenment (2-Set), and T7 Obsidian weapon special effects across all equipped slots
+ * Enlightenment (2-Set), and special gear equip/proc/use effects across all equipped slots
  * for the Active Gear Buffs summary list.
  */
 export function computeActiveSetEffectSummaries(slots, activeModifiers = null) {
@@ -913,16 +962,18 @@ export function computeActiveSetEffectSummaries(slots, activeModifiers = null) {
         const eq = item?.equipment;
         if (!eq) continue;
 
-        const t7Effect = getT7ObsidianSpecialEffect(eq.id);
-        if (t7Effect && !seenSetIds.has(`t7:${eq.id}`)) {
-            seenSetIds.add(`t7:${eq.id}`);
+        const specialEff = getItemSpecialEffect(eq.id);
+        if (specialEff && !seenSetIds.has(`sp:${eq.id}`)) {
+            seenSetIds.add(`sp:${eq.id}`);
+            const isT7 = Boolean(T7_OBSIDIAN_SPECIAL_EFFECTS[Number(eq.id)]);
+            const tag = isT7 ? "T7 Effect" : specialEff.label || "Equip Effect";
             summaries.push({
-                id: `t7_${eq.id}`,
-                name: `${String(eq.name || "T7 Obsidian").trim()} (T7 Effect)`,
-                category: "t7",
-                engineFactored: Boolean(t7Effect.engineFactored),
-                stats: [t7Effect.text],
-                summary: t7Effect.text,
+                id: `${isT7 ? "t7" : "sp"}_${eq.id}`,
+                name: `${String(eq.name || "Special Item").trim()} (${tag})`,
+                category: isT7 ? "t7" : "special",
+                engineFactored: Boolean(specialEff.engineFactored),
+                stats: [specialEff.text],
+                summary: specialEff.text,
             });
         }
 
@@ -1097,14 +1148,15 @@ export function computeGearItemGrantedStats(
     const setEffects = [];
     const equipNotes = [];
     const enchantNotes = [];
+    const specialEffect = getItemSpecialEffect(eq.id);
     const t7Effect = getT7ObsidianSpecialEffect(eq.id);
-    if (t7Effect) {
+    if (specialEffect) {
         equipNotes.push({
-            name: "T7 Obsidian Effect",
-            text: t7Effect.text,
-            shortText: t7Effect.shortText,
-            kind: "t7",
-            engineFactored: Boolean(t7Effect.engineFactored),
+            name: specialEffect.label || (t7Effect ? "T7 Obsidian Effect" : "Equip Effect"),
+            text: specialEffect.text,
+            shortText: specialEffect.shortText,
+            kind: t7Effect ? "t7" : "special",
+            engineFactored: Boolean(specialEffect.engineFactored),
         });
     }
     if (Array.isArray(eq.seteffects) && eq.seteffects.length > 0) {

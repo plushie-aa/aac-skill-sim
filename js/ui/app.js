@@ -7,6 +7,7 @@
 import {
     getTotalPointsSpent,
     initSkillBuilderData,
+    registerItemSpecialEffects,
     syncSkillBreakdownAncestralsFromBuilder,
 } from "../engine/index.js";
 import {
@@ -88,15 +89,23 @@ import { applyComparisonPermalinkFromHash, buildComparisonPermalink } from "./pe
 // Data Loading
 // ============================================================================
 async function loadGameData() {
-    const [idxRes, sbRes] = await Promise.all([
+    const [idxRes, sbRes, spRes] = await Promise.all([
         fetch("js/data/skills/index.json", { cache: "no-store" }),
         fetch("js/data/skill_builder_data.json", { cache: "no-store" }).catch(() => null),
+        fetch("js/data/gear_catalog/item_special_effects.json", { cache: "no-store" }).catch(() => null),
     ]);
     if (sbRes && sbRes.ok) {
         try {
             initSkillBuilderData(await sbRes.json());
         } catch {
             // Keep skill builder gracefully disabled if dataset fails to parse
+        }
+    }
+    if (spRes && spRes.ok) {
+        try {
+            registerItemSpecialEffects(await spRes.json());
+        } catch {
+            // Fall back gracefully to built-in T7 special effects if dataset fails to parse
         }
     }
     const idx = await idxRes.json();

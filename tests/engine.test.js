@@ -51,7 +51,9 @@ import {
     getArmorSetPresets,
     getAvailableSynthPool,
     getEquipmentSkillBonus,
+    getEquippedSpecialEffects,
     getEquippedT7ObsidianEffects,
+    getItemSpecialEffect,
     getPlayerStatMigration,
     getSkillComboOptions,
     getSynthPoolIndexForStat,
@@ -4643,6 +4645,128 @@ export async function runAllTests() {
             rotStaff.effectSpans.some((e) => e.id === "charmed") && !rotStaff.effectSpans.some((e) => e.id === "stunned"),
             "Lidless Rage #40614 makes Basic Startling Strain immediately apply Charmed instead of Stunned"
         );
+    });
+
+    // 58. Full Catalog Special Effects (Warrior Medal Instruments, Auroria Armor, Veiled Terror, Hermit's Glare, World Boss & Accessories)
+    await test("Full AA Classic special effects cover Warrior Instruments (Aria of Archery etc.), Auroria Armor, Veiled Terror, Hermit's Glare, and Accessories", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const baseChar = createBlankGearBuild(catalog, { name: "Special Gear Tester" });
+        const player = createDefaultRawPlayer();
+        const def = createDefaultCharacter({
+            name: "Target Dummy",
+            defense: { physicalDefense: 5000, magicDefense: 5000, toughness: 0, resilience: 0 },
+        });
+
+        // 1. All 10 Warrior Medal Instruments (35570-35579) have verbatim +1 Rank text
+        for (let id = 35570; id <= 35579; id++) {
+            const sp = getItemSpecialEffect(id);
+            assert(
+                sp && sp.text.includes("Increases the rank of Basic") && sp.text.includes("+1."),
+                `Warrior Instrument #${id} has +1 Rank equip effect (${sp?.text})`
+            );
+        }
+        let ariaSlots = createEmptyGearSlots();
+        ariaSlots = equipCatalogItemInSlot(ariaSlots, 18, catalog.itemById.get(35572), { gradeId: 9 }, catalog);
+        const ariaGranted = computeGearItemGrantedStats(ariaSlots[18], 18, ariaSlots);
+        assert(
+            ariaGranted.equipNotes.some((n) => n.text.includes("Basic Intensity +1")),
+            `Aria of Archery #35572 displays Basic Intensity +1 in Granted Stats`
+        );
+        const ariaActive = computeActiveSetEffectSummaries(ariaSlots);
+        assert(
+            ariaActive.some((s) => s.summary.includes("Basic Intensity +1")),
+            "Aria of Archery #35572 appears in Active Gear Buffs"
+        );
+
+        // 2. Anthem of Battlerage (#35570) boosts Battle Focus (+5% Melee Crit Dmg, +2% Parry) and Croon (#35571) boosts Freerunner (+20 AGI)
+        let anthemSlots = createEmptyGearSlots();
+        anthemSlots = equipCatalogItemInSlot(anthemSlots, 18, catalog.itemById.get(35570), { gradeId: 9 }, catalog);
+        const anthemChar = recalculateCharacterFromGearBuilder(baseChar, anthemSlots, player, catalog).character;
+        const plainAnthem = createDefaultCharacter({
+            name: "No Anthem",
+            offense: { ...anthemChar.offense },
+            defense: { ...anthemChar.defense },
+            attributes: { ...anthemChar.attributes },
+        });
+        const bfWith = applyModifiers(anthemChar, ["battle_focus"]);
+        const bfWithout = applyModifiers(plainAnthem, ["battle_focus"]);
+        assertApprox(bfWith.offense.meleeCritBonusPct - bfWithout.offense.meleeCritBonusPct, 5, 0.01, "Anthem of Battlerage adds +5% Melee Crit Dmg when Battle Focus is active");
+        assertApprox(bfWith.defense.parryPct - bfWithout.defense.parryPct, 2, 0.01, "Anthem of Battlerage adds +2% Parry when Battle Focus is active");
+
+        let croonSlots = createEmptyGearSlots();
+        croonSlots = equipCatalogItemInSlot(croonSlots, 18, catalog.itemById.get(35571), { gradeId: 9 }, catalog);
+        const croonChar = recalculateCharacterFromGearBuilder(baseChar, croonSlots, player, catalog).character;
+        const plainCroon = createDefaultCharacter({
+            name: "No Croon",
+            offense: { ...croonChar.offense },
+            defense: { ...croonChar.defense },
+            attributes: { ...croonChar.attributes },
+        });
+        const frWith = applyModifiers(croonChar, ["freerunner"]);
+        const frWithout = applyModifiers(plainCroon, ["freerunner"]);
+        assertApprox(frWith.attributes.agi - frWithout.attributes.agi, 20, 0.01, "Croon of Shadowplay adds +20 AGI when Freerunner is active");
+
+        // 3. Auroria Armor skill damage, healing & cast-time hooks
+        let promSlots = createEmptyGearSlots();
+        promSlots = equipCatalogItemInSlot(promSlots, 5, catalog.itemById.get(27011), { gradeId: 9 }, catalog);
+        const promChar = recalculateCharacterFromGearBuilder(baseChar, promSlots, player, catalog).character;
+        promChar.offense.rangedAttack = 1000;
+        const plainProm = createDefaultCharacter({ name: "Plain Archer", offense: { ...promChar.offense } });
+        const baseEa = { id: "archery_endless_arrows", name: "Endless Arrows", skillset: "archery", variant: "base", kind: "damage", damageType: "physical", scalingStat: "rangedAttack", base: 200, scalingPct: 60 };
+        const flameEa = { ...baseEa, id: "archery_endless_arrows_flame", name: "Endless Arrows (Flame)", variant: "ancestral" };
+        const eaWith = simulateSkillDamage(promChar, def, baseEa);
+        const eaWithout = simulateSkillDamage(plainProm, def, baseEa);
+        const flameEaWith = simulateSkillDamage(promChar, def, flameEa);
+        assertApprox(eaWith.normal / eaWithout.normal, 1.10, 0.005, "Auroria Promise Fists #27011 boosts Basic Endless Arrows by +10%");
+        assert(flameEaWith.breakdown.skillGemBonusPct === 0, "Auroria Promise Fists does NOT boost Ancestral Flame Endless Arrows");
+
+        let sashSlots = createEmptyGearSlots();
+        sashSlots = equipCatalogItemInSlot(sashSlots, 3, catalog.itemById.get(26985), { gradeId: 9 }, catalog);
+        sashSlots = equipCatalogItemInSlot(sashSlots, 2, catalog.itemById.get(26982), { gradeId: 9 }, catalog);
+        const healerAur = recalculateCharacterFromGearBuilder(baseChar, sashSlots, player, catalog).character;
+        healerAur.offense.healingPower = 1000;
+        healerAur.offense.castTimePct = 100;
+        const plainHealer = createDefaultCharacter({ name: "Plain Healer", offense: { ...healerAur.offense } });
+        const ferventSkill = { id: "vitalism_fervent_healing", name: "Fervent Healing", skillset: "vitalism", variant: "base", kind: "heal", scalingStat: "healingPower", base: 500, scalingPct: 160 };
+        const mendSkill = { id: "vitalism_mend", name: "Mend", skillset: "vitalism", variant: "base", kind: "heal", scalingStat: "healingPower", base: 800, scalingPct: 260, castTimeSec: 3.0 };
+        const fhWith = simulateSkillHeal(healerAur, def, ferventSkill);
+        const fhWithout = simulateSkillHeal(plainHealer, def, ferventSkill);
+        assertApprox(fhWith.normal / fhWithout.normal, 1.07, 0.005, "Auroria Heartbound Sash #26985 boosts Basic Fervent Healing by +7%");
+        const mendWith = simulateSkillHeal(healerAur, def, mendSkill);
+        assertApprox(mendWith.dps.effectiveCastTimeSec, 2.0, 0.01, "Auroria Heartbound Shirt #26982 reduces Basic Mend cast time by -1.0s (3.0s -> 2.0s)");
+
+        let hoodSlots = createEmptyGearSlots();
+        hoodSlots = equipCatalogItemInSlot(hoodSlots, 1, catalog.itemById.get(26978), { gradeId: 9 }, catalog);
+        const hoodChar = recalculateCharacterFromGearBuilder(baseChar, hoodSlots, player, catalog).character;
+        hoodChar.offense.castTimePct = 100;
+        const arcSkill = { id: "sorcery_arc_lightning", name: "Arc Lightning", skillset: "sorcery", variant: "base", kind: "damage", damageType: "magic", scalingStat: "magicAttack", base: 900, scalingPct: 300, castTimeSec: 2.0 };
+        const arcWith = simulateSkillDamage(hoodChar, def, arcSkill);
+        assertApprox(arcWith.dps.effectiveCastTimeSec, 1.8, 0.01, "Auroria Mystic Hood #26978 reduces Basic Arc Lightning cast time -10% (2.0s -> 1.8s)");
+
+        // 4. Sapphire Veiled Terror (#9001464) +10% Precision Strike & Hermit's Glare (#35745) instant Basic Sunder Earth
+        let vtSlots = createEmptyGearSlots();
+        vtSlots = equipCatalogItemInSlot(vtSlots, 15, catalog.itemById.get(9001464), { gradeId: 9 }, catalog);
+        vtSlots = equipCatalogItemInSlot(vtSlots, 1, catalog.itemById.get(35745), { gradeId: 9 }, catalog);
+        const vtChar = recalculateCharacterFromGearBuilder(baseChar, vtSlots, player, catalog).character;
+        vtChar.offense.meleeAttack = 1000;
+        const plainMelee = createDefaultCharacter({ name: "Plain Melee", offense: { ...vtChar.offense } });
+        const precSkill = { id: "battlerage_precision_strike", name: "Precision Strike", skillset: "battlerage", variant: "base", kind: "damage", damageType: "physical", scalingStat: "meleeAttack", base: 864, scalingPct: 360 };
+        const sunderSkill = { id: "battlerage_sunder_earth", name: "Sunder Earth", skillset: "battlerage", variant: "base", kind: "damage", damageType: "physical", scalingStat: "meleeAttack", base: 288, scalingPct: 300, castTimeSec: 1.0 };
+        const psWith = simulateSkillDamage(vtChar, def, precSkill);
+        const psWithout = simulateSkillDamage(plainMelee, def, precSkill);
+        assertApprox(psWith.normal / psWithout.normal, 1.10, 0.005, "Sapphire Veiled Terror #9001464 boosts Basic Precision Strike by +10%");
+        const sunderWith = simulateSkillDamage(vtChar, def, sunderSkill);
+        assert(
+            sunderWith.dps.castTimeRemoved === true && sunderWith.dps.effectiveCastTimeSec === 0,
+            `Hermit's Glare #35745 makes Basic Sunder Earth instant cast (got ${sunderWith.dps.effectiveCastTimeSec}s)`
+        );
+
+        // 5. Key Endgame Accessories, Cloaks & T6 Obsidian v2 text coverage
+        assert(getItemSpecialEffect(28802)?.text.includes("Physical Defense and Magic Defense"), "Flawless Dream Ring #28802 has proc effect text");
+        assert(getItemSpecialEffect(33154)?.text.includes("+70%"), "Great Ayanad Earring #33154 has +70% Crit Use Effect text");
+        assert(getItemSpecialEffect(40366)?.text.includes("Deliverance Shield"), "Archeum Evernight Necklace #40366 has Deliverance Shield Use Effect text");
+        assert(getItemSpecialEffect(38042)?.text.includes("+2% for allies"), "Ayanad Hero Cloak #38042 has +2% Skill Dmg aura text");
+        assert(getItemSpecialEffect(35560)?.dissonanceNoDebuff === true, "T6 Dirgebringer #35560 shares Basic Dissonance combat hook");
     });
 
     return results;

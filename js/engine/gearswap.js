@@ -4,7 +4,7 @@
  * applies exact reversible stat deltas so Build A vs Build B quick comparisons stay 100% synced.
  */
 
-import { getEquippedT7ObsidianEffects } from "../adapters/darugear_calc.js";
+import { getEquippedSpecialEffects } from "../adapters/darugear_calc.js";
 import { applyAttributeDelta } from "./stats.js";
 
 export const LUNAGEM_SWAP_PRESETS = Object.freeze([
@@ -1718,8 +1718,8 @@ export function getEquipmentSkillBonus(character, skill) {
         sources: [],
     };
     const eqList = Array.isArray(character?.equipment) ? character.equipment : [];
-    const t7Effects = getEquippedT7ObsidianEffects(character);
-    if ((eqList.length === 0 && t7Effects.length === 0) || !skill?.name) return empty;
+    const specialEffects = getEquippedSpecialEffects(character);
+    if ((eqList.length === 0 && specialEffects.length === 0) || !skill?.name) return empty;
 
     const targetKey = normalizeSkillMatchKey(skill.name);
     if (!targetKey) return empty;
@@ -1774,12 +1774,20 @@ export function getEquipmentSkillBonus(character, skill) {
     }
 
     const skillVariant = skill.variant || "base";
-    for (const t7 of t7Effects) {
-        const sb = t7.effect?.skillBonus;
-        if (!sb) continue;
-        if (sb.skillId && skill.id !== sb.skillId) continue;
-        if (sb.variant && skillVariant !== sb.variant) continue;
-        addBonus(`${t7.name} (T7)`, sb.kind, Number(sb.value) || 0);
+    for (const sp of specialEffects) {
+        const bonusList = Array.isArray(sp.effect?.skillBonuses)
+            ? sp.effect.skillBonuses
+            : sp.effect?.skillBonus
+              ? [sp.effect.skillBonus]
+              : [];
+        for (const sb of bonusList) {
+            if (!sb) continue;
+            if (sb.skillId && skill.id !== sb.skillId) continue;
+            if (sb.variant && skillVariant !== sb.variant) continue;
+            if (!["damagePct", "healingPct", "critRatePct", "critBonusPct"].includes(sb.kind)) continue;
+            const isT7 = sp.effect?.label === "T7 Obsidian Effect";
+            addBonus(isT7 ? `${sp.name} (T7)` : sp.name, sb.kind, Number(sb.value) || 0);
+        }
     }
 
     const sources = Array.from(grouped.values());

@@ -3,6 +3,7 @@
  * and core mitigation curve helpers.
  */
 
+import { getEquippedSpecialEffects } from "../adapters/darugear_calc.js";
 import { DEFAULT_CONSTANTS, mergeConstants } from "./constants.js";
 
 export const BUILD_CATEGORIES = Object.freeze([
@@ -1966,6 +1967,30 @@ export function applyModifiers(character, modifierIds = []) {
         out.offense.rangedAttack = (Number(out.offense.rangedAttack) || 0) + 20;
     }
 
+    // Warrior Medal Instruments & gear +1 Skill Rank buff-side synergies
+    // (e.g. Anthem of Battlerage -> Battle Focus +5% Melee CD & +2% Parry, Croon -> Freerunner +20 AGI,
+    //  Ballad -> Health Lift +484 Max HP, Fantasia -> Insulating Lens +100 PDef, Ode -> Aranzeb's Boon +5 All Stats)
+    for (const sp of getEquippedSpecialEffects(baseChar)) {
+        const brb = sp.effect?.buffRankBonus;
+        if (!brb || !brb.modifierId || !activeIdsSet.has(brb.modifierId)) continue;
+        if (brb.addMaxHealth) {
+            out.maxHealth = (Number(out.maxHealth) || 0) + Number(brb.addMaxHealth);
+        }
+        if (brb.addAttributes) {
+            applyAttributeDelta(out, brb.addAttributes, 1);
+        }
+        if (brb.addOffense) {
+            for (const [k, delta] of Object.entries(brb.addOffense)) {
+                out.offense[k] = (Number(out.offense[k]) || 0) + Number(delta);
+            }
+        }
+        if (brb.addDefense) {
+            for (const [k, delta] of Object.entries(brb.addDefense)) {
+                out.defense[k] = (Number(out.defense[k]) || 0) + Number(delta);
+            }
+        }
+    }
+
     // Apply % offense buffs additively per stat key, matching DaruGear's `stat *= (1 + sumPct / 100)`
     // e.g. Bulwark of Power (+15%) + Doomshadow (+10%) = 1 + 0.15 + 0.10 = 1.25x
     const offMulSums = {};
@@ -2340,8 +2365,33 @@ export function resolveSkillTiming(skill, actor, totalExpected, constants = DEFA
     const gcdSec = baseGcdSec > 0 ? effectiveGcdSec(attackSpeed, baseGcdSec, scale) : 0;
     const effectiveFireIntervalSec =
         fireIntervalBaseSec > 0 ? effectiveGcdSec(attackSpeed, fireIntervalBaseSec, scale) : 0;
-    const rawCastTimeSec = Math.max(0, Number(skill?.castTimeSec) || 0);
-    const unmodifiedCastTimeSec = rawCastTimeSec * (castTimePct / 100);
+    let rawCastTimeSec = Math.max(0, Number(skill?.castTimeSec) || 0);
+    let gearCastTimePctDelta = 0;
+    let gearInstantBy = null;
+    if (rawCastTimeSec > 0 && skill?.id) {
+        const skillVariant = skill.variant || "base";
+        for (const sp of getEquippedSpecialEffects(actor)) {
+            const bonusList = Array.isArray(sp.effect?.skillBonuses)
+                ? sp.effect.skillBonuses
+                : sp.effect?.skillBonus
+                  ? [sp.effect.skillBonus]
+                  : [];
+            for (const sb of bonusList) {
+                if (!sb) continue;
+                if (sb.skillId && skill.id !== sb.skillId) continue;
+                if (sb.variant && skillVariant !== sb.variant) continue;
+                if (sb.kind === "removeCastTime") {
+                    gearInstantBy = sp.name;
+                } else if (sb.kind === "castTimeSec") {
+                    rawCastTimeSec = Math.max(0, rawCastTimeSec + (Number(sb.value) || 0));
+                } else if (sb.kind === "castTimePct") {
+                    gearCastTimePctDelta += Number(sb.value) || 0;
+                }
+            }
+        }
+    }
+    const effectiveCastTimePct = Math.max(40, castTimePct + gearCastTimePctDelta);
+    const unmodifiedCastTimeSec = rawCastTimeSec * (effectiveCastTimePct / 100);
     const autoInstantByRhythm =
         Boolean(flags.instantAtRhythm15) && Boolean(actor?._activeBuffFlags?.rhythm15);
     const autoInstantByHollowDeadeye =
@@ -2350,12 +2400,14 @@ export function resolveSkillTiming(skill, actor, totalExpected, constants = DEFA
         rawCastTimeSec > 0 &&
         (forcedOffGcd ||
             Boolean(context?.removeCastTime) ||
+            Boolean(gearInstantBy) ||
             autoInstantByRhythm ||
             autoInstantByHollowDeadeye);
     const effectiveCastTimeSec = castTimeRemoved ? 0 : unmodifiedCastTimeSec;
     const castTimeSavedSec = castTimeRemoved ? unmodifiedCastTimeSec : 0;
     const castRemovedBy = castTimeRemoved
         ? context?.castRemovedBy ||
+          gearInstantBy ||
           (autoInstantByRhythm
               ? "15x Rhythm"
               : autoInstantByHollowDeadeye

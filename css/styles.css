@@ -6055,22 +6055,26 @@ button.danger-sm:hover {
     color: #6ee7b7;
 }
 
-.gb-is-note.is-t7 {
+.gb-is-note.is-t7,
+.gb-is-note.is-special {
     background: rgba(168, 85, 247, 0.1);
     border-color: rgba(192, 132, 252, 0.34);
     color: #e2e8f0;
 }
 
-.gb-is-note.is-t7 strong {
+.gb-is-note.is-t7 strong,
+.gb-is-note.is-special strong {
     color: #d8b4fe;
 }
 
-.gb-is-note.is-t7.is-factored {
+.gb-is-note.is-t7.is-factored,
+.gb-is-note.is-special.is-factored {
     background: rgba(245, 158, 11, 0.11);
     border-color: rgba(251, 191, 36, 0.42);
 }
 
-.gb-is-note.is-t7.is-factored strong {
+.gb-is-note.is-t7.is-factored strong,
+.gb-is-note.is-special.is-factored strong {
     color: #fde68a;
 }
 
@@ -6397,12 +6401,14 @@ button.danger-sm:hover {
     background: rgba(245, 158, 11, 0.09);
 }
 
-.gb-buff-item.cat-t7 {
+.gb-buff-item.cat-t7,
+.gb-buff-item.cat-special {
     border-color: rgba(192, 132, 252, 0.44);
     background: rgba(168, 85, 247, 0.1);
 }
 
-.gb-buff-item.cat-t7 .gb-buff-name {
+.gb-buff-item.cat-t7 .gb-buff-name,
+.gb-buff-item.cat-special .gb-buff-name {
     color: #e9d5ff;
 }
 

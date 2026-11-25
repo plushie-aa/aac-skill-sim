@@ -11,6 +11,7 @@ import {
     buildDaruGearExportFromApiPayload,
     calculateDaruGearStats,
     computeActiveSetEffectSummaries,
+    registerItemSpecialEffects,
 } from "../adapters/darugear_calc.js";
 import { normalizeEquipmentList } from "../adapters/darugear.js";
 import { ARCHEAGE_GRADES, computeArmorSetAndGradeBuff } from "./gearswap.js";
@@ -93,8 +94,14 @@ export async function reloadGearCatalog(basePath = "js/data/gear_catalog") {
         fetch(`${basePath}/items_weapons.json${bust}`, { cache: "no-store" }).then((r) => r.json()),
         fetch(`${basePath}/items_armor.json${bust}`, { cache: "no-store" }).then((r) => r.json()),
         fetch(`${basePath}/items_acc.json${bust}`, { cache: "no-store" }).then((r) => r.json()),
+        fetch(`${basePath}/item_special_effects.json${bust}`, { cache: "no-store" })
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null),
     ])
-        .then(([meta, weapons, armors, accs]) => initGearCatalog({ meta, weapons, armors, accs }))
+        .then(([meta, weapons, armors, accs, specialEffects]) => {
+            if (specialEffects) registerItemSpecialEffects(specialEffects);
+            return initGearCatalog({ meta, weapons, armors, accs });
+        })
         .catch((err) => {
             _catalogPromise = null;
             throw err;
@@ -110,8 +117,14 @@ export async function loadGearCatalog(basePath = "js/data/gear_catalog") {
         fetch(`${basePath}/items_weapons.json`, { cache: "no-store" }).then((r) => r.json()),
         fetch(`${basePath}/items_armor.json`, { cache: "no-store" }).then((r) => r.json()),
         fetch(`${basePath}/items_acc.json`, { cache: "no-store" }).then((r) => r.json()),
+        fetch(`${basePath}/item_special_effects.json`, { cache: "no-store" })
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null),
     ])
-        .then(([meta, weapons, armors, accs]) => initGearCatalog({ meta, weapons, armors, accs }))
+        .then(([meta, weapons, armors, accs, specialEffects]) => {
+            if (specialEffects) registerItemSpecialEffects(specialEffects);
+            return initGearCatalog({ meta, weapons, armors, accs });
+        })
         .catch((err) => {
             _catalogPromise = null;
             throw err;

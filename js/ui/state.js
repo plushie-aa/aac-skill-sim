@@ -1437,15 +1437,15 @@ export function renderItemGrantedStatsHtml(granted) {
         equipNotes.length > 0
             ? `<div class="gb-is-notes-wrap">${equipNotes
                   .map((n) => {
-                      const isT7 = n.kind === "t7";
-                      const cls = isT7
-                          ? `gb-is-note is-t7${n.engineFactored ? " is-factored" : ""}`
+                      const isSpecial = n.kind === "t7" || n.kind === "special";
+                      const cls = isSpecial
+                          ? `gb-is-note ${n.kind === "t7" ? "is-t7" : "is-special"}${n.engineFactored ? " is-factored" : ""}`
                           : "gb-is-note";
                       const badge =
-                          isT7 && n.engineFactored
+                          isSpecial && n.engineFactored
                               ? ` <span class="gb-is-t7-badge" title="Automatically factored into simulator math">Sim Active</span>`
                               : "";
-                      return `<div class="${cls}"><strong>${isT7 ? "&#9733; " : ""}${escHtml(n.name)}:</strong>${badge} <span>${escHtml(n.text)}</span></div>`;
+                      return `<div class="${cls}"><strong>${isSpecial ? "&#9733; " : ""}${escHtml(n.name)}:</strong>${badge} <span>${escHtml(n.text)}</span></div>`;
                   })
                   .join("")}</div>`
             : "";
