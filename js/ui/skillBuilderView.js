@@ -11,7 +11,9 @@ import {
     MAX_SKILL_POINTS,
     applyModifiers,
     applySkillBuildPassives,
+    applySkillBuildPresetToCharacter,
     computeEffectiveStats,
+    extractSkillBuildPreset,
     getSkillBuilderData,
     getTotalPointsSpent,
     getTreePointsSpent,
@@ -25,13 +27,17 @@ import {
     togglePassiveSkill,
 } from "../engine/index.js";
 import { fetchDaruGearSkillBuild } from "../adapters/darugear.js";
+import { computeSlotCharacterFingerprint, saveBuildToStore } from "./buildStore.js";
 import {
     escHtml,
     fmtDec,
     fmtInt,
     getEffectiveDefenderDisableAvoidance,
     getSlotChar,
+    getSlotChipTokens,
     getSlotModifiers,
+    saveCustomSkillBuilds,
+    setSlotChar,
     showToast,
     state,
     switchAppMode,
@@ -266,6 +272,11 @@ export function renderSkillBuilderView(out) {
     }
 
     const bakedCount = (sb.bakedPassives || []).length;
+    const savedSkillPresets = Array.isArray(state.customSkillBuilds) ? state.customSkillBuilds : [];
+    const selPresetId = savedSkillPresets.some((p) => p.id === state.skillBuilderPresetId)
+        ? state.skillBuilderPresetId
+        : savedSkillPresets[0]?.id || "";
+    const selPresetObj = savedSkillPresets.find((p) => p.id === selPresetId) || null;
 
     out.innerHTML = `
         <div class="sb-toolbar">
@@ -279,8 +290,27 @@ export function renderSkillBuilderView(out) {
                     <span class="sb-class-badge">${escHtml(className)}</span>
                     <span class="sb-pts-badge ${totalPts >= MAX_SKILL_POINTS ? "is-max" : ""}">${totalPts} / ${MAX_SKILL_POINTS} pts</span>
                     ${slot === "A" ? `<button type="button" class="sm" id="sbCopyAtoBBtn" title="Copy Build A's skillsets, active skills, and passives into Build B">Copy Skills A &rarr; B</button>` : ""}
+                    <button type="button" class="sm primary" id="sbSaveCharBuildBtn" title="Save this character build with its Skill Build (${state.diskApiAvailable ? "writes to builds/*.json" : "saves to browser storage"})">Save As Build</button>
                     <button type="button" class="sm danger" id="sbClearPtsBtn" title="Clear all selected active skills and passives for this slot">Reset Points</button>
                 </div>
+            </div>
+            <div class="gb-set-swap-row sb-presets-row">
+                <label class="gb-set-swap-lbl" for="sbPresetSel">Saved Skill Builds</label>
+                <select id="sbPresetSel" class="gb-set-swap-sel" title="Apply a reusable saved skill build (trees, active skills, passives, ancestrals &amp; abyssal) to the selected character">
+                    ${
+                        savedSkillPresets.length > 0
+                            ? savedSkillPresets
+                                  .map(
+                                      (p) =>
+                                          `<option value="${escHtml(p.id)}" ${p.id === selPresetId ? "selected" : ""}>${escHtml(p.name)} (${escHtml(p.className)} &middot; ${p.totalPoints}p)</option>`
+                                  )
+                                  .join("")
+                            : `<option value="">No saved skill builds yet &mdash; click + Save Skill Build</option>`
+                    }
+                </select>
+                <button type="button" class="sm primary" id="sbPresetApplyBtn" ${selPresetObj ? "" : "disabled"}>Apply</button>
+                <button type="button" class="sm" id="sbPresetSaveBtn" title="Save this skill tree, active skills, passives &amp; ancestrals as a reusable preset (${state.diskApiAvailable ? "builds/skill-builds.json" : "browser storage"})">+ Save Skill Build</button>
+                ${selPresetObj ? `<button type="button" class="sm danger" id="sbPresetDeleteBtn" title="Delete saved skill build '${escHtml(selPresetObj.name)}'">&times;</button>` : ""}
             </div>
             <div class="sb-toolbar-row sb-import-row">
                 <span class="sb-import-lbl">Import Skills from DaruGear:</span>
@@ -451,6 +481,93 @@ export function renderSkillBuilderView(out) {
         ui.renderCharacterCards();
         ui.renderSimulation();
         showToast(`Copied ${className} skill build (${totalPts} pts) into Build B`, "ok");
+    });
+
+    // Save Character Build (persists gear + stats + current Skill Build to builds/*.json)
+    document.getElementById("sbSaveCharBuildBtn")?.addEventListener("click", async () => {
+        const curChar = getSlotChar(slot);
+        syncBuildClassMetadata(curChar);
+        const suggested = curChar?.name || `Build ${slot}`;
+        const nextName = prompt("Save character build (with Skill Build) as:", suggested);
+        if (nextName === null) return;
+        const cleanName = String(nextName).trim();
+        if (!cleanName) {
+            showToast("Build name cannot be empty", "warn");
+            return;
+        }
+        try {
+            const toSave = { ...curChar, name: cleanName };
+            const res = await saveBuildToStore(toSave, getSlotChipTokens(slot), state.consumables[slot] || {});
+            if (res?.ok && res.build) {
+                const savedChar = {
+                    ...res.build,
+                    ...(curChar.rawDaruGear ? { rawDaruGear: curChar.rawDaruGear } : {}),
+                };
+                setSlotChar(slot, savedChar);
+                state.loadedSavedId[slot] = res.id;
+                state.slotBaselineFp[slot] = computeSlotCharacterFingerprint(savedChar);
+                ui.renderCharacterCards();
+                ui.renderSimulation();
+                showToast(`Saved "${cleanName}" with ${className} skill build (${res.mode === "disk" ? res.filename : "browser storage"})`, "ok");
+            }
+        } catch (err) {
+            showToast(`Save failed: ${err.message || err}`, "err");
+        }
+    });
+
+    // Saved Skill Build Presets (builds/skill-builds.json + localStorage fallback)
+    const sbPresetSel = document.getElementById("sbPresetSel");
+    sbPresetSel?.addEventListener("change", () => {
+        state.skillBuilderPresetId = sbPresetSel.value || "";
+        ui.renderSimulation();
+    });
+    document.getElementById("sbPresetApplyBtn")?.addEventListener("click", () => {
+        const pid = sbPresetSel?.value || selPresetId;
+        const preset = savedSkillPresets.find((p) => p.id === pid);
+        if (!preset) {
+            showToast("Choose a saved skill build first", "err");
+            return;
+        }
+        state.skillBuilderPresetId = preset.id;
+        const nextSb = applySkillBuildPresetToCharacter(ch, preset);
+        commitSkillBuild(
+            nextSb,
+            `Applied skill build "${preset.name}" (${preset.className}, ${preset.totalPoints} pts) to ${ch.name}`
+        );
+    });
+    document.getElementById("sbPresetSaveBtn")?.addEventListener("click", async () => {
+        const suggested = `${className} (${totalPts}p)`;
+        const nextName = prompt("Save reusable skill build preset as:", suggested);
+        if (nextName === null) return;
+        const cleanName = String(nextName).trim();
+        if (!cleanName) {
+            showToast("Skill build name cannot be empty", "warn");
+            return;
+        }
+        const preset = extractSkillBuildPreset(sb, { name: cleanName });
+        if (!preset) {
+            showToast("Could not create skill build preset", "err");
+            return;
+        }
+        const nextList = [preset, ...savedSkillPresets.filter((p) => p.id !== preset.id)];
+        state.skillBuilderPresetId = preset.id;
+        await saveCustomSkillBuilds(nextList);
+        ui.renderSimulation();
+        showToast(
+            `Saved skill build "${preset.name}" (${preset.className}, ${preset.totalPoints}p → ${state.diskApiAvailable ? "builds/skill-builds.json" : "browser storage"})`,
+            "ok"
+        );
+    });
+    document.getElementById("sbPresetDeleteBtn")?.addEventListener("click", async () => {
+        const pid = sbPresetSel?.value || selPresetId;
+        const preset = savedSkillPresets.find((p) => p.id === pid);
+        if (!preset) return;
+        if (!confirm(`Delete saved skill build "${preset.name}"?`)) return;
+        const nextList = savedSkillPresets.filter((p) => p.id !== preset.id);
+        state.skillBuilderPresetId = nextList[0]?.id || "";
+        await saveCustomSkillBuilds(nextList);
+        ui.renderSimulation();
+        showToast(`Deleted skill build "${preset.name}"`, "ok");
     });
 
     // Clear Points

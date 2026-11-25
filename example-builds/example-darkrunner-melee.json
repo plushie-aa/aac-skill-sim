@@ -1,92 +1,123 @@
 {
   "schemaVersion": 1,
-  "savedId": "example-darkrunner-melee",
-  "filename": "example-builds/example-darkrunner-melee.json",
-  "savedAt": "2026-01-01T00:00:00.000Z",
-  "isExample": true,
   "name": "Example: Darkrunner (Melee)",
-  "source": "example",
+  "source": "darugear",
   "metadata": {
-    "source": "example",
+    "source": "darugear",
     "darugearUrl": null,
     "shareCode": null,
     "className": "Darkrunner",
     "category": "melee",
-    "title": "1st Rank Knight",
-    "equipmentType": "dual_wield",
-    "gearScore": 6420
+    "title": "General",
+    "equipmentType": "two_hand",
+    "gearScore": 7760.5,
+    "darugearBuffs": [
+      {
+        "id": 6605,
+        "name": "General",
+        "isOptional": false,
+        "isTitle": true
+      },
+      {
+        "id": 8227,
+        "name": "Equip Two-Handed Weapon",
+        "isOptional": false
+      },
+      {
+        "id": 716,
+        "name": "Complete Leather Set",
+        "isOptional": false
+      },
+      {
+        "id": 6431,
+        "name": "Epic Leather Armor",
+        "isOptional": false
+      }
+    ],
+    "passives": [
+      "Weapon Maneuvers",
+      "Dual-Wield Proficiency",
+      "Attack Speed Training",
+      "Deflect and Retaliate",
+      "Puncture",
+      "Weapon Mastery",
+      "Hearten",
+      "Consecutive Evasion",
+      "Piercing"
+    ],
+    "importedAt": "2026-11-25T03:54:43.692Z"
   },
   "shareUrl": null,
   "darugearUrl": null,
   "shareCode": null,
   "className": "Darkrunner",
   "level": 55,
-  "gearScore": 6420,
-  "maxHealth": 27800,
-  "maxMana": 11400,
+  "gearScore": 7760.5,
+  "maxHealth": 22725,
+  "maxMana": 11262,
   "baseAttributes": {
-    "str": 458,
-    "agi": 158,
+    "str": 158,
+    "agi": 458,
     "sta": 158,
     "int": 8,
     "spi": 8
   },
   "attributes": {
-    "str": 1340,
-    "agi": 310,
-    "sta": 760,
-    "int": 45,
-    "spi": 45
+    "str": 1077,
+    "agi": 1048,
+    "sta": 456,
+    "int": 33,
+    "spi": 33
   },
   "offense": {
-    "meleeAttack": 1285,
-    "rangedAttack": 490,
-    "magicAttack": 60,
-    "healingPower": 60,
+    "meleeAttack": 1237.07,
+    "rangedAttack": 745,
+    "magicAttack": 6.6,
+    "healingPower": 6.6,
     "meleeAccuracyPct": 100,
     "rangedAccuracyPct": 100,
-    "magicAccuracyPct": 100,
-    "meleeCritRatePct": 38.5,
-    "rangedCritRatePct": 15,
-    "magicCritRatePct": 10,
-    "healCritRatePct": 10,
-    "meleeCritBonusPct": 178.0,
-    "rangedCritBonusPct": 50,
-    "magicCritBonusPct": 50,
-    "healCritBonusPct": 50,
-    "meleeSkillDamagePct": 14.0,
-    "rangedSkillDamagePct": 0,
-    "magicSkillDamagePct": 0,
-    "healingPct": 0,
-    "backstabMeleeDamagePct": 20.0,
-    "backstabRangedDamagePct": 0,
-    "backstabMagicDamagePct": 0,
-    "defensePenetration": 2150,
+    "magicAccuracyPct": 91.6,
+    "meleeCritRatePct": 37.4,
+    "rangedCritRatePct": 14.9,
+    "magicCritRatePct": 0.9,
+    "healCritRatePct": 0.9,
+    "meleeCritBonusPct": 150.1,
+    "rangedCritBonusPct": 76.9,
+    "magicCritBonusPct": 76.9,
+    "healCritBonusPct": 60.3,
+    "meleeSkillDamagePct": 11,
+    "rangedSkillDamagePct": 3,
+    "magicSkillDamagePct": 8,
+    "healingPct": 5,
+    "backstabMeleeDamagePct": 53.3,
+    "backstabRangedDamagePct": 18,
+    "backstabMagicDamagePct": 18,
+    "defensePenetration": 1480,
     "magicDefensePenetration": 0,
-    "shieldDefPenRatePct": 0,
-    "shieldDefPenPct": 0,
-    "focus": 2850,
-    "attackSpeed": 240,
-    "castTimePct": 100
+    "shieldDefPenRatePct": 50,
+    "shieldDefPenPct": 50,
+    "focus": 242,
+    "attackSpeed": 152,
+    "castTimePct": 93
   },
   "defense": {
-    "physicalDefense": 7850,
-    "magicDefense": 8200,
+    "physicalDefense": 8602,
+    "magicDefense": 7230,
     "shieldPhysicalDefense": 0,
-    "hasShield": false,
-    "dualWieldRangedParry": true,
-    "toughness": 3650,
-    "resilience": 4680,
-    "evasionPct": 17.5,
-    "parryPct": 21.0,
-    "rangedParryPct": 14.0,
+    "toughness": 3961,
+    "resilience": 3360,
+    "evasionPct": 29.8,
+    "parryPct": 9.5,
+    "rangedParryPct": 0,
     "blockPct": 0,
-    "receivedMeleeDrPct": 9.0,
-    "receivedRangedDrPct": 9.0,
-    "receivedMagicDrPct": 9.0,
-    "fixedMeleeDr": 0,
-    "fixedRangedDr": 0,
-    "fixedMagicDr": 0,
+    "hasShield": false,
+    "dualWieldRangedParry": false,
+    "receivedMeleeDrPct": 18,
+    "receivedRangedDrPct": 18,
+    "receivedMagicDrPct": 18,
+    "fixedMeleeDr": 49,
+    "fixedRangedDr": 49,
+    "fixedMagicDr": 45,
     "receivedHealingPct": 0
   },
   "modifiers": [],
@@ -98,20 +129,20 @@
       "itemId": 8000924,
       "name": "Melee Basic Costume",
       "type": "Synthesis Gear",
-      "gradeId": 10,
-      "gradeName": "Legendary",
-      "gradeColor": "#ffb326",
       "icon": "assets/icons/icon_item_3288.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
-      "lunafrost": null,
-      "lunagems": [],
+      "gradeId": 11,
+      "gradeName": "Mythic",
+      "gradeColor": "#ef233c",
+      "lunafrost": {
+        "name": "Earth Charm",
+        "text": "Earth Enlightenment (2): +1 Max Abyssal Charge"
+      },
       "synthStats": [
-        "Melee Attack +55",
-        "Melee Critical Rate +4.2%",
-        "Melee Critical Damage +22.0%",
-        "Backstab Melee Damage +8.0%"
+        "Melee Attack (39~43) +43",
+        "Melee Critical Rate (3.9~4.6%) +4.6%",
+        "Melee Critical Damage (9.5~10.5%) +10.5%",
+        "Backstab Melee Damage (7~7.5%) +7.5%",
+        "Received Damage (-2.8~-3.2%) -3.2%"
       ]
     },
     {
@@ -120,32 +151,41 @@
       "itemId": 31509,
       "name": "Ayanad Flame Cap",
       "type": "Leather",
+      "icon": "assets/icons/costume_hm/nu_f_hm_leather173.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/costume_hm/nu_f_hm_leather173.png",
       "ptemper": 109,
-      "mtemper": 100,
-      "temper": 109,
       "lunafrost": {
-        "name": "Astral Earth Lunadrop",
-        "text": "Stamina +9"
+        "name": "Erenor Earth Lunafrost",
+        "text": "Max Health +335"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
+        },
+        {
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
+        },
+        {
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
+        },
+        {
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 2,
@@ -153,13 +193,11 @@
       "itemId": 31510,
       "name": "Ayanad Flame Jerkin",
       "type": "Leather",
+      "icon": "assets/icons/costume_ar/nu_f_ar_leather173.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/costume_ar/nu_f_ar_leather173.png",
       "ptemper": 109,
-      "mtemper": 100,
-      "temper": 109,
       "lunafrost": {
         "name": "Honorbold Warrior's Lunafrost",
         "text": "Received Damage -3%"
@@ -184,9 +222,16 @@
         {
           "name": "Radiant Earth Lunagem: Flexibility",
           "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 3,
@@ -194,128 +239,138 @@
       "itemId": 31515,
       "name": "Ayanad Flame Belt",
       "type": "Leather",
+      "icon": "assets/icons/icon_item_belt_leather_0011.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/icon_item_belt_leather_0011.png",
       "ptemper": 106,
-      "mtemper": 100,
-      "temper": 106,
       "lunafrost": {
-        "name": "Astral Earth Lunadrop",
-        "text": "Stamina +9"
+        "name": "Erenor Earth Lunafrost",
+        "text": "Max Health +335"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
+        },
+        {
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
+        },
+        {
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 4,
       "slotName": "Wrists",
-      "itemId": 31514,
-      "name": "Ayanad Flame Guards",
+      "itemId": 38221,
+      "name": "Dark Warrior's Guards",
       "type": "Leather",
+      "icon": "assets/icons/icon_item_arm_leather_0012.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/icon_item_arm_leather_0013.png",
-      "ptemper": 106,
-      "mtemper": 100,
-      "temper": 106,
       "lunafrost": {
-        "name": "Astral Earth Lunadrop",
-        "text": "Stamina +9"
+        "name": "Astral Gale Lunadrop",
+        "text": "Agility +9"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 5,
       "slotName": "Hands",
-      "itemId": 31512,
-      "name": "Ayanad Flame Fists",
+      "itemId": 41027,
+      "name": "Screaming Shadow Fists",
       "type": "Leather",
+      "icon": "assets/icons/costume_gv/nu_m_gv_leather199.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/costume_gv/nu_m_gv_leather173.png",
-      "ptemper": 108,
-      "mtemper": 100,
-      "temper": 108,
       "lunafrost": {
-        "name": "Astral Earth Lunadrop",
-        "text": "Stamina +9"
+        "name": "Honorbold Precision Lunafrost",
+        "text": "Melee Critical Damage +12%"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 6,
       "slotName": "Cloak",
-      "itemId": 43124,
-      "name": "Erenor Flaming Hatchetblade Cloak",
+      "itemId": 43121,
+      "name": "Erenor Arrowflash Cloak",
       "type": "Cloak",
-      "gradeId": 9,
-      "gradeName": "Epic",
-      "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/costume_cp/nu_m_cp_cloth290.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
-      "lunafrost": null,
-      "lunagems": [],
+      "icon": "assets/icons/costume_cp/nu_m_cp_cloth284.png",
+      "gradeId": 11,
+      "gradeName": "Mythic",
+      "gradeColor": "#ef233c",
+      "lunafrost": {
+        "name": "Perfect Gale Lunafrost",
+        "text": "Increases Agility +4 with each attack, stacking up to 5 times. Increases all Attacks +3 when the max number of stacks is reached."
+      },
       "synthStats": [
-        "Strength +98",
-        "Stamina +65",
-        "Melee Critical Damage +14.0%"
+        "Backstab Melee Damage (13.1~14%) +14%",
+        "Agility (108~123) +123",
+        "Stamina (108~123) +123",
+        "Strength (108~123) +123"
       ]
     },
     {
       "slotId": 7,
       "slotName": "Legs",
-      "itemId": 31511,
-      "name": "Ayanad Flame Breeches",
+      "itemId": 41030,
+      "name": "Dashing Evanescence Breeches",
       "type": "Leather",
+      "icon": "assets/icons/costume_pt/nu_f_pt_leather198.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/costume_pt/nu_f_pt_leather173.png",
-      "ptemper": 109,
-      "mtemper": 100,
-      "temper": 109,
       "lunafrost": {
-        "name": "Astral Earth Lunadrop",
-        "text": "Stamina +9"
+        "name": "Honorbold Experienced Lunafrost",
+        "text": "Toughness +335"
       },
       "lunagems": [
         {
@@ -337,9 +392,12 @@
         {
           "name": "Radiant Earth Lunagem: Mastery",
           "text": "Toughness +353"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 8,
@@ -347,32 +405,37 @@
       "itemId": 31513,
       "name": "Ayanad Flame Boots",
       "type": "Leather",
+      "icon": "assets/icons/costume_bo/nu_f_bo_leather173.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "assets/icons/costume_bo/nu_f_bo_leather173.png",
       "ptemper": 108,
-      "mtemper": 100,
-      "temper": 108,
       "lunafrost": {
-        "name": "Flawless Assassin's Lunafrost",
-        "text": "Move Speed +5%"
+        "name": "Erenor Earth Lunafrost",
+        "text": "Max Health +335"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 9,
@@ -380,16 +443,13 @@
       "itemId": 8001855,
       "name": "Melee Black Cat Undergarments",
       "type": "Synthesis Gear",
-      "gradeId": 10,
-      "gradeName": "Legendary",
-      "gradeColor": "#ffb326",
       "icon": "assets/icons/costume_set/nu_f_in_pants008_df.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
+      "gradeId": 11,
+      "gradeName": "Mythic",
+      "gradeColor": "#ef233c",
       "lunafrost": {
-        "name": "Astral Earth Lunadrop",
-        "text": "Stamina +9"
+        "name": "Secret Gale Lunatear",
+        "text": "Agility +15"
       },
       "lunagems": [
         {
@@ -410,305 +470,257 @@
         }
       ],
       "synthStats": [
-        "Melee Critical Damage +18.0%",
-        "Defense Penetration +540",
-        "Focus +450"
+        "Melee Critical Rate (3.3~4%) +4%",
+        "Backstab Melee Damage (6~6.8%) +6.8%",
+        "Received Melee Damage (-5.5~-6%) -6%",
+        "Received Ranged Damage (-5.5~-6%) -6%",
+        "Received Magic Damage (-5.5~-6%) -6%"
       ]
     },
     {
       "slotId": 10,
       "slotName": "Neck",
-      "itemId": 9001875,
-      "name": "Enlightened Ayanad Flame Necklace",
+      "itemId": 9002024,
+      "name": "Enlightened Berserker Necklace",
       "type": "Necklace",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/aac/enlightened_flame_necklace.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
+      "icon": "assets/icons/aac/bloodlust_necklace.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Hostility Lunafrost",
-        "text": "Melee Attack +3; Magic Defense +53"
-      },
-      "lunagems": [],
-      "synthStats": []
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
+      }
     },
     {
       "slotId": 11,
       "slotName": "Earring",
-      "itemId": 9001894,
-      "name": "Enlightened Ayanad Flame Earring",
+      "itemId": 9001888,
+      "name": "Enlightened Ayanad Wave Earring",
       "type": "Earring",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/aac/enlightened_flame_earring.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
+      "icon": "assets/icons/aac/enlightened_wave_earring.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Hostility Lunafrost",
-        "text": "Melee Attack +3; Magic Defense +53"
-      },
-      "lunagems": [],
-      "synthStats": []
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
+      }
     },
     {
       "slotId": 12,
       "slotName": "Earring",
-      "itemId": 18820,
-      "name": "Delphinad Flame Earring",
+      "itemId": 9001888,
+      "name": "Enlightened Ayanad Wave Earring",
       "type": "Earring",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/icon_item_earring_0031.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
+      "icon": "assets/icons/aac/enlightened_wave_earring.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Hostility Lunafrost",
-        "text": "Melee Attack +3; Magic Defense +53"
-      },
-      "lunagems": [],
-      "synthStats": []
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
+      }
     },
     {
       "slotId": 13,
       "slotName": "Ring",
-      "itemId": 9001882,
-      "name": "Enlightened Ayanad Flame Ring",
+      "itemId": 9002023,
+      "name": "Enlightened Berserker Ring",
       "type": "Ring",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/aac/enlightened_flame_ring.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
+      "icon": "assets/icons/aac/bloodlust_ring.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Hostility Lunafrost",
-        "text": "Melee Attack +3; Magic Defense +53"
-      },
-      "lunagems": [],
-      "synthStats": []
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
+      }
     },
     {
       "slotId": 14,
       "slotName": "Ring",
-      "itemId": 9001882,
-      "name": "Enlightened Ayanad Flame Ring",
+      "itemId": 28802,
+      "name": "Flawless Dream Ring",
       "type": "Ring",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/aac/enlightened_flame_ring.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
+      "icon": "assets/icons/icon_item_ring_0020.png",
+      "gradeId": 7,
+      "gradeName": "Celestial",
+      "gradeColor": "#ff5c6a",
       "lunafrost": {
-        "name": "Distorted Hostility Lunafrost",
-        "text": "Melee Attack +3; Magic Defense +53"
-      },
-      "lunagems": [],
-      "synthStats": []
+        "name": "Indomitable Hostility Lunafrost",
+        "text": "Physical Defense +53; Melee Attack +3"
+      }
     },
     {
       "slotId": 15,
       "slotName": "Right Hand Weapon",
-      "itemId": 31338,
-      "name": "Ayanad Flame Katana",
-      "type": "Katana",
+      "itemId": 40586,
+      "name": "Razor Visage",
+      "type": "Nodachi",
+      "icon": "assets/icons/icon_item_blade_2h_0081.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "icon": "https://darugear.com/assets/icons/icon_item_blade_1h_0083.png",
-      "ptemper": 112,
-      "mtemper": 100,
-      "temper": 112,
-      "lunafrost": null,
+      "ptemper": 115,
+      "lunafrost": {
+        "name": "Honorbold Ruler's Lunafrost",
+        "text": "Melee Skill Damage +3%"
+      },
       "lunagems": [
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Wrath",
+          "text": "Melee Critical Damage +5%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Wrath",
+          "text": "Melee Critical Damage +5%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Wrath",
+          "text": "Melee Critical Damage +5%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Wrath",
+          "text": "Melee Critical Damage +5%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Wrath",
+          "text": "Melee Critical Damage +5%"
         }
-      ],
-      "synthStats": []
-    },
-    {
-      "slotId": 16,
-      "slotName": "Left Hand Weapon",
-      "itemId": 31324,
-      "name": "Ayanad Flame Sword",
-      "type": "Sword",
-      "gradeId": 9,
-      "gradeName": "Epic",
-      "gradeColor": "#f0f6ff",
-      "icon": "https://darugear.com/assets/icons/icon_item_sword_1h_0091.png",
-      "ptemper": 110,
-      "mtemper": 100,
-      "temper": 110,
-      "lunafrost": null,
-      "lunagems": [
-        {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
-        },
-        {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
-        },
-        {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
-        },
-        {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
-        }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 17,
       "slotName": "Ranged Weapon",
-      "itemId": 31408,
-      "name": "Ayanad Flame Bow",
+      "itemId": 28897,
+      "name": "Berserk Red Dragon Eyesplitter",
       "type": "Bow",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/icon_item_bow_0084.png",
-      "ptemper": 105,
-      "mtemper": 100,
-      "temper": 105,
-      "lunafrost": null,
+      "icon": "assets/icons/icon_item_1411.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "lunafrost": {
+        "name": "Perfect Destroyer Lunafrost (Bow)",
+        "text": "Activates the effects of Dimensional Destroyer on attack."
+      },
       "lunagems": [
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
+        },
+        {
+          "name": "Vivid Gale Lunagem: Pierce",
+          "text": "Defense Penetration +30"
+        },
+        {
+          "name": "Vivid Gale Lunagem: Pierce",
+          "text": "Defense Penetration +30"
+        },
+        {
+          "name": "Vivid Gale Lunagem: Pierce",
+          "text": "Defense Penetration +30"
         }
-      ],
-      "synthStats": []
+      ]
     },
     {
       "slotId": 18,
       "slotName": "Instrument",
-      "itemId": 31424,
-      "name": "Ayanad Gale Lute",
+      "itemId": 35570,
+      "name": "Anthem of Battlerage",
       "type": "Lute",
+      "icon": "assets/icons/icon_item_ins_s_0057.png",
       "gradeId": 8,
       "gradeName": "Divine",
       "gradeColor": "#d9a466",
-      "icon": "https://darugear.com/assets/icons/icon_item_ins_s_0048.png",
-      "ptemper": 100,
-      "mtemper": 100,
-      "temper": 100,
-      "lunafrost": {
-        "name": "Distorted Hostility Lunafrost",
-        "text": "Melee Attack +3; Magic Defense +53"
-      },
       "lunagems": [
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Strong Blow",
+          "text": "Melee Attack +6"
+        },
+        {
+          "name": "Vivid Gale Lunagem: Pierce",
+          "text": "Defense Penetration +30"
+        },
+        {
+          "name": "Vivid Gale Lunagem: Pierce",
+          "text": "Defense Penetration +30"
+        },
+        {
+          "name": "Vivid Gale Lunagem: Pierce",
+          "text": "Defense Penetration +30"
         }
-      ],
-      "synthStats": []
+      ]
     }
   ],
   "skillBuild": {
     "trees": [
       "battlerage",
-      "shadowplay",
-      "auramancy"
+      "auramancy",
+      "shadowplay"
     ],
     "className": "Darkrunner",
-    "actives": {
-      "battlerage": [
-        "Triple Slash",
-        "Charge",
-        "Whirlwind Slash",
-        "Sunder Earth",
-        "Precision Strike",
-        "Tiger Strike",
-        "Behind Enemy Lines",
-        "Battle Focus"
-      ],
-      "shadowplay": [
-        "Stalker's Mark",
-        "Overwhelm",
-        "Drop Back",
-        "Shadowsmite",
-        "Shadowstep",
-        "Freerunner"
-      ],
-      "auramancy": [
-        "Thwart",
-        "Teleportation",
-        "Shrug It Off",
-        "Liberation",
-        "Leech",
-        "Vicious Implosion"
-      ]
-    },
-    "passives": {
-      "battlerage": [
-        "Reckless Charge",
-        "Dual-Wield Proficiency",
-        "Attack Speed Training",
-        "Puncture",
-        "Weapon Maneuvers"
-      ],
-      "shadowplay": [
-        "Evasive Counterstrike",
-        "Piercing"
-      ],
-      "auramancy": []
-    },
+    "activeSkills": [
+      "battlerage_triple_slash",
+      "battlerage_charge",
+      "battlerage_whirlwind_slash",
+      "battlerage_bondbreaker",
+      "battlerage_precision_strike",
+      "battlerage_battle_focus",
+      "battlerage_tiger_strike",
+      "battlerage_behind_enemy_lines",
+      "auramancy_thwart",
+      "auramancy_teleportation",
+      "auramancy_shrug_it_off",
+      "auramancy_mirror_warp",
+      "shadowplay_overwhelm",
+      "shadowplay_drop_back",
+      "shadowplay_stalker_s_mark",
+      "shadowplay_shadowsmite",
+      "shadowplay_freerunner",
+      "shadowplay_shadow_step",
+      "shadowplay_throw_dagger"
+    ],
+    "passives": [
+      "Weapon Maneuvers",
+      "Dual-Wield Proficiency",
+      "Attack Speed Training",
+      "Deflect and Retaliate",
+      "Puncture",
+      "Weapon Mastery",
+      "Hearten",
+      "Consecutive Evasion",
+      "Piercing"
+    ],
+    "ancestralChoices": {},
     "hatredTree": null,
-    "ancestrals": {}
-  }
+    "bakedPassives": []
+  },
+  "savedId": "example-darkrunner-melee",
+  "filename": "builds/example-darkrunner-melee.json",
+  "savedAt": "2026-11-25T04:54:29.292654+00:00"
 }

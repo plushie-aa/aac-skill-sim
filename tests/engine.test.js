@@ -2,9 +2,13 @@ import {
     ARMOR_SLOTS,
     COMBAT_MODIFIERS,
     CONSUMABLE_SLOTS,
+    COSTUME_CHARM_DEFS,
     DEFAULT_CONSTANTS,
+    applyGearTemplateToSlots,
+    applyLunafrostToEligibleSlots,
     applyModifiers,
     applyOverrides,
+    applySkillBuildPresetToCharacter,
     applyStatMigrationTransfer,
     attackSpeedGcdPct,
     classifyGearItemTier,
@@ -14,14 +18,17 @@ import {
     compareDefenders,
     compareDefendersRotation,
     compareRotations,
+    computeActiveSetEffectSummaries,
     computeAllVsAllMatrix,
     computeArmorPieceDefense,
     computeArmorSetAndGradeBuff,
     computeCharacterGearBuffSummaries,
     computeEffectiveStats,
+    computeGearItemGrantedStats,
     computeGoldEfficiencyUpgrades,
     computeMatchupMatrix,
     computeStatWeights,
+    createBlankGearBuild,
     createDefaultCharacter,
     createDefaultEconomyPriceBook,
     createDefaultRawPlayer,
@@ -30,16 +37,23 @@ import {
     describeGearBuffEffects,
     effectiveGcdSec,
     ensureCharacterRawDaruGear,
+    equipArmorSetPreset,
     equipCatalogItemInSlot,
     estimateBuildCost,
+    extractGearTemplateFromSlots,
     extractSkillBuildFromDaruGearPlayerClass,
+    extractSkillBuildPreset,
     fillAllSlotLunagems,
     filterItemsForSlot,
     filterLunagemsForSlot,
     findModifierForDaruGearBuff,
+    getArmorSetPresets,
+    getAvailableSynthPool,
     getEquipmentSkillBonus,
     getPlayerStatMigration,
     getSkillComboOptions,
+    getSynthPoolIndexForStat,
+    getSynthSlotCountForGrade,
     getTotalPointsSpent,
     inferBuildArmorType,
     inferBuildCategory,
@@ -47,12 +61,15 @@ import {
     inspectWeaponArchetype,
     loadGearCatalog,
     normalizeEconomyPriceBook,
+    normalizeGearTemplate,
+    normalizeSavedSkillPreset,
     normalizeSkillBuild,
     parseGearStatLine,
     parseSkillSpecificBonusLine,
     recalculateCharacterFromGearBuilder,
     recomputeGearBuffs,
     registerCustomModifiers,
+    resolveCostumeCharmInfo,
     resetPlayerStatMigration,
     resilienceCritBonusReductionPct,
     resilienceCritRateReductionPct,
@@ -65,6 +82,8 @@ import {
     setGearPlayerTitle,
     setSkillBuildTree,
     setSlotItemGrade,
+    setSlotItemLunafrost,
+    setSlotItemSynthStat,
     setSlotItemTemper,
     shouldAutoApplyAhGearPrice,
     shiftArmorGrades,
@@ -3628,6 +3647,817 @@ export async function runAllTests() {
         for (const reqCat of ["melee", "mage", "archer", "healer", "tank"]) {
             assert(seenCats.has(reqCat), `example-builds/ covers archetype "${reqCat}"`);
         }
+    });
+
+    // 45. Gods' Whip Inherent Off-GCD, Rotation Random/Proc Debuffs (Delirium Bleed / Puncture), Fine-Grained Delay & Travel Time
+    await test("Gods' Whip inherent Off-GCD, rotation & per-step random debuffs (Delirium Bleed / Puncture), fine-grained delay & travel time", () => {
+        const godsWhip = findSkill(sorcery, "sorcery_gods_whip");
+        const flamebolt = findSkill(sorcery, "sorcery_flamebolt");
+        const freezingEarth = findSkill(sorcery, "sorcery_freezing_earth");
+        const tripleSlash = findSkill(battlerage, "battlerage_triple_slash");
+        const precStrike = findSkill(battlerage, "battlerage_precision_strike");
+
+        const att = createDefaultCharacter({
+            offense: { meleeAttack: 1200, magicAttack: 1200, attackSpeed: 0, castTimePct: 100, meleeCritRatePct: 0, magicCritRatePct: 0 },
+        });
+        const def = createDefaultCharacter({
+            maxHealth: 25000,
+            defense: { physicalDefense: 6000, magicDefense: 4000, toughness: 0, resilience: 0 },
+        });
+
+        // 1. Gods' Whip is inherently Off-GCD (0.00s GCD without step.offGcd flag)
+        const gwRot = simulateRotation(att, def, [{ skill: godsWhip }]);
+        assert(gwRot.steps[0].result.dps.isOffGcd === true, "Gods' Whip is inherently Off-GCD");
+        assertApprox(gwRot.steps[0].durationSec, 0, 0.0001, "Gods' Whip has 0.00s GCD execution footprint");
+        const gwDelayRot = simulateRotation(att, def, [{ skill: godsWhip, delaySec: 0.05, travelTimeSec: 0.35 }]);
+        assertApprox(gwDelayRot.steps[0].durationSec, 0.05, 0.0001, "Fine-grained 0.05s delay preserved on Gods' Whip");
+        assertApprox(gwDelayRot.steps[0].impactSec, 0.35, 0.0001, "0.35s travel time sets Gods' Whip impact at 0.35s");
+        assertApprox(gwDelayRot.totalDurationSec, 0.35, 0.0001, "Total window includes 0.35s travel tail");
+        assertApprox(gwDelayRot.totalTravelTailSec, 0.30, 0.0001, "Travel tail beyond 0.05s cast window is 0.30s");
+
+        // 2. Rotation-wide & per-step random debuffs (Delirium Bleed + Puncture -2k PDef)
+        const basePrec = simulateRotation(att, def, [
+            { skill: tripleSlash, targetIsCCd: true },
+            { skill: precStrike, targetIsCCd: true },
+        ]);
+        const initBleedPrec = simulateRotation(
+            att,
+            def,
+            [{ skill: precStrike, targetIsCCd: true }],
+            { rotationInitialEffects: ["bleeding"] }
+        );
+        const noBleedPrec = simulateRotation(att, def, [{ skill: precStrike, targetIsCCd: true }]);
+        assertApprox(
+            initBleedPrec.steps[0].result.expected / noBleedPrec.steps[0].result.expected,
+            1.2,
+            0.005,
+            "Rotation-wide Bleeding (Delirium) grants +20% combo damage to Precision Strike"
+        );
+        const stepDebuffRot = simulateRotation(att, def, [
+            { skill: tripleSlash, targetIsCCd: true, appliedDebuffs: ["bleeding", "puncture"] },
+            { skill: precStrike, targetIsCCd: true },
+        ]);
+        assertApprox(
+            stepDebuffRot.steps[0].result.expected,
+            basePrec.steps[0].result.expected,
+            0.5,
+            "Step 1 applying Bleeding + Puncture does not retroactively boost Step 1 itself"
+        );
+        assert(
+            stepDebuffRot.steps[1].autoComboLabels.some((l) => l.includes("Bleeding")),
+            "Step 2 receives Bleeding combo from Step 1's appliedDebuffs"
+        );
+        assert(
+            stepDebuffRot.steps[1].activeDebuffLabels.some((l) => l.includes("Puncture")),
+            "Step 2 receives Puncture (-2,000 PDef) from Step 1's appliedDebuffs"
+        );
+        assert(
+            stepDebuffRot.steps[1].result.expected > basePrec.steps[1].result.expected * 1.25,
+            "Bleeding (+20%) + Puncture (-2k PDef) substantially increases Step 2 Precision Strike damage"
+        );
+
+        // 3. Travel time delays combo status arrival until projectile impact
+        const fastProjRot = simulateRotation(att, def, [
+            { skill: flamebolt, noCastTime: true, travelTimeSec: 0.40 },
+            { skill: freezingEarth },
+        ]);
+        const slowProjRot = simulateRotation(att, def, [
+            { skill: flamebolt, noCastTime: true, travelTimeSec: 1.50 },
+            { skill: freezingEarth },
+        ]);
+        assert(
+            fastProjRot.steps[1].autoComboLabels.some((l) => l.includes("Burning")),
+            "0.40s travel Flamebolt lands before 1.00s GCD Freezing Earth and triggers Burning +20%"
+        );
+        assert(
+            !slowProjRot.steps[1].autoComboLabels.some((l) => l.includes("Burning")),
+            "1.50s travel Flamebolt is still mid-air at 1.00s so instant Freezing Earth does not trigger Burning"
+        );
+    });
+
+    // 46. Multi-Stage Cast Progression Across Rotations (Gods' Whip, Fervent Healing, Lightning Tiger Strike)
+    await test("Multi-stage cast progression across rotations (Gods' Whip 1-5, Fervent Healing 1.0x-2.0x, Lightning Tiger Strike 1-3)", () => {
+        const godsWhip = findSkill(sorcery, "sorcery_gods_whip");
+        const flameboltFlame = findSkill(sorcery, "sorcery_flamebolt_flame");
+        const fervent = findSkill(vitalism, "vitalism_fervent_healing");
+        const lts = findSkill(battlerage, "battlerage_tiger_strike_lightning");
+
+        const actor = createDefaultCharacter({
+            offense: {
+                meleeAttack: 1000,
+                magicAttack: 1000,
+                healingPower: 1000,
+                attackSpeed: 0,
+                castTimePct: 100,
+                meleeCritRatePct: 0,
+                magicCritRatePct: 0,
+                healCritRatePct: 0,
+            },
+        });
+        const target = createDefaultCharacter({
+            maxHealth: 40000,
+            defense: { physicalDefense: 0, magicDefense: 0, toughness: 0, resilience: 0 },
+        });
+
+        // 1. Gods' Whip 5-step interleaved weave auto-progresses Strike 1 -> Strike 5 (even with legacy null stageIndex!)
+        const weave = simulateRotation(
+            actor,
+            target,
+            [
+                { skill: godsWhip },
+                { skill: flameboltFlame, offGcd: true },
+                { skill: godsWhip },
+                { skill: flameboltFlame, offGcd: true },
+                { skill: godsWhip },
+                { skill: flameboltFlame, offGcd: true },
+                { skill: godsWhip },
+                { skill: flameboltFlame, offGcd: true },
+                { skill: godsWhip },
+            ],
+            { disableAutoCombos: true }
+        );
+        const whipSteps = weave.steps.filter((s) => s.skill.id === "sorcery_gods_whip");
+        assert(whipSteps.length === 5, "5 interleaved Gods' Whip steps resolved");
+        for (let i = 0; i < 5; i++) {
+            assert(whipSteps[i].stageIndex === i, `Gods' Whip #${i + 1} resolves to stageIndex ${i}`);
+            assert(whipSteps[i].result.hitCount === 1, `Gods' Whip #${i + 1} evaluates 1 strike, not all 5`);
+            if (i > 0) {
+                assert(
+                    whipSteps[i].result.expected > whipSteps[i - 1].result.expected,
+                    `Gods' Whip Strike ${i + 1} (${whipSteps[i].result.expected.toFixed(0)}) > Strike ${i} (${whipSteps[i - 1].result.expected.toFixed(0)})`
+                );
+            }
+        }
+        const fullWhip = simulateRotation(actor, target, [{ skill: godsWhip, stageIndex: "all" }], { disableAutoCombos: true });
+        const sumWeaveWhips = whipSteps.reduce((acc, s) => acc + s.result.expected, 0);
+        assertApprox(sumWeaveWhips, fullWhip.totalExpected, 2.0, "Sum of 5 individual Gods' Whip stages matches full 5-strike Gods' Whip");
+
+        // 2. Fervent Healing 5-stage escalating heals (1.00x -> 2.00x, 0.40s GCD per cast)
+        const fervRot = simulateRotation(
+            actor,
+            target,
+            Array.from({ length: 5 }, () => ({ skill: fervent, stageIndex: "auto" }))
+        );
+        assertApprox(fervRot.totalDurationSec, 2.0, 0.01, "5 individual Fervent Healing stages take 5 x 0.40s = 2.00s");
+        for (let i = 1; i < 5; i++) {
+            assert(
+                fervRot.steps[i].result.expected > fervRot.steps[i - 1].result.expected,
+                `Fervent Healing Cast ${i + 1} heals more than Cast ${i}`
+            );
+        }
+        assertApprox(
+            fervRot.steps[4].result.expected / fervRot.steps[0].result.expected,
+            2.0,
+            0.01,
+            "Fervent Healing Cast 5 (2.00x) heals for 2.0x of Cast 1 (1.00x)"
+        );
+
+        // 3. Lightning Tiger Strike 3-stage casts (0.40s per dash, 1/3 each) + explicit stage lock
+        const ltsRot = simulateRotation(
+            actor,
+            target,
+            [
+                { skill: lts, stageIndex: "auto" },
+                { skill: lts, stageIndex: "auto" },
+                { skill: lts, stageIndex: "auto" },
+            ],
+            { disableAutoCombos: true }
+        );
+        const fullLts = simulateRotation(actor, target, [{ skill: lts, stageIndex: "all" }], { disableAutoCombos: true });
+        assertApprox(ltsRot.totalDurationSec, 1.2, 0.01, "3 individual Lightning Tiger Strike dashes = 1.20s");
+        assertApprox(ltsRot.totalExpected, fullLts.totalExpected, 2.0, "3 individual Lightning Tiger Strike stages sum to full 3-hit skill");
+
+        const lockedStrike5 = simulateRotation(actor, target, [{ skill: godsWhip, stageIndex: 4 }], { disableAutoCombos: true });
+        assert(lockedStrike5.steps[0].stageIndex === 4, "Explicit stageIndex: 4 locks to Strike 5");
+        assertApprox(lockedStrike5.totalExpected, whipSteps[4].result.expected, 1.0, "Locked Strike 5 matches 5th auto-stage strike");
+
+        // 4. Active debuffs/statuses & remaining durations snapshot + merged effectSpans timeline
+        const dropBack = findSkill(shadowplay, "shadowplay_drop_back");
+        const tracked = simulateRotation(
+            actor,
+            target,
+            [
+                { skill: dropBack },
+                { skill: godsWhip, stageIndex: "auto", delaySec: 0.1 },
+                { skill: flameboltFlame, offGcd: true },
+                { skill: godsWhip, stageIndex: "auto", delaySec: 0.1 },
+            ],
+            { rotationInitialEffects: ["bleeding"] }
+        );
+        const step4 = tracked.steps[3];
+        const shockedAt4 = step4.activeTargetEffects.find((e) => e.id === "shocked");
+        const burningAt4 = step4.activeTargetEffects.find((e) => e.id === "burning");
+        const bleedAt4 = step4.activeTargetEffects.find((e) => e.id === "bleeding");
+        assert(shockedAt4 && shockedAt4.remainingSec > 7.5 && shockedAt4.remainingSec <= 8.0, `Shocked active with ~7.9s remaining at step 4 (got ${shockedAt4?.remainingSec})`);
+        assert(burningAt4 && burningAt4.remainingSec > 3.5 && burningAt4.remainingSec <= 4.0, `Burning active with ~3.9s remaining at step 4 (got ${burningAt4?.remainingSec})`);
+        assert(bleedAt4 && bleedAt4.isPermanent === true, "Rotation-wide Bleeding marked permanent in activeTargetEffects");
+        assert(step4.activeComboBuffs.some((b) => b.id === "drop_back" && b.remainingSec > 2.0), "Drop Back combo buff remaining duration tracked at step 4");
+        assert(
+            tracked.effectSpans.some((sp) => sp.id === "shocked") &&
+                tracked.effectSpans.some((sp) => sp.id === "burning") &&
+                tracked.effectSpans.some((sp) => sp.id === "bleeding" && sp.isPermanent),
+            "Merged effectSpans includes Shocked, Burning, and permanent Bleeding"
+        );
+    });
+
+    // 47. Upgrading Costume / Synthesis Gear Grade Preserves & Scales Synthesis Stats
+    await test("Upgrading costume grade (Legendary -> Mythic) preserves all synthesis stats and scales values to Mythic pool", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const costumeItems = filterItemsForSlot(0, { query: "Costume" }, catalog);
+        const costume = costumeItems.find((it) => Number(it.synth_cat_id) > 0 && Number(it.maxgrade) >= 11);
+        assert(Boolean(costume), "Found synthesizable Costume up to Mythic in catalog");
+
+        let slots = createEmptyGearSlots();
+        slots = equipCatalogItemInSlot(slots, 0, costume, { gradeId: 10 }, catalog); // Legendary
+        const legPool = getAvailableSynthPool(slots[0].item.equipment, 10, catalog);
+        const legCount = getSynthSlotCountForGrade(slots[0].item.equipment, 10);
+        assert(legCount >= 3 && legPool.length >= legCount, `Legendary costume has ${legCount} synth lines`);
+
+        const pickedAttrIds = legPool.slice(0, legCount).map((p) => Number(p.unit_attribute_id));
+        for (let i = 0; i < pickedAttrIds.length; i++) {
+            slots = setSlotItemSynthStat(slots, 0, i, pickedAttrIds[i], catalog);
+        }
+        const beforeMaxes = slots[0].item.sythisis_stat.map((st) => Number(st?.maxvalue ?? st?.max ?? 0));
+
+        // Upgrade Legendary (10) -> Mythic (11)
+        const mythicSlots = setSlotItemGrade(slots, 0, 11, catalog);
+        const mythicItem = mythicSlots[0].item;
+        assert(mythicItem.grade.id === 11, "Costume grade upgraded to Mythic (11)");
+        for (let i = 0; i < pickedAttrIds.length; i++) {
+            const st = mythicItem.sythisis_stat[i];
+            assert(st && Number(st.unit_attribute_id) === pickedAttrIds[i], `Synth line #${i + 1} attribute preserved after Legendary -> Mythic upgrade`);
+            const afterMax = Number(st.maxvalue ?? st.max ?? 0);
+            assert(afterMax >= beforeMaxes[i], `Mythic synth line #${i + 1} value (${afterMax}) >= Legendary (${beforeMaxes[i]})`);
+        }
+        assert(
+            mythicItem.sythisis_stat.slice(0, pickedAttrIds.length).some((st, i) => Number(st.maxvalue ?? st.max ?? 0) > beforeMaxes[i]),
+            "At least one synthesis line scaled strictly higher at Mythic"
+        );
+
+        // Downgrade Mythic (11) -> Legendary (10) also keeps all stats
+        const backToLeg = setSlotItemGrade(mythicSlots, 0, 10, catalog);
+        for (let i = 0; i < pickedAttrIds.length; i++) {
+            assert(
+                Number(backToLeg[0].item.sythisis_stat[i]?.unit_attribute_id) === pickedAttrIds[i],
+                `Round-trip Mythic -> Legendary preserves synth line #${i + 1}`
+            );
+        }
+    });
+
+    // 48. Per-Item Granted Stats Calculator (PDef/MDef, Weapon Atk, Attributes, Bonus Effects)
+    await test("computeGearItemGrantedStats computes accurate Phys/Magic Def, Weapon Atk, Attributes, and Bonus Stats for any gear slot", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        let slots = createEmptyGearSlots();
+
+        // 1. Plate Chest (Phys Def + STR/STA + Gear Score)
+        const chestItem = filterItemsForSlot(2, { query: "Ayanad", typeFilter: "Plate" }, catalog)[0];
+        assert(Boolean(chestItem), "Found Ayanad Plate Chest");
+        slots = equipCatalogItemInSlot(slots, 2, chestItem, { gradeId: 9, ptemper: 110 }, catalog);
+        const chestStats = computeGearItemGrantedStats(slots[2], 2);
+        assert(chestStats && chestStats.main.pdef > 3500, `Plate Chest grants >3,500 Phys Def (got ${chestStats?.main?.pdef})`);
+        assert(chestStats.main.mdef === 0, "Plate Chest grants 0 Magic Def");
+        const chestAttrSum = Object.values(chestStats.attributes).reduce((a, b) => a + b, 0);
+        assert(chestAttrSum > 50, `Plate Chest grants primary attributes (sum=${chestAttrSum})`);
+        assert(chestStats.gearScore > 400, `Plate Chest computes Gear Score (got ${chestStats.gearScore})`);
+
+        // 2. Staff Weapon (Melee Atk + Magic Atk + INT)
+        const staffItem = filterItemsForSlot(15, { query: "Ayanad Wave", typeFilter: "Staff" }, catalog)[0];
+        assert(Boolean(staffItem), "Found Ayanad Wave Staff");
+        slots = equipCatalogItemInSlot(slots, 15, staffItem, { gradeId: 10, mtemper: 112 }, catalog);
+        const staffStats = computeGearItemGrantedStats(slots[15], 15);
+        assert(staffStats.main.meleeAttack > 400, `Ayanad Staff grants Melee Atk (got ${staffStats.main.meleeAttack})`);
+        assert(staffStats.main.magicAttack > 500, `Ayanad Staff grants Magic Atk (got ${staffStats.main.magicAttack})`);
+        assert(staffStats.attributes.int > 40, `Ayanad Staff grants INT (got ${staffStats.attributes.int})`);
+    });
+
+    // 49. Equip Effects, Item Set Effects, and Erenor Lunafrost Set Effects (3/4/6pc)
+    await test("Item equip effects, equipment set effects (4/7pc), and Erenor Lunafrost sets (3/4/6pc) compute and render cleanly", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        let slots = createEmptyGearSlots();
+
+        // 1. Obsidian Club equip effect (Crit Heal Bonus %)
+        const obsClub = filterItemsForSlot(15, { query: "Cursed Obsidian Club" }, catalog)[0];
+        assert(Boolean(obsClub), "Found Cursed Obsidian Club");
+        slots = equipCatalogItemInSlot(slots, 15, obsClub, { gradeId: 9 }, catalog); // Epic
+        const clubStats = computeGearItemGrantedStats(slots[15], 15, slots);
+        assert(
+            clubStats.equipEffects.some((e) => e.label === "Crit Heal Bonus" && e.value >= 9.5),
+            `Cursed Obsidian Club Epic exposes Crit Heal Bonus equip effect (got ${JSON.stringify(clubStats.equipEffects)})`
+        );
+
+        // 2. Equip 6 pieces of Ayanad Flame Plate + apply Erenor Flame Lunafrost (43154) across all 6 eligible slots
+        const armorSlots = [1, 2, 3, 4, 5, 7];
+        for (const sid of armorSlots) {
+            const it = filterItemsForSlot(sid, { query: "Ayanad Flame", typeFilter: "Plate" }, catalog)[0];
+            assert(Boolean(it), `Found Ayanad Flame Plate for slot ${sid}`);
+            slots = equipCatalogItemInSlot(slots, sid, it, { gradeId: 9 }, catalog);
+        }
+        const { slots: withErenor, appliedCount } = applyLunafrostToEligibleSlots(slots, 43154, catalog);
+        assert(appliedCount === 6, `Erenor Flame Lunafrost applied to all 6 eligible Ayanad slots (got ${appliedCount})`);
+
+        const chestGranted = computeGearItemGrantedStats(withErenor[2], 2, withErenor);
+        const armorSet = chestGranted.setEffects.find((s) => s.sourceKind === "equipment");
+        const erenorSet = chestGranted.setEffects.find((s) => s.sourceKind === "lunafrost");
+        assert(armorSet && armorSet.equippedCount === 6, `Ayanad Flame Set tracks 6/7 pieces (got ${armorSet?.equippedCount})`);
+        assert(
+            armorSet.tiers.some((t) => t.numPieces === 4 && t.active && t.summary.includes("Crit Damage")),
+            `Ayanad Flame 4pc Crit Damage tier active (${armorSet?.tiers?.[0]?.summary})`
+        );
+        assert(
+            armorSet.tiers.some((t) => t.numPieces === 7 && !t.active),
+            "Ayanad Flame 7pc tier inactive at 6 pieces"
+        );
+        assert(erenorSet && erenorSet.equippedCount === 6 && erenorSet.maxPieces === 6, "Erenor Flame Lunafrost Set tracks 6/6 pieces");
+        assert(
+            erenorSet.tiers.every((t) => t.active) && erenorSet.tiers.some((t) => t.numPieces === 6 && t.summary.includes("Melee Crit Dmg")),
+            `Erenor Flame 3/4/6pc tiers all active with Melee Crit Dmg (${JSON.stringify(erenorSet.tiers.map((t) => t.summary))})`
+        );
+
+        // 3. Active Set Summaries include both Ayanad Flame Set & Erenor Flame Lunafrost Set, and stats reflect +18.6% Melee Crit Dmg
+        const activeSets = computeActiveSetEffectSummaries(withErenor);
+        assert(activeSets.some((s) => s.category === "set" && s.name.includes("Ayanad Flame")), "Active summaries include Ayanad Flame Set");
+        assert(activeSets.some((s) => s.category === "erenor" && s.name.includes("Erenor Flame")), "Active summaries include Erenor Flame Lunafrost Set");
+
+        const calcNoErenor = calculateDaruGearStats(createDefaultRawPlayer(), slots);
+        const calcWithErenor = calculateDaruGearStats(createDefaultRawPlayer(), withErenor);
+        assertApprox(calcWithErenor.toughness - calcNoErenor.toughness, 452, 1, "6pc Erenor Flame grants +452 Toughness");
+        assertApprox(calcWithErenor.resilience - calcNoErenor.resilience, 560, 1, "6pc Erenor Flame grants +560 Resilience");
+        assertApprox(calcWithErenor.meleeCritBonus - calcNoErenor.meleeCritBonus, 18.6, 0.2, "6pc Erenor Flame grants +18.6% Melee Crit Damage");
+        assertApprox(calcWithErenor.atk - calcNoErenor.atk, 60, 0.5, "6x Erenor Flame Lunafrost grants +60 base Melee Attack");
+    });
+
+    // 50. Quick Armor Set Preset Swapper (Ayanad 7pc, T7/T6 Obsidian 5pc, Dungeon Gear 7pc, Delphinad 7pc — no Enlightened Ayanad)
+    await test("Armor Set Preset Swapper resolves Ayanad, T7/T6 Obsidian, Dungeon Gear, and Delphinad sets (excluding Enlightened Ayanad)", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const presets = getArmorSetPresets(catalog);
+        const byId = new Map(presets.map((p) => [p.id, p]));
+
+        // 1. All 5 active groups resolve & Enlightened Ayanad is excluded
+        const groups = new Set(presets.map((p) => p.group));
+        assert(groups.has("Ayanad Armor (7pc)"), "Ayanad Armor (7pc) preset group present");
+        assert(groups.has("T7 Obsidian Armor (5pc)"), "T7 Obsidian Armor (5pc) preset group present");
+        assert(groups.has("T6 Obsidian Armor (5pc)"), "T6 Obsidian Armor (5pc) preset group present");
+        assert(groups.has("Dungeon Gear (7pc)"), "Dungeon Gear (7pc) preset group present");
+        assert(groups.has("Delphinad Armor (7pc)"), "Delphinad Armor (7pc) preset group present");
+        assert(!groups.has("Enlightened Ayanad (7pc)"), "Enlightened Ayanad is excluded from armor set presets");
+        assert(!presets.some((p) => p.id.startsWith("enlightened_ayanad")), "No enlightened_ayanad preset IDs exist");
+
+        for (const reqId of [
+            "ayanad_leather_flame",
+            "ayanad_cloth_life",
+            "t7_cloth_spirit",
+            "t7_cloth_mage",
+            "t6_cloth_healer",
+            "dungeon_mistsong_cloth_mage",
+            "dungeon_mistsong_cloth_healer",
+            "dungeon_mistsong_leather_archer",
+            "dungeon_serpentis_cloth_mage",
+            "dungeon_serpentis_leather",
+            "dungeon_serpentis_plate",
+            "dungeon_greater_cloth",
+            "dungeon_hellforged_cloth_mage",
+            "dungeon_gha_plate",
+        ]) {
+            assert(byId.has(reqId), `Preset '${reqId}' resolved from catalog`);
+        }
+
+        // 2. Equip 7pc Leather Ayanad Flame at Epic (9), add Toughness gems on Legs (7) + custom temper on Chest (2)
+        let slots = createEmptyGearSlots();
+        const flameRes = equipArmorSetPreset(slots, "ayanad_leather_flame", { gradeId: 9 }, catalog);
+        assert(flameRes.swappedCount === 7, `Leather Ayanad Flame swapped 7 slots (got ${flameRes.swappedCount})`);
+        slots = flameRes.slots;
+        assert(slots[2].item.equipment.name.startsWith("Ayanad Flame "), "Chest is Ayanad Flame Leather");
+        assert(slots[2].item.grade.id === 9, "Explicit Epic grade applied to Chest");
+        slots[2].item.ptemper = 112;
+        slots[3].item.grade = { ...catalog.gradeById.get(10) }; // Legendary Waist
+        const legGems = filterLunagemsForSlot(7, slots[7].item, catalog);
+        const toughGem = legGems.find((g) => /Toughness/i.test(`${g.name || ""} ${g.effect_text || ""}`));
+        assert(Boolean(toughGem), "Found Toughness lunagem for Legs");
+        slots = fillAllSlotLunagems(slots, 7, toughGem.id, catalog);
+        const legGemCountBefore = slots[7].item.lunagem.filter((g) => g && g.id === toughGem.id).length;
+        assert(legGemCountBefore >= 4, `Socketed ${legGemCountBefore} Toughness gems on Legs`);
+
+        // 3. Swap to 7pc Cloth Ayanad Life keeping existing grades, tempers, and compatible gems
+        const lifeRes = equipArmorSetPreset(slots, "ayanad_cloth_life", {}, catalog);
+        assert(lifeRes.swappedCount === 7, "Cloth Ayanad Life swapped all 7 slots");
+        assert(lifeRes.slots[2].item.equipment.type === "Cloth" && lifeRes.slots[2].item.equipment.name.startsWith("Ayanad Life "), "Chest swapped to Ayanad Life Cloth");
+        assert(lifeRes.slots[2].item.ptemper === 112, "Existing Chest temper (112%) preserved across set swap");
+        assert(lifeRes.slots[3].item.grade.id === 10, "Existing Legendary grade on Waist preserved when Keep Slot Grades is used");
+        assert(
+            lifeRes.slots[7].item.lunagem.filter((g) => g && g.id === toughGem.id).length === legGemCountBefore,
+            "Compatible Toughness lunagems on Legs preserved across Leather -> Cloth swap"
+        );
+
+        // 4. Swap to 5pc T7 Obsidian Spirit Cloth (Ehnoïr 75% SPI): leaves Waist (3) & Wrists (4) untouched!
+        const waistBeforeId = lifeRes.slots[3].item.equipment.id;
+        const wristsBeforeId = lifeRes.slots[4].item.equipment.id;
+        const t7SpiritRes = equipArmorSetPreset(lifeRes.slots, "t7_cloth_spirit", { gradeId: 10 }, catalog);
+        assert(t7SpiritRes.swappedCount === 5, `T7 Obsidian Spirit Cloth swapped 5 slots (got ${t7SpiritRes.swappedCount})`);
+        assert(t7SpiritRes.slots[3].item.equipment.id === waistBeforeId, "5pc Obsidian swap leaves Waist untouched");
+        assert(t7SpiritRes.slots[4].item.equipment.id === wristsBeforeId, "5pc Obsidian swap leaves Wrists untouched");
+        const t7SpiritChestStats = computeGearItemGrantedStats(t7SpiritRes.slots[2], 2, t7SpiritRes.slots);
+        assert(t7SpiritChestStats.attributes.spi > t7SpiritChestStats.attributes.int, "T7 Spirit Cloth Chest grants primary SPI");
+
+        // 5. Swap to 5pc T7 Obsidian Mage Cloth, 5pc T6 Obsidian Healer Cloth, and 7pc Dungeon Gear (Mistsong + Hellforged)
+        const t7MageRes = equipArmorSetPreset(t7SpiritRes.slots, "t7_cloth_mage", { gradeId: 10 }, catalog);
+        assert(t7MageRes.swappedCount === 5, "T7 Obsidian Mage Cloth swapped 5 slots");
+        const t7MageChestStats = computeGearItemGrantedStats(t7MageRes.slots[2], 2, t7MageRes.slots);
+        assert(t7MageChestStats.attributes.int > t7MageChestStats.attributes.spi, "T7 Mage Cloth Chest grants primary INT");
+
+        const t6HealerRes = equipArmorSetPreset(t7MageRes.slots, "t6_cloth_healer", { gradeId: 9 }, catalog);
+        assert(t6HealerRes.swappedCount === 5, "T6 Obsidian Healer Cloth swapped 5 slots");
+        assert(t6HealerRes.slots[2].item.equipment.name.startsWith("Purehearted Goddess"), "T6 Healer Cloth Chest is Purehearted Goddess");
+        assert(t6HealerRes.slots[3].item.equipment.id === waistBeforeId, "T6 Obsidian 5pc swap still leaves Waist untouched");
+
+        const mistsongRes = equipArmorSetPreset(t6HealerRes.slots, "dungeon_mistsong_cloth_mage", { gradeId: 9 }, catalog);
+        assert(mistsongRes.swappedCount === 7, "Dungeon Mistsong Cloth Mage swapped all 7 slots");
+        assert(mistsongRes.slots[2].item.equipment.name === "Tempting Melody Shirt", `Mistsong Chest is Tempting Melody Shirt (got ${mistsongRes.slots[2].item.equipment.name})`);
+
+        const hellforgedRes = equipArmorSetPreset(mistsongRes.slots, "dungeon_hellforged_cloth_mage", { gradeId: 11 }, catalog);
+        assert(hellforgedRes.swappedCount === 7, "Dungeon Hellforged Mage swapped all 7 slots");
+        assert(hellforgedRes.slots[2].item.grade.id === 7, `Hellforged grade safely clamps to Celestial (7) maxgrade (got ${hellforgedRes.slots[2].item.grade.id})`);
+    });
+
+    // 51. Create Blank Gear Build (.json with zero equipped gear, clean Lv 55 base stats)
+    await test("createBlankGearBuild creates a clean naked Lv 55 character ready to save as JSON and equip sets", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const blank = createBlankGearBuild("Fresh Healer", {}, catalog);
+        assert(blank.name === "Fresh Healer", "Blank build retains requested name");
+        assert(blank.level === 55, "Blank build starts at Lv 55");
+        assert(blank.source === "gearbuilder" && blank.metadata?.source === "gearbuilder", "Blank build source is gearbuilder");
+        assert(blank.gearScore === 0, `Blank build has 0 Gear Score (got ${blank.gearScore})`);
+        assert(Array.isArray(blank.equipment) && blank.equipment.length === 0, "Blank build has 0 equipped items");
+        assert(blank.shareCode === null && blank.darugearUrl === null, "Blank build has no DaruGear share code or URL");
+        assert(blank.rawDaruGear.slots.every((s) => s.item === null), "All 20 raw Gear Builder slots are empty");
+        assert(
+            blank.attributes.str === 158 && blank.attributes.agi === 158 && blank.attributes.sta === 158 && blank.attributes.int === 158 && blank.attributes.spi === 158,
+            "Blank build has exact Lv 55 base attributes (158 all)"
+        );
+
+        // Round-trip through JSON export/import (parseImportPayload + ensureCharacterRawDaruGear) and equip a Dungeon set
+        const serialized = JSON.parse(JSON.stringify({ ...blank, rawDaruGear: undefined }));
+        const parsed = parseImportPayload(serialized);
+        assert(parsed.ok && parsed.character.name === "Fresh Healer", "Blank build JSON round-trips through parseImportPayload");
+        assert((parsed.character.equipment || []).length === 0, "Parsed blank build still has 0 equipped items");
+        const { slots, player } = ensureCharacterRawDaruGear(parsed.character, catalog);
+        assert(slots.every((s) => s.item === null), "Reconstructed blank build has all 20 slots empty");
+
+        const { slots: gearedSlots } = equipArmorSetPreset(slots, "dungeon_mistsong_cloth_healer", { gradeId: 9 }, catalog);
+        const { character: geared } = recalculateCharacterFromGearBuilder(parsed.character, gearedSlots, player, catalog);
+        assert(geared.equipment.length === 7 && geared.gearScore > 1800, `Blank build equips 7pc Mistsong Healer cleanly (${geared.gearScore} GS)`);
+        assert(geared.attributes.spi > 400, `Mistsong Healer grants Spirit (got ${geared.attributes.spi})`);
+    });
+
+    // 52. Customizable Multi-Slot Gear Templates (extract, normalize, apply with grade/gem modes & partial preservation)
+    await test("Custom multi-slot Gear Templates extract, serialize, and apply items, grades, tempers, gems, frosts, and synth stats accurately", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+
+        // 1. Build a customized mixed set: 7pc Ayanad Life at Epic, then swap 5pc T7 Spirit Cloth at Legendary (leaving Life Waist & Wrists at Epic),
+        //    add custom Chest temper (111%), Erenor Life Lunafrost (43158) on Waist/Wrists, Toughness gems on Legs, and Mythic Costume with synth stats
+        let src = createEmptyGearSlots();
+        src = equipArmorSetPreset(src, "ayanad_cloth_life", { gradeId: 9 }, catalog).slots;
+        src = equipArmorSetPreset(src, "t7_cloth_spirit", { gradeId: 10 }, catalog).slots;
+        src[2].item.ptemper = 111;
+        src = applyLunafrostToEligibleSlots(src, 43158, catalog).slots;
+        const legGems = filterLunagemsForSlot(7, src[7].item, catalog);
+        const toughGem = legGems.find((g) => /Toughness/i.test(`${g.name || ""} ${g.effect_text || ""}`));
+        assert(Boolean(toughGem), "Found Toughness gem for Legs");
+        src = fillAllSlotLunagems(src, 7, toughGem.id, catalog);
+        const legGemCount = src[7].item.lunagem.filter((g) => g && g.id === toughGem.id).length;
+
+        const costume = filterItemsForSlot(0, { query: "Costume" }, catalog).find(
+            (it) => Number(it.synth_cat_id) > 0 && Number(it.maxgrade) >= 11
+        );
+        src = equipCatalogItemInSlot(src, 0, costume, { gradeId: 11 }, catalog);
+        const synthPool = getAvailableSynthPool(src[0].item.equipment, 11, catalog);
+        const synthA = Number(synthPool[0].unit_attribute_id);
+        const synthB = Number(synthPool[1].unit_attribute_id);
+        src = setSlotItemSynthStat(src, 0, 0, synthA, catalog);
+        src = setSlotItemSynthStat(src, 0, 1, synthB, catalog);
+
+        // 2. Extract partial 8-slot template (Costume + 7 Armor slots) & JSON round-trip + prototype-pollution safety
+        const tpl = extractGearTemplateFromSlots(src, {
+            name: "Mixed Healer Obsidian + Life",
+            notes: "5pc T7 SPI + 2pc Life + Mythic Costume",
+            slotIds: [0, 1, 2, 3, 4, 5, 7, 8],
+        });
+        assert(tpl && tpl.slotCount === 8 && tpl.id === "mixed-healer-obsidian-life", `Extracted 8-slot template (got ${tpl?.slotCount})`);
+        const roundTripped = normalizeGearTemplate(
+            JSON.parse(JSON.stringify({ ...tpl, slots: { ...tpl.slots, __proto__: { itemId: 1 } } }))
+        );
+        assert(roundTripped && roundTripped.slotCount === 8 && !Object.prototype.hasOwnProperty.call(roundTripped.slots, "__proto__"), "normalizeGearTemplate round-trips cleanly and blocks __proto__");
+
+        // 3. Apply onto a character that already has a Main Hand weapon equipped (slot 15 must stay untouched!)
+        let target = createEmptyGearSlots();
+        const obsClub = filterItemsForSlot(15, { query: "Cursed Obsidian Club" }, catalog)[0];
+        target = equipCatalogItemInSlot(target, 15, obsClub, { gradeId: 10 }, catalog);
+        const applied = applyGearTemplateToSlots(target, roundTripped, { gradeMode: "template" }, catalog);
+        assert(applied.appliedCount === 8 && applied.missingSlots.length === 0, `Applied all 8 template slots (got ${applied.appliedCount})`);
+        assert(applied.slots[15].item?.equipment?.id === obsClub.id, "Untouched weapon slot (15) preserved when applying partial template");
+        assert(applied.slots[2].item.grade.id === 10 && applied.slots[3].item.grade.id === 9, "Mixed Legendary (Chest) + Epic (Waist) template grades restored exactly");
+        assert(applied.slots[2].item.ptemper === 111, "Template Chest temper (111%) restored");
+        assert(applied.slots[3].item.lunafrost?.id === 43158, "Template Erenor Life Lunafrost on Waist restored");
+        assert(
+            applied.slots[7].item.lunagem.filter((g) => g && g.id === toughGem.id).length === legGemCount,
+            `Template Legs Toughness gems (${legGemCount}) restored`
+        );
+        assert(
+            Number(applied.slots[0].item.sythisis_stat[0]?.unit_attribute_id) === synthA &&
+                Number(applied.slots[0].item.sythisis_stat[1]?.unit_attribute_id) === synthB,
+            "Template Mythic Costume synthesis stats restored"
+        );
+
+        // 4. Uniform grade override (Divine = 8) & keepExistingGemsFrost mode
+        const divineOverride = applyGearTemplateToSlots(
+            applied.slots,
+            roundTripped,
+            { gradeMode: 8, keepExistingGemsFrost: true },
+            catalog
+        );
+        assert(divineOverride.slots[2].item.grade.id === 8 && divineOverride.slots[3].item.grade.id === 8, "Uniform Divine (8) grade override applied to template slots");
+        assert(
+            divineOverride.slots[7].item.lunagem.filter((g) => g && g.id === toughGem.id).length >= 3,
+            "keepExistingGemsFrost preserves compatible target gems on Legs"
+        );
+    });
+
+    // 53. Costume Enlightenment Charms: full un-truncated effects, active highlighting (2x Enlightened or Buff), and Earth/Wave/Meadow stub fix
+    await test("Costume Enlightenment Charms display full un-truncated effects and activate via 2x Enlightened accessories or buff chip", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        assert(Object.keys(COSTUME_CHARM_DEFS).length === 7, "All 7 Costume Enlightenment Charms defined");
+
+        let slots = createEmptyGearSlots();
+        const costume = filterItemsForSlot(0, { query: "Costume" }, catalog)[0];
+        assert(Boolean(costume), "Found Costume in catalog");
+        slots = equipCatalogItemInSlot(slots, 0, costume, { gradeId: 10 }, catalog);
+        slots = setSlotItemLunafrost(slots, 0, 9001611, catalog); // Life Charm
+
+        // 1. With 0 Enlightened accessories and no buff: inactive (0/2), full un-truncated text present
+        const inactiveStats = computeGearItemGrantedStats(slots[0], 0, slots, []);
+        const charmSet0 = inactiveStats.setEffects.find((s) => s.sourceKind === "charm");
+        assert(Boolean(charmSet0) && !charmSet0.active && charmSet0.equippedCount === 0, "Life Charm is inactive at 0/2 Enlightened pieces");
+        assert(
+            charmSet0.tiers[0].summary.includes("Precision Strike") && charmSet0.tiers[0].summary.includes("Renewal"),
+            "Life Charm summary includes full un-truncated 10-skill list"
+        );
+        assert(!computeActiveSetEffectSummaries(slots, []).some((s) => s.category === "charm"), "Inactive charm omitted from Active Set Summaries");
+
+        // 2. Activating via Buff chip highlights charm active even with 0 Enlightened gear
+        const buffActiveStats = computeGearItemGrantedStats(slots[0], 0, slots, ["enlightenment_life"]);
+        assert(buffActiveStats.charmInfo?.active && buffActiveStats.charmInfo?.activeByBuff, "Life Charm activates when enlightenment_life buff is active");
+        assert(
+            computeActiveSetEffectSummaries(slots, ["enlightenment_life"]).some((s) => s.category === "charm" && s.name.includes("Life Enlightenment")),
+            "Buff-activated Life Charm appears in Active Set Summaries"
+        );
+
+        // 3. Mismatched Enlightened Flame accessories do NOT activate Life Charm (requires matching Life accessories!)
+        const flameEarring = filterItemsForSlot(11, { query: "Enlightened Ayanad Flame" }, catalog)[0];
+        const flameRing = filterItemsForSlot(13, { query: "Enlightened Ayanad Flame" }, catalog)[0];
+        assert(Boolean(flameEarring) && Boolean(flameRing), "Found Enlightened Ayanad Flame Earring & Ring");
+        let flameAccSlots = equipCatalogItemInSlot(slots, 11, flameEarring, { gradeId: 9 }, catalog);
+        flameAccSlots = equipCatalogItemInSlot(flameAccSlots, 13, flameRing, { gradeId: 9 }, catalog);
+        const mismatchStats = computeGearItemGrantedStats(flameAccSlots[0], 0, flameAccSlots, []);
+        assert(
+            !mismatchStats.charmInfo?.active && mismatchStats.charmInfo?.enlightenedCount === 0,
+            "Life Charm stays inactive (0/2) when only Enlightened Flame accessories are equipped"
+        );
+        // Switching to Flame Charm with those same Flame accessories activates immediately (2/2)!
+        const flameMatchSlots = setSlotItemLunafrost(flameAccSlots, 0, 9001678, catalog);
+        const flameMatchStats = computeGearItemGrantedStats(flameMatchSlots[0], 0, flameMatchSlots, []);
+        assert(
+            flameMatchStats.charmInfo?.active && flameMatchStats.charmInfo?.activeByGear && flameMatchStats.charmInfo?.enlightenedCount === 2,
+            "Flame Charm activates (2/2) with 2x Enlightened Ayanad Flame accessories"
+        );
+
+        // 4. Must specifically be 1 matching Earring + 1 matching Ring (2x Rings or Necklace+Ring does NOT activate!)
+        const lifeNeck = filterItemsForSlot(10, { query: "Enlightened Ayanad Life" }, catalog)[0];
+        const lifeEarring = filterItemsForSlot(11, { query: "Enlightened Ayanad Life" }, catalog)[0];
+        const lifeRing = filterItemsForSlot(13, { query: "Enlightened Ayanad Life" }, catalog)[0];
+        assert(Boolean(lifeNeck) && Boolean(lifeEarring) && Boolean(lifeRing), "Found Enlightened Ayanad Life Necklace, Earring & Ring");
+
+        let twoRingsSlots = equipCatalogItemInSlot(slots, 10, lifeNeck, { gradeId: 9 }, catalog);
+        twoRingsSlots = equipCatalogItemInSlot(twoRingsSlots, 13, lifeRing, { gradeId: 9 }, catalog);
+        twoRingsSlots = equipCatalogItemInSlot(twoRingsSlots, 14, lifeRing, { gradeId: 9 }, catalog);
+        const twoRingsInfo = computeGearItemGrantedStats(twoRingsSlots[0], 0, twoRingsSlots, []).charmInfo;
+        assert(
+            !twoRingsInfo?.active && twoRingsInfo?.enlightenedCount === 1 && !twoRingsInfo?.hasEarring && twoRingsInfo?.hasRing,
+            "Life Charm stays inactive (1/2) with Necklace + 2x Life Rings and 0 Life Earrings"
+        );
+
+        let twoEarringsSlots = equipCatalogItemInSlot(slots, 11, lifeEarring, { gradeId: 9 }, catalog);
+        twoEarringsSlots = equipCatalogItemInSlot(twoEarringsSlots, 12, lifeEarring, { gradeId: 9 }, catalog);
+        const twoEarringsInfo = computeGearItemGrantedStats(twoEarringsSlots[0], 0, twoEarringsSlots, []).charmInfo;
+        assert(
+            !twoEarringsInfo?.active && twoEarringsInfo?.enlightenedCount === 1 && twoEarringsInfo?.hasEarring && !twoEarringsInfo?.hasRing,
+            "Life Charm stays inactive (1/2) with 2x Life Earrings and 0 Life Rings"
+        );
+
+        slots = equipCatalogItemInSlot(slots, 11, lifeEarring, { gradeId: 9 }, catalog);
+        slots = equipCatalogItemInSlot(slots, 13, lifeRing, { gradeId: 9 }, catalog);
+        const gearActiveStats = computeGearItemGrantedStats(slots[0], 0, slots, []);
+        assert(
+            gearActiveStats.charmInfo?.active && gearActiveStats.charmInfo?.activeByGear && gearActiveStats.charmInfo?.enlightenedCount === 2,
+            "Life Charm activates automatically with 1x Enlightened Life Earring + 1x Enlightened Life Ring (2/2)"
+        );
+        assert(
+            gearActiveStats.setEffects.some((s) => s.sourceKind === "charm" && s.active && s.tiers[0].active),
+            "Active Life Charm set block and tier both marked active"
+        );
+
+        // 5. Earth Charm (9001674) replaces DaruGear's broken 1pc stub & activates only with 2x Enlightened Ayanad Earth
+        const earthEarring = filterItemsForSlot(11, { query: "Enlightened Ayanad Earth" }, catalog)[0];
+        const earthRing = filterItemsForSlot(13, { query: "Enlightened Ayanad Earth" }, catalog)[0];
+        let earthSlots = setSlotItemLunafrost(slots, 0, 9001674, catalog);
+        assert(!computeGearItemGrantedStats(earthSlots[0], 0, earthSlots, []).charmInfo?.active, "Earth Charm stays inactive with Life accessories");
+        earthSlots = equipCatalogItemInSlot(earthSlots, 11, earthEarring, { gradeId: 9 }, catalog);
+        earthSlots = equipCatalogItemInSlot(earthSlots, 13, earthRing, { gradeId: 9 }, catalog);
+        const earthStats = computeGearItemGrantedStats(earthSlots[0], 0, earthSlots, []);
+        const earthSet = earthStats.setEffects.find((s) => s.sourceKind === "charm");
+        assert(earthSet && earthSet.name.includes("Earth Enlightenment") && earthSet.maxPieces === 2 && earthSet.active, "Earth Charm resolves cleanly as active 2-Set Earth Enlightenment with 2x Enlightened Earth");
+        assert(resolveCostumeCharmInfo(earthSlots[0].item.lunafrost, earthSlots)?.fullDesc.includes("Maximum Abyssal Charges"), "Earth Charm exposes full un-truncated Abyssal Charge description");
+    });
+
+    // 54. Cloak Synthesis Stat Selection (High vs Low tiers with duplicate unit_attribute_id never collide or downgrade)
+    await test("Cloak synthesis stat selection distinguishes High vs Low tiers and preserves exact rolls across edits & grade upgrades", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const cloak = filterItemsForSlot(6, { query: "Erenor Arrowflash Cloak" }, catalog)[0];
+        assert(Boolean(cloak), "Found Erenor Arrowflash Cloak in catalog");
+
+        let slots = createEmptyGearSlots();
+        slots = equipCatalogItemInSlot(slots, 6, cloak, { gradeId: 9 }, catalog); // Epic (3 synth lines)
+        const epicPool = getAvailableSynthPool(slots[6].item.equipment, 9, catalog);
+        const strHighIdx = epicPool.findIndex((p) => Number(p.unit_attribute_id) === 0);
+        const strLowIdx = epicPool.findIndex((p, i) => i > strHighIdx && Number(p.unit_attribute_id) === 0);
+        const staHighIdx = epicPool.findIndex((p) => Number(p.unit_attribute_id) === 2);
+        const staLowIdx = epicPool.findIndex((p, i) => i > staHighIdx && Number(p.unit_attribute_id) === 2);
+        assert(strHighIdx >= 0 && strLowIdx > strHighIdx && staHighIdx >= 0 && staLowIdx > staHighIdx, "Erenor Cloak Epic pool has distinct High & Low tiers for STR and STA");
+
+        // 1. Select High STR on S1, then Low STA on S2 — S1 MUST stay High STR (not silently downgraded to Low!)
+        slots = setSlotItemSynthStat(slots, 6, 0, `idx:${strHighIdx}`, catalog);
+        slots = setSlotItemSynthStat(slots, 6, 1, `idx:${staLowIdx}`, catalog);
+        assert(
+            Number(slots[6].item.sythisis_stat[0].maxvalue) === Number(epicPool[strHighIdx].maxvalue),
+            `S1 stays High STR (${slots[6].item.sythisis_stat[0].maxvalue}) after editing S2`
+        );
+        assert(
+            Number(slots[6].item.sythisis_stat[1].maxvalue) === Number(epicPool[staLowIdx].maxvalue),
+            `S2 keeps Low STA (${slots[6].item.sythisis_stat[1].maxvalue})`
+        );
+        assert(getSynthPoolIndexForStat(slots[6].item.sythisis_stat[0], epicPool) === strHighIdx, "S1 resolves back to exact High STR pool index");
+        assert(getSynthPoolIndexForStat(slots[6].item.sythisis_stat[1], epicPool) === staLowIdx, "S2 resolves back to exact Low STA pool index");
+
+        // 2. Switch S1 from High STR -> Low STR explicitly
+        slots = setSlotItemSynthStat(slots, 6, 0, `idx:${strLowIdx}`, catalog);
+        assert(
+            Number(slots[6].item.sythisis_stat[0].maxvalue) === Number(epicPool[strLowIdx].maxvalue),
+            "Switching S1 to Low STR selects exact Low STR roll"
+        );
+        slots = setSlotItemSynthStat(slots, 6, 0, `idx:${strHighIdx}`, catalog);
+
+        // 3. Upgrade Epic (9) -> Mythic (11): S1 stays High STR tier and S2 stays Low STA tier, both scaling higher!
+        const mythicSlots = setSlotItemGrade(slots, 6, 11, catalog);
+        const mythicPool = getAvailableSynthPool(mythicSlots[6].item.equipment, 11, catalog);
+        const mStrHigh = mythicPool.find((p) => Number(p.unit_attribute_id) === 0);
+        const mStaEntries = mythicPool.filter((p) => Number(p.unit_attribute_id) === 2);
+        assert(
+            Number(mythicSlots[6].item.sythisis_stat[0].maxvalue) === Number(mStrHigh.maxvalue),
+            `Mythic upgrade preserves S1 as High STR (${mythicSlots[6].item.sythisis_stat[0].maxvalue} === ${mStrHigh.maxvalue})`
+        );
+        assert(
+            Number(mythicSlots[6].item.sythisis_stat[1].maxvalue) === Number(mStaEntries[1].maxvalue),
+            `Mythic upgrade preserves S2 as Low STA (${mythicSlots[6].item.sythisis_stat[1].maxvalue} === ${mStaEntries[1].maxvalue})`
+        );
+    });
+
+    // 55. Enlightened Accessory 3-Piece Sets (Berserker, Shadow, Arcanist +100% Mana, Oracle -30% Cast)
+    await test("Enlightened Berserker, Shadow, Arcanist, and Oracle 3-piece accessory sets resolve, deduplicate pieces, and apply exact bonuses", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+
+        // 1. Enlightened Berserker (Necklace + Earring + Ring = 3/3; 2x Ring + 1x Earring = 2/3 inactive!)
+        const bNeck = catalog.itemById.get(9002024);
+        const bEar = catalog.itemById.get(9002022);
+        const bRing = catalog.itemById.get(9002023);
+        assert(Boolean(bNeck && bEar && bRing), "Found all 3 Enlightened Berserker accessories");
+
+        let bDupSlots = createEmptyGearSlots();
+        bDupSlots = equipCatalogItemInSlot(bDupSlots, 11, bEar, { gradeId: 9 }, catalog);
+        bDupSlots = equipCatalogItemInSlot(bDupSlots, 13, bRing, { gradeId: 9 }, catalog);
+        bDupSlots = equipCatalogItemInSlot(bDupSlots, 14, bRing, { gradeId: 9 }, catalog);
+        const bDupSet = computeGearItemGrantedStats(bDupSlots[11], 11, bDupSlots).setEffects[0];
+        assert(bDupSet && bDupSet.name === "Enlightened Berserker Set" && bDupSet.equippedCount === 2 && !bDupSet.tiers[0].active, "2x Berserker Rings + 1x Earring counts as 2/3 (inactive)");
+
+        let bFull = equipCatalogItemInSlot(bDupSlots, 10, bNeck, { gradeId: 9 }, catalog);
+        const bFullSet = computeGearItemGrantedStats(bFull[10], 10, bFull).setEffects[0];
+        assert(
+            bFullSet && bFullSet.equippedCount === 3 && bFullSet.tiers[0].active && bFullSet.tiers[0].summary.includes("Berserker's Instinct"),
+            `3pc Enlightened Berserker activates Berserker's Instinct (${bFullSet?.tiers?.[0]?.summary})`
+        );
+        assert(
+            computeActiveSetEffectSummaries(bFull).some((s) => s.name.includes("Enlightened Berserker Set")),
+            "3pc Enlightened Berserker appears in Active Set Summaries"
+        );
+        // Toggleable Berserker's Instinct proc modifier adds +1,000 Attack Speed
+        const baseChar = createDefaultCharacter({ offense: { attackSpeed: 0 } });
+        const withInstinct = applyModifiers(baseChar, ["berserkers_instinct"]);
+        assert(withInstinct.offense.attackSpeed === 1000, "Berserker's Instinct proc adds +1,000 Attack Speed");
+
+        // 2. Enlightened Shadow (3pc: Ethereal Shift + Shadow Veil)
+        let shSlots = createEmptyGearSlots();
+        shSlots = equipCatalogItemInSlot(shSlots, 10, catalog.itemById.get(9001930), { gradeId: 9 }, catalog);
+        shSlots = equipCatalogItemInSlot(shSlots, 11, catalog.itemById.get(9001928), { gradeId: 9 }, catalog);
+        shSlots = equipCatalogItemInSlot(shSlots, 13, catalog.itemById.get(9001929), { gradeId: 9 }, catalog);
+        const shSet = computeGearItemGrantedStats(shSlots[10], 10, shSlots).setEffects[0];
+        assert(
+            shSet && shSet.equippedCount === 3 && shSet.tiers[0].active && shSet.tiers[0].summary.includes("Shadow Veil"),
+            "3pc Enlightened Shadow activates Ethereal Shift + Shadow Veil"
+        );
+
+        // 3. Enlightened Arcanist (3pc: Max Mana +100% [NOT +100 flat!] + Arcane Absorption)
+        let arc2 = createEmptyGearSlots();
+        arc2 = equipCatalogItemInSlot(arc2, 10, catalog.itemById.get(9001927), { gradeId: 9 }, catalog);
+        arc2 = equipCatalogItemInSlot(arc2, 11, catalog.itemById.get(9001925), { gradeId: 9 }, catalog);
+        const arc3 = equipCatalogItemInSlot(arc2, 13, catalog.itemById.get(9001926), { gradeId: 9 }, catalog);
+        const mana2 = calculateDaruGearStats(createDefaultRawPlayer(), arc2).mana;
+        const mana3 = calculateDaruGearStats(createDefaultRawPlayer(), arc3).mana;
+        assert(mana3 - mana2 >= 5000, `3pc Enlightened Arcanist applies +100% Max Mana (not +100 flat): ${mana2} -> ${mana3}`);
+        const arcSet = computeGearItemGrantedStats(arc3[10], 10, arc3).setEffects[0];
+        assert(
+            arcSet && arcSet.tiers[0].summary.includes("Max Mana +100.0%") && arcSet.tiers[0].summary.includes("Arcane Absorption"),
+            `3pc Enlightened Arcanist shows Max Mana +100.0% + Arcane Absorption (${arcSet?.tiers?.[0]?.summary})`
+        );
+
+        // 4. Enlightened Oracle (3pc: Cast Time -30% + Fate's Edict Mana Cost -20%)
+        let oraSlots = createEmptyGearSlots();
+        oraSlots = equipCatalogItemInSlot(oraSlots, 10, catalog.itemById.get(9001933), { gradeId: 9 }, catalog);
+        oraSlots = equipCatalogItemInSlot(oraSlots, 11, catalog.itemById.get(9001931), { gradeId: 9 }, catalog);
+        oraSlots = equipCatalogItemInSlot(oraSlots, 13, catalog.itemById.get(9001932), { gradeId: 9 }, catalog);
+        const oraSet = computeGearItemGrantedStats(oraSlots[10], 10, oraSlots).setEffects[0];
+        assert(
+            oraSet && oraSet.equippedCount === 3 && oraSet.tiers[0].active && oraSet.tiers[0].summary.includes("Cast Time -30.0%") && oraSet.tiers[0].summary.includes("Mana Cost -20%"),
+            `3pc Enlightened Oracle shows Cast Time -30.0% + Mana Cost -20% (${oraSet?.tiers?.[0]?.summary})`
+        );
+    });
+
+    // 56. Saved Skill Build Presets (extract, normalize, apply preserving target bakedPassives)
+    await test("Saved Skill Build presets extract, sanitize, and apply across characters while preserving target bakedPassives", async () => {
+        const sbData = await (await fetch("../js/data/skill_builder_data.json")).json();
+        initSkillBuilderData(sbData);
+
+        let sb = normalizeSkillBuild(
+            {
+                trees: ["battlerage", "shadowplay", "auramancy"],
+                activeSkills: [
+                    "battlerage_triple_slash",
+                    "battlerage_charge",
+                    "battlerage_whirlwind_slash",
+                    "battlerage_precision_strike",
+                    "battlerage_sunder_earth",
+                    "battlerage_tiger_strike",
+                    "battlerage_battle_focus",
+                    "battlerage_frenzy",
+                    "shadowplay_overwhelm",
+                    "shadowplay_shadowsmite",
+                ],
+                passives: ["Reckless Charge", "Dual-Wield Proficiency", "Weapon Mastery"],
+                ancestralChoices: { battlerage_tiger_strike: "lightning" },
+                hatredTree: "battlerage",
+                bakedPassives: ["Reckless Charge"],
+            },
+            null
+        );
+
+        // 1. Extract preset & round-trip through JSON + prototype-pollution safety
+        const preset = extractSkillBuildPreset(sb, { name: "Raid Darkrunner" });
+        assert(preset && preset.id === "raid-darkrunner" && preset.className === "Darkrunner", `Extracted Darkrunner preset (got ${preset?.className})`);
+        assert(preset.totalPoints === getTotalPointsSpent(sb), `Preset tracks total points (${preset.totalPoints})`);
+        assert(preset.ancestralChoices?.battlerage_tiger_strike === "lightning" && preset.hatredTree === "battlerage", "Preset preserves Ancestrals & Abyssal/Hatred tree");
+        assert(!("bakedPassives" in preset), "Portable preset omits character-specific bakedPassives");
+
+        const sanitized = normalizeSavedSkillPreset(
+            JSON.parse(JSON.stringify({ ...preset, ancestralChoices: { ...preset.ancestralChoices, __proto__: "bad" } }))
+        );
+        assert(
+            sanitized && !Object.prototype.hasOwnProperty.call(sanitized.ancestralChoices, "__proto__"),
+            "normalizeSavedSkillPreset strips __proto__ keys cleanly"
+        );
+
+        // 2. Apply preset onto a different character that has its own bakedPassives (must NOT overwrite target's bakedPassives!)
+        const targetChar = createDefaultCharacter({
+            name: "Other Melee",
+            skillBuild: {
+                trees: ["battlerage", "defense", "auramancy"],
+                activeSkills: [],
+                passives: [],
+                bakedPassives: ["Deflect and Retaliate"],
+            },
+        });
+        const applied = applySkillBuildPresetToCharacter(targetChar, sanitized);
+        assert(applied.className === "Darkrunner", "Target character adopts preset class (Darkrunner)");
+        assert(applied.passives.includes("Weapon Mastery") && applied.ancestralChoices.battlerage_tiger_strike === "lightning", "Target receives preset passives & Ancestral choices");
+        assert(
+            applied.bakedPassives.length === 1 && applied.bakedPassives[0] === "Deflect and Retaliate",
+            "Target character preserves its own bakedPassives (zero double-counting)"
+        );
     });
 
     return results;

@@ -1,9 +1,10 @@
 {
-  "activeId": "sorcery_mage_burst",
+  "activeId": "rot_whip-weave_mwva7xth",
   "combos": [
     {
       "id": "darkrunner_burst",
       "label": "Darkrunner Burst",
+      "initialEffects": [],
       "steps": [
         {
           "skillId": "battlerage_charge",
@@ -19,7 +20,21 @@
           "targetIsCCd": true,
           "targetBelow30Pct": false,
           "comboBonusPct": 0,
-          "delaySec": 0
+          "delaySec": 0,
+          "stageIndex": "auto",
+          "travelTimeSec": 0
+        },
+        {
+          "skillId": "battlerage_tiger_strike",
+          "isBackstab": false,
+          "targetIsCCd": true,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "appliedDebuffs": [
+            "distressed",
+            "bleeding"
+          ]
         },
         {
           "skillId": "battlerage_precision_strike",
@@ -30,18 +45,58 @@
           "delaySec": 0
         },
         {
-          "skillId": "battlerage_tiger_strike",
-          "isBackstab": false,
-          "targetIsCCd": true,
-          "targetBelow30Pct": true,
+          "skillId": "shadowplay_throw_dagger",
+          "isBackstab": true,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
           "comboBonusPct": 0,
-          "delaySec": 0
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
+        },
+        {
+          "skillId": "battlerage_whirlwind_slash",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": [],
+          "stageIndex": "auto"
+        },
+        {
+          "skillId": "battlerage_whirlwind_slash",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": [],
+          "stageIndex": "auto"
+        },
+        {
+          "skillId": "battlerage_whirlwind_slash",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": [],
+          "stageIndex": "auto"
         }
       ]
     },
     {
       "id": "sorcery_mage_burst",
       "label": "Sorcery Mage Burst",
+      "initialEffects": [],
       "steps": [
         {
           "skillId": "sorcery_chain_lightning",
@@ -64,6 +119,7 @@
     {
       "id": "archery_kite_burst",
       "label": "Archery Kite Burst",
+      "initialEffects": [],
       "steps": [
         {
           "skillId": "shadowplay_stalkers_mark",
@@ -106,18 +162,119 @@
           "delaySec": 0
         },
         {
-          "skillId": "archery_snipe",
+          "skillId": "archery_endless_arrows_flame",
           "isBackstab": false,
           "targetIsCCd": false,
           "targetBelow30Pct": false,
           "comboBonusPct": 0,
-          "delaySec": 0
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
+        },
+        {
+          "skillId": "archery_endless_arrows_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": ""
         }
       ]
     },
     {
       "id": "healer_emergency_save",
       "label": "Healer Emergency Save",
+      "initialEffects": [],
       "steps": [
         {
           "skillId": "vitalism_resurgence",
@@ -156,6 +313,7 @@
     {
       "id": "tank_initiator_cc",
       "label": "Tank Initiator CC",
+      "initialEffects": [],
       "steps": [
         {
           "skillId": "defense_shield_slam",
@@ -190,25 +348,236 @@
           "delaySec": 0
         }
       ]
+    },
+    {
+      "id": "rot_whip-weave_mwva7xth",
+      "label": "Whip Weave",
+      "initialEffects": [],
+      "steps": [
+        {
+          "skillId": "shadowplay_drop_back",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": "",
+          "offGcd": false
+        },
+        {
+          "skillId": "sorcery_gods_whip",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0.1,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_flamebolt_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_gods_whip",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0.1,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_flamebolt_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_gods_whip",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0.1,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_flamebolt_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_gods_whip",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0.1,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_flamebolt_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_gods_whip",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0.1,
+          "weaponProc": "",
+          "offGcd": true
+        },
+        {
+          "skillId": "sorcery_flamebolt_flame",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "weaponProc": "",
+          "offGcd": true
+        }
+      ]
     }
   ],
   "steps": [
     {
-      "skillId": "sorcery_chain_lightning",
+      "skillId": "shadowplay_drop_back",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
-      "comboBonusPct": 30,
-      "delaySec": 0
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "weaponProc": "",
+      "offGcd": false
     },
     {
-      "skillId": "sorcery_arc_lightning",
+      "skillId": "sorcery_gods_whip",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
-      "comboBonusPct": 30,
-      "delaySec": 0
+      "comboBonusPct": 0,
+      "delaySec": 0.1,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_flamebolt_flame",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_gods_whip",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0.1,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_flamebolt_flame",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_gods_whip",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0.1,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_flamebolt_flame",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_gods_whip",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0.1,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_flamebolt_flame",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_gods_whip",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0.1,
+      "weaponProc": "",
+      "offGcd": true
+    },
+    {
+      "skillId": "sorcery_flamebolt_flame",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "weaponProc": "",
+      "offGcd": true
     }
   ],
-  "updatedAt": 1795403401835
+  "updatedAt": 1795564771736
 }

@@ -733,3 +733,102 @@ export function applySkillBuildPassives(character, activeModifierIds = []) {
 }
 
 registerSkillBuildApplier(applySkillBuildPassives);
+
+const FORBIDDEN_PRESET_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
+function slugifySkillPresetId(raw) {
+    const s = String(raw || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]+/g, "-")
+        .replace(/-{2,}/g, "-")
+        .replace(/^[-_]+|[-_]+$/g, "");
+    return (s || `skill-build-${Date.now()}`).slice(0, 64);
+}
+
+/**
+ * Sanitize a reusable Skill Build preset loaded from disk/localStorage.
+ */
+export function normalizeSavedSkillPreset(raw) {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+    const name = String(raw.name || "").trim();
+    if (!name) return null;
+    const id = slugifySkillPresetId(raw.id || name);
+    const rawAnc = raw.ancestralChoices && typeof raw.ancestralChoices === "object" && !Array.isArray(raw.ancestralChoices)
+        ? raw.ancestralChoices
+        : {};
+    const cleanAnc = {};
+    for (const [k, v] of Object.entries(rawAnc)) {
+        if (FORBIDDEN_PRESET_KEYS.has(k)) continue;
+        if (typeof v === "string" && v.trim()) cleanAnc[k] = v.trim();
+    }
+    const norm = normalizeSkillBuild(
+        {
+            trees: Array.isArray(raw.trees) ? raw.trees : undefined,
+            activeSkills: Array.isArray(raw.activeSkills) ? raw.activeSkills : [],
+            passives: Array.isArray(raw.passives) ? raw.passives : [],
+            ancestralChoices: cleanAnc,
+            hatredTree: raw.hatredTree || null,
+            bakedPassives: [],
+        },
+        null
+    );
+    const className = resolveClassName(norm.trees) || raw.className || norm.className || "Custom Class";
+    return {
+        id,
+        name: name.slice(0, 80),
+        className,
+        trees: [...norm.trees],
+        activeSkills: [...norm.activeSkills],
+        passives: [...norm.passives],
+        ancestralChoices: { ...(norm.ancestralChoices || {}) },
+        hatredTree: norm.hatredTree || null,
+        totalPoints: getTotalPointsSpent(norm),
+        updatedAt: typeof raw.updatedAt === "string" && raw.updatedAt ? raw.updatedAt : new Date().toISOString(),
+    };
+}
+
+/**
+ * Snapshot a Skill Build into a portable, reusable preset (omitting character-specific bakedPassives
+ * so applying it to another character never double-counts sheet passives).
+ */
+export function extractSkillBuildPreset(skillBuild, { id = null, name = null } = {}) {
+    const norm = normalizeSkillBuild(skillBuild, null);
+    const className = resolveClassName(norm.trees) || norm.className || "Custom Class";
+    const pts = getTotalPointsSpent(norm);
+    const cleanName = String(name || "").trim() || `${className} (${pts}p)`;
+    return normalizeSavedSkillPreset({
+        id: id || slugifySkillPresetId(cleanName),
+        name: cleanName,
+        className,
+        trees: norm.trees,
+        activeSkills: norm.activeSkills,
+        passives: norm.passives,
+        ancestralChoices: norm.ancestralChoices,
+        hatredTree: norm.hatredTree,
+        updatedAt: new Date().toISOString(),
+    });
+}
+
+/**
+ * Apply a saved Skill Build preset onto a character, preserving that character's own `bakedPassives`
+ * so zero sheet passives are double-counted.
+ */
+export function applySkillBuildPresetToCharacter(character, preset) {
+    const clean = normalizeSavedSkillPreset(preset);
+    if (!clean) return normalizeSkillBuild(character?.skillBuild || null, character);
+    const existingBaked = Array.isArray(character?.skillBuild?.bakedPassives)
+        ? [...character.skillBuild.bakedPassives]
+        : normalizeSkillBuild(null, character).bakedPassives;
+    return normalizeSkillBuild(
+        {
+            trees: [...clean.trees],
+            activeSkills: [...clean.activeSkills],
+            passives: [...clean.passives],
+            ancestralChoices: { ...(clean.ancestralChoices || {}) },
+            hatredTree: clean.hatredTree || null,
+            bakedPassives: existingBaked,
+        },
+        character
+    );
+}

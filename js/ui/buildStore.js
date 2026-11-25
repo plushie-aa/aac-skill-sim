@@ -6,7 +6,10 @@
 import {
     COMBAT_MODIFIERS,
     applyOverrides,
+    createBlankGearBuild,
     findModifierForDaruGearBuff,
+    getGearCatalog,
+    loadGearCatalog,
     registerCustomModifiers,
     unapplyModifiers,
 } from "../engine/index.js";
@@ -30,6 +33,7 @@ import {
     showToast,
     slugifyBuildId,
     state,
+    switchAppMode,
     ui,
 } from "./state.js";
 
@@ -373,9 +377,71 @@ export function buildExportPayload(character, modifiersArr = [], consumablesObj 
         consumables: consumablesObj && typeof consumablesObj === "object" ? { ...consumablesObj } : {},
     };
     const eq = normalizeEquipmentList(clean.equipment);
-    if (eq.length > 0) out.equipment = eq;
+    if (eq.length > 0 || clean.source === "gearbuilder") out.equipment = eq;
+    if (clean.skillBuild && typeof clean.skillBuild === "object") {
+        out.skillBuild = {
+            trees: Array.isArray(clean.skillBuild.trees) ? [...clean.skillBuild.trees] : [],
+            className: clean.skillBuild.className || metadata.className || null,
+            activeSkills: Array.isArray(clean.skillBuild.activeSkills) ? [...clean.skillBuild.activeSkills] : [],
+            passives: Array.isArray(clean.skillBuild.passives) ? [...clean.skillBuild.passives] : [],
+            ancestralChoices:
+                clean.skillBuild.ancestralChoices && typeof clean.skillBuild.ancestralChoices === "object"
+                    ? { ...clean.skillBuild.ancestralChoices }
+                    : {},
+            hatredTree: clean.skillBuild.hatredTree || null,
+            bakedPassives: Array.isArray(clean.skillBuild.bakedPassives) ? [...clean.skillBuild.bakedPassives] : [],
+        };
+    }
     if (clean.savedId) out.savedId = clean.savedId;
     return out;
+}
+
+/**
+ * Create a brand-new blank Lv 55 character build (no armor/weapons equipped), load it into
+ * `slotKey`, clear active buffs/consumables, and optionally save it immediately to disk/browser
+ * storage as a new `.json` build.
+ */
+export async function createBlankBuildForSlot(
+    slotKey,
+    { name = null, saveToStore = true, openGearBuilder = false, catalog = null } = {}
+) {
+    const cleanName = String(name ?? "").trim();
+    if (!cleanName) return null;
+    const cat = catalog || getGearCatalog() || (await loadGearCatalog());
+    const blankChar = createBlankGearBuild(cleanName, {}, cat);
+
+    let activeChar = blankChar;
+    let savedRes = null;
+    if (saveToStore) {
+        savedRes = await saveBuildToStore(blankChar, [], {});
+        if (savedRes?.ok && savedRes.build) {
+            activeChar = { ...savedRes.build, rawDaruGear: blankChar.rawDaruGear };
+        }
+    }
+
+    setSlotChar(slotKey, activeChar);
+    setSlotModifiersFromTokens(slotKey, []);
+    state.consumables[slotKey] = {};
+    state.loadedSavedId[slotKey] = savedRes?.ok ? savedRes.id : null;
+    state.slotBaselineFp[slotKey] = savedRes?.ok ? computeSlotCharacterFingerprint(activeChar) : null;
+
+    ui.renderCharacterCards();
+    if (openGearBuilder) {
+        state.gearBuilderSlot = slotKey;
+        switchAppMode("gearbuilder", { scrollToSim: true });
+    } else {
+        ui.renderSimulation();
+    }
+
+    if (savedRes?.ok) {
+        showToast(
+            `Created blank build "${cleanName}" (${savedRes.mode === "disk" ? savedRes.filename : "browser storage"})`,
+            "ok"
+        );
+    } else {
+        showToast(`Created blank build "${cleanName}" (unsaved — click Save As Build to write .json)`, "ok");
+    }
+    return { ok: true, character: activeChar, saved: savedRes };
 }
 
 export function serializeSlotBuild(slot) {

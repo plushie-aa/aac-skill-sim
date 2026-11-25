@@ -6,7 +6,12 @@
  * DaruGear formulas (`dn.setGearBuffs` + `calculateDaruGearStats`).
  */
 
-import { buildDaruGearExportFromApiPayload, calculateDaruGearStats, SCALING_MAP } from "../adapters/darugear_calc.js";
+import {
+    SCALING_MAP,
+    buildDaruGearExportFromApiPayload,
+    calculateDaruGearStats,
+    computeActiveSetEffectSummaries,
+} from "../adapters/darugear_calc.js";
 import { normalizeEquipmentList } from "../adapters/darugear.js";
 import { ARCHEAGE_GRADES, computeArmorSetAndGradeBuff } from "./gearswap.js";
 import { normalizeSkillBuild } from "./skillbuilder.js";
@@ -164,14 +169,94 @@ export function createDefaultRawPlayer(existing = null) {
  * Expand a compact catalog item into the full DaruGear `item.equipment` object
  * expected by `calculateDaruGearStats`.
  */
+/**
+ * Canonical AA Classic 1.3.6 Enlightened Accessory 3-Piece Set patches for items whose
+ * set effects are missing or have wrong stat types in DaruGear's CSV extract:
+ *  - Enlightened Berserker (9002022/9002023/9002024): Buff 9000752 / proc 9000756
+ *  - Enlightened Shadow    (9001928/9001929/9001930): Buff 9000754 + Nov 24, 2026 Shadow Veil
+ *  - Enlightened Arcanist  (9001925/9001926/9001927): Buff 9000755 (Max Mana +100% [996], not +100 flat [7]!)
+ *  - Enlightened Oracle    (9001931/9001932/9001933): Buff 9000753 (Cast Time -30% + Mana Cost -20%)
+ */
+const ENLIGHTENED_ACC_SET_OVERRIDES = Object.freeze({
+    9002022: 9000752,
+    9002023: 9000752,
+    9002024: 9000752,
+    9001928: 9000754,
+    9001929: 9000754,
+    9001930: 9000754,
+    9001925: 9000076,
+    9001926: 9000076,
+    9001927: 9000076,
+    9001931: 9000075,
+    9001932: 9000075,
+    9001933: 9000075,
+});
+
+const ENLIGHTENED_ACC_SET_DEFS = Object.freeze({
+    9000752: [
+        {
+            equip_item_set_id: 9000752,
+            num_pieces: 3,
+            unit_attribute_id: null,
+            value: 0,
+            linear_level_bonus: 0,
+            calculated_value: 0,
+            note: "Taking damage can trigger Berserker's Instinct (+1,000 Attack Speed for 30s, 3m CD).",
+        },
+    ],
+    9000754: [
+        {
+            equip_item_set_id: 9000754,
+            num_pieces: 3,
+            unit_attribute_id: null,
+            value: 0,
+            linear_level_bonus: 0,
+            calculated_value: 0,
+            note: "Ethereal Shift: +30% Move Speed while stealthed & +30s mount stealth duration. Shadow Veil: untargetable for 1.5s when Stealth ends/breaks (10s CD); killing a player resets Stealth CD.",
+        },
+    ],
+    9000076: [
+        {
+            equip_item_set_id: 9000076,
+            num_pieces: 3,
+            unit_attribute_id: 996, // Max Mana % (+100%)
+            value: 100,
+            linear_level_bonus: 0,
+            calculated_value: 100,
+            note: "Arcane Absorption: 50% of incoming damage converted to mana burn.",
+        },
+    ],
+    9000075: [
+        {
+            equip_item_set_id: 9000075,
+            num_pieces: 3,
+            unit_attribute_id: 71, // Cast Time (-30.0%)
+            value: -300,
+            linear_level_bonus: 0,
+            calculated_value: -300,
+            note: "Fate's Edict: Mana Cost -20%.",
+        },
+    ],
+});
+
 export function hydrateCatalogEquipment(compactItem, catalog = _catalog) {
     if (!compactItem) return null;
     const w = Array.isArray(compactItem.w) ? compactItem.w : [0, 0, 0, 0, 0];
     const level = Number(compactItem.level) || 50;
-    const rawSetEffects = compactItem.eiset_id ? catalog?.setEffects?.[String(compactItem.eiset_id)] || [] : [];
+    const overrideSetId = ENLIGHTENED_ACC_SET_OVERRIDES[Number(compactItem.id)] || null;
+    const effectiveSetId = overrideSetId ?? compactItem.eiset_id ?? null;
+    const rawSetEffects =
+        overrideSetId && ENLIGHTENED_ACC_SET_DEFS[overrideSetId]
+            ? ENLIGHTENED_ACC_SET_DEFS[overrideSetId]
+            : effectiveSetId
+              ? catalog?.setEffects?.[String(effectiveSetId)] || []
+              : [];
     const seteffects = rawSetEffects.map((se) => ({
         ...se,
-        calculated_value: (Number(se.value) || 0) + ((Number(se.linear_level_bonus) || 0) * level) / 100,
+        calculated_value:
+            se.calculated_value != null
+                ? se.calculated_value
+                : (Number(se.value) || 0) + ((Number(se.linear_level_bonus) || 0) * level) / 100,
     }));
 
     return {
@@ -323,6 +408,69 @@ function normalizeItemSockets(slotId, item) {
     item.lunagem = padded;
 }
 
+/**
+ * Find the exact index in `pool` corresponding to an existing synthesis stat entry `stat`.
+ * Handles Cloak pools where the same `unit_attribute_id` has multiple tiers (e.g. High vs Low roll).
+ */
+export function getSynthPoolIndexForStat(stat, pool) {
+    if (!stat || !Array.isArray(pool) || pool.length === 0) return -1;
+    const aid = Number(stat.unit_attribute_id);
+    if (!Number.isFinite(aid)) return -1;
+
+    // 1. Exact (attrId, minvalue, maxvalue) match
+    const sMin = Number(stat.minvalue);
+    const sMax = Number(stat.maxvalue);
+    const exactIdx = pool.findIndex(
+        (p) =>
+            Number(p.unit_attribute_id) === aid &&
+            Number(p.minvalue) === sMin &&
+            Number(p.maxvalue) === sMax
+    );
+    if (exactIdx >= 0) return exactIdx;
+
+    // Collect all pool indices sharing this unit_attribute_id (ordered highest magnitude first in catalog)
+    const sameAttrIndices = [];
+    for (let i = 0; i < pool.length; i++) {
+        if (Number(pool[i].unit_attribute_id) === aid) sameAttrIndices.push(i);
+    }
+    if (sameAttrIndices.length === 0) return -1;
+    if (sameAttrIndices.length === 1) return sameAttrIndices[0];
+
+    // 2. Preserve explicit tier index (0 = High/Primary, 1 = Low/Secondary) across grade upgrades
+    if (Number.isInteger(stat._poolTierIdx) && stat._poolTierIdx >= 0 && stat._poolTierIdx < sameAttrIndices.length) {
+        return sameAttrIndices[stat._poolTierIdx];
+    }
+
+    // 3. Match closest roll range midpoint / maxvalue if numeric value is available
+    if (Number.isFinite(sMax)) {
+        let bestIdx = sameAttrIndices[0];
+        let bestDist = Infinity;
+        for (const idx of sameAttrIndices) {
+            const p = pool[idx];
+            const dist = Math.abs(Math.abs(Number(p.maxvalue)) - Math.abs(sMax));
+            if (dist < bestDist) {
+                bestDist = dist;
+                bestIdx = idx;
+            }
+        }
+        return bestIdx;
+    }
+
+    // 4. Default to first (highest-magnitude) entry
+    return sameAttrIndices[0];
+}
+
+function tagSynthPoolEntry(pool, poolIdx) {
+    const entry = pool?.[poolIdx];
+    if (!entry) return null;
+    const aid = Number(entry.unit_attribute_id);
+    let tierIdx = 0;
+    for (let i = 0; i < poolIdx; i++) {
+        if (Number(pool[i].unit_attribute_id) === aid) tierIdx++;
+    }
+    return { ...entry, _poolTierIdx: tierIdx };
+}
+
 function normalizeItemSynthSlots(item, catalog = _catalog, reset = false) {
     const count = getSynthSlotCountForGrade(item.equipment, item.grade?.id);
     const pool = getAvailableSynthPool(item.equipment, item.grade?.id, catalog);
@@ -331,9 +479,26 @@ function normalizeItemSynthSlots(item, catalog = _catalog, reset = false) {
         return;
     }
     const existing = !reset && Array.isArray(item.sythisis_stat) ? item.sythisis_stat.slice(0, count) : [];
+    const usedAttrIds = new Set();
     const out = [];
     for (let i = 0; i < count; i++) {
-        out.push(existing[i] || null);
+        const prev = existing[i];
+        if (prev && prev.unit_attribute_id != null) {
+            const aid = Number(prev.unit_attribute_id);
+            if (!usedAttrIds.has(aid)) {
+                const matchedIdx = getSynthPoolIndexForStat(prev, pool);
+                if (matchedIdx >= 0) {
+                    usedAttrIds.add(aid);
+                    out.push(tagSynthPoolEntry(pool, matchedIdx));
+                    continue;
+                }
+                // Preserve imported/custom synthesis stat lines not present in the catalog pool
+                usedAttrIds.add(aid);
+                out.push({ ...prev });
+                continue;
+            }
+        }
+        out.push(null);
     }
     item.sythisis_stat = out;
 }
@@ -523,15 +688,22 @@ export function equipCatalogItemInSlot(slots, slotId, catalogItem, options = {},
     );
     const gradeObj = catalog?.gradeById?.get(defaultGradeId) || catalog?.grades?.[9];
 
+    const keepExisting = Boolean(options.keepGemsFrost);
+    if (keepExisting && existing?.equipment?.synth_percentage != null) {
+        eq.synth_percentage = Number(existing.equipment.synth_percentage);
+    }
     const newItem = {
         slotid: sid,
         ptemper: Number(options.ptemper ?? existing?.ptemper ?? 100),
         mtemper: Number(options.mtemper ?? existing?.mtemper ?? 100),
         grade: gradeObj ? { ...gradeObj } : null,
         equipment: eq,
-        lunafrost: options.keepGemsFrost && existing?.lunafrost ? { ...existing.lunafrost } : null,
-        lunagem: options.keepGemsFrost && Array.isArray(existing?.lunagem) ? existing.lunagem.map((g) => ({ ...g })) : [],
-        sythisis_stat: [],
+        lunafrost: keepExisting && existing?.lunafrost ? { ...existing.lunafrost } : null,
+        lunagem: keepExisting && Array.isArray(existing?.lunagem) ? existing.lunagem.map((g) => ({ ...g })) : [],
+        sythisis_stat:
+            keepExisting && Array.isArray(existing?.sythisis_stat)
+                ? existing.sythisis_stat.map((st) => (st ? { ...st } : null))
+                : [],
     };
 
     // Validate kept lunafrost/lunagems against new item's type/name rules
@@ -547,7 +719,7 @@ export function equipCatalogItemInSlot(slots, slotId, catalogItem, options = {},
     }
 
     normalizeItemSockets(sid, newItem);
-    normalizeItemSynthSlots(newItem, catalog, true);
+    normalizeItemSynthSlots(newItem, catalog, !keepExisting);
     slot.item = newItem;
 
     // Mutual exclusion between 2H weapon in slot 15 and offhand/shield in slot 16
@@ -562,6 +734,491 @@ export function equipCatalogItemInSlot(slots, slotId, catalogItem, options = {},
     }
 
     return next;
+}
+
+/**
+ * Build the categorized catalog of swappable Armor Set Presets
+ * (Ayanad 7pc, T7 Obsidian 5pc, T6 Obsidian 5pc, Dungeon Gear 7pc, Delphinad 7pc)
+ * directly from the loaded Gear Catalog so every preset maps to real catalog item IDs.
+ */
+const ARMOR_SET_SLOTS_7 = [1, 2, 3, 4, 5, 7, 8];
+const ARMOR_SET_SLOTS_5 = [1, 2, 5, 7, 8];
+
+const CRAFTED_PREFIXES_BY_TYPE = Object.freeze({
+    Cloth: ["Earth", "Lake", "Life", "Meadow", "Ocean", "Stone", "Wave"],
+    Leather: ["Desert", "Earth", "Flame", "Gale", "Lightning", "Squall", "Typhoon"],
+    Plate: ["Desert", "Earth", "Flame", "Lake", "Quake", "Sunset", "Wave"],
+});
+
+const T7_OBSIDIAN_VARIANTS = Object.freeze([
+    { id: "t7_cloth_mage", armorType: "Cloth", variantIdx: 0, label: "Cloth — T7 Obsidian Mage (Ehnoïr · 75% INT)" },
+    { id: "t7_cloth_tanky_mage", armorType: "Cloth", variantIdx: 1, label: "Cloth — T7 Obsidian Tanky Mage (Ehnoïr · 60% INT)" },
+    { id: "t7_cloth_spirit", armorType: "Cloth", variantIdx: 2, label: "Cloth — T7 Obsidian Spirit (Ehnoïr · 75% SPI)" },
+    { id: "t7_cloth_healer", armorType: "Cloth", variantIdx: 3, label: "Cloth — T7 Obsidian Healer (Ehnoïr · 60% SPI)" },
+    { id: "t7_leather_melee", armorType: "Leather", variantIdx: 0, label: "Leather — T7 Obsidian Melee (Mahra Tali · 75% STR)" },
+    { id: "t7_leather_bruiser", armorType: "Leather", variantIdx: 1, label: "Leather — T7 Obsidian Bruiser (Mahra Tali · 60% STR)" },
+    { id: "t7_leather_archer", armorType: "Leather", variantIdx: 2, label: "Leather — T7 Obsidian Archer (Mahra Tali · 75% AGI)" },
+    { id: "t7_leather_tanky_archer", armorType: "Leather", variantIdx: 3, label: "Leather — T7 Obsidian Tanky Archer (Mahra Tali · 60% AGI)" },
+    { id: "t7_plate_dps", armorType: "Plate", variantIdx: 0, label: "Plate — T7 Obsidian Melee (Illion · 75% STR)" },
+    { id: "t7_plate_bruiser", armorType: "Plate", variantIdx: 1, label: "Plate — T7 Obsidian Bruiser (Illion · 70% STA)" },
+    { id: "t7_plate_parry", armorType: "Plate", variantIdx: 2, label: "Plate — T7 Obsidian Parry (Illion · 75% STR)" },
+    { id: "t7_plate_tank", armorType: "Plate", variantIdx: 3, label: "Plate — T7 Obsidian Tank (Illion · 70% STA)" },
+]);
+
+const T6_OBSIDIAN_VARIANTS = Object.freeze([
+    { id: "t6_cloth_mage", armorType: "Cloth", prefix: "Cold Flames", label: "Cloth — T6 Obsidian Mage (Cold Flames)" },
+    { id: "t6_cloth_healer", armorType: "Cloth", prefix: "Purehearted Goddess", label: "Cloth — T6 Obsidian Healer (Purehearted Goddess)" },
+    { id: "t6_leather_melee", armorType: "Leather", prefix: "Screaming Shadow", label: "Leather — T6 Obsidian Melee (Screaming Shadow)" },
+    { id: "t6_leather_archer", armorType: "Leather", prefix: "Dashing Evanescence", label: "Leather — T6 Obsidian Archer (Dashing Evanescence)" },
+    { id: "t6_plate_melee", armorType: "Plate", prefix: "Brutal Annihilator", label: "Plate — T6 Obsidian Melee (Brutal Annihilator)" },
+    { id: "t6_plate_tank", armorType: "Plate", prefix: "Starbound Conviction", label: "Plate — T6 Obsidian Tank (Starbound Conviction)" },
+]);
+
+const DUNGEON_ARMOR_VARIANTS = Object.freeze([
+    // Mistsong Summit (Lv 55, 7pc)
+    { id: "dungeon_mistsong_cloth_mage", armorType: "Cloth", eisetId: 416, label: "Cloth — Mistsong Mage (Tempting Melody · INT)" },
+    { id: "dungeon_mistsong_cloth_healer", armorType: "Cloth", eisetId: 417, label: "Cloth — Mistsong Healer (Enchanting Melody · SPI)" },
+    { id: "dungeon_mistsong_leather_tank", armorType: "Leather", eisetId: 415, label: "Leather — Mistsong Talisman (STA)" },
+    { id: "dungeon_mistsong_leather_archer", armorType: "Leather", eisetId: 9000018, label: "Leather — Mistsong Flexible Talisman (AGI)" },
+    { id: "dungeon_mistsong_plate", armorType: "Plate", eisetId: 414, label: "Plate — Mistsong Hexbane (STR/STA)" },
+    // Serpentis (Lv 53, 7pc)
+    { id: "dungeon_serpentis_cloth_mage", armorType: "Cloth", eisetId: 167, label: "Cloth — Serpentis Shadowsong (STA/INT)" },
+    { id: "dungeon_serpentis_cloth_healer", armorType: "Cloth", eisetId: 386, label: "Cloth — Serpentis Distorted Chanter's (SPI/STA)" },
+    { id: "dungeon_serpentis_leather", armorType: "Leather", eisetId: 168, label: "Leather — Serpentis Dark Watcher (AGI/STR)" },
+    { id: "dungeon_serpentis_plate", armorType: "Plate", eisetId: 169, label: "Plate — Serpentis Scarlet Reaper (STA/STR)" },
+    // Kyrios / Anthalon (7pc)
+    { id: "dungeon_primal_kyrios", armorType: "Cloth", eisetId: 9000113, label: "Cloth — Primal Kyrios (STA/INT)" },
+    { id: "dungeon_corrupted_kyrios", armorType: "Cloth", eisetId: 111, label: "Cloth — Corrupted Kyrios (INT)" },
+    // Greater Dungeons (Lv 52, 7pc)
+    { id: "dungeon_greater_cloth", armorType: "Cloth", eisetId: 196, label: "Cloth — Greater Dungeon Recollections" },
+    { id: "dungeon_greater_leather", armorType: "Leather", eisetId: 195, label: "Leather — Greater Dungeon Ephemeral Memory" },
+    { id: "dungeon_greater_plate", armorType: "Plate", eisetId: 194, label: "Plate — Greater Dungeon Ardent Oath" },
+    // Hellforged Dungeon Catch-Up (Lv 52, Celestial max, 7pc)
+    { id: "dungeon_hellforged_cloth_mage", armorType: "Cloth", eisetId: 9000016, label: "Cloth — Hellforged Mage (INT/STA)" },
+    { id: "dungeon_hellforged_cloth_healer", armorType: "Cloth", eisetId: 9000017, label: "Cloth — Hellforged Priest (SPI/STA)" },
+    { id: "dungeon_hellforged_leather_melee", armorType: "Leather", eisetId: 9000014, label: "Leather — Hellforged Warrior (STR/STA)" },
+    { id: "dungeon_hellforged_leather_archer", armorType: "Leather", eisetId: 9000015, label: "Leather — Hellforged Ranger (AGI/STA)" },
+    { id: "dungeon_hellforged_plate", armorType: "Plate", eisetId: 9000013, label: "Plate — Hellforged Plate (STA/STR)" },
+    // Greater Howling Abyss / Classic Dungeons (Lv 44, 7pc)
+    { id: "dungeon_gha_cloth", armorType: "Cloth", eisetId: 160, label: "Cloth — GHA Fallen Martyr's" },
+    { id: "dungeon_gha_leather", armorType: "Leather", eisetId: 161, label: "Leather — GHA High Inquisitor's" },
+    { id: "dungeon_gha_plate", armorType: "Plate", eisetId: 162, label: "Plate — GHA Corrupt Paladin's" },
+]);
+
+export function getArmorSetPresets(catalog = _catalog) {
+    if (!catalog?.itemsBySlot) return [];
+    const presets = [];
+
+    const resolveCraftedSet = (tierPrefix, groupLabel, idPrefix) => {
+        for (const armorType of ["Leather", "Cloth", "Plate"]) {
+            for (const sub of CRAFTED_PREFIXES_BY_TYPE[armorType]) {
+                const namePrefix = `${tierPrefix} ${sub} `;
+                const slotItems = {};
+                let ok = true;
+                for (const sid of ARMOR_SET_SLOTS_7) {
+                    const list = catalog.itemsBySlot.get(sid) || [];
+                    const found = list.find(
+                        (it) => it.type === armorType && typeof it.name === "string" && it.name.startsWith(namePrefix)
+                    );
+                    if (!found) {
+                        ok = false;
+                        break;
+                    }
+                    slotItems[sid] = found;
+                }
+                if (ok) {
+                    presets.push({
+                        id: `${idPrefix}_${armorType.toLowerCase()}_${sub.toLowerCase()}`,
+                        group: groupLabel,
+                        armorType,
+                        slotCount: 7,
+                        label: `${armorType} — ${tierPrefix} ${sub}`,
+                        slotItems,
+                    });
+                }
+            }
+        }
+    };
+
+    // 1. Ayanad (7pc)
+    resolveCraftedSet("Ayanad", "Ayanad Armor (7pc)", "ayanad");
+
+    // 2. T7 Obsidian (5pc: Head, Chest, Hands, Legs, Feet)
+    for (const v of T7_OBSIDIAN_VARIANTS) {
+        const slotItems = {};
+        let ok = true;
+        for (const sid of ARMOR_SET_SLOTS_5) {
+            const list = (catalog.itemsBySlot.get(sid) || [])
+                .filter((it) => it.type === v.armorType && Number(it.level) === 64 && Number(it.id) < 9000000)
+                .sort((a, b) => Number(a.id) - Number(b.id));
+            const picked = list[v.variantIdx];
+            if (!picked) {
+                ok = false;
+                break;
+            }
+            slotItems[sid] = picked;
+        }
+        if (ok) {
+            presets.push({
+                id: v.id,
+                group: "T7 Obsidian Armor (5pc)",
+                armorType: v.armorType,
+                slotCount: 5,
+                label: v.label,
+                slotItems,
+            });
+        }
+    }
+
+    // 3. T6 Obsidian (5pc: Head, Chest, Hands, Legs, Feet)
+    for (const v of T6_OBSIDIAN_VARIANTS) {
+        const slotItems = {};
+        let ok = true;
+        for (const sid of ARMOR_SET_SLOTS_5) {
+            const list = (catalog.itemsBySlot.get(sid) || [])
+                .filter(
+                    (it) =>
+                        it.type === v.armorType &&
+                        Number(it.level) === 59 &&
+                        Number(it.id) < 9000000 &&
+                        typeof it.name === "string" &&
+                        it.name.startsWith(v.prefix)
+                )
+                .sort((a, b) => Number(a.id) - Number(b.id));
+            const picked = list[0];
+            if (!picked) {
+                ok = false;
+                break;
+            }
+            slotItems[sid] = picked;
+        }
+        if (ok) {
+            presets.push({
+                id: v.id,
+                group: "T6 Obsidian Armor (5pc)",
+                armorType: v.armorType,
+                slotCount: 5,
+                label: v.label,
+                slotItems,
+            });
+        }
+    }
+
+    // 4. Dungeon Gear (7pc: Mistsong, Serpentis, Kyrios, Greater Dungeons, Hellforged, GHA)
+    for (const v of DUNGEON_ARMOR_VARIANTS) {
+        const slotItems = {};
+        let ok = true;
+        for (const sid of ARMOR_SET_SLOTS_7) {
+            const list = (catalog.itemsBySlot.get(sid) || [])
+                .filter((it) => it.type === v.armorType && Number(it.eiset_id) === Number(v.eisetId))
+                .sort((a, b) => Number(a.id) - Number(b.id));
+            const picked = list[0];
+            if (!picked) {
+                ok = false;
+                break;
+            }
+            slotItems[sid] = picked;
+        }
+        if (ok) {
+            presets.push({
+                id: v.id,
+                group: "Dungeon Gear (7pc)",
+                armorType: v.armorType,
+                slotCount: 7,
+                label: v.label,
+                slotItems,
+            });
+        }
+    }
+
+    // 5. Delphinad (7pc)
+    resolveCraftedSet("Delphinad", "Delphinad Armor (7pc)", "delphinad");
+
+    return presets;
+}
+
+/**
+ * Swap all armor slots belonging to `presetId` (7 slots for crafted sets, 5 slots for Obsidian sets)
+ * while preserving each slot's existing grade (unless `options.gradeId` is passed), temper, and
+ * compatible lunafrosts/lunagems.
+ */
+export function equipArmorSetPreset(slots, presetId, options = {}, catalog = _catalog) {
+    const presets = getArmorSetPresets(catalog);
+    const preset = presets.find((p) => p.id === presetId);
+    if (!preset) return { slots: cloneSlots(slots), preset: null, swappedCount: 0 };
+
+    let next = cloneSlots(slots);
+    const keepGemsFrost = options.keepGemsFrost !== false;
+    const explicitGradeId =
+        options.gradeId != null && options.gradeId !== "" && Number.isFinite(Number(options.gradeId))
+            ? Number(options.gradeId)
+            : null;
+    let swappedCount = 0;
+
+    for (const [sidStr, catItem] of Object.entries(preset.slotItems)) {
+        const sid = Number(sidStr);
+        next = equipCatalogItemInSlot(
+            next,
+            sid,
+            catItem,
+            {
+                keepGemsFrost,
+                ...(explicitGradeId != null ? { gradeId: explicitGradeId } : {}),
+            },
+            catalog
+        );
+        swappedCount++;
+    }
+
+    return { slots: next, preset, swappedCount };
+}
+
+export const GEAR_TEMPLATE_SLOT_GROUPS = Object.freeze([
+    { id: "all_equipped", label: "All Equipped", slotIds: null },
+    { id: "armor_7", label: "Armor (7pc)", slotIds: [1, 2, 3, 4, 5, 7, 8] },
+    { id: "obsidian_5", label: "Obsidian (5pc)", slotIds: [1, 2, 5, 7, 8] },
+    { id: "weapons", label: "Weapons & Inst.", slotIds: [15, 16, 17, 18] },
+    { id: "accessories", label: "Accessories & Cloak", slotIds: [6, 10, 11, 12, 13, 14] },
+    { id: "costume_under", label: "Costume & Under", slotIds: [0, 9] },
+]);
+
+const FORBIDDEN_TEMPLATE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
+function slugifyTemplateId(raw) {
+    const s = String(raw || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]+/g, "-")
+        .replace(/-{2,}/g, "-")
+        .replace(/^[-_]+|[-_]+$/g, "");
+    return (s || `template-${Date.now()}`).slice(0, 64);
+}
+
+/**
+ * Sanitize a gear template loaded from disk/localStorage so it is safe and schema-consistent.
+ */
+export function normalizeGearTemplate(raw) {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+    const name = String(raw.name || "").trim();
+    if (!name) return null;
+    const id = slugifyTemplateId(raw.id || name);
+    const rawSlots = raw.slots && typeof raw.slots === "object" && !Array.isArray(raw.slots) ? raw.slots : {};
+    const slots = {};
+    for (const [k, v] of Object.entries(rawSlots)) {
+        if (FORBIDDEN_TEMPLATE_KEYS.has(k)) continue;
+        const sid = Number(k);
+        if (!Number.isInteger(sid) || sid < 0 || sid > 19) continue;
+        if (!v || typeof v !== "object" || Array.isArray(v)) continue;
+        if (v.empty) {
+            slots[String(sid)] = { empty: true };
+            continue;
+        }
+        const itemId = Number(v.itemId);
+        const itemName = String(v.itemName || "").trim();
+        if (!(Number.isFinite(itemId) && itemId > 0) && !itemName) continue;
+        const entry = {
+            ...(Number.isFinite(itemId) && itemId > 0 ? { itemId } : {}),
+            ...(itemName ? { itemName } : {}),
+            ...(v.gradeId != null && Number.isFinite(Number(v.gradeId)) ? { gradeId: Number(v.gradeId) } : {}),
+            ...(v.ptemper != null && Number.isFinite(Number(v.ptemper)) ? { ptemper: Number(v.ptemper) } : {}),
+            ...(v.mtemper != null && Number.isFinite(Number(v.mtemper)) ? { mtemper: Number(v.mtemper) } : {}),
+            ...(v.lunafrostId != null && Number.isFinite(Number(v.lunafrostId)) && Number(v.lunafrostId) > 0
+                ? { lunafrostId: Number(v.lunafrostId) }
+                : {}),
+            ...(Array.isArray(v.lunagemIds)
+                ? {
+                      lunagemIds: v.lunagemIds
+                          .slice(0, 10)
+                          .map((gid) => (Number.isFinite(Number(gid)) && Number(gid) > 0 ? Number(gid) : 0)),
+                  }
+                : {}),
+            ...(v.synthPct != null && Number.isFinite(Number(v.synthPct))
+                ? { synthPct: Math.max(0, Math.min(100, Number(v.synthPct))) }
+                : {}),
+            ...(Array.isArray(v.synthAttrIds)
+                ? {
+                      synthAttrIds: v.synthAttrIds
+                          .slice(0, 8)
+                          .map((aid) => (aid != null && Number.isFinite(Number(aid)) && Number(aid) > 0 ? Number(aid) : null)),
+                  }
+                : {}),
+        };
+        slots[String(sid)] = entry;
+    }
+    const slotCount = Object.keys(slots).length;
+    if (slotCount === 0) return null;
+    return {
+        id,
+        name: name.slice(0, 80),
+        notes: String(raw.notes || "").trim().slice(0, 160),
+        updatedAt: typeof raw.updatedAt === "string" && raw.updatedAt ? raw.updatedAt : new Date().toISOString(),
+        slotCount,
+        slots,
+    };
+}
+
+/**
+ * Snapshot selected slots from a 20-slot Gear Builder state into a compact, portable Gear Template
+ * preserving item ID/name, grade, tempers, lunafrost, lunagems, and synthesis % / stats.
+ */
+export function extractGearTemplateFromSlots(
+    slots,
+    { id = null, name = "Custom Template", notes = "", slotIds = null, includeEmpty = false } = {}
+) {
+    const cleanName = String(name || "").trim() || "Custom Template";
+    const allowedSet =
+        Array.isArray(slotIds) && slotIds.length > 0 ? new Set(slotIds.map((x) => Number(x))) : null;
+    const outSlots = {};
+
+    for (const s of slots || []) {
+        const sid = Number(s?.id);
+        if (!Number.isInteger(sid) || sid < 0 || sid > 19) continue;
+        if (allowedSet && !allowedSet.has(sid)) continue;
+        const it = s.item;
+        if (!it?.equipment) {
+            if (includeEmpty && allowedSet) {
+                outSlots[String(sid)] = { empty: true };
+            }
+            continue;
+        }
+        const eq = it.equipment;
+        const lunagemIds = Array.isArray(it.lunagem)
+            ? it.lunagem.map((g) => (g && Number(g.id) > 0 ? Number(g.id) : 0))
+            : [];
+        const hasAnyGem = lunagemIds.some((g) => g > 0);
+        const synthAttrIds = Array.isArray(it.sythisis_stat)
+            ? it.sythisis_stat.map((st) =>
+                  st && Number(st.unit_attribute_id) > 0 ? Number(st.unit_attribute_id) : null
+              )
+            : [];
+        const hasAnySynth = synthAttrIds.some((a) => a != null);
+
+        outSlots[String(sid)] = {
+            itemId: Number(eq.id) || 0,
+            itemName: String(eq.name || ""),
+            gradeId: Number(it.grade?.id ?? 9),
+            ptemper: Number(it.ptemper ?? 100),
+            mtemper: Number(it.mtemper ?? 100),
+            ...(it.lunafrost && Number(it.lunafrost.id) > 0 ? { lunafrostId: Number(it.lunafrost.id) } : {}),
+            ...(hasAnyGem ? { lunagemIds } : {}),
+            ...(eq.synth_percentage != null ? { synthPct: Number(eq.synth_percentage) } : {}),
+            ...(hasAnySynth ? { synthAttrIds } : {}),
+        };
+    }
+
+    return normalizeGearTemplate({
+        id: id || slugifyTemplateId(cleanName),
+        name: cleanName,
+        notes,
+        updatedAt: new Date().toISOString(),
+        slots: outSlots,
+    });
+}
+
+/**
+ * Apply a saved custom Gear Template onto a 20-slot Gear Builder state.
+ * Only slots defined in `template.slots` are modified; all other slots stay untouched.
+ *
+ * Options:
+ * - `gradeMode`: `"template"` (default, use template slot grades), `"keep"` (keep target build's
+ *    existing grade per slot), or an explicit grade ID (`7`..`11`).
+ * - `keepExistingGemsFrost`: `false` (default, apply template's saved lunagems & lunafrost) or
+ *    `true` (preserve target build's compatible gems/frosts instead of overwriting with template's).
+ * - `applyTemper`: `true` (default) to apply saved tempers from the template.
+ */
+export function applyGearTemplateToSlots(slots, template, options = {}, catalog = _catalog) {
+    const cleanTpl = normalizeGearTemplate(template);
+    if (!cleanTpl || !catalog?.itemsBySlot) {
+        return { slots: cloneSlots(slots), template: null, appliedCount: 0, missingSlots: [] };
+    }
+
+    let next = cloneSlots(slots);
+    const gradeMode = options.gradeMode ?? "template";
+    const explicitGradeId =
+        gradeMode !== "template" && gradeMode !== "keep" && gradeMode !== "" && Number.isFinite(Number(gradeMode))
+            ? Number(gradeMode)
+            : null;
+    const keepExistingGemsFrost = Boolean(options.keepExistingGemsFrost);
+    const applyTemper = options.applyTemper !== false;
+
+    let appliedCount = 0;
+    const missingSlots = [];
+
+    const orderedEntries = Object.entries(cleanTpl.slots).sort((a, b) => Number(a[0]) - Number(b[0]));
+    for (const [sidStr, entry] of orderedEntries) {
+        const sid = Number(sidStr);
+        if (entry.empty) {
+            next = unequipGearSlot(next, sid);
+            appliedCount++;
+            continue;
+        }
+
+        const slotList = catalog.itemsBySlot.get(sid) || [];
+        let catItem = null;
+        if (entry.itemId && catalog.itemById?.has(entry.itemId)) {
+            const candidate = catalog.itemById.get(entry.itemId);
+            if (!Array.isArray(candidate.slotid) || candidate.slotid.includes(sid)) {
+                catItem = candidate;
+            }
+        }
+        if (!catItem && entry.itemName) {
+            const lower = entry.itemName.toLowerCase();
+            catItem = slotList.find((it) => String(it.name || "").toLowerCase() === lower) || null;
+        }
+        if (!catItem) {
+            missingSlots.push(sid);
+            continue;
+        }
+
+        const equipOpts = {
+            keepGemsFrost: keepExistingGemsFrost,
+            ...(applyTemper && entry.ptemper != null ? { ptemper: entry.ptemper } : {}),
+            ...(applyTemper && entry.mtemper != null ? { mtemper: entry.mtemper } : {}),
+        };
+        if (explicitGradeId != null) {
+            equipOpts.gradeId = explicitGradeId;
+        } else if (gradeMode === "template" && entry.gradeId != null) {
+            equipOpts.gradeId = entry.gradeId;
+        }
+        // When gradeMode === "keep", omit gradeId so equipCatalogItemInSlot preserves target slot's existing grade
+
+        next = equipCatalogItemInSlot(next, sid, catItem, equipOpts, catalog);
+
+        if (!keepExistingGemsFrost) {
+            if (entry.lunafrostId) {
+                next = setSlotItemLunafrost(next, sid, entry.lunafrostId, catalog);
+            }
+            if (Array.isArray(entry.lunagemIds) && entry.lunagemIds.length > 0) {
+                const slotObj = next.find((s) => Number(s.id) === sid);
+                const maxS = slotObj?.item ? getMaxSocketsForSlotAndGrade(sid, slotObj.item.grade) : 0;
+                const validGemIds = slotObj?.item
+                    ? new Set(filterLunagemsForSlot(sid, slotObj.item, catalog).map((g) => Number(g.id)))
+                    : new Set();
+                for (let idx = 0; idx < Math.min(entry.lunagemIds.length, maxS); idx++) {
+                    const gid = Number(entry.lunagemIds[idx]) || 0;
+                    if (gid > 0 && validGemIds.has(gid)) {
+                        next = setSlotItemLunagem(next, sid, idx, gid, catalog);
+                    }
+                }
+            }
+        }
+
+        if (entry.synthPct != null) {
+            next = setSlotItemSynthPercent(next, sid, entry.synthPct);
+        }
+        if (Array.isArray(entry.synthAttrIds) && entry.synthAttrIds.length > 0) {
+            for (let i = 0; i < entry.synthAttrIds.length; i++) {
+                const aid = entry.synthAttrIds[i];
+                if (aid != null) {
+                    next = setSlotItemSynthStat(next, sid, i, aid, catalog);
+                }
+            }
+        }
+
+        appliedCount++;
+    }
+
+    return { slots: next, template: cleanTpl, appliedCount, missingSlots };
 }
 
 export function unequipGearSlot(slots, slotId) {
@@ -580,7 +1237,7 @@ export function setSlotItemGrade(slots, slotId, gradeId, catalog = _catalog) {
     if (!gradeObj) return next;
     slot.item.grade = { ...gradeObj };
     normalizeItemSockets(sid, slot.item);
-    normalizeItemSynthSlots(slot.item, catalog, true);
+    normalizeItemSynthSlots(slot.item, catalog, false);
     return next;
 }
 
@@ -604,6 +1261,25 @@ export function setSlotItemLunafrost(slots, slotId, frostId, catalog = _catalog)
     const frostMeta = catalog?.frostById?.get(Number(frostId));
     slot.item.lunafrost = frostMeta ? hydrateLunafrost(frostMeta, slot.item.equipment?.level, catalog) : null;
     return next;
+}
+
+/**
+ * Apply a Lunafrost (e.g. an Erenor Set Lunafrost) to all equipped slots eligible for it.
+ * Returns { slots, appliedCount }.
+ */
+export function applyLunafrostToEligibleSlots(slots, frostId, catalog = _catalog) {
+    const next = cloneSlots(slots);
+    const frostMeta = catalog?.frostById?.get(Number(frostId));
+    if (!frostMeta) return { slots: next, appliedCount: 0 };
+    let appliedCount = 0;
+    for (const s of next) {
+        if (!s?.item?.equipment) continue;
+        const valid = filterLunafrostsForSlot(s.id, s.item, catalog);
+        if (!valid.some((f) => Number(f.id) === Number(frostMeta.id))) continue;
+        s.item.lunafrost = hydrateLunafrost(frostMeta, s.item.equipment.level, catalog);
+        appliedCount++;
+    }
+    return { slots: next, appliedCount };
 }
 
 export function setSlotItemLunagem(slots, slotId, socketIdx, gemId, catalog = _catalog) {
@@ -647,20 +1323,33 @@ export function setSlotItemSynthPercent(slots, slotId, pct) {
     return next;
 }
 
-export function setSlotItemSynthStat(slots, slotId, lineIdx, attrId, catalog = _catalog) {
+export function setSlotItemSynthStat(slots, slotId, lineIdx, attrOrSpec, catalog = _catalog) {
     const next = cloneSlots(slots);
     const sid = Number(slotId);
     const slot = next.find((s) => Number(s.id) === sid);
     if (!slot?.item) return next;
     normalizeItemSynthSlots(slot.item, catalog, false);
     if (lineIdx < 0 || lineIdx >= slot.item.sythisis_stat.length) return next;
-    if (attrId == null || attrId === "") {
+    if (attrOrSpec === "__keep__") return next;
+    if (attrOrSpec == null || attrOrSpec === "") {
         slot.item.sythisis_stat[lineIdx] = null;
         return next;
     }
     const pool = getAvailableSynthPool(slot.item.equipment, slot.item.grade?.id, catalog);
-    const picked = pool.find((p) => Number(p.unit_attribute_id) === Number(attrId));
-    slot.item.sythisis_stat[lineIdx] = picked ? { ...picked } : null;
+
+    let pickedIdx = -1;
+    if (typeof attrOrSpec === "string" && attrOrSpec.startsWith("idx:")) {
+        const idx = parseInt(attrOrSpec.slice(4), 10);
+        if (Number.isInteger(idx) && idx >= 0 && idx < pool.length) pickedIdx = idx;
+    } else if (attrOrSpec && typeof attrOrSpec === "object" && Number.isInteger(attrOrSpec.poolIdx)) {
+        const idx = attrOrSpec.poolIdx;
+        if (idx >= 0 && idx < pool.length) pickedIdx = idx;
+    } else {
+        const targetAid = Number(attrOrSpec);
+        pickedIdx = pool.findIndex((p) => Number(p.unit_attribute_id) === targetAid);
+    }
+
+    slot.item.sythisis_stat[lineIdx] = pickedIdx >= 0 ? tagSynthPoolEntry(pool, pickedIdx) : null;
     return next;
 }
 
@@ -865,6 +1554,21 @@ function reconstructSynthStatsForItem(item, rawSynthLines, catalog) {
         }
         const rawScaled = Math.round(signedVal * div * 100) / 100;
 
+        // Pick the closest-range pool entry when multiple tiers share the same attrId (e.g. Cloak High vs Low roll)
+        const sameAttrEntries = pool
+            .map((p, idx) => ({ p, idx }))
+            .filter(({ p }) => Number(p.unit_attribute_id) === attrId);
+        if (sameAttrEntries.length > 1) {
+            sameAttrEntries.sort((a, b) => {
+                const da = Math.abs(Math.abs(Number(a.p.maxvalue)) - Math.abs(rawScaled));
+                const db = Math.abs(Math.abs(Number(b.p.maxvalue)) - Math.abs(rawScaled));
+                return da - db;
+            });
+            poolMatch = tagSynthPoolEntry(pool, sameAttrEntries[0].idx);
+        } else if (sameAttrEntries.length === 1) {
+            poolMatch = tagSynthPoolEntry(pool, sameAttrEntries[0].idx);
+        }
+
         if (poolMatch) {
             const pMin = Number(poolMatch.minvalue);
             const pMax = Number(poolMatch.maxvalue);
@@ -924,6 +1628,10 @@ export function ensureCharacterRawDaruGear(character, catalog = _catalog) {
                     if (!s.item.equipment.synth_cat_id && catIt.synth_cat_id) {
                         s.item.equipment.synth_cat_id = catIt.synth_cat_id;
                     }
+                }
+                const overrideSetId = ENLIGHTENED_ACC_SET_OVERRIDES[Number(s.item.equipment.id)];
+                if (overrideSetId && ENLIGHTENED_ACC_SET_DEFS[overrideSetId]) {
+                    s.item.equipment.seteffects = ENLIGHTENED_ACC_SET_DEFS[overrideSetId].map((se) => ({ ...se }));
                 }
                 normalizeItemSockets(s.id, s.item);
             }
@@ -1120,6 +1828,54 @@ export function recalculateCharacterFromGearBuilder(character, slots, player, ca
     };
 }
 
+/**
+ * Create a brand-new, completely blank Lv 55 character build with all 20 gear slots empty,
+ * default un-migrated base attributes (158 all), 0 Gear Score, no DaruGear link, and exact
+ * naked stats computed from the DaruGear engine.
+ */
+export function createBlankGearBuild(name = "New Build", options = {}, catalog = _catalog) {
+    const cleanName = String(name || "").trim() || "New Build";
+    const emptySlots = createEmptyGearSlots(catalog);
+    const blankPlayer = createDefaultRawPlayer(options.player || null);
+    const seed = {
+        schemaVersion: 1,
+        name: cleanName,
+        level: 55,
+        source: "gearbuilder",
+        shareUrl: null,
+        darugearUrl: null,
+        shareCode: null,
+        className: null,
+        gearScore: 0,
+        equipment: [],
+        skillBuild: null,
+        metadata: {
+            source: "gearbuilder",
+            darugearUrl: null,
+            shareCode: null,
+            className: null,
+            gearScore: 0,
+            ...(options.category ? { category: options.category } : {}),
+        },
+    };
+    const { character } = recalculateCharacterFromGearBuilder(seed, emptySlots, blankPlayer, catalog);
+    character.source = "gearbuilder";
+    character.shareUrl = null;
+    character.darugearUrl = null;
+    character.shareCode = null;
+    character.equipment = [];
+    character.metadata = {
+        ...(character.metadata || {}),
+        source: "gearbuilder",
+        darugearUrl: null,
+        shareCode: null,
+        gearScore: 0,
+    };
+    delete character.metadata.darugearBuffs;
+    delete character.savedId;
+    return character;
+}
+
 const GEAR_BUFF_ATTR_META = Object.freeze({
     0: ["STR", 1, ""],
     1: ["AGI", 1, ""],
@@ -1298,15 +2054,15 @@ export function describeGearBuffEffects(buff) {
  * Compute active Gear, Armor Set, Armor Grade, Weapon Archetype, and Title buffs
  * with exact stat breakdowns for any character (works both with and without the Gear Catalog loaded).
  */
-export function computeCharacterGearBuffSummaries(character, catalog = _catalog) {
+export function computeCharacterGearBuffSummaries(character, catalog = _catalog, activeModifiers = null) {
     if (!character) return [];
 
-    // Fast path: when Gear Catalog is loaded, use exact recomputeGearBuffs
+    // Fast path: when Gear Catalog is loaded, use exact recomputeGearBuffs + active item/Erenor/Charm sets
     if (catalog?.equipBuffById) {
         const { slots, player } = ensureCharacterRawDaruGear(character, catalog);
         const rawBuffs = recomputeGearBuffs(slots, player, catalog);
         const titleName = player?.title?.name || character?.metadata?.title || null;
-        return rawBuffs
+        const baseSummaries = rawBuffs
             .map((b) =>
                 describeGearBuffEffects({
                     ...b,
@@ -1314,6 +2070,8 @@ export function computeCharacterGearBuffSummaries(character, catalog = _catalog)
                 })
             )
             .filter(Boolean);
+        const setSummaries = computeActiveSetEffectSummaries(slots, activeModifiers);
+        return [...baseSummaries, ...setSummaries];
     }
 
     // Zero-latency fallback before Gear Catalog loads (e.g. Character Cards on first paint)

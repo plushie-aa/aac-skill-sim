@@ -43,10 +43,19 @@ function addAttr(o, attrId, rawVal) {
 
 function getPieceCount(setId, slots) {
     let count = 0;
+    const seenEquipIds = new Set();
     for (const s of slots || []) {
         const eqSets = s?.item?.equipment?.seteffects;
         if (Array.isArray(eqSets) && eqSets.length > 0 && eqSets[0].equip_item_set_id == setId) {
-            count += 1;
+            const eqId = s?.item?.equipment?.id;
+            if (eqId != null) {
+                if (!seenEquipIds.has(eqId)) {
+                    seenEquipIds.add(eqId);
+                    count += 1;
+                }
+            } else {
+                count += 1;
+            }
         }
         const lfSets = s?.item?.lunafrost?.seteffects;
         if (Array.isArray(lfSets) && lfSets.length > 0 && lfSets[0].equip_item_set_id == setId) {
@@ -161,6 +170,620 @@ export function calculateItemMain(item, stat) {
         return calculateWearableMainStat(item, stat);
     }
     return calculateHoldableMainStat(item, stat);
+}
+
+const ITEM_BONUS_ATTR_META = Object.freeze({
+    0: { label: "Strength", unit: "" },
+    1: { label: "Agility", unit: "" },
+    2: { label: "Stamina", unit: "" },
+    3: { label: "Intelligence", unit: "" },
+    4: { label: "Spirit", unit: "" },
+    6: { label: "Max Health", unit: "" },
+    7: { label: "Max Mana", unit: "" },
+    8: { label: "Physical Defense", unit: "" },
+    10: { label: "Move Speed", unit: "%" },
+    11: { label: "Health Regen", unit: "" },
+    12: { label: "Mana Regen", unit: "" },
+    17: { label: "Melee Crit Dmg", unit: "%" },
+    26: { label: "Ranged Crit Dmg", unit: "%" },
+    31: { label: "Magic Crit Dmg", unit: "%" },
+    33: { label: "Melee Attack", unit: "" },
+    34: { label: "Ranged Attack", unit: "" },
+    35: { label: "Magic Attack", unit: "" },
+    51: { label: "Melee Skill Dmg", unit: "%" },
+    52: { label: "Ranged Skill Dmg", unit: "%" },
+    53: { label: "Magic Skill Dmg", unit: "%" },
+    54: { label: "Attack Speed", unit: "" },
+    55: { label: "Cast Speed", unit: "%" },
+    56: { label: "Received Healing", unit: "%" },
+    57: { label: "Defense Pen", unit: "" },
+    58: { label: "Received Damage", unit: "%" },
+    64: { label: "Magic Defense", unit: "" },
+    67: { label: "Health Regen", unit: "" },
+    68: { label: "Mana Regen", unit: "" },
+    71: { label: "Cast Time", unit: "%" },
+    74: { label: "Stealth Detection", unit: "%" },
+    77: { label: "Melee Crit Rate", unit: "%" },
+    78: { label: "Melee Accuracy", unit: "%" },
+    81: { label: "Parry Rate", unit: "%" },
+    82: { label: "Ranged Crit Rate", unit: "%" },
+    83: { label: "Ranged Accuracy", unit: "%" },
+    86: { label: "Magic Crit Rate", unit: "%" },
+    87: { label: "Magic Attack", unit: "%" },
+    88: { label: "Magic Accuracy", unit: "%" },
+    89: { label: "Cast Delay Tol.", unit: "%" },
+    90: { label: "Range", unit: "m" },
+    94: { label: "Debuff Duration", unit: "%" },
+    120: { label: "Healing Skill", unit: "%" },
+    121: { label: "Melee Backstab", unit: "%" },
+    122: { label: "Ranged Backstab", unit: "%" },
+    123: { label: "Magic Backstab", unit: "%" },
+    142: { label: "Fixed DR", unit: "", negate: true },
+    143: { label: "Recv Melee Dmg", unit: "%" },
+    145: { label: "Recv Ranged Dmg", unit: "%" },
+    147: { label: "Recv Magic Dmg", unit: "%" },
+    175: { label: "Healing Power", unit: "" },
+    176: { label: "Crit Heal Bonus", unit: "%" },
+    179: { label: "Block Rate", unit: "%" },
+    180: { label: "Evasion Rate", unit: "%" },
+    181: { label: "Focus", unit: "" },
+    182: { label: "Toughness", unit: "" },
+    183: { label: "Resilience", unit: "" },
+    184: { label: "Magic Def Pen", unit: "" },
+    185: { label: "Heal Crit Rate", unit: "%" },
+    199: { label: "Swim Speed", unit: "%" },
+    204: { label: "Shield Pen Rate", unit: "%" },
+    206: { label: "Shield Pen", unit: "%" },
+    218: { label: "Attack Speed", unit: "" },
+    994: { label: "Physical Defense", unit: "%" },
+    995: { label: "Max Health", unit: "%" },
+    996: { label: "Max Mana", unit: "%" },
+    997: { label: "Spirit", unit: "%" },
+    998: { label: "Melee Attack", unit: "%" },
+    999: { label: "Ranged Attack", unit: "%" },
+});
+
+function formatAttrVal(val, unit = "") {
+    const sign = val > 0 ? "+" : "";
+    const abs = Math.abs(val);
+    const numStr =
+        unit === "%" || Math.abs(val % 1) > 1e-4
+            ? Number(val).toFixed(1)
+            : Math.round(val).toLocaleString("en-US");
+    return `${sign}${numStr}${unit}`;
+}
+
+function summarizeAttrMap(attrObj, { excludeIds = null } = {}) {
+    const byId = new Map();
+    for (const [aidStr, rawVal] of Object.entries(attrObj || {})) {
+        const aid = Number(aidStr);
+        if (excludeIds && excludeIds.has(aid)) continue;
+        const meta = ITEM_BONUS_ATTR_META[aid];
+        if (!meta) continue;
+        const val = meta.negate ? -Number(rawVal) : Number(rawVal);
+        if (!Number.isFinite(val) || Math.abs(val) < 0.05) continue;
+        byId.set(aid, Number(((byId.get(aid) || 0) + val).toFixed(1)));
+    }
+
+    const consumed = new Set();
+    const out = [];
+
+    // Collapse identical Crit Damage across Melee/Ranged/Magic (17, 26, 31)
+    if (byId.has(17) && byId.get(17) === byId.get(26) && byId.get(17) === byId.get(31)) {
+        out.push({ label: "Crit Damage", value: byId.get(17), unit: "%" });
+        [17, 26, 31].forEach((k) => consumed.add(k));
+    }
+    // Collapse identical Crit Rate across Melee/Ranged/Magic (77, 82, 86)
+    if (byId.has(77) && byId.get(77) === byId.get(82) && byId.get(77) === byId.get(86)) {
+        out.push({ label: "Crit Rate", value: byId.get(77), unit: "%" });
+        [77, 82, 86].forEach((k) => consumed.add(k));
+    }
+    // Collapse identical Melee + Ranged Attack % (998, 999)
+    if (byId.has(998) && byId.get(998) === byId.get(999)) {
+        out.push({ label: "Melee/Ranged Atk", value: byId.get(998), unit: "%" });
+        [998, 999].forEach((k) => consumed.add(k));
+    }
+
+    const byLabel = new Map();
+    for (const [aid, val] of byId.entries()) {
+        if (consumed.has(aid)) continue;
+        const meta = ITEM_BONUS_ATTR_META[aid];
+        const prev = byLabel.get(meta.label);
+        if (prev) {
+            prev.value = Number((prev.value + val).toFixed(1));
+        } else {
+            byLabel.set(meta.label, { label: meta.label, value: val, unit: meta.unit });
+        }
+    }
+    for (const entry of byLabel.values()) {
+        if (Math.abs(entry.value) >= 0.05) out.push(entry);
+    }
+    return out;
+}
+
+function inferEquipmentSetName(itemName) {
+    const clean = String(itemName || "").trim();
+    if (!clean) return "Item Set";
+    const stripped = clean
+        .replace(
+            /\s+(Helm|Hood|Cap|Circlet|Cuirass|Shirt|Jerkin|Tunic|Tassets|Sash|Belt|Vambraces|Sleeves|Guards|Gauntlets|Gloves|Fists|Greaves|Pants|Breeches|Sabatons|Shoes|Boots|Cloak|Necklace|Earrings?|Ring)$/i,
+            ""
+        )
+        .trim();
+    return stripped ? `${stripped} Set` : `${clean} Set`;
+}
+
+function buildSetEffectGroup(rawSetEffects, setName, sourceKind, allSlots) {
+    if (!Array.isArray(rawSetEffects) || rawSetEffects.length === 0) return null;
+    const setId = rawSetEffects[0]?.equip_item_set_id;
+    if (setId == null) return null;
+    const equippedCount = Array.isArray(allSlots) ? getPieceCount(setId, allSlots) : 1;
+
+    // Group entries by num_pieces threshold ascending, deduplicating repeated attr IDs from lower tiers
+    const byThreshold = new Map();
+    for (const se of rawSetEffects) {
+        const pcs = Number(se?.num_pieces) || 0;
+        if (pcs <= 0) continue;
+        if (!byThreshold.has(pcs)) byThreshold.set(pcs, []);
+        byThreshold.get(pcs).push(se);
+    }
+    const sortedPcs = Array.from(byThreshold.keys()).sort((a, b) => a - b);
+    if (sortedPcs.length === 0) return null;
+
+    const seenAttrIds = new Set();
+    const tiers = [];
+    for (const pcs of sortedPcs) {
+        const rows = byThreshold.get(pcs) || [];
+        const tierAttrs = {};
+        const fallbackNotes = [];
+        for (const se of rows) {
+            const hasAttr = se.unit_attribute_id != null && Number.isFinite(Number(se.unit_attribute_id));
+            const aid = hasAttr ? Number(se.unit_attribute_id) : null;
+            const rawVal = se.calculated_value != null ? se.calculated_value : se.value;
+            if (hasAttr && !seenAttrIds.has(aid)) {
+                seenAttrIds.add(aid);
+                if (ITEM_BONUS_ATTR_META[aid]) {
+                    addAttr(tierAttrs, aid, rawVal);
+                } else if (se.buff_name && !String(se.buff_name).includes("#{")) {
+                    fallbackNotes.push(String(se.buff_name).trim());
+                }
+            }
+            if (se.note && String(se.note).trim()) {
+                fallbackNotes.push(String(se.note).trim());
+            } else if (!hasAttr && se.buff_name && !String(se.buff_name).includes("#{")) {
+                fallbackNotes.push(String(se.buff_name).trim());
+            }
+        }
+        const entries = summarizeAttrMap(tierAttrs);
+        const parts = entries.map((e) => `${e.label} ${formatAttrVal(e.value, e.unit)}`);
+        for (const note of fallbackNotes) {
+            if (!parts.includes(note)) parts.push(note);
+        }
+        if (parts.length === 0) {
+            // Fallback to cleaned buff_name when all entries were non-numeric proc effects
+            const rawName = String(rows[0]?.buff_name || "").replace(/#\{[^}]+\}/g, "").trim();
+            if (rawName) parts.push(rawName);
+        }
+        tiers.push({
+            numPieces: pcs,
+            active: equippedCount >= pcs,
+            entries,
+            summary: parts.join(" · "),
+        });
+    }
+
+    const maxPieces = sortedPcs[sortedPcs.length - 1];
+    return {
+        setId,
+        name: setName,
+        sourceKind, // "equipment" | "lunafrost"
+        equippedCount,
+        maxPieces,
+        tiers,
+    };
+}
+
+/**
+ * Canonical AA Classic 1.3.6 Costume Enlightenment Charms (slot 0 lunafrosts).
+ * Activates its 2-Set Enlightenment effect when 2+ Enlightened accessories/items are equipped
+ * (or when the corresponding Enlightenment buff chip is toggled active).
+ */
+export const COSTUME_CHARM_DEFS = Object.freeze({
+    9001611: {
+        id: 9001611,
+        element: "Life",
+        name: "Life Charm",
+        setName: "Life Enlightenment",
+        modId: "enlightenment_life",
+        shortDesc: "+1 Rank to 10 core skills",
+        fullDesc:
+            "Increases the rank of Precision Strike, Earthen Grip, Shield Slam, Thwart, Hell Spear, Deadeye, Freezing Earth, Stalker's Mark, [Perform] Ode to Recovery, and Renewal by +1 (does not affect Ancestral variants).",
+    },
+    9001678: {
+        id: 9001678,
+        element: "Flame",
+        name: "Flame Charm",
+        setName: "Flame Enlightenment",
+        modId: "enlightenment_flame",
+        shortDesc: "Recover 1% Max HP on Block/Parry/Evade",
+        fullDesc: "Recover 1% of Max Health whenever you Block, Parry, or Evade an attack.",
+    },
+    9001676: {
+        id: 9001676,
+        element: "Gale",
+        name: "Gale Charm",
+        setName: "Gale Enlightenment",
+        modId: "enlightenment_gale",
+        shortDesc: "+3% Move Spd per Crit (up to 10x)",
+        fullDesc: "Critical strikes increase Move Speed by +3%, stacking up to 10 times (+30% Move Speed).",
+    },
+    9001644: {
+        id: 9001644,
+        element: "Wave",
+        name: "Wave Charm",
+        setName: "Wave Enlightenment",
+        modId: "enlightenment_wave",
+        shortDesc: "Post-Cast Mana Regen +10",
+        fullDesc: "Increases Post-Cast Mana Regeneration by +10.",
+    },
+    9001665: {
+        id: 9001665,
+        element: "Meadow",
+        name: "Meadow Charm",
+        setName: "Meadow Enlightenment",
+        modId: "enlightenment_meadow",
+        shortDesc: "Abyssal charges never decay",
+        fullDesc: "Abyssal charges no longer decay over time.",
+    },
+    9001674: {
+        id: 9001674,
+        element: "Earth",
+        name: "Earth Charm",
+        setName: "Earth Enlightenment",
+        modId: "enlightenment_earth",
+        shortDesc: "+1 Max Abyssal Charge",
+        fullDesc: "Increases Maximum Abyssal Charges by +1.",
+    },
+    9001684: {
+        id: 9001684,
+        element: "Lightning",
+        name: "Lightning Charm",
+        setName: "Lightning Enlightenment",
+        modId: "enlightenment_lightning",
+        shortDesc: "+50% Glide Spd, +4s Glider Recovery",
+        fullDesc: "Increases gliding speed by +50% and glider recovery by +4 seconds.",
+    },
+});
+
+const COSTUME_CHARM_BY_NAME = new Map(
+    Object.values(COSTUME_CHARM_DEFS).map((c) => [c.name.toLowerCase(), c])
+);
+
+const EARRING_SLOT_IDS = new Set([11, 12]);
+const RING_SLOT_IDS = new Set([13, 14]);
+
+function inspectEnlightenedRingEarringPair(allSlots, element) {
+    if (!Array.isArray(allSlots) || !element) {
+        return { hasEarring: false, hasRing: false, count: 0 };
+    }
+    const earringRe = new RegExp(`^Enlightened\\s+(?:Ayanad\\s+)?${element}\\s+Earring\\b`, "i");
+    const ringRe = new RegExp(`^Enlightened\\s+(?:Ayanad\\s+)?${element}\\s+Ring\\b`, "i");
+    let hasEarring = false;
+    let hasRing = false;
+    for (const s of allSlots) {
+        const sid = Number(s?.id ?? s?.item?.slotid);
+        const name = String(s?.item?.equipment?.name || "").trim();
+        if (!name) continue;
+        if (EARRING_SLOT_IDS.has(sid) && earringRe.test(name)) hasEarring = true;
+        else if (RING_SLOT_IDS.has(sid) && ringRe.test(name)) hasRing = true;
+    }
+    return {
+        hasEarring,
+        hasRing,
+        count: (hasEarring ? 1 : 0) + (hasRing ? 1 : 0),
+    };
+}
+
+function hasActiveModifierId(activeModifiers, modId) {
+    if (!activeModifiers || !modId) return false;
+    const list = activeModifiers instanceof Set ? Array.from(activeModifiers) : Array.isArray(activeModifiers) ? activeModifiers : [];
+    for (const tok of list) {
+        const base = String(tok || "").split(":")[0].trim();
+        if (base === modId) return true;
+    }
+    return false;
+}
+
+/**
+ * Resolve Costume Charm metadata & live 2-Set activation state from a lunafrost object,
+ * equipped slots (requiring 1 matching-element Enlightened Earring [slot 11/12] +
+ * 1 matching-element Enlightened Ring [slot 13/14]), and optional active simulator buffs.
+ */
+export function resolveCostumeCharmInfo(lunafrost, allSlots = null, activeModifiers = null) {
+    if (!lunafrost) return null;
+    const fid = Number(lunafrost.id);
+    const fname = String(lunafrost.name || "").trim().toLowerCase();
+    const def = (Number.isFinite(fid) && COSTUME_CHARM_DEFS[fid]) || COSTUME_CHARM_BY_NAME.get(fname) || null;
+    if (!def) return null;
+
+    const { hasEarring, hasRing, count: enlightenedCount } = inspectEnlightenedRingEarringPair(allSlots, def.element);
+    const activeByGear = hasEarring && hasRing;
+    const activeByBuff = hasActiveModifierId(activeModifiers, def.modId);
+    const active = activeByGear || activeByBuff;
+    let statusLabel;
+    if (activeByGear) {
+        statusLabel = "2/2 pc · Active";
+    } else if (activeByBuff) {
+        statusLabel = "Active (Buff)";
+    } else if (hasEarring && !hasRing) {
+        statusLabel = `1/2 pc (need Enlightened ${def.element} Ring)`;
+    } else if (!hasEarring && hasRing) {
+        statusLabel = `1/2 pc (need Enlightened ${def.element} Earring)`;
+    } else {
+        statusLabel = `0/2 pc (need Enlightened ${def.element} Earring + Ring)`;
+    }
+
+    return {
+        ...def,
+        hasEarring,
+        hasRing,
+        enlightenedCount,
+        requiredPieces: 2,
+        activeByGear,
+        activeByBuff,
+        active,
+        statusLabel,
+    };
+}
+
+/**
+ * Compute all active Equipment Set, Erenor Lunafrost Set (3/4/6pc), and active Costume Charm
+ * Enlightenment (2-Set) bonuses across all equipped slots for the Active Gear Buffs summary list.
+ */
+export function computeActiveSetEffectSummaries(slots, activeModifiers = null) {
+    if (!Array.isArray(slots) || slots.length === 0) return [];
+    const seenSetIds = new Set();
+    const summaries = [];
+
+    for (const s of slots) {
+        const item = s?.item;
+        const eq = item?.equipment;
+        if (!eq) continue;
+
+        if (Array.isArray(eq.seteffects) && eq.seteffects.length > 0) {
+            const sid = eq.seteffects[0]?.equip_item_set_id;
+            if (sid != null && !seenSetIds.has(`eq:${sid}`)) {
+                seenSetIds.add(`eq:${sid}`);
+                const grp = buildSetEffectGroup(eq.seteffects, inferEquipmentSetName(eq.name), "equipment", slots);
+                const activeTiers = grp ? grp.tiers.filter((t) => t.active && t.summary) : [];
+                if (activeTiers.length > 0) {
+                    summaries.push({
+                        id: `set_${sid}`,
+                        name: `${grp.name} (${grp.equippedCount}/${grp.maxPieces})`,
+                        category: "set",
+                        stats: activeTiers.map((t) => `${t.numPieces}pc: ${t.summary}`),
+                        summary: activeTiers.map((t) => `${t.numPieces}pc: ${t.summary}`).join(" · "),
+                    });
+                }
+            }
+        }
+
+        const charmInfo = item.lunafrost ? resolveCostumeCharmInfo(item.lunafrost, slots, activeModifiers) : null;
+        if (charmInfo) {
+            if (charmInfo.active && !seenSetIds.has(`charm:${charmInfo.id}`)) {
+                seenSetIds.add(`charm:${charmInfo.id}`);
+                summaries.push({
+                    id: `charm_${charmInfo.id}`,
+                    name: `${charmInfo.setName} (${charmInfo.activeByGear ? `${charmInfo.enlightenedCount}/2` : "Active"})`,
+                    category: "charm",
+                    stats: [charmInfo.fullDesc],
+                    summary: charmInfo.fullDesc,
+                });
+            }
+            continue;
+        }
+
+        if (Array.isArray(item.lunafrost?.seteffects) && item.lunafrost.seteffects.length > 0) {
+            const sid = item.lunafrost.seteffects[0]?.equip_item_set_id;
+            if (sid != null && !seenSetIds.has(`lf:${sid}`)) {
+                seenSetIds.add(`lf:${sid}`);
+                const lfName = String(item.lunafrost.name || "Lunafrost").trim();
+                const grp = buildSetEffectGroup(item.lunafrost.seteffects, `${lfName} Set`, "lunafrost", slots);
+                const activeTiers = grp ? grp.tiers.filter((t) => t.active && t.summary) : [];
+                if (activeTiers.length > 0) {
+                    summaries.push({
+                        id: `lfset_${sid}`,
+                        name: `${grp.name} (${grp.equippedCount}/${grp.maxPieces})`,
+                        category: "erenor",
+                        stats: activeTiers.map((t) => `${t.numPieces}pc: ${t.summary}`),
+                        summary: activeTiers.map((t) => `${t.numPieces}pc: ${t.summary}`).join(" · "),
+                    });
+                }
+            }
+        }
+    }
+
+    return summaries;
+}
+
+const CORE_ATTR_AND_MAIN_IDS = new Set([0, 1, 2, 3, 4, 8, 33, 34, 35, 64, 175]);
+
+/**
+ * Compute all exact stats granted by a single equipped gear slot (base armor/weapon main stats,
+ * primary attributes STR/AGI/STA/INT/SPI, distinct equip effects, lunafrost/lunagem/synthesis bonuses,
+ * item & Erenor lunafrost set effects with live piece counts, and GS).
+ */
+export function computeGearItemGrantedStats(
+    slotOrItem,
+    slotIdOverride = null,
+    allSlots = null,
+    activeModifiers = null
+) {
+    const item = slotOrItem?.item !== undefined ? slotOrItem.item : slotOrItem;
+    const eq = item?.equipment;
+    if (!item || !eq) return null;
+
+    const slotId = Number(slotIdOverride ?? slotOrItem?.id ?? item.slotid ?? -1);
+    const oEquip = {};
+    const oEnchant = {};
+    const oAll = {};
+
+    const addBoth = (targetObj, aid, val) => {
+        addAttr(targetObj, aid, val);
+        addAttr(oAll, aid, val);
+    };
+
+    if (Array.isArray(eq.equipeffects)) {
+        const gid = item.grade?.id;
+        let matching = eq.equipeffects.filter((e) => e.item_grade_id === gid);
+        if (matching.length === 0 && gid === 1) {
+            matching = eq.equipeffects.filter((e) => e.item_grade_id === 0);
+        }
+        for (const eff of matching) addBoth(oEquip, eff.unit_attribute_id, eff.value);
+    }
+
+    if (
+        Array.isArray(eq.buff_json) &&
+        eq.buff_json.length > 0 &&
+        (!Array.isArray(eq.equipeffects) ||
+            eq.equipeffects.length === 0 ||
+            eq.buff_json[0].unit_attribute_id != eq.equipeffects[0].unit_attribute_id)
+    ) {
+        const seen = new Set();
+        for (const eff of eq.buff_json) {
+            if (seen.has(eff.unit_attribute_id)) continue;
+            seen.add(eff.unit_attribute_id);
+            addBoth(oEquip, eff.unit_attribute_id, eff.value);
+        }
+    }
+
+    if (Array.isArray(eq.modifiers_json)) {
+        for (const eff of eq.modifiers_json) addBoth(oEquip, eff.unit_attribute_id, eff.value);
+    }
+
+    if (item.lunafrost) {
+        for (const eff of Array.isArray(item.lunafrost.effects) ? item.lunafrost.effects : []) {
+            addBoth(oEnchant, eff.unit_attribute_id, eff.value);
+        }
+    }
+
+    if (Array.isArray(item.lunagem)) {
+        for (const g of item.lunagem) {
+            for (const eff of Array.isArray(g?.effects) ? g.effects : []) {
+                addBoth(oEnchant, eff.unit_attribute_id, eff.value);
+            }
+        }
+    }
+
+    if (Array.isArray(item.sythisis_stat) && eq.synth_percentage >= 0 && eq.synth_percentage <= 100) {
+        for (const st of item.sythisis_stat) {
+            if (!st) continue;
+            const rawV =
+                Number(st.minvalue) +
+                (Number(st.maxvalue) - Number(st.minvalue)) * (eq.synth_percentage / 100);
+            const div = SCALING_MAP[st.unit_attribute_id] || 1;
+            let y = (rawV / div).toFixed(1);
+            if (st.unit_attribute_id >= 0 && st.unit_attribute_id < 5) {
+                y = Math.round(Number(y)).toFixed(1);
+            }
+            const numY = Number(y);
+            oEnchant[st.unit_attribute_id] = (oEnchant[st.unit_attribute_id] || 0) + numY;
+            oAll[st.unit_attribute_id] = (oAll[st.unit_attribute_id] || 0) + numY;
+        }
+    }
+
+    const basePdef = calculateItemMain(item, "pdef") || 0;
+    const baseMdef = calculateItemMain(item, "mdef") || 0;
+    const baseAtk = slotId !== 16 ? calculateItemMain(item, "atk") || 0 : 0;
+    const baseRatk = calculateItemMain(item, "ratk") || 0;
+    const baseMatk = calculateItemMain(item, "matk") || 0;
+    const baseHeal = calculateItemMain(item, "heal") || 0;
+
+    const pdef = Math.round(basePdef + (oAll[8] || 0));
+    const mdef = Math.round(baseMdef + (oAll[64] || 0));
+    const meleeAttack = Number((baseAtk + (oAll[33] || 0)).toFixed(1));
+    const rangedAttack = Number((baseRatk + (oAll[34] || 0)).toFixed(1));
+    const magicAttack = Number((baseMatk + (oAll[35] || 0)).toFixed(1));
+    const healingPower = Number((baseHeal + (oAll[175] || 0)).toFixed(1));
+
+    const attributes = {
+        str: Math.round((calculateItemStat(item, "str") || 0) + (oAll[0] || 0)),
+        agi: Math.round((calculateItemStat(item, "dex") || 0) + (oAll[1] || 0)),
+        sta: Math.round((calculateItemStat(item, "sta") || 0) + (oAll[2] || 0)),
+        int: Math.round((calculateItemStat(item, "int") || 0) + (oAll[3] || 0)),
+        spi: Math.round((calculateItemStat(item, "spi") || 0) + (oAll[4] || 0)),
+    };
+
+    const equipEffects = summarizeAttrMap(oEquip);
+    const enchantBonuses = summarizeAttrMap(oEnchant, { excludeIds: CORE_ATTR_AND_MAIN_IDS });
+    const bonuses = summarizeAttrMap(oAll, { excludeIds: CORE_ATTR_AND_MAIN_IDS });
+
+    const setEffects = [];
+    const enchantNotes = [];
+    if (Array.isArray(eq.seteffects) && eq.seteffects.length > 0) {
+        const grp = buildSetEffectGroup(eq.seteffects, inferEquipmentSetName(eq.name), "equipment", allSlots);
+        if (grp) setEffects.push(grp);
+    }
+    const charmInfo = item.lunafrost ? resolveCostumeCharmInfo(item.lunafrost, allSlots, activeModifiers) : null;
+    if (charmInfo) {
+        setEffects.push({
+            setId: `charm_${charmInfo.id}`,
+            name: `${charmInfo.name} · ${charmInfo.setName}`,
+            sourceKind: "charm",
+            equippedCount: charmInfo.enlightenedCount,
+            maxPieces: 2,
+            active: charmInfo.active,
+            statusLabel: charmInfo.statusLabel,
+            tiers: [
+                {
+                    numPieces: 2,
+                    active: charmInfo.active,
+                    entries: [],
+                    summary: charmInfo.fullDesc,
+                },
+            ],
+        });
+    } else if (Array.isArray(item.lunafrost?.seteffects) && item.lunafrost.seteffects.length > 0) {
+        const lfName = String(item.lunafrost.name || "Lunafrost").trim();
+        const grp = buildSetEffectGroup(item.lunafrost.seteffects, `${lfName} Set`, "lunafrost", allSlots);
+        if (grp) setEffects.push(grp);
+    } else if (
+        item.lunafrost &&
+        (!Array.isArray(item.lunafrost.effects) || item.lunafrost.effects.length === 0) &&
+        String(item.lunafrost.effect_text || "").trim()
+    ) {
+        enchantNotes.push({
+            name: String(item.lunafrost.name || "Lunafrost").trim(),
+            text: String(item.lunafrost.effect_text).replace(/\s+/g, " ").trim(),
+        });
+    }
+
+    return {
+        gearScore: calculateItemGearscore(item) || 0,
+        main: {
+            pdef,
+            mdef,
+            meleeAttack,
+            rangedAttack,
+            magicAttack,
+            healingPower,
+        },
+        baseMain: {
+            pdef: Math.round(basePdef),
+            mdef: Math.round(baseMdef),
+            meleeAttack: Number(baseAtk.toFixed(1)),
+            rangedAttack: Number(baseRatk.toFixed(1)),
+            magicAttack: Number(baseMatk.toFixed(1)),
+            healingPower: Number(baseHeal.toFixed(1)),
+        },
+        attributes,
+        equipEffects,
+        enchantBonuses,
+        enchantNotes,
+        bonuses,
+        setEffects,
+        charmInfo,
+    };
 }
 
 function getStatWeights(eq, statKey) {

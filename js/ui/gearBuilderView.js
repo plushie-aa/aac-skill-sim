@@ -8,32 +8,43 @@
  */
 
 import {
+    COSTUME_CHARM_DEFS,
+    GEAR_TEMPLATE_SLOT_GROUPS,
     STAT_MIGRATION_MAX_DELTA,
     STAT_MIGRATION_MIN_DELTA,
+    applyGearTemplateToSlots,
+    applyLunafrostToEligibleSlots,
     applyModifiers,
     applyStatMigrationTransfer,
     buildAhLookupIndex,
+    computeActiveSetEffectSummaries,
     computeEffectiveStats,
+    computeGearItemGrantedStats,
     createEmptyGearSlots,
     describeGearBuffEffects,
     ensureCharacterRawDaruGear,
+    equipArmorSetPreset,
     equipCatalogItemInSlot,
     estimateBuildCost,
+    extractGearTemplateFromSlots,
     fillAllSlotLunagems,
     filterItemsForSlot,
     filterLunafrostsForSlot,
     filterLunagemsForSlot,
+    getArmorSetPresets,
     getAvailableSynthPool,
     getGearCatalog,
     getItemTypesForSlot,
     getMaxSocketsForSlotAndGrade,
     getPlayerStatMigration,
+    getSynthPoolIndexForStat,
     getSynthSlotCountForGrade,
     loadGearCatalog,
     normalizeEconomyPriceBook,
     recalculateCharacterFromGearBuilder,
     recomputeGearBuffs,
     resetPlayerStatMigration,
+    resolveCostumeCharmInfo,
     resolveGearIconUrl,
     setGearPlayerTitle,
     setPlayerStatMigration,
@@ -46,7 +57,7 @@ import {
     unequipGearSlot,
 } from "../engine/index.js";
 import { fetchDaruGearBuild } from "../adapters/darugear.js";
-import { computeSlotCharacterFingerprint, saveBuildToStore } from "./buildStore.js";
+import { computeSlotCharacterFingerprint, createBlankBuildForSlot, saveBuildToStore } from "./buildStore.js";
 import { loadEconomyPriceBookFromStorage } from "./economyView.js";
 import {
     escHtml,
@@ -56,6 +67,8 @@ import {
     getSlotChar,
     getSlotChipTokens,
     getSlotModifiers,
+    renderItemGrantedStatsHtml,
+    saveCustomGearTemplates,
     setSlotChar,
     showToast,
     state,
@@ -278,11 +291,18 @@ export function renderGearBuilderView(out) {
                 ? `${Math.max(Number(it.ptemper) || 100, Number(it.mtemper) || 100)}%`
                 : "";
         const slotCost = slotCostById.get(sid) || null;
+        const charmInfo = sid === 0 && it?.lunafrost ? resolveCostumeCharmInfo(it.lunafrost, slots, slotMods) : null;
+        const costumeEnchantPillHtml =
+            sid === 0 && it?.lunafrost
+                ? charmInfo
+                    ? `<div class="gb-pd-charm ${charmInfo.active ? "is-active" : "is-inactive"}" title="${escHtml(`${charmInfo.name} (${charmInfo.statusLabel}): ${charmInfo.fullDesc}`)}">&#10022; ${escHtml(charmInfo.name)} <span class="gb-pd-charm-st">${charmInfo.active ? (charmInfo.activeByGear ? `${charmInfo.enlightenedCount}/2` : "Active") : `${charmInfo.enlightenedCount}/2`}</span></div>`
+                    : `<div class="gb-pd-charm is-active" title="${escHtml(`${it.lunafrost.name}${it.lunafrost.effect_text ? ` — ${it.lunafrost.effect_text}` : ""}`)}">&#10022; ${escHtml(it.lunafrost.name)}</div>`
+                : "";
         const costTooltip = slotCost
             ? ` — Est. ${fmtInt(slotCost.slotTotalGold)}g (Gear ${fmtInt(slotCost.baseGold)}g${slotCost.gemsGold > 0 ? `, Gems ${fmtInt(slotCost.gemsGold)}g` : ""}${slotCost.frostGold > 0 ? `, Frost ${fmtInt(slotCost.frostGold)}g` : ""})`
             : "";
         return `
-        <div class="gb-pd-slot ${isSel ? "active" : ""} ${it ? "filled" : "empty"}" data-gb-select-slot="${sid}" style="${it ? `border-color:${escHtml(gColor)}` : ""}" title="${it ? `${escHtml(canonicalGrade?.name || "")} ${escHtml(it.equipment.name)} (${escHtml(s.name)})${escHtml(costTooltip)}` : `Empty ${escHtml(s.name)} — click to equip`}">
+        <div class="gb-pd-slot ${isSel ? "active" : ""} ${it ? "filled" : "empty"} ${charmInfo?.active ? "has-active-charm" : ""}" data-gb-select-slot="${sid}" style="${it ? `border-color:${escHtml(gColor)}` : ""}" title="${it ? `${escHtml(canonicalGrade?.name || "")} ${escHtml(it.equipment.name)} (${escHtml(s.name)})${charmInfo ? ` · ${escHtml(charmInfo.name)} (${escHtml(charmInfo.statusLabel)})` : ""}${escHtml(costTooltip)}` : `Empty ${escHtml(s.name)} — click to equip`}">
             <span class="gb-pd-icon ${it ? "has-grade" : ""}">
                 ${ic ? `<img src="${escHtml(ic)}" alt="" loading="lazy" data-img-fb="hide" />` : `<span class="gb-pd-empty-lbl">${escHtml(s.name.slice(0, 2))}</span>`}
                 ${it ? `<img class="gear-grade-frame" src="assets/grade/grade${frameId}.png" alt="" loading="lazy" />` : ""}
@@ -292,9 +312,10 @@ export function renderGearBuilderView(out) {
                 <div class="gb-pd-itemname" style="${it ? `color:${escHtml(gColor)}` : ""}">${it ? escHtml(it.equipment.name) : "Empty"}</div>
                 ${
                     it
-                        ? `<div class="gb-pd-sub">${escHtml(canonicalGrade?.name || "")}${tempStr ? ` &middot; ${tempStr}` : ""}${maxS > 0 ? ` &middot; ${filledS}/${maxS}g` : ""}${it.lunafrost ? " &middot; LF" : ""}${slotCost ? ` &middot; <span class="gb-pd-gold">${fmtCompactGold(slotCost.slotTotalGold)}</span>` : ""}</div>`
+                        ? `<div class="gb-pd-sub">${escHtml(canonicalGrade?.name || "")}${tempStr ? ` &middot; ${tempStr}` : ""}${maxS > 0 ? ` &middot; ${filledS}/${maxS}g` : ""}${it.lunafrost && sid !== 0 ? " &middot; LF" : ""}${slotCost ? ` &middot; <span class="gb-pd-gold">${fmtCompactGold(slotCost.slotTotalGold)}</span>` : ""}</div>`
                         : ""
                 }
+                ${costumeEnchantPillHtml}
             </div>
             ${it ? `<button type="button" class="gb-pd-rm" data-gb-unequip="${sid}" title="Unequip ${escHtml(s.name)}">&times;</button>` : ""}
         </div>`;
@@ -318,22 +339,68 @@ export function renderGearBuilderView(out) {
         const validGrades = catalog.grades.filter((g) => g.id >= (eq.mingrade ?? 0) && g.id <= (eq.maxgrade ?? 12));
         const isTemperable = TEMPERABLE_TYPES.has(eq.type);
 
-        // Lunafrost picker
+        // Lunafrost picker (with Erenor Lunafrost set-bonus labels & 1-click Apply Set action)
         const validFrosts = filterLunafrostsForSlot(selSlotId, activeItem, catalog);
         const curFrostId = activeItem.lunafrost?.id ? Number(activeItem.lunafrost.id) : 0;
+        const ERENOR_FROST_SET_HINTS = {
+            454: "Set 3/4/6pc: Tough +452, Resil +560, Melee Crit Dmg +18.6%",
+            455: "Set 3/4/6pc: Tough +452, Resil +560, Ranged Crit Rate +4.1%",
+            456: "Set 3/4/6pc: Tough +452, Resil +560, Recv Dmg -4.1%",
+            457: "Set 3/4/6pc: Tough +452, Resil +560, Magic Skill Dmg +4.1%",
+            458: "Set 3/4/6pc: Tough +452, Resil +560, Crit Heal Rate +4.1%",
+        };
+        const curFrostMeta = curFrostId ? catalog.frostById?.get(curFrostId) : null;
+        const isCurErenorFrost = Boolean(curFrostMeta && ERENOR_FROST_SET_HINTS[curFrostMeta.eiset_id]);
+        const eligibleForCurFrost = isCurErenorFrost
+            ? slots.filter(
+                  (s) =>
+                      s?.item?.equipment &&
+                      filterLunafrostsForSlot(s.id, s.item, catalog).some((f) => Number(f.id) === curFrostId)
+              ).length
+            : 0;
+        const curFrostCharm = activeItem.lunafrost ? resolveCostumeCharmInfo(activeItem.lunafrost, slots, slotMods) : null;
+        const curFrostFullDescHtml = curFrostCharm
+            ? `<div class="gb-frost-full-desc ${curFrostCharm.active ? "is-active" : "is-inactive"}">
+                   <div class="gb-frost-desc-head">
+                       <span>&#10022; ${escHtml(curFrostCharm.setName)} (2-Set)</span>
+                       <span class="gb-is-set-cnt">${escHtml(curFrostCharm.statusLabel)}</span>
+                   </div>
+                   <div class="gb-frost-desc-body">${escHtml(curFrostCharm.fullDesc)}</div>
+               </div>`
+            : activeItem.lunafrost && String(activeItem.lunafrost.effect_text || "").trim()
+              ? `<div class="gb-frost-full-desc is-plain">
+                     <div class="gb-frost-desc-body"><strong>${escHtml(activeItem.lunafrost.name)}:</strong> ${escHtml(String(activeItem.lunafrost.effect_text).replace(/\s+/g, " ").trim())}</div>
+                 </div>`
+              : "";
         const frostSectionHtml =
             validFrosts.length > 0
                 ? `<div class="gb-ed-block">
-                       <label class="gb-ed-lbl">Lunafrost / Enchant</label>
+                       <div class="gb-ed-hdr-row">
+                           <label class="gb-ed-lbl">${selSlotId === 0 ? "Costume Charm / Lunastone" : "Lunafrost / Enchant"}</label>
+                           ${
+                               isCurErenorFrost && eligibleForCurFrost > 1
+                                   ? `<button type="button" class="sm primary" id="gbApplyErenorFrostAllBtn" title="Apply ${escHtml(curFrostMeta.name)} to all ${eligibleForCurFrost} eligible equipped Ayanad/Erenor armor slots">Apply to All ${eligibleForCurFrost} Eligible</button>`
+                                   : ""
+                           }
+                       </div>
                        <select id="gbFrostSel" class="gb-full-sel">
                            <option value="">None</option>
                            ${validFrosts
-                               .map(
-                                   (f) =>
-                                       `<option value="${f.id}" ${f.id === curFrostId ? "selected" : ""}>${escHtml(f.name)}${f.effect_text ? ` — ${escHtml(f.effect_text.slice(0, 62))}` : ""}</option>`
-                               )
+                               .map((f) => {
+                                   const charmDef = COSTUME_CHARM_DEFS[Number(f.id)] || null;
+                                   if (charmDef) {
+                                       return `<option value="${f.id}" ${f.id === curFrostId ? "selected" : ""}>${escHtml(charmDef.name)} — ${escHtml(charmDef.shortDesc)}</option>`;
+                                   }
+                                   const setHint = f.eiset_id && ERENOR_FROST_SET_HINTS[f.eiset_id]
+                                       ? ` · ${ERENOR_FROST_SET_HINTS[f.eiset_id]}`
+                                       : "";
+                                   const cleanText = f.effect_text ? String(f.effect_text).replace(/\s+/g, " ").trim() : "";
+                                   const effStr = cleanText ? ` — ${cleanText}` : "";
+                                   return `<option value="${f.id}" ${f.id === curFrostId ? "selected" : ""}>${escHtml(f.name)}${escHtml(effStr)}${escHtml(setHint)}</option>`;
+                               })
                                .join("")}
                        </select>
+                       ${curFrostFullDescHtml}
                    </div>`
                 : "";
 
@@ -381,7 +448,7 @@ export function renderGearBuilderView(out) {
             </div>`;
         }
 
-        // Synthesis stats picker
+        // Synthesis stats picker (uses unique pool index so Cloak High/Low stat tiers never collide!)
         const synthCount = getSynthSlotCountForGrade(eq, gObj?.id);
         const synthPool = synthCount > 0 ? getAvailableSynthPool(eq, gObj?.id, catalog) : [];
         let synthSectionHtml = "";
@@ -389,18 +456,47 @@ export function renderGearBuilderView(out) {
             const curSynths = Array.isArray(activeItem.sythisis_stat) ? activeItem.sythisis_stat : [];
             const pickedAttrIds = new Set(curSynths.filter(Boolean).map((st) => Number(st.unit_attribute_id)));
             const synPct = Number.isFinite(Number(eq.synth_percentage)) ? Number(eq.synth_percentage) : 100;
+            // Count occurrences of each unit_attribute_id so duplicate tiers (e.g. Cloak High vs Low) get clear labels
+            const attrCounts = new Map();
+            for (const opt of synthPool) {
+                const aid = Number(opt.unit_attribute_id);
+                attrCounts.set(aid, (attrCounts.get(aid) || 0) + 1);
+            }
+            const attrSeen = new Map();
+            const poolOptionLabels = synthPool.map((opt) => {
+                const aid = Number(opt.unit_attribute_id);
+                const total = attrCounts.get(aid) || 1;
+                const occ = attrSeen.get(aid) || 0;
+                attrSeen.set(aid, occ + 1);
+                if (total === 2) {
+                    return `${opt.display_text} [${occ === 0 ? "High" : "Low"}]`;
+                }
+                if (total > 2) {
+                    return `${opt.display_text} [Tier ${occ + 1}]`;
+                }
+                return opt.display_text;
+            });
+
             const synthRows = Array.from({ length: synthCount }, (_, idx) => {
-                const curAttr = curSynths[idx] ? Number(curSynths[idx].unit_attribute_id) : -1;
+                const curSt = curSynths[idx] || null;
+                const curAttr = curSt ? Number(curSt.unit_attribute_id) : -1;
+                const matchedPoolIdx = curSt ? getSynthPoolIndexForStat(curSt, synthPool) : -1;
+                const customPreservedOpt =
+                    curSt && matchedPoolIdx < 0
+                        ? `<option value="__keep__" selected>${escHtml(String(curSt.display_text || "Custom Stat").replace(/\s+/g, " "))} (Imported)</option>`
+                        : "";
                 return `
                 <div class="gb-sock-row">
                     <span class="gb-sock-num">S${idx + 1}</span>
                     <select class="gb-sock-sel" data-gb-synth-line="${idx}">
                         <option value="">None</option>
+                        ${customPreservedOpt}
                         ${synthPool
-                            .map((opt) => {
+                            .map((opt, poolIdx) => {
                                 const aid = Number(opt.unit_attribute_id);
-                                const disabled = aid !== curAttr && pickedAttrIds.has(aid) ? "disabled" : "";
-                                return `<option value="${aid}" ${aid === curAttr ? "selected" : ""} ${disabled}>${escHtml(opt.display_text)}</option>`;
+                                const isSel = poolIdx === matchedPoolIdx;
+                                const disabled = !isSel && aid !== curAttr && pickedAttrIds.has(aid) ? "disabled" : "";
+                                return `<option value="idx:${poolIdx}" ${isSel ? "selected" : ""} ${disabled}>${escHtml(poolOptionLabels[poolIdx])}</option>`;
                             })
                             .join("")}
                     </select>
@@ -413,7 +509,7 @@ export function renderGearBuilderView(out) {
                     <label class="gb-ed-lbl">Synthesis Stats (${synthCount} lines)</label>
                     <label class="gs-inline-field" title="Synthesis roll percentage (0% = min roll, 100% = max roll)">
                         Roll %
-                        <input type="number" id="gbSynthPctInp" min="0" max="100" step="5" value="${synPct}" style="width:58px" />
+                        <input type="number" id="gbSynthPctInp" min="0" max="100" step="5" value="${synPct}" style="width:68px" />
                     </label>
                 </div>
                 <div class="gb-sockets-list">${synthRows}</div>
@@ -425,6 +521,9 @@ export function renderGearBuilderView(out) {
         const canonicalGObj = catalog.gradeById.get(eqFrameId) || gObj;
         const eqColor = canonicalGObj?.colour || "#475569";
         const activeSlotCost = slotCostById.get(selSlotId) || null;
+        const activeItemStatsHtml = renderItemGrantedStatsHtml(
+            computeGearItemGrantedStats(activeSlot, selSlotId, slots, slotMods)
+        );
         const activeSlotCostHtml = activeSlotCost
             ? `<div class="gb-slot-cost-bar">
                    <div class="gb-slot-cost-main">
@@ -450,6 +549,7 @@ export function renderGearBuilderView(out) {
                 </div>
                 <button type="button" class="sm danger" id="gbUnequipCurBtn">Unequip</button>
             </div>
+            ${activeItemStatsHtml}
             ${activeSlotCostHtml}
             <div class="gb-ed-controls-row">
                 <label class="gs-inline-field">
@@ -467,11 +567,11 @@ export function renderGearBuilderView(out) {
                     isTemperable
                         ? `<label class="gs-inline-field" title="Physical Defense / Melee & Ranged Attack temper (100-115%)">
                                P.Temper
-                               <input type="number" id="gbPTemperInp" min="100" max="115" step="1" value="${Number(activeItem.ptemper) || 100}" style="width:56px" />%
+                               <input type="number" id="gbPTemperInp" min="100" max="115" step="1" value="${Number(activeItem.ptemper) || 100}" style="width:68px" />%
                            </label>
                            <label class="gs-inline-field" title="Magic Defense / Magic Attack / Healing Power temper (100-115%)">
                                M.Temper
-                               <input type="number" id="gbMTemperInp" min="100" max="115" step="1" value="${Number(activeItem.mtemper) || 100}" style="width:56px" />%
+                               <input type="number" id="gbMTemperInp" min="100" max="115" step="1" value="${Number(activeItem.mtemper) || 100}" style="width:68px" />%
                            </label>`
                         : ""
                 }
@@ -501,14 +601,17 @@ export function renderGearBuilderView(out) {
             : "";
 
     const titleName = player?.title?.name || ch.metadata?.title || null;
-    const describedBuffs = gearBuffs
-        .map((b) =>
-            describeGearBuffEffects({
-                ...b,
-                isTitle: Boolean(titleName && b.name === titleName),
-            })
-        )
-        .filter(Boolean);
+    const describedBuffs = [
+        ...gearBuffs
+            .map((b) =>
+                describeGearBuffEffects({
+                    ...b,
+                    isTitle: Boolean(titleName && b.name === titleName),
+                })
+            )
+            .filter(Boolean),
+        ...computeActiveSetEffectSummaries(slots, slotMods),
+    ];
     const activeGearBuffRows = describedBuffs
         .map(
             (b) => `
@@ -592,6 +695,105 @@ export function renderGearBuilderView(out) {
         </div>
     </details>`;
 
+    // Grouped Armor Set Presets for 1-click full armor swaps (preserves tempers & compatible gems/frosts)
+    const armorSetPresets = getArmorSetPresets(catalog);
+    const presetGroups = [];
+    const presetGroupMap = new Map();
+    for (const p of armorSetPresets) {
+        if (!presetGroupMap.has(p.group)) {
+            const arr = [];
+            presetGroupMap.set(p.group, arr);
+            presetGroups.push({ group: p.group, items: arr });
+        }
+        presetGroupMap.get(p.group).push(p);
+    }
+    const lastPickedArmorSet = state.gearBuilderArmorSetId || "";
+    const lastPickedArmorGrade = state.gearBuilderArmorSetGrade || "";
+    const armorSetOptgroupsHtml = presetGroups
+        .map(
+            (g) =>
+                `<optgroup label="${escHtml(g.group)}">${g.items
+                    .map(
+                        (p) =>
+                            `<option value="${escHtml(p.id)}" ${lastPickedArmorSet === p.id ? "selected" : ""}>${escHtml(p.label)}</option>`
+                    )
+                    .join("")}</optgroup>`
+        )
+        .join("");
+
+    // Custom Multi-Slot Gear Templates (builds/gear-templates.json + localStorage fallback)
+    const customTemplates = Array.isArray(state.customGearTemplates) ? state.customGearTemplates : [];
+    const selTplId = customTemplates.some((t) => t.id === state.gearBuilderTemplateId)
+        ? state.gearBuilderTemplateId
+        : customTemplates[0]?.id || "";
+    const selTplObj = customTemplates.find((t) => t.id === selTplId) || null;
+    const tplGradeMode = state.gearBuilderTemplateGradeMode || "template";
+    const tplKeepGems = Boolean(state.gearBuilderTemplateKeepGems);
+    const tplDrawerOpen = Boolean(state.gearBuilderTplDrawerOpen);
+
+    const equippedSlotIds = slots.filter((s) => Boolean(s?.item?.equipment)).map((s) => Number(s.id));
+    const activeTplSelectedSet = new Set(
+        Array.isArray(state.gearBuilderTplSelectedSlots) ? state.gearBuilderTplSelectedSlots : equippedSlotIds
+    );
+    const tplSelectedCount = equippedSlotIds.filter((sid) => activeTplSelectedSet.has(sid)).length;
+
+    const tplSlotChecklistHtml = tplDrawerOpen
+        ? slots
+              .map((s) => {
+                  const sid = Number(s.id);
+                  const it = s.item;
+                  const hasItem = Boolean(it?.equipment);
+                  const checked = hasItem && activeTplSelectedSet.has(sid);
+                  const frameId = hasItem ? Math.max(0, Math.min(12, Number(it.grade?.id) || 0)) : 0;
+                  const gColor = hasItem ? (catalog.gradeById.get(frameId)?.colour || "#cbd5e1") : "#64748b";
+                  const gemCnt =
+                      hasItem && Array.isArray(it.lunagem)
+                          ? it.lunagem.filter((g) => g && Number(g.id) > 0).length
+                          : 0;
+                  const metaBits = [];
+                  if (gemCnt > 0) metaBits.push(`${gemCnt}g`);
+                  if (it?.lunafrost) metaBits.push("LF");
+                  if (hasItem && Array.isArray(it.sythisis_stat) && it.sythisis_stat.some(Boolean)) metaBits.push("Synth");
+                  return `
+                  <label class="gb-tpl-slot-item ${hasItem ? "" : "is-empty"} ${checked ? "is-checked" : ""}">
+                      <input type="checkbox" data-gb-tpl-slot="${sid}" ${checked ? "checked" : ""} ${hasItem ? "" : "disabled"} />
+                      <span class="gb-tpl-slot-body">
+                          <span class="gb-tpl-slot-name">${escHtml(s.name)}</span>
+                          <span class="gb-tpl-slot-itemname" style="color:${escHtml(gColor)}">${hasItem ? escHtml(it.equipment.name) : "Empty"}</span>
+                          ${metaBits.length > 0 ? `<span class="gb-tpl-slot-meta">${escHtml(metaBits.join(" · "))}</span>` : ""}
+                      </span>
+                  </label>`;
+              })
+              .join("")
+        : "";
+
+    const tplDrawerHtml = tplDrawerOpen
+        ? `<div class="gb-tpl-drawer" id="gbTplDrawer">
+               <div class="gb-tpl-drawer-head">
+                   <span class="gb-ed-lbl">Save Equipped Slots as Custom Template (${state.diskApiAvailable ? "builds/gear-templates.json" : "browser storage"})</span>
+                   <div class="gb-tpl-pills">
+                       ${GEAR_TEMPLATE_SLOT_GROUPS.map(
+                           (grp) =>
+                               `<button type="button" class="sm" data-gb-tpl-group="${escHtml(grp.id)}">${escHtml(grp.label)}</button>`
+                       ).join("")}
+                       <button type="button" class="sm" data-gb-tpl-group="none">None</button>
+                   </div>
+               </div>
+               <div class="gb-tpl-inputs">
+                   <input type="text" id="gbTplNameInp" class="gb-tpl-name-inp" placeholder="Template name (e.g. Epic Healer Obsidian + Erenor Frosts)" value="${escHtml(state.gearBuilderTplName || "")}" autocomplete="off" />
+                   <input type="text" id="gbTplNotesInp" class="gb-tpl-notes-inp" placeholder="Optional note (e.g. 5pc T7 SPI + Life Waist/Wrists)" value="${escHtml(state.gearBuilderTplNotes || "")}" autocomplete="off" />
+               </div>
+               <div class="gb-tpl-slot-grid">${tplSlotChecklistHtml}</div>
+               <div class="gb-tpl-drawer-foot">
+                   <span class="hint-inline" id="gbTplCountHint">Capturing <strong>${tplSelectedCount}</strong> equipped slot${tplSelectedCount === 1 ? "" : "s"} (item, grade, temper, gems, frost &amp; synth)</span>
+                   <div class="gb-tpl-drawer-actions">
+                       <button type="button" class="sm" id="gbTplCancelBtn">Cancel</button>
+                       <button type="button" class="sm primary" id="gbTplSaveCommitBtn" ${tplSelectedCount === 0 ? "disabled" : ""}>Save Template</button>
+                   </div>
+               </div>
+           </div>`
+        : "";
+
     out.innerHTML = `
         <div class="gb-toolbar">
             <div class="sb-toolbar-row">
@@ -615,10 +817,63 @@ export function renderGearBuilderView(out) {
                     </label>
                     ${slotKey === "A" ? `<button type="button" class="sm" id="gbCopyAtoBBtn" title="Copy Build A's full 20-slot gear & title into Build B">Copy Gear A &rarr; B</button>` : ""}
                     ${existingCode ? `<button type="button" class="sm primary" id="gbSyncDgBtn" data-dg-code="${escHtml(existingCode)}" title="Load exact raw gear, tempers, gems, frosts &amp; synthesis from DaruGear (${escHtml(existingCode)})">&#8635; Pull ${escHtml(existingCode)}</button>` : ""}
+                    <button type="button" class="sm" id="gbNewBlankBuildBtn" title="Create a brand-new blank Lv 55 character (${state.diskApiAvailable ? "creates a new builds/*.json with no gear equipped" : "saves a blank build to browser storage"})">+ New Blank Build</button>
                     <button type="button" class="sm primary" id="gbSaveBuildBtn" title="Save this modified build snapshot (${state.diskApiAvailable ? "writes to builds/*.json" : "saves to browser storage"})">Save As Build</button>
                     <button type="button" class="sm danger" id="gbClearGearBtn">Clear Gear</button>
                 </div>
             </div>
+            ${
+                armorSetPresets.length > 0
+                    ? `<div class="gb-set-swap-row">
+                           <label class="gb-set-swap-lbl" for="gbArmorSetSel">Swap Armor Set</label>
+                           <select id="gbArmorSetSel" class="gb-set-swap-sel" title="Swap all 7 crafted/dungeon armor slots or all 5 Obsidian armor slots (Head/Chest/Hands/Legs/Feet) while keeping tempers &amp; compatible gems/frosts">
+                               <option value="">Choose an armor set&hellip;</option>
+                               ${armorSetOptgroupsHtml}
+                           </select>
+                           <select id="gbArmorSetGradeSel" class="gb-set-grade-sel" title="Keep each slot's existing grade, or apply a uniform grade to the swapped armor set">
+                               <option value="" ${lastPickedArmorGrade === "" ? "selected" : ""}>Keep Slot Grades</option>
+                               <option value="7" ${lastPickedArmorGrade === "7" ? "selected" : ""}>Celestial</option>
+                               <option value="8" ${lastPickedArmorGrade === "8" ? "selected" : ""}>Divine</option>
+                               <option value="9" ${lastPickedArmorGrade === "9" ? "selected" : ""}>Epic</option>
+                               <option value="10" ${lastPickedArmorGrade === "10" ? "selected" : ""}>Legendary</option>
+                               <option value="11" ${lastPickedArmorGrade === "11" ? "selected" : ""}>Mythic</option>
+                           </select>
+                           <button type="button" class="sm primary" id="gbArmorSetApplyBtn">Swap Set</button>
+                       </div>`
+                    : ""
+            }
+            <div class="gb-set-swap-row gb-tpl-row">
+                <label class="gb-set-swap-lbl" for="gbTemplateSel">Gear Templates</label>
+                <select id="gbTemplateSel" class="gb-set-swap-sel" title="${selTplObj?.notes ? escHtml(selTplObj.notes) : "Apply a saved custom multi-slot gear template (armor, weapons, accessories, gems, frosts & synth)"}">
+                    ${
+                        customTemplates.length > 0
+                            ? customTemplates
+                                  .map(
+                                      (t) =>
+                                          `<option value="${escHtml(t.id)}" ${t.id === selTplId ? "selected" : ""}>${escHtml(t.name)} (${t.slotCount} slot${t.slotCount === 1 ? "" : "s"})${t.notes ? ` — ${escHtml(t.notes)}` : ""}</option>`
+                                  )
+                                  .join("")
+                            : `<option value="">No custom templates yet — click + Save Template</option>`
+                    }
+                </select>
+                <select id="gbTemplateGradeSel" class="gb-set-grade-sel" title="Use the template's saved grades, keep this build's slot grades, or override all template slots to a uniform grade">
+                    <option value="template" ${tplGradeMode === "template" ? "selected" : ""}>Template Grades</option>
+                    <option value="keep" ${tplGradeMode === "keep" ? "selected" : ""}>Keep Slot Grades</option>
+                    <option value="7" ${tplGradeMode === "7" ? "selected" : ""}>Celestial</option>
+                    <option value="8" ${tplGradeMode === "8" ? "selected" : ""}>Divine</option>
+                    <option value="9" ${tplGradeMode === "9" ? "selected" : ""}>Epic</option>
+                    <option value="10" ${tplGradeMode === "10" ? "selected" : ""}>Legendary</option>
+                    <option value="11" ${tplGradeMode === "11" ? "selected" : ""}>Mythic</option>
+                </select>
+                <label class="gb-tpl-chk" title="Preserve this build's existing compatible lunagems &amp; lunafrosts instead of applying the template's gems/frosts">
+                    <input type="checkbox" id="gbTemplateKeepGemsChk" ${tplKeepGems ? "checked" : ""} />
+                    <span>Keep Target Gems</span>
+                </label>
+                <button type="button" class="sm primary" id="gbTemplateApplyBtn" ${selTplObj ? "" : "disabled"}>Apply</button>
+                <button type="button" class="sm" id="gbTemplateToggleSaveBtn">${tplDrawerOpen ? "Close" : "+ Save Template"}</button>
+                ${selTplObj ? `<button type="button" class="sm danger" id="gbTemplateDeleteBtn" title="Delete '${escHtml(selTplObj.name)}'">&times;</button>` : ""}
+            </div>
+            ${tplDrawerHtml}
         </div>
 
         <div class="gb-workspace">
@@ -700,6 +955,26 @@ export function renderGearBuilderView(out) {
             </div>
         </div>
     `;
+
+    document.getElementById("gbNewBlankBuildBtn")?.addEventListener("click", async () => {
+        const nextName = prompt("Name for the new blank character build:", "New Character");
+        if (nextName === null) return;
+        const cleanName = String(nextName).trim();
+        if (!cleanName) {
+            showToast("Build name cannot be empty", "warn");
+            return;
+        }
+        try {
+            await createBlankBuildForSlot(slotKey, {
+                name: cleanName,
+                saveToStore: true,
+                openGearBuilder: false,
+                catalog,
+            });
+        } catch (err) {
+            showToast(`Could not create blank build: ${err.message || err}`, "err");
+        }
+    });
 
     document.getElementById("gbSaveBuildBtn")?.addEventListener("click", async () => {
         const curChar = getSlotChar(slotKey);
@@ -860,6 +1135,205 @@ export function renderGearBuilderView(out) {
         commitGearChange(slotKey, slots, nextPlayer, catalog, "Reset stat migration to Lv 55 base (158 all)");
     });
 
+    // Bind Swap Armor Set bar
+    const armorSetSel = document.getElementById("gbArmorSetSel");
+    const armorSetGradeSel = document.getElementById("gbArmorSetGradeSel");
+    armorSetSel?.addEventListener("change", () => {
+        state.gearBuilderArmorSetId = armorSetSel.value || "";
+    });
+    armorSetGradeSel?.addEventListener("change", () => {
+        state.gearBuilderArmorSetGrade = armorSetGradeSel.value || "";
+    });
+    document.getElementById("gbArmorSetApplyBtn")?.addEventListener("click", () => {
+        const presetId = armorSetSel?.value || "";
+        if (!presetId) {
+            showToast("Choose an armor set from the dropdown first", "err");
+            return;
+        }
+        state.gearBuilderArmorSetId = presetId;
+        const gradeVal = armorSetGradeSel?.value || "";
+        state.gearBuilderArmorSetGrade = gradeVal;
+        const keep = state.gearBuilderKeepGems !== false;
+        const { slots: nextSlots, preset, swappedCount } = equipArmorSetPreset(
+            slots,
+            presetId,
+            {
+                keepGemsFrost: keep,
+                ...(gradeVal ? { gradeId: parseInt(gradeVal, 10) } : {}),
+            },
+            catalog
+        );
+        if (!preset || swappedCount === 0) {
+            showToast("Could not resolve armor set items", "err");
+            return;
+        }
+        const suffix = swappedCount === 5 ? " (Waist & Wrists kept)" : "";
+        commitGearChange(
+            slotKey,
+            nextSlots,
+            player,
+            catalog,
+            `Swapped ${swappedCount} armor slots to ${preset.label}${suffix}!`
+        );
+    });
+
+    // Bind Custom Multi-Slot Gear Templates bar & Save Template drawer
+    const tplSel = document.getElementById("gbTemplateSel");
+    const tplGradeSel = document.getElementById("gbTemplateGradeSel");
+    const tplKeepGemsChk = document.getElementById("gbTemplateKeepGemsChk");
+    tplSel?.addEventListener("change", () => {
+        state.gearBuilderTemplateId = tplSel.value || "";
+        ui.renderSimulation();
+    });
+    tplGradeSel?.addEventListener("change", () => {
+        state.gearBuilderTemplateGradeMode = tplGradeSel.value || "template";
+    });
+    tplKeepGemsChk?.addEventListener("change", () => {
+        state.gearBuilderTemplateKeepGems = Boolean(tplKeepGemsChk.checked);
+    });
+    document.getElementById("gbTemplateApplyBtn")?.addEventListener("click", () => {
+        const tid = tplSel?.value || selTplId;
+        const tpl = customTemplates.find((t) => t.id === tid);
+        if (!tpl) {
+            showToast("Choose a saved gear template first", "err");
+            return;
+        }
+        state.gearBuilderTemplateId = tpl.id;
+        const gMode = tplGradeSel?.value || "template";
+        const keepTarget = Boolean(tplKeepGemsChk?.checked);
+        const { slots: nextSlots, appliedCount, missingSlots } = applyGearTemplateToSlots(
+            slots,
+            tpl,
+            { gradeMode: gMode, keepExistingGemsFrost: keepTarget },
+            catalog
+        );
+        if (appliedCount === 0) {
+            showToast("Could not resolve any items from that template", "err");
+            return;
+        }
+        const missNote = missingSlots.length > 0 ? ` (${missingSlots.length} slot skipped)` : "";
+        commitGearChange(
+            slotKey,
+            nextSlots,
+            player,
+            catalog,
+            `Applied template "${tpl.name}" (${appliedCount} slot${appliedCount === 1 ? "" : "s"})${missNote}!`
+        );
+    });
+    document.getElementById("gbTemplateToggleSaveBtn")?.addEventListener("click", () => {
+        state.gearBuilderTplDrawerOpen = !state.gearBuilderTplDrawerOpen;
+        if (state.gearBuilderTplDrawerOpen) {
+            if (!state.gearBuilderTplName) {
+                state.gearBuilderTplName = `${ch.name || "Custom"} Gear`;
+            }
+            if (!Array.isArray(state.gearBuilderTplSelectedSlots)) {
+                state.gearBuilderTplSelectedSlots = [...equippedSlotIds];
+            }
+        }
+        ui.renderSimulation();
+    });
+    document.getElementById("gbTemplateDeleteBtn")?.addEventListener("click", async () => {
+        const tid = tplSel?.value || selTplId;
+        const tpl = customTemplates.find((t) => t.id === tid);
+        if (!tpl) return;
+        if (!confirm(`Delete custom gear template "${tpl.name}"?`)) return;
+        const nextList = customTemplates.filter((t) => t.id !== tpl.id);
+        state.gearBuilderTemplateId = nextList[0]?.id || "";
+        await saveCustomGearTemplates(nextList);
+        ui.renderSimulation();
+        showToast(`Deleted gear template "${tpl.name}"`, "ok");
+    });
+
+    // Save Custom Template drawer bindings
+    const tplNameInp = document.getElementById("gbTplNameInp");
+    const tplNotesInp = document.getElementById("gbTplNotesInp");
+    tplNameInp?.addEventListener("input", () => {
+        state.gearBuilderTplName = tplNameInp.value;
+    });
+    tplNotesInp?.addEventListener("input", () => {
+        state.gearBuilderTplNotes = tplNotesInp.value;
+    });
+    const syncTplDrawerCountUi = () => {
+        const checkedIds = Array.from(out.querySelectorAll("input[data-gb-tpl-slot]:checked")).map((el) =>
+            parseInt(el.dataset.gbTplSlot, 10)
+        );
+        state.gearBuilderTplSelectedSlots = checkedIds;
+        const hint = document.getElementById("gbTplCountHint");
+        if (hint) {
+            hint.innerHTML = `Capturing <strong>${checkedIds.length}</strong> equipped slot${checkedIds.length === 1 ? "" : "s"} (item, grade, temper, gems, frost &amp; synth)`;
+        }
+        const saveBtn = document.getElementById("gbTplSaveCommitBtn");
+        if (saveBtn) saveBtn.disabled = checkedIds.length === 0;
+        out.querySelectorAll("input[data-gb-tpl-slot]").forEach((cb) => {
+            cb.closest(".gb-tpl-slot-item")?.classList.toggle("is-checked", Boolean(cb.checked));
+        });
+    };
+    out.querySelectorAll("input[data-gb-tpl-slot]").forEach((cb) => {
+        cb.addEventListener("change", syncTplDrawerCountUi);
+    });
+    out.querySelectorAll("button[data-gb-tpl-group]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const gid = btn.dataset.gbTplGroup;
+            let picked = [];
+            if (gid === "none") {
+                picked = [];
+            } else if (gid === "all_equipped") {
+                picked = [...equippedSlotIds];
+            } else {
+                const grp = GEAR_TEMPLATE_SLOT_GROUPS.find((g) => g.id === gid);
+                const allow = new Set(grp?.slotIds || []);
+                picked = equippedSlotIds.filter((sid) => allow.has(sid));
+            }
+            const pickSet = new Set(picked);
+            out.querySelectorAll("input[data-gb-tpl-slot]").forEach((cb) => {
+                if (cb.disabled) return;
+                const sid = parseInt(cb.dataset.gbTplSlot, 10);
+                cb.checked = pickSet.has(sid);
+            });
+            syncTplDrawerCountUi();
+        });
+    });
+    document.getElementById("gbTplCancelBtn")?.addEventListener("click", () => {
+        state.gearBuilderTplDrawerOpen = false;
+        ui.renderSimulation();
+    });
+    document.getElementById("gbTplSaveCommitBtn")?.addEventListener("click", async () => {
+        const cleanName = String(tplNameInp?.value ?? state.gearBuilderTplName ?? "").trim();
+        if (!cleanName) {
+            showToast("Enter a name for the custom gear template", "err");
+            tplNameInp?.focus();
+            return;
+        }
+        const chosenIds = Array.from(out.querySelectorAll("input[data-gb-tpl-slot]:checked")).map((el) =>
+            parseInt(el.dataset.gbTplSlot, 10)
+        );
+        if (chosenIds.length === 0) {
+            showToast("Select at least one equipped slot to save", "err");
+            return;
+        }
+        const notes = String(tplNotesInp?.value ?? state.gearBuilderTplNotes ?? "").trim();
+        const extracted = extractGearTemplateFromSlots(slots, {
+            name: cleanName,
+            notes,
+            slotIds: chosenIds,
+        });
+        if (!extracted) {
+            showToast("No equipped items found in the selected slots", "err");
+            return;
+        }
+        const nextList = [extracted, ...customTemplates.filter((t) => t.id !== extracted.id)];
+        state.gearBuilderTemplateId = extracted.id;
+        state.gearBuilderTplDrawerOpen = false;
+        state.gearBuilderTplName = "";
+        state.gearBuilderTplNotes = "";
+        await saveCustomGearTemplates(nextList);
+        ui.renderSimulation();
+        showToast(
+            `Saved gear template "${extracted.name}" (${extracted.slotCount} slots → ${state.diskApiAvailable ? "builds/gear-templates.json" : "browser storage"})`,
+            "ok"
+        );
+    });
+
     // Bind Copy Gear A -> B
     document.getElementById("gbCopyAtoBBtn")?.addEventListener("click", () => {
         commitGearChange("B", slots, player, catalog, `Copied ${ch.name}'s full 20-slot gear into Build B`);
@@ -919,6 +1393,18 @@ export function renderGearBuilderView(out) {
         const nextSlots = setSlotItemLunafrost(slots, selSlotId, fid, catalog);
         commitGearChange(slotKey, nextSlots, player, catalog);
     });
+    document.getElementById("gbApplyErenorFrostAllBtn")?.addEventListener("click", () => {
+        const fid = activeItem?.lunafrost?.id ? Number(activeItem.lunafrost.id) : null;
+        if (!fid) return;
+        const { slots: nextSlots, appliedCount } = applyLunafrostToEligibleSlots(slots, fid, catalog);
+        commitGearChange(
+            slotKey,
+            nextSlots,
+            player,
+            catalog,
+            `Applied ${activeItem.lunafrost.name} to ${appliedCount} eligible armor slots!`
+        );
+    });
     out.querySelectorAll("[data-gb-sock]").forEach((sel) => {
         sel.addEventListener("change", () => {
             const idx = parseInt(sel.dataset.gbSock, 10);
@@ -946,8 +1432,9 @@ export function renderGearBuilderView(out) {
     out.querySelectorAll("[data-gb-synth-line]").forEach((sel) => {
         sel.addEventListener("change", () => {
             const idx = parseInt(sel.dataset.gbSynthLine, 10);
-            const aid = sel.value !== "" ? parseInt(sel.value, 10) : null;
-            const nextSlots = setSlotItemSynthStat(slots, selSlotId, idx, aid, catalog);
+            const val = sel.value || null;
+            if (val === "__keep__") return;
+            const nextSlots = setSlotItemSynthStat(slots, selSlotId, idx, val, catalog);
             commitGearChange(slotKey, nextSlots, player, catalog);
         });
     });

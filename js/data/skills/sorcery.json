@@ -659,8 +659,11 @@
       "cooldownSec": 30.0,
       "castTimeSec": 0.0,
       "icon": "icon_skill_magic26.png",
-      "gcdSec": 1.5,
-      "gcdNote": "5 rapid weaveable strikes (~0.30s/whip; check Off-GCD on woven instants)"
+      "gcdSec": 0,
+      "flags": {
+        "noGcd": true
+      },
+      "gcdNote": "Off-GCD (5 weaveable strikes; 0.00s GCD — use +Delay to model strike weave spacing)"
     },
     {
       "id": "sorcery_serpent_strike",

@@ -25,6 +25,8 @@ import {
     getMatchingSkills,
     getSlotChipTokens,
     loadBuffLoadoutsFromDisk,
+    loadGearTemplatesFromDisk,
+    loadSkillBuildsFromDisk,
     saveActiveMode,
     setSlotChar,
     setSlotModifiersFromTokens,
@@ -34,6 +36,7 @@ import {
 } from "./state.js";
 import {
     applySavedBuildToSlot,
+    createBlankBuildForSlot,
     hydrateDefaultSlotsFromDisk,
     importAndUnbakeDaruGearBuffs,
     loadSavedBuilds,
@@ -368,6 +371,32 @@ function bindImportModalEvents() {
     document.getElementById("importModal").addEventListener("click", (e) => {
         if (e.target.id === "importModal") closeImportModal();
     });
+    document.getElementById("importCreateBlankBtn")?.addEventListener("click", async () => {
+        const slot = state.importSlot || "A";
+        const nameInput = document.getElementById("importNameInput");
+        const saveChk = document.getElementById("importSaveDiskCheck");
+        const fb = document.getElementById("importFeedback");
+        let cleanName = (nameInput?.value || "").trim();
+        if (!cleanName) {
+            const prompted = prompt("Name for the new blank character build:", "New Character");
+            if (prompted === null) return;
+            cleanName = String(prompted).trim();
+        }
+        if (!cleanName) {
+            if (fb) fb.innerHTML = `<div class="msg-error">Please enter a build name.</div>`;
+            return;
+        }
+        try {
+            closeImportModal();
+            await createBlankBuildForSlot(slot, {
+                name: cleanName,
+                saveToStore: saveChk ? Boolean(saveChk.checked) : true,
+                openGearBuilder: true,
+            });
+        } catch (err) {
+            showToast(`Could not create blank build: ${err.message || err}`, "err");
+        }
+    });
 
     const fileInput = document.getElementById("importFileInput");
     document.getElementById("importFileBtn").addEventListener("click", () => fileInput.click());
@@ -690,9 +719,93 @@ function bindAuxiliaryModalEvents() {
 }
 
 // ============================================================================
+// Styled Dark-Mode Number Input Steppers (replaces native OS up/down arrows)
+// ============================================================================
+function initNumberSteppers() {
+    const enhanceInput = (inp) => {
+        if (!inp || inp.type !== "number") return;
+        if (inp.dataset.noStepper === "true" || inp.classList.contains("gb-mig-inp")) return;
+        if (inp.parentElement?.classList.contains("num-spin-wrap")) return;
+        if (!inp.parentNode) return;
+
+        const wrap = document.createElement("span");
+        wrap.className = "num-spin-wrap";
+        if (
+            inp.classList.contains("econ-matrix-inp") ||
+            inp.closest(".settings-field") ||
+            inp.closest(".custom-skill-form") ||
+            inp.closest(".modal-form")
+        ) {
+            wrap.classList.add("is-block");
+        }
+
+        const btns = document.createElement("span");
+        btns.className = "num-spin-btns";
+
+        const makeBtn = (dir, glyph, aria) => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = `num-spin-btn ${dir > 0 ? "num-spin-up" : "num-spin-down"}`;
+            b.tabIndex = -1;
+            b.setAttribute("aria-label", aria);
+            b.innerHTML = glyph;
+            b.addEventListener("mousedown", (e) => e.preventDefault());
+            b.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (inp.disabled || inp.readOnly) return;
+                const stepAttr = inp.getAttribute("step");
+                const step =
+                    stepAttr && stepAttr !== "any" && Number.isFinite(parseFloat(stepAttr))
+                        ? parseFloat(stepAttr)
+                        : 1;
+                const min = inp.min !== "" && Number.isFinite(parseFloat(inp.min)) ? parseFloat(inp.min) : -Infinity;
+                const max = inp.max !== "" && Number.isFinite(parseFloat(inp.max)) ? parseFloat(inp.max) : Infinity;
+                const cur = Number.isFinite(parseFloat(inp.value)) ? parseFloat(inp.value) : 0;
+                let next = Math.round((cur + dir * step) * 1e6) / 1e6;
+                if (next < min) next = min;
+                if (next > max) next = max;
+                inp.value = String(next);
+                inp.dispatchEvent(new Event("input", { bubbles: true }));
+                inp.dispatchEvent(new Event("change", { bubbles: true }));
+            });
+            return b;
+        };
+
+        btns.appendChild(makeBtn(1, "&#9652;", "Increase value"));
+        btns.appendChild(makeBtn(-1, "&#9662;", "Decrease value"));
+
+        inp.parentNode.insertBefore(wrap, inp);
+        wrap.appendChild(inp);
+        wrap.appendChild(btns);
+    };
+
+    const scanNode = (root) => {
+        if (!root || root.nodeType !== 1) return;
+        if (root.matches?.('input[type="number"]')) {
+            enhanceInput(root);
+        }
+        root.querySelectorAll?.('input[type="number"]').forEach(enhanceInput);
+    };
+
+    scanNode(document.body);
+    const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+            for (const node of m.addedNodes) {
+                if (node.nodeType === 1 && !node.classList?.contains("num-spin-wrap")) {
+                    scanNode(node);
+                }
+            }
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// ============================================================================
 // Bootstrap
 // ============================================================================
 async function init() {
+    initNumberSteppers();
     registerUiBridge();
     bindBookmarkletButtons();
     bindModeAndSkillControls();
@@ -707,6 +820,8 @@ async function init() {
         loadCustomBuffs(),
         loadRotationsFromDisk(),
         loadBuffLoadoutsFromDisk(),
+        loadGearTemplatesFromDisk(),
+        loadSkillBuildsFromDisk(),
         loadEconomyPriceBookFromDisk(),
     ]);
     hydrateDefaultSlotsFromDisk();

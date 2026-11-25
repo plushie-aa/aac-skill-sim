@@ -16,9 +16,11 @@ import {
     SKILL_DEBUFF_GRANTS,
     SKILL_STATUS_GRANTS,
     evaluateActiveSkillCombos,
+    getRotationExtraEffect,
 } from "./combos.js";
 import { simulateSkillDamage } from "./damage.js";
 import { simulateSkillHeal } from "./healing.js";
+import { STAGED_WEAVE_SKILL_IDS, buildStageSkillView, getSkillStages } from "./skills.js";
 import { COMBAT_MODIFIERS, applyModifiers, resolveSkillTiming } from "./stats.js";
 
 const PMF_BIN_SIZE = 25;
@@ -156,6 +158,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
     );
 
     let elapsedSec = 0;
+    let maxImpactSec = 0;
     let totalNormal = 0;
     let totalCrit = 0;
     let totalExpected = 0;
@@ -172,29 +175,164 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
     let totalCastTimeSavedSec = 0;
 
     // Active cast-time-removing combo buffs, statuses (Resurgence/Shocked/Impaled/Freezing/Slowed/Tripped/Stunned),
-    // and target debuffs (Stalker's Mark, Enervate, Dissonance, Wallop) across the timeline
+    // and target debuffs (Stalker's Mark, Enervate, Dissonance, Wallop, Puncture) across the timeline
     const activeComboEffects = [];
     const activeStatuses = [];
     const activeDebuffs = [];
+    const effectHistory = [];
     const existingDefModIds = new Set(
         (Array.isArray(context.defenderModifiers) ? context.defenderModifiers : []).map((t) =>
             String(t).split(":")[0]
         )
     );
+
+    const recordEffectSpan = ({ id, label, kind, isCC = false, startSec, endSec, durationSec = 0 }) => {
+        if (!id || !label) return;
+        const isPermanent = !Number.isFinite(endSec);
+        const key = `${kind}:${id}`;
+        const existing = effectHistory.find(
+            (sp) => sp.key === key && (sp.isPermanent || isPermanent || sp.endSec >= startSec - 1e-6)
+        );
+        if (existing) {
+            existing.startSec = Math.min(existing.startSec, startSec);
+            if (isPermanent || existing.isPermanent) {
+                existing.isPermanent = true;
+                existing.endSec = Number.POSITIVE_INFINITY;
+                existing.durationSec = Number.POSITIVE_INFINITY;
+            } else {
+                existing.endSec = Math.max(existing.endSec, endSec);
+                existing.durationSec = Math.max(0, existing.endSec - existing.startSec);
+            }
+            existing.refreshCount = (existing.refreshCount || 1) + 1;
+        } else {
+            effectHistory.push({
+                key,
+                id,
+                label,
+                kind,
+                isCC: Boolean(isCC),
+                startSec,
+                endSec: isPermanent ? Number.POSITIVE_INFINITY : endSec,
+                durationSec: isPermanent ? Number.POSITIVE_INFINITY : Math.max(0, Number(durationSec) || endSec - startSec),
+                isPermanent,
+                refreshCount: 1,
+            });
+        }
+    };
+
+    const registerExtraEffect = (effId, startedAtSec, expiresAtSec, sourceSkillId = "rotation_proc") => {
+        const eff = getRotationExtraEffect(effId);
+        if (!eff) return null;
+        if (eff.kind === "debuff") {
+            const prevIdx = activeDebuffs.findIndex((d) => d.id === eff.debuffId);
+            const nextDeb = {
+                id: eff.debuffId,
+                label: eff.shortLabel || eff.label,
+                durationSec: eff.durationSec,
+                addDefense: eff.addDefense || {},
+                sourceSkillId,
+                startedAtSec,
+                expiresAtSec,
+            };
+            if (prevIdx >= 0) activeDebuffs[prevIdx] = nextDeb;
+            else activeDebuffs.push(nextDeb);
+            recordEffectSpan({
+                id: nextDeb.id,
+                label: nextDeb.label,
+                kind: "debuff",
+                startSec: startedAtSec,
+                endSec: expiresAtSec,
+                durationSec: eff.durationSec,
+            });
+            return nextDeb.label;
+        }
+        const prevIdx = activeStatuses.findIndex((st) => st.status === eff.status);
+        const nextSt = {
+            status: eff.status,
+            label: eff.shortLabel || eff.label,
+            durationSec: eff.durationSec,
+            isCC: Boolean(eff.isCC),
+            targetSide: eff.targetSide,
+            sourceSkillId,
+            startedAtSec,
+            expiresAtSec,
+        };
+        if (prevIdx >= 0) activeStatuses[prevIdx] = nextSt;
+        else activeStatuses.push(nextSt);
+        recordEffectSpan({
+            id: nextSt.status,
+            label: nextSt.label,
+            kind: "status",
+            isCC: nextSt.isCC,
+            startSec: startedAtSec,
+            endSec: expiresAtSec,
+            durationSec: eff.durationSec,
+        });
+        return nextSt.label;
+    };
+
+    const initialEffects = Array.isArray(context.rotationInitialEffects) ? context.rotationInitialEffects : [];
+    for (const effId of initialEffects) {
+        registerExtraEffect(effId, 0, Number.POSITIVE_INFINITY, "rotation_initial");
+    }
+
     const autoCombosEnabled = !context.disableAutoCombos;
     const triggeredCombos = [];
     const stepResults = [];
+
+    // Count occurrences of each skill across the rotation so repeated weave skills
+    // (e.g. Gods' Whip, Fervent Healing, Lightning Tiger Strike) auto-progress stage-by-stage.
+    const skillOccurrences = new Map();
+    for (const s of steps || []) {
+        if (s?.skill?.id) {
+            skillOccurrences.set(s.skill.id, (skillOccurrences.get(s.skill.id) || 0) + 1);
+        }
+    }
+    const autoStageCursor = new Map();
 
     for (let i = 0; i < (steps || []).length; i++) {
         const step = steps[i];
         if (!step || !step.skill) continue;
 
-        const skill = step.skill;
+        const rawSkill = step.skill;
+        const stages = getSkillStages(rawSkill);
+        let resolvedStageIndex = null;
+        let stageMode = null;
+        if (stages.length > 1) {
+            if (step.stageIndex === "all") {
+                resolvedStageIndex = null;
+                stageMode = "all";
+                autoStageCursor.set(rawSkill.id, 0);
+            } else if (step.stageIndex === "auto") {
+                resolvedStageIndex = autoStageCursor.get(rawSkill.id) || 0;
+                stageMode = "auto";
+                autoStageCursor.set(rawSkill.id, (resolvedStageIndex + 1) % stages.length);
+            } else if (
+                step.stageIndex != null &&
+                step.stageIndex !== "" &&
+                Number.isFinite(Number(step.stageIndex))
+            ) {
+                resolvedStageIndex = Math.max(0, Math.min(stages.length - 1, Math.floor(Number(step.stageIndex))));
+                stageMode = "fixed";
+                autoStageCursor.set(rawSkill.id, (resolvedStageIndex + 1) % stages.length);
+            } else if (STAGED_WEAVE_SKILL_IDS.has(rawSkill.id) && (skillOccurrences.get(rawSkill.id) || 0) > 1) {
+                resolvedStageIndex = autoStageCursor.get(rawSkill.id) || 0;
+                stageMode = "auto";
+                autoStageCursor.set(rawSkill.id, (resolvedStageIndex + 1) % stages.length);
+            } else {
+                resolvedStageIndex = null;
+                stageMode = "all";
+            }
+        }
+        const skill = resolvedStageIndex != null ? buildStageSkillView(rawSkill, resolvedStageIndex) : rawSkill;
+        const stageLabel = resolvedStageIndex != null ? stages[resolvedStageIndex]?.label || null : null;
+
         const isUtility = skill.kind === "utility";
         const isHeal = skill.kind === "heal";
         const startSec = elapsedSec;
+        const travelTimeSec = Math.max(0, Number(step.travelTimeSec) || 0);
 
-        // 1. Detect active cast-time-removing combo buff for this skill
+        // 1. Detect active cast-time-removing combo buff for this skill (evaluated at button press startSec)
         const hasBaseCast = Number(skill.castTimeSec) > 0;
         const activeCastCombo = hasBaseCast
             ? activeComboEffects.find(
@@ -204,28 +342,6 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                       eff.removesCastTimeFor.includes(skill.id)
               ) || null
             : null;
-
-        // 2. Detect active damage/heal combo multipliers, next-skill crit procs, and auto-CC bypass
-        const autoStatusEval = autoCombosEnabled
-            ? evaluateActiveSkillCombos(skill, activeStatuses, startSec)
-            : { comboBonusPct: 0, bonusCritRatePct: 0, autoCCLabel: null, matchedLabels: [], consumedStatuses: [] };
-
-        // 3. Apply any active rotation-applied target debuffs (e.g. Stalker's Mark, Dissonance, Wallop)
-        const liveDebuffs = autoCombosEnabled
-            ? activeDebuffs.filter((d) => d.expiresAtSec > startSec + 1e-6 && !existingDefModIds.has(d.id))
-            : [];
-        let stepTarget = effTarget;
-        if (liveDebuffs.length > 0 && !isUtility) {
-            const nextDef = { ...(effTarget.defense || {}) };
-            for (const deb of liveDebuffs) {
-                for (const [k, delta] of Object.entries(deb.addDefense || {})) {
-                    nextDef[k] = (Number(nextDef[k]) || 0) + Number(delta);
-                }
-            }
-            if (nextDef.physicalDefense < 0) nextDef.physicalDefense = 0;
-            if (nextDef.magicDefense < 0) nextDef.magicDefense = 0;
-            stepTarget = { ...effTarget, defense: nextDef };
-        }
 
         const manualInstant = step.noCastTime === true;
         const removeCastTime =
@@ -248,6 +364,88 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             activeCastCombo.overrideGcdSecBySkill[skill.id] != null
                 ? Number(activeCastCombo.overrideGcdSecBySkill[skill.id])
                 : null;
+
+        // Optional per-step weapon proc (e.g. Staff +10k M.Pen on Arc Lightning only)
+        const stepProcId =
+            step.weaponProc && COMBAT_MODIFIERS[step.weaponProc] ? String(step.weaponProc) : null;
+        const stepProcMod = stepProcId ? COMBAT_MODIFIERS[stepProcId] : null;
+        const stepActor =
+            stepProcId && !existingAttModIds.has(stepProcId)
+                ? applyModifiers(effActor, [stepProcId])
+                : effActor;
+
+        // Evaluate active statuses/debuffs at step start + projectile travel time (preserves cast-start combo windows while delaying mid-air projectiles)
+        const comboEvalSec = startSec + travelTimeSec;
+
+        // 2. Detect active damage/heal combo multipliers, next-skill crit procs, and auto-CC bypass
+        const liveStatusesAtStep = autoCombosEnabled
+            ? activeStatuses.filter(
+                  (st) =>
+                      (st.startedAtSec == null || st.startedAtSec <= comboEvalSec + 1e-6) &&
+                      st.expiresAtSec > comboEvalSec + 1e-6
+              )
+            : [];
+        const autoStatusEval = autoCombosEnabled
+            ? evaluateActiveSkillCombos(skill, activeStatuses, comboEvalSec)
+            : { comboBonusPct: 0, bonusCritRatePct: 0, autoCCLabel: null, matchedLabels: [], consumedStatuses: [] };
+
+        // 3. Apply any active rotation-applied target debuffs (e.g. Stalker's Mark, Dissonance, Wallop, Puncture)
+        const liveDebuffs = autoCombosEnabled
+            ? activeDebuffs.filter(
+                  (d) =>
+                      (d.startedAtSec == null || d.startedAtSec <= comboEvalSec + 1e-6) &&
+                      d.expiresAtSec > comboEvalSec + 1e-6 &&
+                      !existingDefModIds.has(d.id)
+              )
+            : [];
+
+        // Snapshot every live status/debuff on target and active combo buff with exact remaining duration
+        const activeTargetEffects = [
+            ...liveStatusesAtStep.map((st) => {
+                const isPermanent = !Number.isFinite(st.expiresAtSec);
+                return {
+                    id: st.status,
+                    label: st.label,
+                    kind: "status",
+                    isCC: Boolean(st.isCC),
+                    remainingSec: isPermanent ? null : Math.max(0, st.expiresAtSec - comboEvalSec),
+                    durationSec: Number(st.durationSec) || 0,
+                    isPermanent,
+                };
+            }),
+            ...liveDebuffs.map((d) => {
+                const isPermanent = !Number.isFinite(d.expiresAtSec);
+                return {
+                    id: d.id,
+                    label: d.label,
+                    kind: "debuff",
+                    isCC: false,
+                    remainingSec: isPermanent ? null : Math.max(0, d.expiresAtSec - comboEvalSec),
+                    durationSec: Number(d.durationSec) || 0,
+                    isPermanent,
+                };
+            }),
+        ];
+        const activeComboBuffs = activeComboEffects
+            .filter((eff) => eff.expiresAtSec > startSec + 1e-6)
+            .map((eff) => ({
+                id: eff.id,
+                label: eff.label || eff.summary || eff.id,
+                remainingSec: Math.max(0, eff.expiresAtSec - startSec),
+                durationSec: Number(eff.durationSec) || 0,
+            }));
+        let stepTarget = effTarget;
+        if (liveDebuffs.length > 0 && !isUtility) {
+            const nextDef = { ...(effTarget.defense || {}) };
+            for (const deb of liveDebuffs) {
+                for (const [k, delta] of Object.entries(deb.addDefense || {})) {
+                    nextDef[k] = (Number(nextDef[k]) || 0) + Number(delta);
+                }
+            }
+            if (nextDef.physicalDefense < 0) nextDef.physicalDefense = 0;
+            if (nextDef.magicDefense < 0) nextDef.magicDefense = 0;
+            stepTarget = { ...effTarget, defense: nextDef };
+        }
 
         const manualComboPct =
             step.comboBonusPct != null
@@ -278,15 +476,6 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                   : {}),
             ...(step.rank != null ? { skillRank: step.rank } : {}),
         };
-
-        // Optional per-step weapon proc (e.g. Staff +10k M.Pen on Arc Lightning only)
-        const stepProcId =
-            step.weaponProc && COMBAT_MODIFIERS[step.weaponProc] ? String(step.weaponProc) : null;
-        const stepProcMod = stepProcId ? COMBAT_MODIFIERS[stepProcId] : null;
-        const stepActor =
-            stepProcId && !existingAttModIds.has(stepProcId)
-                ? applyModifiers(effActor, [stepProcId])
-                : effActor;
 
         let res;
         if (isUtility) {
@@ -327,7 +516,15 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         const postGcdSec = Number(res.dps?.postCastDelaySec) || 0;
         const castEndSec = startSec + castSec;
         const endSec = startSec + execSec;
+        const launchSec = castSec > 0 ? castEndSec : startSec;
+        const impactSec =
+            travelTimeSec > 0
+                ? launchSec + travelTimeSec
+                : castSec > 0
+                  ? castEndSec
+                  : endSec;
         elapsedSec = endSec;
+        if (impactSec > maxImpactSec) maxImpactSec = impactSec;
 
         totalCastTimeSec += castSec;
         if (res.dps?.castTimeRemoved && res.dps.castTimeSavedSec > 0) {
@@ -362,46 +559,93 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             };
             if (prevIdx >= 0) activeComboEffects[prevIdx] = nextEff;
             else activeComboEffects.push(nextEff);
+            recordEffectSpan({
+                id: effId,
+                label: skill.comboEffect.label || skill.comboEffect.summary || skill.name,
+                kind: "combo_buff",
+                startSec: endSec,
+                endSec: nextEff.expiresAtSec,
+                durationSec: Number(skill.comboEffect.durationSec),
+            });
         }
 
-        // Register status effects granted by this skill (active from castEndSec / impact)
+        // Register status effects & debuffs granted by this skill (active from impactSec)
         const grantedStatuses = [];
+        const appliedExtraEffects = [];
         if (autoCombosEnabled) {
             const grants = SKILL_STATUS_GRANTS[skill.id] || [];
             const liveStatusSet = new Set(
-                activeStatuses.filter((st) => st.expiresAtSec > startSec + 1e-6).map((st) => st.status)
+                activeStatuses
+                    .filter(
+                        (st) =>
+                            (st.startedAtSec == null || st.startedAtSec <= comboEvalSec + 1e-6) &&
+                            st.expiresAtSec > comboEvalSec + 1e-6
+                    )
+                    .map((st) => st.status)
             );
             for (const g of grants) {
                 if (g.requiresBackstab && !stepIsBackstab) continue;
                 if (Array.isArray(g.requiresAny) && !g.requiresAny.some((req) => liveStatusSet.has(req))) {
                     continue;
                 }
-                const impactAt = castSec > 0 ? castEndSec : endSec;
                 const prevIdx = activeStatuses.findIndex((st) => st.status === g.status);
                 const nextSt = {
                     ...g,
                     sourceSkillId: skill.id,
-                    startedAtSec: impactAt,
-                    expiresAtSec: impactAt + Number(g.durationSec || 0),
+                    startedAtSec: impactSec,
+                    expiresAtSec: impactSec + Number(g.durationSec || 0),
                 };
                 if (prevIdx >= 0) activeStatuses[prevIdx] = nextSt;
                 else activeStatuses.push(nextSt);
+                recordEffectSpan({
+                    id: g.status,
+                    label: g.label,
+                    kind: "status",
+                    isCC: Boolean(g.isCC),
+                    startSec: impactSec,
+                    endSec: nextSt.expiresAtSec,
+                    durationSec: Number(g.durationSec || 0),
+                });
                 grantedStatuses.push(g.label);
             }
 
             const debGrant = SKILL_DEBUFF_GRANTS[skill.id];
             if (debGrant) {
-                const impactAt = castSec > 0 ? castEndSec : endSec;
                 const prevIdx = activeDebuffs.findIndex((d) => d.id === debGrant.id);
                 const nextDeb = {
                     ...debGrant,
                     sourceSkillId: skill.id,
-                    startedAtSec: impactAt,
-                    expiresAtSec: impactAt + Number(debGrant.durationSec || 0),
+                    startedAtSec: impactSec,
+                    expiresAtSec: impactSec + Number(debGrant.durationSec || 0),
                 };
                 if (prevIdx >= 0) activeDebuffs[prevIdx] = nextDeb;
                 else activeDebuffs.push(nextDeb);
+                recordEffectSpan({
+                    id: debGrant.id,
+                    label: debGrant.label,
+                    kind: "debuff",
+                    startSec: impactSec,
+                    endSec: nextDeb.expiresAtSec,
+                    durationSec: Number(debGrant.durationSec || 0),
+                });
                 grantedStatuses.push(debGrant.label);
+            }
+
+            // Optional user-enabled random/proc debuffs applied on this step (e.g. Delirium -> Bleeding, Puncture)
+            const stepExtraList = Array.isArray(step.appliedDebuffs) ? step.appliedDebuffs : [];
+            for (const effId of stepExtraList) {
+                const eff = getRotationExtraEffect(effId);
+                if (!eff) continue;
+                const lbl = registerExtraEffect(
+                    eff.id,
+                    impactSec,
+                    impactSec + Number(eff.durationSec || 10),
+                    skill.id
+                );
+                if (lbl) {
+                    appliedExtraEffects.push(lbl);
+                    if (!grantedStatuses.includes(lbl)) grantedStatuses.push(lbl);
+                }
             }
         }
 
@@ -424,7 +668,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                 }
                 if (killStepIndex < 0 && totalDamageExpected >= effectiveKillHp) {
                     killStepIndex = stepResults.length;
-                    killTimestampSec = castSec > 0 ? castEndSec : endSec;
+                    killTimestampSec = impactSec;
                 }
             }
         }
@@ -432,7 +676,12 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         stepResults.push({
             index: stepResults.length,
             skill,
+            rawSkill,
             step,
+            stageIndex: resolvedStageIndex,
+            stageCount: stages.length,
+            stageLabel,
+            stageMode,
             result: res,
             isHeal,
             isUtility,
@@ -443,6 +692,8 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             startSec,
             castEndSec,
             endSec,
+            impactSec,
+            travelTimeSec,
             castSec,
             postGcdSec,
             durationSec: execSec,
@@ -454,18 +705,27 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             autoComboLabels: autoStatusEval.matchedLabels,
             autoCCLabel: !baseIsCCd ? autoStatusEval.autoCCLabel : null,
             activeDebuffLabels: liveDebuffs.map((d) => d.label),
+            activeTargetEffects,
+            activeComboBuffs,
             grantedStatuses,
+            appliedExtraEffects,
             grantedComboEffect: skill.comboEffect || null,
             cumulativeExpected: isHeal ? totalHealExpected : totalDamageExpected,
         });
     }
+
+    const effectSpans = effectHistory
+        .map(({ key: _k, ...rest }) => rest)
+        .sort((a, b) => a.startSec - b.startSec);
 
     const mode = healStepCount > 0 && damageStepCount === 0 ? "heal" : "damage";
     const primaryExpected = mode === "heal" ? totalHealExpected : totalDamageExpected;
     const primaryPmf = mode === "heal" ? healPmf : damagePmf;
     const distThreshold = mode === "damage" ? effectiveKillHp : targetMaxHp;
     const dist = summarizePmf(primaryPmf, distThreshold);
-    const totalDurationSec = Math.max(0, elapsedSec);
+    const totalCastWindowSec = Math.max(0, elapsedSec);
+    const totalDurationSec = Math.max(totalCastWindowSec, maxImpactSec);
+    const totalTravelTailSec = Math.max(0, maxImpactSec - totalCastWindowSec);
     const windowRate = totalDurationSec > 0 ? primaryExpected / totalDurationSec : 0;
     const pctOfTargetHp = (primaryExpected / targetMaxHp) * 100;
     const estimatedTtkSec = mode === "damage" && windowRate > 0 ? effectiveKillHp / windowRate : null;
@@ -474,7 +734,10 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         mode,
         stepCount: stepResults.length,
         steps: stepResults,
+        effectSpans,
         totalDurationSec,
+        totalCastWindowSec,
+        totalTravelTailSec,
         totalCastTimeSec,
         totalCastTimeSavedSec,
         triggeredCombos,

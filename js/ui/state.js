@@ -12,6 +12,8 @@ import {
     getSkillRanks,
     inferBuildArmorType,
     inferBuildCategory,
+    normalizeGearTemplate,
+    normalizeSavedSkillPreset,
     parseModifierToken,
     setRuntimeConstantsOverrides,
 } from "../engine/index.js";
@@ -23,6 +25,8 @@ export const DELETED_BUILDS_STORAGE_KEY = "aac_damage_sim_deleted_builds_v1";
 export const ACTIVE_MODE_STORAGE_KEY = "aac_damage_sim_mode_v1";
 export const SIM_SETTINGS_STORAGE_KEY = "aac_sim_settings_v1";
 export const BUFF_LOADOUTS_STORAGE_KEY = "aac_damage_sim_buff_loadouts_v1";
+export const GEAR_TEMPLATES_STORAGE_KEY = "aac_damage_sim_gear_templates_v1";
+export const SKILL_BUILDS_STORAGE_KEY = "aac_damage_sim_skill_builds_v1";
 export const CUSTOM_BUFFS_STORAGE_KEY = "aac_damage_sim_custom_buffs_v1";
 export const DELETED_BUFFS_STORAGE_KEY = "aac_damage_sim_deleted_buffs_v1";
 export const ROTATIONS_STORAGE_KEY = "aac_damage_sim_rotations_v1";
@@ -233,6 +237,116 @@ export function saveCustomBuffLoadouts(list) {
         }).catch(() => {});
     }
     return Promise.resolve();
+}
+
+export function saveCustomGearTemplates(list) {
+    const clean = (Array.isArray(list) ? list : []).map(normalizeGearTemplate).filter(Boolean);
+    state.customGearTemplates = clean;
+    try {
+        localStorage.setItem(GEAR_TEMPLATES_STORAGE_KEY, JSON.stringify(clean));
+    } catch {
+        // Ignore storage quota errors
+    }
+    if (state.diskApiAvailable && window.location.protocol !== "file:") {
+        return fetch("/api/gear-templates", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ templates: clean }),
+            keepalive: true,
+        }).catch(() => {});
+    }
+    return Promise.resolve();
+}
+
+export async function loadGearTemplatesFromDisk() {
+    if (state.diskApiAvailable && window.location.protocol !== "file:") {
+        try {
+            const res = await fetch("/api/gear-templates", { cache: "no-store" });
+            if (res.ok) {
+                const json = await res.json();
+                if (Array.isArray(json?.templates)) {
+                    const clean = json.templates.map(normalizeGearTemplate).filter(Boolean);
+                    state.customGearTemplates = clean;
+                    try {
+                        localStorage.setItem(GEAR_TEMPLATES_STORAGE_KEY, JSON.stringify(clean));
+                    } catch {
+                        // Ignore storage quota errors
+                    }
+                    return;
+                }
+            }
+        } catch {
+            // Fall through to localStorage
+        }
+    }
+    try {
+        const raw = localStorage.getItem(GEAR_TEMPLATES_STORAGE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+                state.customGearTemplates = parsed.map(normalizeGearTemplate).filter(Boolean);
+                return;
+            }
+        }
+    } catch {
+        // Ignore storage errors
+    }
+    state.customGearTemplates = [];
+}
+
+export function saveCustomSkillBuilds(list) {
+    const clean = (Array.isArray(list) ? list : []).map(normalizeSavedSkillPreset).filter(Boolean);
+    state.customSkillBuilds = clean;
+    try {
+        localStorage.setItem(SKILL_BUILDS_STORAGE_KEY, JSON.stringify(clean));
+    } catch {
+        // Ignore storage quota errors
+    }
+    if (state.diskApiAvailable && window.location.protocol !== "file:") {
+        return fetch("/api/skill-builds", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ skillBuilds: clean }),
+            keepalive: true,
+        }).catch(() => {});
+    }
+    return Promise.resolve();
+}
+
+export async function loadSkillBuildsFromDisk() {
+    if (state.diskApiAvailable && window.location.protocol !== "file:") {
+        try {
+            const res = await fetch("/api/skill-builds", { cache: "no-store" });
+            if (res.ok) {
+                const json = await res.json();
+                if (Array.isArray(json?.skillBuilds)) {
+                    const clean = json.skillBuilds.map(normalizeSavedSkillPreset).filter(Boolean);
+                    state.customSkillBuilds = clean;
+                    try {
+                        localStorage.setItem(SKILL_BUILDS_STORAGE_KEY, JSON.stringify(clean));
+                    } catch {
+                        // Ignore storage quota errors
+                    }
+                    return;
+                }
+            }
+        } catch {
+            // Fall through to localStorage
+        }
+    }
+    try {
+        const raw = localStorage.getItem(SKILL_BUILDS_STORAGE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+                state.customSkillBuilds = parsed.map(normalizeSavedSkillPreset).filter(Boolean);
+                return;
+            }
+        }
+    } catch {
+        // Ignore storage errors
+    }
+    state.customSkillBuilds = [];
 }
 
 export async function loadBuffLoadoutsFromDisk() {
@@ -491,9 +605,20 @@ export const state = {
         defender: null,
     },
     customBuffLoadouts: [],
+    customGearTemplates: [],
+    customSkillBuilds: [],
+    skillBuilderPresetId: "",
+    gearBuilderTemplateId: "",
+    gearBuilderTemplateGradeMode: "template",
+    gearBuilderTemplateKeepGems: false,
+    gearBuilderTplDrawerOpen: false,
+    gearBuilderTplName: "",
+    gearBuilderTplNotes: "",
+    gearBuilderTplSelectedSlots: null,
     customRotations: [], // Loaded strictly from combos/combos.json
     activeRotationId: null,
     rotationSteps: [],
+    rotationInitialEffects: [], // Extra debuffs/statuses toggled active for the whole rotation (e.g. Delirium Bleed, Puncture)
     rotationTargetShield: 0, // Target absorb shield HP pool for Rotation TTK / Kill Prob
     rotationsUpdatedAt: 0,
     rotLastSavedAt: 0,
@@ -883,10 +1008,18 @@ export function getEquippedWeaponProcIds(ch) {
     const eq = normalizeEquipmentList(ch.equipment);
     const weaponItems = eq.filter((it) => it.slotId === 15 || it.slotId === 16);
     const weaponTexts = weaponItems.map((it) => `${it.type || ""} ${it.name || ""}`.toLowerCase());
+    const hasBerserker3pc =
+        eq.some((it) => it.slotId === 10 && /enlightened\s+berserker\s+necklace/i.test(it.name || "")) &&
+        eq.some((it) => (it.slotId === 11 || it.slotId === 12) && /enlightened\s+berserker\s+earring/i.test(it.name || "")) &&
+        eq.some((it) => (it.slotId === 13 || it.slotId === 14) && /enlightened\s+berserker\s+ring/i.test(it.name || ""));
 
     for (const mod of Object.values(COMBAT_MODIFIERS)) {
         if (mod.category !== "weapon_proc") continue;
         if (mod.id === "weapon_proc_shield" && ch.defense?.hasShield) {
+            matched.add(mod.id);
+            continue;
+        }
+        if (mod.id === "berserkers_instinct" && hasBerserker3pc) {
             matched.add(mod.id);
             continue;
         }
@@ -1209,4 +1342,158 @@ export function getFilteredSkills() {
         return active ? [active] : [];
     }
     return matching;
+}
+
+/**
+ * Render a clean, responsive summary of all calculated stats granted by a single
+ * equipped gear piece (Phys/Magic Def, Melee/Ranged/Magic Atk, Heal Power, STR/AGI/STA/INT/SPI,
+ * and aggregated equip/frost/gem/synthesis bonus effects).
+ */
+export function renderItemGrantedStatsHtml(granted) {
+    if (!granted) return "";
+    const mainEntries = [];
+    const m = granted.main || {};
+    if (m.pdef > 0) mainEntries.push({ lbl: "Phys Def", val: fmtInt(m.pdef), cls: "is-def" });
+    if (m.mdef > 0) mainEntries.push({ lbl: "Magic Def", val: fmtInt(m.mdef), cls: "is-def" });
+    if (m.meleeAttack > 0) mainEntries.push({ lbl: "Melee Atk", val: fmtDec(m.meleeAttack, 1), cls: "is-atk" });
+    if (m.rangedAttack > 0) mainEntries.push({ lbl: "Ranged Atk", val: fmtDec(m.rangedAttack, 1), cls: "is-atk" });
+    if (m.magicAttack > 0) mainEntries.push({ lbl: "Magic Atk", val: fmtDec(m.magicAttack, 1), cls: "is-atk" });
+    if (m.healingPower > 0) mainEntries.push({ lbl: "Heal Power", val: fmtDec(m.healingPower, 1), cls: "is-heal" });
+
+    const a = granted.attributes || {};
+    const attrEntries = [
+        ["STR", a.str],
+        ["AGI", a.agi],
+        ["STA", a.sta],
+        ["INT", a.int],
+        ["SPI", a.spi],
+    ].filter(([, v]) => Number(v) !== 0);
+
+    const equipEffects = Array.isArray(granted.equipEffects) ? granted.equipEffects : [];
+    const enchantBonuses = Array.isArray(granted.enchantBonuses)
+        ? granted.enchantBonuses
+        : Array.isArray(granted.bonuses)
+          ? granted.bonuses
+          : [];
+    const enchantNotes = Array.isArray(granted.enchantNotes) ? granted.enchantNotes : [];
+    const setEffects = Array.isArray(granted.setEffects) ? granted.setEffects : [];
+    const gs = Number(granted.gearScore) || 0;
+    if (
+        mainEntries.length === 0 &&
+        attrEntries.length === 0 &&
+        equipEffects.length === 0 &&
+        enchantBonuses.length === 0 &&
+        enchantNotes.length === 0 &&
+        setEffects.length === 0 &&
+        gs <= 0
+    ) {
+        return "";
+    }
+
+    const fmtBonusVal = (b) => {
+        const sign = b.value > 0 ? "+" : "";
+        const numStr =
+            b.unit === "%" || Math.abs(b.value % 1) > 1e-4
+                ? fmtDec(b.value, 1)
+                : fmtInt(b.value);
+        return `${sign}${numStr}${b.unit || ""}`;
+    };
+
+    const setBlocksHtml =
+        setEffects.length > 0
+            ? `<div class="gb-is-sets-wrap">
+                   ${setEffects
+                       .map((grp) => {
+                           const kindCls =
+                               grp.sourceKind === "charm"
+                                   ? `is-charm ${grp.active ? "is-active" : "is-inactive"}`
+                                   : grp.sourceKind === "lunafrost"
+                                     ? "is-erenor"
+                                     : "";
+                           const cntText = grp.statusLabel || `${grp.equippedCount}/${grp.maxPieces} pc`;
+                           return `
+                   <div class="gb-is-set-block ${kindCls}">
+                       <div class="gb-is-set-head">
+                           <span class="gb-is-set-name">${grp.sourceKind === "charm" ? "&#10022; " : ""}${escHtml(grp.name)}</span>
+                           <span class="gb-is-set-cnt">${escHtml(cntText)}</span>
+                       </div>
+                       <div class="gb-is-set-tiers">
+                           ${(grp.tiers || [])
+                               .map(
+                                   (t) =>
+                                       `<div class="gb-is-set-tier ${t.active ? "is-active" : "is-inactive"}"><span class="gb-is-tier-pc">${t.numPieces}pc</span><span>${escHtml(t.summary)}</span></div>`
+                               )
+                               .join("")}
+                       </div>
+                   </div>`;
+                       })
+                       .join("")}
+               </div>`
+            : "";
+
+    const enchantNotesHtml =
+        enchantNotes.length > 0
+            ? `<div class="gb-is-notes-wrap">${enchantNotes
+                  .map(
+                      (n) =>
+                          `<div class="gb-is-note"><strong>${escHtml(n.name)}:</strong> <span>${escHtml(n.text)}</span></div>`
+                  )
+                  .join("")}</div>`
+            : "";
+
+    return `
+    <div class="gb-item-stats-box">
+        <div class="gb-item-stats-head">
+            <span class="gb-item-stats-lbl">Granted Stats</span>
+            ${gs > 0 ? `<span class="gb-item-gs-pill">${fmtDec(gs, 1).replace(/\.0$/, "")} GS</span>` : ""}
+        </div>
+        ${
+            mainEntries.length > 0
+                ? `<div class="gb-is-main-row">${mainEntries
+                      .map(
+                          (e) =>
+                              `<span class="gb-is-chip ${e.cls}"><span>${escHtml(e.lbl)}</span><strong>${escHtml(e.val)}</strong></span>`
+                      )
+                      .join("")}</div>`
+                : ""
+        }
+        ${
+            attrEntries.length > 0
+                ? `<div class="gb-is-attr-row">${attrEntries
+                      .map(
+                          ([k, v]) =>
+                              `<span class="gb-is-attr-chip">${escHtml(k)} <strong>${v > 0 ? "+" : ""}${fmtInt(v)}</strong></span>`
+                      )
+                      .join("")}</div>`
+                : ""
+        }
+        ${
+            equipEffects.length > 0
+                ? `<div class="gb-is-sub-sec">
+                       <div class="gb-is-sub-lbl">Equip Effects</div>
+                       <div class="gb-is-equip-row">${equipEffects
+                           .map(
+                               (b) =>
+                                   `<span class="gb-is-equip-chip">${escHtml(b.label)} <strong>${escHtml(fmtBonusVal(b))}</strong></span>`
+                           )
+                           .join("")}</div>
+                   </div>`
+                : ""
+        }
+        ${
+            enchantBonuses.length > 0
+                ? `<div class="gb-is-sub-sec">
+                       <div class="gb-is-sub-lbl">Frost / Gems / Synth</div>
+                       <div class="gb-is-bonus-row">${enchantBonuses
+                           .map(
+                               (b) =>
+                                   `<span class="gb-is-bonus-chip">${escHtml(b.label)} <strong>${escHtml(fmtBonusVal(b))}</strong></span>`
+                           )
+                           .join("")}</div>
+                   </div>`
+                : ""
+        }
+        ${enchantNotesHtml}
+        ${setBlocksHtml}
+    </div>`;
 }

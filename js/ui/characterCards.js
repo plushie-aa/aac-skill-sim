@@ -12,7 +12,9 @@ import {
     applyOverrides,
     computeCharacterGearBuffSummaries,
     computeEffectiveStats,
+    computeGearItemGrantedStats,
     defenseMitigationPct,
+    ensureCharacterRawDaruGear,
     estimateBuildCost,
     getGearCatalog,
     getTotalPointsSpent,
@@ -40,6 +42,7 @@ import {
     getSlotChipTokens,
     getSlotModifiers,
     renderGradedGearIconHtml,
+    renderItemGrantedStatsHtml,
     resolveGearGradeInfo,
     sanitizeHexColor,
     sanitizeSafeDaruGearUrl,
@@ -56,6 +59,7 @@ import {
 import {
     applySavedBuildToSlot,
     computeSlotCharacterFingerprint,
+    createBlankBuildForSlot,
     deleteSavedBuildFromStore,
     downloadSlotBuildJson,
     isSlotDirty,
@@ -699,6 +703,26 @@ function renderGearSectionHtml(slotKey, ch, otherSlotGearById) {
         const tempers = [];
         if (selectedItem.ptemper > 100) tempers.push(`P-Temper ${selectedItem.ptemper}%`);
         if (selectedItem.mtemper > 100) tempers.push(`M-Temper ${selectedItem.mtemper}%`);
+        let rawSlotMatch = null;
+        let rawSlotsList = null;
+        if (Array.isArray(ch.rawDaruGear?.slots)) {
+            rawSlotsList = ch.rawDaruGear.slots;
+            rawSlotMatch =
+                rawSlotsList.find((s) => Number(s.id) === Number(selectedItem.slotId)) || null;
+        } else {
+            const cat = getGearCatalog();
+            if (cat) {
+                const recon = ensureCharacterRawDaruGear(ch, cat);
+                rawSlotsList = recon.slots;
+                rawSlotMatch =
+                    rawSlotsList.find((s) => Number(s.id) === Number(selectedItem.slotId)) || null;
+            }
+        }
+        const inspStatsHtml = rawSlotMatch?.item
+            ? renderItemGrantedStatsHtml(
+                  computeGearItemGrantedStats(rawSlotMatch, selectedItem.slotId, rawSlotsList, getSlotModifiers(slotKey))
+              )
+            : "";
         inspectorHtml = `
         <div class="gear-inspector" style="--grade-color:${escHtml(selectedItem.gradeColor)}">
             <div class="gear-insp-head">
@@ -720,6 +744,7 @@ function renderGearSectionHtml(slotKey, ch, otherSlotGearById) {
                 </div>
                 <button type="button" class="gear-insp-close" data-action="closeGearInsp" title="Close item details">&times;</button>
             </div>
+            ${inspStatsHtml}
             ${tempers.length > 0 ? `<div class="gear-insp-tags">${tempers.map((t) => `<span class="gear-insp-tag">${escHtml(t)}</span>`).join("")}</div>` : ""}
             ${selectedItem.lunafrost ? `<div class="gear-insp-frost"><strong>Lunafrost:</strong> ${escHtml(selectedItem.lunafrost.name)}${selectedItem.lunafrost.text ? ` &mdash; ${escHtml(selectedItem.lunafrost.text)}` : ""}</div>` : ""}
             ${
@@ -742,7 +767,7 @@ function renderGearSectionHtml(slotKey, ch, otherSlotGearById) {
         </div>`;
     }
 
-    const gearBuffs = computeCharacterGearBuffSummaries(ch, getGearCatalog());
+    const gearBuffs = computeCharacterGearBuffSummaries(ch, getGearCatalog(), getSlotModifiers(slotKey));
     const gearBuffsHtml =
         gearBuffs.length > 0
             ? `<div class="card-gear-buffs">
@@ -1082,7 +1107,7 @@ function renderCharacterCardHtml(slot, modCatalog) {
     const safeDgHref = sanitizeSafeDaruGearUrl(meta.darugearUrl);
     const dgLabel = meta.shareCode ? `DaruGear: ${meta.shareCode}` : "DaruGear Link";
     const dgOptBuffs = (Array.isArray(meta.darugearBuffs) ? meta.darugearBuffs : []).filter((b) => b.isOptional);
-    const liveGearBuffs = computeCharacterGearBuffSummaries(ch, getGearCatalog()).filter(
+    const liveGearBuffs = computeCharacterGearBuffSummaries(ch, getGearCatalog(), getSlotModifiers(slot.key)).filter(
         (b) => b.category !== "title"
     );
     const dgBuffsBarHtml =
@@ -1193,6 +1218,7 @@ function renderCharacterCardHtml(slot, modCatalog) {
                 <details class="card-menu">
                     <summary title="More build actions">&ctdot;</summary>
                     <div class="card-menu-pop">
+                        <button type="button" class="card-menu-item" data-action="newBlankBuild">+ New Blank Build (.json)</button>
                         ${slot.key === "B" ? `<button type="button" class="card-menu-item" data-action="copyA">Copy Build A &rarr; B</button>` : ""}
                         <button type="button" class="card-menu-item" data-action="saveDisk">${state.diskApiAvailable ? "Save to Disk (builds/)" : "Save to Browser"}</button>
                         <button type="button" class="card-menu-item" data-action="download">&darr; Download .json</button>
@@ -1631,6 +1657,26 @@ function bindCharacterCardEvents(card, slot) {
     });
 
     card.querySelector('[data-action="import"]').addEventListener("click", () => openImportModal(slot));
+    card.querySelectorAll('[data-action="newBlankBuild"]').forEach((btn) => {
+        btn.addEventListener("click", async () => {
+            const nextName = prompt("Name for the new blank character build:", "New Character");
+            if (nextName === null) return;
+            const cleanName = String(nextName).trim();
+            if (!cleanName) {
+                showToast("Build name cannot be empty", "warn");
+                return;
+            }
+            try {
+                await createBlankBuildForSlot(slot, {
+                    name: cleanName,
+                    saveToStore: true,
+                    openGearBuilder: true,
+                });
+            } catch (err) {
+                showToast(`Could not create blank build: ${err.message || err}`, "err");
+            }
+        });
+    });
     card.querySelectorAll('[data-action="openGearBuilder"]').forEach((btn) => {
         btn.addEventListener("click", () => {
             state.gearBuilderSlot = slot;

@@ -4,7 +4,14 @@
  * and Target Absorb Shield HP pool (e.g. Insulating Lens / Conversion Shield).
  */
 
-import { COMBAT_MODIFIERS, compareRotations } from "../engine/index.js";
+import {
+    COMBAT_MODIFIERS,
+    ROTATION_EXTRA_EFFECTS,
+    STAGED_WEAVE_SKILL_IDS,
+    compareRotations,
+    getRotationExtraEffect,
+    getSkillStages,
+} from "../engine/index.js";
 import {
     ROTATIONS_STORAGE_KEY,
     cap,
@@ -36,15 +43,70 @@ const STEP_WEAPON_PROC_OPTIONS = [
     { id: "weapon_proc_scepter", label: "Scepter (-8% Cast)" },
 ];
 
+const QUICK_ROTATION_EFFECT_IDS = [
+    "bleeding",
+    "puncture",
+    "shocked",
+    "freezing",
+    "burning",
+    "distressed",
+];
+
+function cloneRotationStep(s) {
+    const out = { ...s };
+    if (Array.isArray(s?.appliedDebuffs)) {
+        out.appliedDebuffs = s.appliedDebuffs.slice();
+    }
+    return out;
+}
+
+function createRotationStepForSkill(skill) {
+    const step = {
+        skillId: skill.id,
+        isBackstab: false,
+        targetIsCCd: false,
+        targetBelow30Pct: false,
+        comboBonusPct: 0,
+        delaySec: 0,
+        travelTimeSec: 0,
+        weaponProc: "",
+        appliedDebuffs: [],
+    };
+    if (STAGED_WEAVE_SKILL_IDS.has(skill.id) && getSkillStages(skill).length > 1) {
+        step.stageIndex = "auto";
+    }
+    return step;
+}
+
+function getNextAutoStagePreview(skill, steps) {
+    const stages = getSkillStages(skill);
+    if (stages.length <= 1 || !STAGED_WEAVE_SKILL_IDS.has(skill.id)) return null;
+    let cursor = 0;
+    for (const st of steps || []) {
+        if (st?.skillId !== skill.id) continue;
+        if (st.stageIndex === "all") {
+            cursor = 0;
+        } else if (st.stageIndex === "auto" || st.stageIndex == null || st.stageIndex === "") {
+            cursor = (cursor + 1) % stages.length;
+        } else if (Number.isFinite(Number(st.stageIndex))) {
+            const n = Math.max(0, Math.min(stages.length - 1, Math.floor(Number(st.stageIndex))));
+            cursor = (n + 1) % stages.length;
+        }
+    }
+    return { index: cursor, count: stages.length, stage: stages[cursor] };
+}
+
 export function syncRotationsToDisk() {
     const payload = {
         activeId: state.activeRotationId || null,
         combos: state.customRotations.map((r) => ({
             id: r.id,
             label: r.label,
-            steps: (r.steps || []).map((s) => ({ ...s })),
+            initialEffects: Array.isArray(r.initialEffects) ? r.initialEffects.slice() : [],
+            steps: (r.steps || []).map(cloneRotationStep),
         })),
-        steps: state.rotationSteps.map((s) => ({ ...s })),
+        initialEffects: Array.isArray(state.rotationInitialEffects) ? state.rotationInitialEffects.slice() : [],
+        steps: state.rotationSteps.map(cloneRotationStep),
         updatedAt: state.rotationsUpdatedAt || Date.now(),
     };
     try {
@@ -124,7 +186,8 @@ export async function loadRotationsFromDisk() {
         .map((r) => ({
             id: String(r.id),
             label: String(r.label || r.id),
-            steps: Array.isArray(r.steps) ? r.steps.map((s) => ({ ...s })) : [],
+            initialEffects: Array.isArray(r.initialEffects) ? r.initialEffects.map(String) : [],
+            steps: Array.isArray(r.steps) ? r.steps.map(cloneRotationStep) : [],
         }));
 
     const diskActiveId = typeof disk.activeId === "string" ? disk.activeId : null;
@@ -133,16 +196,20 @@ export async function loadRotationsFromDisk() {
         : null;
     if (matched) {
         state.activeRotationId = matched.id;
-        state.rotationSteps = matched.steps.map((s) => ({ ...s }));
+        state.rotationSteps = matched.steps.map(cloneRotationStep);
+        state.rotationInitialEffects = (matched.initialEffects || []).slice();
     } else if (Array.isArray(disk.steps)) {
         state.activeRotationId = null;
-        state.rotationSteps = disk.steps.map((s) => ({ ...s }));
+        state.rotationSteps = disk.steps.map(cloneRotationStep);
+        state.rotationInitialEffects = Array.isArray(disk.initialEffects) ? disk.initialEffects.map(String) : [];
     } else if (state.customRotations.length > 0) {
         state.activeRotationId = state.customRotations[0].id;
-        state.rotationSteps = state.customRotations[0].steps.map((s) => ({ ...s }));
+        state.rotationSteps = state.customRotations[0].steps.map(cloneRotationStep);
+        state.rotationInitialEffects = (state.customRotations[0].initialEffects || []).slice();
     } else {
         state.activeRotationId = null;
         state.rotationSteps = [];
+        state.rotationInitialEffects = [];
     }
     state.rotationsUpdatedAt = Number(disk.updatedAt) || 0;
 }
@@ -151,7 +218,10 @@ export function persistRotationState({ edited = true } = {}) {
     if (edited && state.activeRotationId) {
         const active = state.customRotations.find((r) => r.id === state.activeRotationId);
         if (active) {
-            active.steps = state.rotationSteps.map((s) => ({ ...s }));
+            active.steps = state.rotationSteps.map(cloneRotationStep);
+            active.initialEffects = Array.isArray(state.rotationInitialEffects)
+                ? state.rotationInitialEffects.slice()
+                : [];
         }
     }
     const now = Date.now();
@@ -178,8 +248,21 @@ export function renderRotationView(out) {
 
     const baseCtx = getContext();
     const targetAbsorbShield = Math.max(0, Number(state.rotationTargetShield) || 0);
-    const ctxA = { ...baseCtx, targetAbsorbShield, attackerModifiers: getSlotModifiers("A") };
-    const ctxB = { ...baseCtx, targetAbsorbShield, attackerModifiers: getSlotModifiers("B") };
+    const rotationInitialEffects = Array.isArray(state.rotationInitialEffects)
+        ? state.rotationInitialEffects
+        : [];
+    const ctxA = {
+        ...baseCtx,
+        targetAbsorbShield,
+        rotationInitialEffects,
+        attackerModifiers: getSlotModifiers("A"),
+    };
+    const ctxB = {
+        ...baseCtx,
+        targetAbsorbShield,
+        rotationInitialEffects,
+        attackerModifiers: getSlotModifiers("B"),
+    };
     const cmp = compareRotations(state.buildA, state.buildB, state.defender, resolvedSteps, ctxA, ctxB);
     const rA = cmp.resultA;
     const rB = cmp.resultB;
@@ -194,18 +277,56 @@ export function renderRotationView(out) {
         if (sr.step?.rawIndex != null) stepResByRawIdx.set(sr.step.rawIndex, sr);
     });
 
+    const activeCustomRot = state.activeRotationId
+        ? state.customRotations.find((p) => p.id === state.activeRotationId) || null
+        : null;
+
     const stepsBuilderHtml =
         state.rotationSteps.length === 0
-            ? `<div class="hint-inline">Queue is empty. Pick a saved combo above or click <strong>+ Add Skill&hellip;</strong> to simulate a burst rotation!</div>`
+            ? `<div class="hint-inline">${activeCustomRot ? `Rotation <strong>${escHtml(activeCustomRot.label)}</strong> is empty.` : "Queue is empty."} Pick a saved rotation above or click <strong>+ Add Skill&hellip;</strong> to build a burst rotation!</div>`
             : `<div class="rot-steps-list">${state.rotationSteps
                   .map((st, idx) => {
                       const sk = skillById.get(st.skillId);
                       if (!sk) return "";
                       const srA = stepResByRawIdx.get(idx) || null;
+                      const effSk = srA?.skill || sk;
+                      const stages = getSkillStages(sk);
+                      const hasStages = stages.length > 1;
+                      const resolvedStageIdx = srA?.stageIndex != null ? srA.stageIndex : null;
+                      const resolvedStageLbl = srA?.stageLabel || null;
+                      const curStageSelectVal =
+                          st.stageIndex === "auto" || (st.stageIndex == null && srA?.stageMode === "auto")
+                              ? "auto"
+                              : st.stageIndex === "all" || resolvedStageIdx == null
+                                ? "all"
+                                : String(resolvedStageIdx);
+                      const stageBadgeHtml =
+                          hasStages && resolvedStageIdx != null
+                              ? `<span class="stag stag-stage" title="Cast stage ${resolvedStageIdx + 1} of ${stages.length} (${escHtml(resolvedStageLbl)})">${escHtml(resolvedStageLbl)} (${resolvedStageIdx + 1}/${stages.length})</span>`
+                              : "";
+                      const stageSelectHtml = hasStages
+                          ? `<label class="rot-flag-stage" title="Pick cast stage for this multi-cast skill (Auto progresses 1→${stages.length} across repeated steps in the rotation)">
+                                 Stage
+                                 <select class="rot-stage-sel" data-rot-stage="${idx}">
+                                     <option value="auto" ${curStageSelectVal === "auto" ? "selected" : ""}>Auto${resolvedStageIdx != null && curStageSelectVal === "auto" ? ` (${resolvedStageIdx + 1}/${stages.length})` : ""}</option>
+                                     <option value="all" ${curStageSelectVal === "all" ? "selected" : ""}>All (${stages.length} hits)</option>
+                                     ${stages
+                                         .map(
+                                             (sg) =>
+                                                 `<option value="${sg.index}" ${curStageSelectVal === String(sg.index) ? "selected" : ""}>${sg.index + 1}/${stages.length}: ${escHtml(sg.label)} (${sg.base ? `${sg.base}+` : ""}${sg.scalingPct}%)</option>`
+                                         )
+                                         .join("")}
+                                 </select>
+                             </label>`
+                          : "";
                       const skIcon = skillIconUrl(sk);
-                      const isUtilSk = sk.kind === "utility";
-                      const isHealSk = sk.kind === "heal";
-                      const hasCast = Number(sk.castTimeSec) > 0;
+                      const isUtilSk = effSk.kind === "utility";
+                      const isHealSk = effSk.kind === "heal";
+                      const hasCast = Number(effSk.castTimeSec) > 0;
+                      const hasCustomGcd = effSk.gcdSec != null && Number.isFinite(Number(effSk.gcdSec));
+                      const baseSkillGcd = hasCustomGcd ? Number(effSk.gcdSec) : effSk.flags?.noGcd ? 0 : 1.0;
+                      const isInherentOffGcd =
+                          baseSkillGcd === 0 && !hasCast && !(Number(effSk.fireIntervalSec) > 0);
                       const typeCls = isUtilSk
                           ? "stag-util"
                           : isHealSk
@@ -238,6 +359,29 @@ export function renderRotationView(out) {
                       const procBadge = srA?.weaponProcLabel
                           ? `<span class="stag stag-proc" title="Per-step weapon hidden passive proc applied ONLY to this step">&#9876; ${escHtml(srA.weaponProcLabel)}</span>`
                           : "";
+                      const stepExtraIds = Array.isArray(st.appliedDebuffs) ? st.appliedDebuffs : [];
+                      const stepExtraBadges = stepExtraIds
+                          .map((eid) => {
+                              const eff = getRotationExtraEffect(eid);
+                              if (!eff) return "";
+                              return `<span class="stag stag-extradep" title="Random/proc debuff applied by this step upon hit (${escHtml(eff.label)}) — click × to remove">+${escHtml(eff.shortLabel)}<button type="button" class="rot-eff-rm" data-rot-rm-debuff="${idx}" data-eff-id="${escHtml(eff.id)}" aria-label="Remove ${escHtml(eff.shortLabel)}">&times;</button></span>`;
+                          })
+                          .join("");
+                      const availableStepDebuffs = ROTATION_EXTRA_EFFECTS.filter(
+                          (eff) => !stepExtraIds.includes(eff.id)
+                      );
+                      const stepDebuffAddHtml =
+                          availableStepDebuffs.length > 0
+                              ? `<select class="rot-debuff-sel" data-rot-add-debuff="${idx}" title="Enable a random/proc debuff applied by this step (e.g. Delirium applying Bleeding, Puncture, etc.)">
+                                     <option value="">+ Apply Debuff&hellip;</option>
+                                     ${availableStepDebuffs
+                                         .map(
+                                             (eff) =>
+                                                 `<option value="${escHtml(eff.id)}">${escHtml(eff.label)}</option>`
+                                         )
+                                         .join("")}
+                                 </select>`
+                              : "";
                       const hasAnyComboHit = Boolean(
                           srA?.autoComboTriggered ||
                               (srA?.autoComboLabels && srA.autoComboLabels.length > 0) ||
@@ -256,19 +400,50 @@ export function renderRotationView(out) {
                                      </select>
                                  </label>`
                               : "";
+                      const activeTargetEffs = Array.isArray(srA?.activeTargetEffects) ? srA.activeTargetEffects : [];
+                      const activeBuffEffs = Array.isArray(srA?.activeComboBuffs) ? srA.activeComboBuffs : [];
+                      const activeEffectsStripHtml =
+                          activeTargetEffs.length > 0 || activeBuffEffs.length > 0
+                              ? `<div class="rot-active-effs" title="Active target debuffs/statuses and combo buffs with remaining duration when this step hits">
+                                     <span class="rot-active-effs-lbl">Active @ ${fmtDec(srA?.startSec || 0, 2)}s:</span>
+                                     ${activeTargetEffs
+                                         .map((ef) => {
+                                             const durStr = ef.isPermanent
+                                                 ? "&#8734;"
+                                                 : `${fmtDec(ef.remainingSec, 1)}s`;
+                                             const cls = ef.isCC
+                                                 ? "rot-ae-cc"
+                                                 : ef.kind === "debuff"
+                                                   ? "rot-ae-debuff"
+                                                   : "rot-ae-status";
+                                             return `<span class="rot-ae-chip ${cls}">${escHtml(ef.label)} <em>${durStr}</em></span>`;
+                                         })
+                                         .join("")}
+                                     ${activeBuffEffs
+                                         .map(
+                                             (bf) =>
+                                                 `<span class="rot-ae-chip rot-ae-buff">${escHtml(bf.label)} <em>${fmtDec(bf.remainingSec, 1)}s</em></span>`
+                                         )
+                                         .join("")}
+                                 </div>`
+                              : "";
                       return `
                       <div class="rot-step-row ${isUtilSk ? "rot-step-util" : ""} ${hasAnyComboHit ? "rot-step-combo-hit" : ""}" data-rot-idx="${idx}">
                           <div class="rot-step-main">
+                              <span class="rot-drag-handle" title="Drag to reorder skill" aria-label="Drag to reorder">&#8942;&#8942;</span>
                               <span class="rot-step-num">${idx + 1}</span>
                               ${skIcon ? `<img class="rot-step-icon" src="${escHtml(skIcon)}" alt="" loading="lazy" />` : ""}
                               <strong>${escHtml(sk.name)}</strong>
+                              ${stageBadgeHtml}
                               <span class="stag ${typeCls}">${typeTxt}</span>
-                              ${formatSkillCastBadge(sk, srA)}
-                              ${formatSkillGcdBadge(sk)}
-                              ${formatSkillComboBadge(sk)}
-                              ${procBadge}${autoComboBadges}${autoCcBadge}${activeDebBadges}
+                              ${formatSkillCastBadge(effSk, srA)}
+                              ${formatSkillGcdBadge(effSk)}
+                              ${formatSkillComboBadge(effSk)}
+                              ${procBadge}${stepExtraBadges}${autoComboBadges}${autoCcBadge}${activeDebBadges}
                           </div>
+                          ${activeEffectsStripHtml}
                           <div class="rot-step-flags">
+                              ${stageSelectHtml}
                               ${
                                   !isHealSk && !isUtilSk
                                       ? `<label class="rot-flag-chk" title="Attack from behind (bypasses avoidance, triggers backstab bonuses)">
@@ -293,12 +468,16 @@ export function renderRotationView(out) {
                                          </label>`
                                       : ""
                               }
-                              <label class="rot-flag-chk" title="Weave off-GCD / animation-cancel this step (0.00s GCD &amp; cast footprint)">
-                                  <input type="checkbox" data-rot-flag="offGcd" ${st.offGcd ? "checked" : ""} /> Off-GCD
+                              <label class="rot-flag-chk ${isInherentOffGcd ? "is-inherent" : ""}" title="${isInherentOffGcd ? "Inherently Off-GCD (0.00s GCD)" : "Weave off-GCD / animation-cancel this step (0.00s GCD & cast footprint)"}">
+                                  <input type="checkbox" data-rot-flag="offGcd" ${isInherentOffGcd || st.offGcd ? "checked" : ""} ${isInherentOffGcd ? "disabled" : ""} /> Off-GCD
                               </label>
-                              <label class="rot-flag-num" title="Extra delay/weave time in seconds">
-                                  +Delay <input type="number" step="0.1" min="0" max="10" data-rot-num="delaySec" value="${Number(st.delaySec) || 0}" />s
+                              <label class="rot-flag-num" title="Fine-grained extra delay / weave time in seconds (0.01s precision, e.g. 0.05s or 0.25s)">
+                                  +Delay <input type="number" step="0.01" min="0" max="10" data-rot-num="delaySec" value="${Number(st.delaySec) || 0}" />s
                               </label>
+                              <label class="rot-flag-num" title="Projectile travel time in seconds before hit lands (delays impact &amp; combo application without delaying next cast GCD)">
+                                  +Travel <input type="number" step="0.01" min="0" max="10" data-rot-num="travelTimeSec" value="${Number(st.travelTimeSec) || 0}" />s
+                              </label>
+                              ${stepDebuffAddHtml}
                           </div>
                           <div class="rot-step-actions">
                               <button type="button" class="sm" data-rot-act="up" ${idx === 0 ? "disabled" : ""} title="Move up">&uarr;</button>
@@ -318,10 +497,12 @@ export function renderRotationView(out) {
                 const isOffGcdStep = s.durationSec <= 1e-6;
                 const isKillStep = !isHeal && !s.isUtility && s.index === res.killStepIndex;
                 const cls = s.isUtility ? "seg-util" : s.isHeal ? "seg-heal" : segCls;
+                const stageShort = s.stageIndex != null ? ` #${s.stageIndex + 1}` : "";
+                const stageTip = s.stageIndex != null ? ` [${s.stageLabel} (${s.stageIndex + 1}/${s.stageCount})]` : "";
                 if (isOffGcdStep) {
                     const tip = s.isUtility
-                        ? `${s.skill.name}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • ${s.grantedComboEffect?.summary || "Utility"}`
-                        : `${s.skill.name}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • Expected ${fmtInt(s.result.expected)}`;
+                        ? `${s.skill.name}${stageTip}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • ${s.grantedComboEffect?.summary || "Utility"}`
+                        : `${s.skill.name}${stageTip}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • Expected ${fmtInt(s.result.expected)}`;
                     return `<div class="rot-tl-seg ${s.isUtility ? "seg-util-offgcd" : "seg-offgcd"} ${isKillStep ? "seg-kill" : ""}" title="${escHtml(tip)}">&#9889;</div>`;
                 }
                 const wPct = (s.durationSec / maxDur) * 100;
@@ -334,38 +515,90 @@ export function renderRotationView(out) {
                           ? `${fmtDec(s.durationSec, 2)}s GCD • Instant via ${s.castRemovedBy} (saved ${fmtDec(s.castTimeSavedSec, 2)}s)`
                           : `${fmtDec(s.durationSec, 2)}s • ${formatGcdSummaryText(s.result.dps)}`;
                 const procTip = s.weaponProcLabel ? ` • ⚔ ${s.weaponProcLabel}` : "";
+                const travelTip =
+                    s.travelTimeSec > 0.001
+                        ? ` • Travel +${fmtDec(s.travelTimeSec, 2)}s (lands @ ${fmtDec(s.impactSec, 2)}s)`
+                        : "";
                 const tip = s.isUtility
-                    ? `${s.skill.name}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary}) • ${s.grantedComboEffect?.summary || "Utility"}`
-                    : `${s.skill.name}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary})${procTip} • Expected ${fmtInt(s.result.expected)}`;
+                    ? `${s.skill.name}${stageTip}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary})${travelTip} • ${s.grantedComboEffect?.summary || "Utility"}`
+                    : `${s.skill.name}${stageTip}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary})${travelTip}${procTip} • Expected ${fmtInt(s.result.expected)}`;
                 if (hasSplitCast) {
                     const castPct = Math.min(95, Math.max(5, (s.castSec / s.durationSec) * 100));
                     const gcdPct = 100 - castPct;
                     return `<div class="rot-tl-seg seg-split ${isKillStep ? "seg-kill" : ""}" style="width:${wPct.toFixed(2)}%" title="${escHtml(tip)}">
-                        <div class="rot-tl-cast" style="width:${castPct.toFixed(1)}%">${escHtml(s.skill.name)} (${fmtDec(s.castSec, 2)}s)</div>
+                        <div class="rot-tl-cast" style="width:${castPct.toFixed(1)}%">${escHtml(s.skill.name)}${stageShort} (${fmtDec(s.castSec, 2)}s)</div>
                         <div class="rot-tl-gcd ${cls}" style="width:${gcdPct.toFixed(1)}%">+${fmtDec(s.postGcdSec, 2)}s</div>
                     </div>`;
                 }
                 const prefix = s.weaponProcId ? "&#9876; " : s.castTimeRemoved ? "&#9889; " : "";
-                return `<div class="rot-tl-seg ${cls} ${comboCls} ${isKillStep ? "seg-kill" : ""}" style="width:${wPct.toFixed(2)}%" title="${escHtml(tip)}">${prefix}${escHtml(s.skill.name)} (${fmtDec(s.durationSec, 2)}s)</div>`;
+                return `<div class="rot-tl-seg ${cls} ${comboCls} ${isKillStep ? "seg-kill" : ""}" style="width:${wPct.toFixed(2)}%" title="${escHtml(tip)}">${prefix}${escHtml(s.skill.name)}${stageShort} (${fmtDec(s.durationSec, 2)}s)</div>`;
             })
             .join("");
+        const travelTailSec = Number(res.totalTravelTailSec) || 0;
+        const travelTailPct = travelTailSec > 0.005 ? (travelTailSec / maxDur) * 100 : 0;
         const padPct = Math.max(0, ((maxDur - res.totalDurationSec) / maxDur) * 100);
         const castMeta =
             res.totalCastTimeSec > 0.005 || res.totalCastTimeSavedSec > 0.005
                 ? ` &bull; Cast ${fmtDec(res.totalCastTimeSec, 2)}s${res.totalCastTimeSavedSec > 0.005 ? ` <span class="delta-pos">(&#9889; -${fmtDec(res.totalCastTimeSavedSec, 2)}s saved)</span>` : ""}`
                 : "";
+        const travelMeta =
+            travelTailSec > 0.005
+                ? ` &bull; <span class="val-b">+${fmtDec(travelTailSec, 2)}s travel</span>`
+                : "";
         return `
         <div class="rot-tl-row">
             <div class="rot-tl-meta">
                 <strong class="${valCls}">${escHtml(label)}</strong>
-                <span class="hint-inline">Total window: <strong>${fmtDec(res.totalDurationSec, 2)}s</strong> &bull; ${fmtInt(res.windowRate)} ${rateUnit}${castMeta}${!isHeal && res.killTimestampSec != null ? ` &bull; Expected kill at <strong>${fmtDec(res.killTimestampSec, 2)}s</strong>` : ""}</span>
+                <span class="hint-inline">Total window: <strong>${fmtDec(res.totalDurationSec, 2)}s</strong> &bull; ${fmtInt(res.windowRate)} ${rateUnit}${castMeta}${travelMeta}${!isHeal && res.killTimestampSec != null ? ` &bull; Expected kill at <strong>${fmtDec(res.killTimestampSec, 2)}s</strong>` : ""}</span>
             </div>
             <div class="rot-tl-track">
                 ${segs}
+                ${travelTailPct > 0.2 ? `<div class="rot-tl-seg seg-travel" style="width:${travelTailPct.toFixed(2)}%" title="Projectile travel tail (+${fmtDec(travelTailSec, 2)}s until last hit lands)">+${fmtDec(travelTailSec, 2)}s travel</div>` : ""}
                 ${padPct > 0.5 ? `<div class="rot-tl-pad" style="width:${padPct.toFixed(2)}%"></div>` : ""}
             </div>
         </div>`;
     };
+
+    const effectSpansA = Array.isArray(rA.effectSpans) ? rA.effectSpans : [];
+    const debuffTimelineHtml =
+        effectSpansA.length === 0
+            ? ""
+            : `<div class="rot-debuff-tl">
+                   <div class="rot-debuff-tl-hdr">Active Debuffs, Statuses &amp; Combo Buffs (${escHtml(state.buildA.name)} Timeline)</div>
+                   <div class="rot-debuff-tl-rows">
+                       ${effectSpansA
+                           .map((sp) => {
+                               const startClamped = Math.max(0, Math.min(maxDur, sp.startSec));
+                               const endClamped = sp.isPermanent ? maxDur : Math.max(startClamped, Math.min(maxDur, sp.endSec));
+                               const leftPct = (startClamped / maxDur) * 100;
+                               const widthPct = Math.max(3, ((endClamped - startClamped) / maxDur) * 100);
+                               const persistsPast = !sp.isPermanent && sp.endSec > maxDur + 0.05;
+                               const durLabel = sp.isPermanent
+                                   ? "Full rotation"
+                                   : `${fmtDec(sp.startSec, 2)}s–${fmtDec(sp.endSec, 2)}s (${fmtDec(sp.durationSec, 1)}s)${persistsPast ? " →" : ""}`;
+                               const barCls = sp.isCC
+                                   ? "dtl-cc"
+                                   : sp.kind === "debuff"
+                                     ? "dtl-debuff"
+                                     : sp.kind === "combo_buff"
+                                       ? "dtl-buff"
+                                       : "dtl-status";
+                               return `
+                               <div class="rot-dtl-row" title="${escHtml(sp.label)}: ${escHtml(durLabel)}">
+                                   <div class="rot-dtl-head">
+                                       <span class="rot-dtl-lbl">${escHtml(sp.label)}</span>
+                                       <span class="rot-dtl-dur">${escHtml(durLabel)}</span>
+                                   </div>
+                                   <div class="rot-dtl-track">
+                                       <div class="rot-dtl-bar ${barCls}" style="left:${leftPct.toFixed(2)}%;width:${Math.min(100 - leftPct, widthPct).toFixed(2)}%">
+                                           <span class="rot-dtl-bar-txt">${escHtml(durLabel)}</span>
+                                       </div>
+                                   </div>
+                               </div>`;
+                           })
+                           .join("")}
+                   </div>
+               </div>`;
 
     const probCls = (p) => (p >= 75 ? "delta-pos" : p >= 35 ? "val-b" : "delta-neg");
     const shieldNote =
@@ -411,10 +644,12 @@ export function renderRotationView(out) {
                     <span class="rot-leg-item"><span class="rot-leg-swatch sw-gcd"></span>GCD</span>
                     <span class="rot-leg-item"><span class="rot-leg-swatch sw-combo"></span>Instant Combo</span>
                     <span class="rot-leg-item"><span class="rot-leg-swatch sw-offgcd"></span>Off-GCD</span>
+                    <span class="rot-leg-item"><span class="rot-leg-swatch sw-travel"></span>Travel Time</span>
                 </div>
             </div>
             ${buildTimelineHtml(state.buildA.name, rA, "seg-a", "val-a")}
             ${buildTimelineHtml(state.buildB.name, rB, "seg-b", "val-b")}
+            ${debuffTimelineHtml}
         </div>
 
         <div class="table-wrap">
@@ -459,10 +694,15 @@ export function renderRotationView(out) {
                             if (sA.step.offGcd || sA.result.dps?.isOffGcd) flagBadges.push("Off-GCD");
                             else if (sA.result.dps?.gcdKind === "rapid") flagBadges.push("No GCD");
                             else if (sA.result.dps?.isReducedGcd) flagBadges.push(`${sA.result.dps.baseGcdSec}s GCD`);
-                            if (Number(sA.step.delaySec)) flagBadges.push(`+${sA.step.delaySec}s delay`);
+                            if (Number(sA.step.delaySec)) flagBadges.push(`+${fmtDec(Number(sA.step.delaySec), 2)}s delay`);
+                            if (sA.travelTimeSec > 0.001) flagBadges.push(`+${fmtDec(sA.travelTimeSec, 2)}s travel`);
                             const fmtWin = (stRes) => {
+                                const impactLine =
+                                    stRes.travelTimeSec > 0.001
+                                        ? `<div class="skill-meta">Impact @ ${fmtDec(stRes.impactSec, 2)}s (+${fmtDec(stRes.travelTimeSec, 2)}s travel)</div>`
+                                        : "";
                                 if (stRes.durationSec <= 1e-6) {
-                                    return `<div>@${fmtDec(stRes.startSec, 2)}s</div><div class="skill-meta">Off-GCD (0.00s)</div>`;
+                                    return `<div>@${fmtDec(stRes.startSec, 2)}s</div><div class="skill-meta">Off-GCD (0.00s)</div>${impactLine}`;
                                 }
                                 const sub =
                                     stRes.castSec > 1e-6
@@ -470,7 +710,7 @@ export function renderRotationView(out) {
                                         : stRes.castTimeRemoved
                                           ? `&#9889; ${fmtDec(stRes.postGcdSec, 2)}s GCD (-${fmtDec(stRes.castTimeSavedSec, 2)}s)`
                                           : `${fmtDec(stRes.durationSec, 2)}s GCD`;
-                                return `<div>${fmtDec(stRes.startSec, 2)}s&ndash;${fmtDec(stRes.endSec, 2)}s</div><div class="skill-meta">${sub}</div>`;
+                                return `<div>${fmtDec(stRes.startSec, 2)}s&ndash;${fmtDec(stRes.endSec, 2)}s</div><div class="skill-meta">${sub}</div>${impactLine}`;
                             };
                             const hitCritStr = (res) =>
                                 res.kind === "utility"
@@ -485,7 +725,7 @@ export function renderRotationView(out) {
                                         <span class="rot-step-num">${i + 1}</span>
                                         ${skIcon ? `<img class="table-skill-icon" src="${escHtml(skIcon)}" alt="" loading="lazy" />` : ""}
                                         <div>
-                                            <div class="skill-name">${escHtml(sk.name)}</div>
+                                            <div class="skill-name">${escHtml(sk.name)}${sA.stageIndex != null ? ` <span class="stag stag-stage">${escHtml(sA.stageLabel)} (${sA.stageIndex + 1}/${sA.stageCount})</span>` : ""}</div>
                                             <div class="skill-meta">${sA.isUtility ? "Utility" : formatRankTag(sA.result)}${flagBadges.length > 0 ? ` &bull; ${escHtml(flagBadges.join(" • "))}` : ""}</div>
                                         </div>
                                     </div>
@@ -514,24 +754,52 @@ export function renderRotationView(out) {
             </table>
         </div>`;
 
-    const activeCustomRot = state.activeRotationId
-        ? state.customRotations.find((p) => p.id === state.activeRotationId) || null
-        : null;
+    const activeInitSet = new Set(rotationInitialEffects);
+    const pillIds = Array.from(new Set([...QUICK_ROTATION_EFFECT_IDS, ...rotationInitialEffects]));
+    const moreInitEffects = ROTATION_EXTRA_EFFECTS.filter((eff) => !pillIds.includes(eff.id));
+    const initDebuffsBarHtml = `
+        <div class="rot-procs-bar">
+            <span class="buff-presets-lbl" title="Toggle random/proc debuffs active across this rotation (e.g. Delirium Bleed proc, Puncture, or teammate setups). You can also apply debuffs on individual steps below.">Random / Proc Debuffs:</span>
+            ${pillIds
+                .map((eid) => {
+                    const eff = getRotationExtraEffect(eid);
+                    if (!eff) return "";
+                    const isOn = activeInitSet.has(eff.id);
+                    return `<button type="button" class="rot-proc-pill ${isOn ? "active" : ""}" data-rot-init-eff="${escHtml(eff.id)}" title="${escHtml(eff.label)} — click to ${isOn ? "disable" : "enable"} for this rotation">${escHtml(eff.id === "bleeding" ? "Bleeding (Delirium)" : eff.shortLabel)}</button>`;
+                })
+                .join("")}
+            ${
+                moreInitEffects.length > 0
+                    ? `<select class="rot-debuff-sel" id="rotAddInitEffSel" title="Enable another target debuff or combo status for this rotation">
+                           <option value="">+ More Debuffs&hellip;</option>
+                           ${moreInitEffects
+                               .map((eff) => `<option value="${escHtml(eff.id)}">${escHtml(eff.label)}</option>`)
+                               .join("")}
+                       </select>`
+                    : ""
+            }
+            ${
+                rotationInitialEffects.length > 0
+                    ? `<button type="button" class="buff-preset-btn" id="rotClearInitEffBtn" title="Clear all enabled rotation debuffs">Clear Debuffs</button>`
+                    : ""
+            }
+        </div>`;
 
     out.innerHTML = `
         <div class="rot-builder">
             <div class="rot-top-bar">
                 <div class="rot-presets-row">
-                    <span class="buff-presets-lbl">Combos:</span>
+                    <span class="buff-presets-lbl">Rotations:</span>
                     ${state.customRotations
                         .map(
                             (p) =>
-                                `<span class="buff-preset-custom ${state.activeRotationId === p.id ? "active" : ""}" data-rot-preset="${escHtml(p.id)}" title="${state.activeRotationId === p.id ? (state.diskApiAvailable ? "Active combo — edits auto-save to combos/combos.json + browser storage" : "Active combo — edits auto-save to browser storage") : state.diskApiAvailable ? "Load combo from combos/combos.json" : "Load saved combo from browser storage"}"><span>${escHtml(p.label)}</span><button type="button" class="buff-preset-ren" data-ren-rot="${escHtml(p.id)}" title="Rename combo">&#9998;</button><button type="button" class="buff-preset-del" data-del-rot="${escHtml(p.id)}" title="Delete combo">&times;</button></span>`
+                                `<span class="buff-preset-custom ${state.activeRotationId === p.id ? "active" : ""}" data-rot-preset="${escHtml(p.id)}" title="${state.activeRotationId === p.id ? (state.diskApiAvailable ? "Active rotation — edits auto-save to combos/combos.json + browser storage" : "Active rotation — edits auto-save to browser storage") : state.diskApiAvailable ? "Load rotation from combos/combos.json" : "Load saved rotation from browser storage"}"><span>${escHtml(p.label)}</span><button type="button" class="buff-preset-ren" data-ren-rot="${escHtml(p.id)}" title="Rename rotation">&#9998;</button><button type="button" class="buff-preset-del" data-del-rot="${escHtml(p.id)}" title="Delete rotation">&times;</button></span>`
                         )
                         .join("")}
-                    <button type="button" class="buff-preset-btn buff-preset-save" id="saveRotationBtn">${activeCustomRot ? "+ Save Copy" : "+ Save Combo"}</button>
-                    <button type="button" class="buff-preset-btn" id="clearRotationBtn">Clear</button>
-                    <span class="rot-save-status" id="rotSaveStatus" title="${state.diskApiAvailable ? "Combos read from and auto-save to combos/combos.json (with browser localStorage backup)" : "Combos auto-save to browser localStorage"}">${state.rotLastSavedAt ? (state.diskApiAvailable ? "&#10003; Saved to combos.json (+ backup)" : "&#10003; Saved to browser storage") : state.diskApiAvailable ? "combos/combos.json" : "Browser storage"}</span>
+                    <button type="button" class="buff-preset-btn buff-preset-save" id="newRotationBtn" title="Create a new empty skill rotation">+ New Rotation</button>
+                    <button type="button" class="buff-preset-btn" id="saveRotationBtn" title="${activeCustomRot ? "Save a duplicate copy of the current rotation" : "Save the current skill queue as a named rotation"}">${activeCustomRot ? "+ Save Copy" : "+ Save Rotation"}</button>
+                    <button type="button" class="buff-preset-btn" id="clearRotationBtn" title="Remove all steps from the current rotation">Clear</button>
+                    <span class="rot-save-status" id="rotSaveStatus" title="${state.diskApiAvailable ? "Rotations read from and auto-save to combos/combos.json (with browser localStorage backup)" : "Rotations auto-save to browser localStorage"}">${state.rotLastSavedAt ? (state.diskApiAvailable ? "&#10003; Saved to combos.json (+ backup)" : "&#10003; Saved to browser storage") : state.diskApiAvailable ? "combos/combos.json" : "Browser storage"}</span>
                 </div>
                 <div class="rot-add-row">
                     <label class="rot-shield-field" title="Add an absorb shield HP pool on the target (e.g. Insulating Lens ~3,500, Protective Wings, or Conversion Shield) to include in Kill Probability &amp; TTK">
@@ -551,10 +819,40 @@ export function renderRotationView(out) {
                     <button type="button" class="sm primary" id="openRotSkillPickerBtn">+ Add Skill&hellip;</button>
                 </div>
             </div>
+            ${initDebuffsBarHtml}
             ${stepsBuilderHtml}
         </div>
         ${resultsHtml}
     `;
+
+    // Bind Random / Proc Debuffs rotation-wide controls
+    out.querySelectorAll("[data-rot-init-eff]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const eid = btn.dataset.rotInitEff;
+            if (!getRotationExtraEffect(eid)) return;
+            const cur = Array.isArray(state.rotationInitialEffects) ? state.rotationInitialEffects.slice() : [];
+            const pos = cur.indexOf(eid);
+            if (pos >= 0) cur.splice(pos, 1);
+            else cur.push(eid);
+            state.rotationInitialEffects = cur;
+            persistRotationState();
+            ui.renderSimulation();
+        });
+    });
+    document.getElementById("rotAddInitEffSel")?.addEventListener("change", (e) => {
+        const eid = e.target.value;
+        if (!eid || !getRotationExtraEffect(eid)) return;
+        const cur = Array.isArray(state.rotationInitialEffects) ? state.rotationInitialEffects.slice() : [];
+        if (!cur.includes(eid)) cur.push(eid);
+        state.rotationInitialEffects = cur;
+        persistRotationState();
+        ui.renderSimulation();
+    });
+    document.getElementById("rotClearInitEffBtn")?.addEventListener("click", () => {
+        state.rotationInitialEffects = [];
+        persistRotationState();
+        ui.renderSimulation();
+    });
 
     // Bind Target Absorb Shield controls
     const shieldInp = document.getElementById("rotTargetShieldInput");
@@ -596,7 +894,8 @@ export function renderRotationView(out) {
                 if (state.activeRotationId === delId) {
                     const next = state.customRotations[0] || null;
                     state.activeRotationId = next ? next.id : null;
-                    state.rotationSteps = next ? next.steps.map((s) => ({ ...s })) : [];
+                    state.rotationSteps = next ? next.steps.map(cloneRotationStep) : [];
+                    state.rotationInitialEffects = next && Array.isArray(next.initialEffects) ? next.initialEffects.slice() : [];
                 }
                 persistRotationState({ edited: false });
                 ui.renderSimulation();
@@ -607,30 +906,62 @@ export function renderRotationView(out) {
             const found = state.customRotations.find((p) => p.id === pid);
             if (!found) return;
             state.activeRotationId = found.id;
-            state.rotationSteps = (found.steps || []).map((s) => ({ ...s }));
+            state.rotationSteps = (found.steps || []).map(cloneRotationStep);
+            state.rotationInitialEffects = Array.isArray(found.initialEffects) ? found.initialEffects.slice() : [];
             persistRotationState({ edited: false });
             ui.renderSimulation();
         });
     });
 
-    document.getElementById("saveRotationBtn")?.addEventListener("click", () => {
-        if (state.rotationSteps.length === 0) {
-            showToast("Add at least one skill before saving a combo", "err");
-            return;
+    document.getElementById("newRotationBtn")?.addEventListener("click", () => {
+        const existingLabels = new Set(state.customRotations.map((r) => String(r.label || "").toLowerCase()));
+        let defaultName = "New Rotation";
+        let suffix = 2;
+        while (existingLabels.has(defaultName.toLowerCase())) {
+            defaultName = `New Rotation ${suffix++}`;
         }
-        const label = prompt("Name this combo / rotation:", activeCustomRot ? `${activeCustomRot.label} Copy` : "");
+        const label = prompt("Name your new rotation:", defaultName);
         if (!label || !label.trim()) return;
         const cleanLabel = label.trim().slice(0, 32);
         const id = `rot_${slugifyBuildId(cleanLabel)}_${Date.now().toString(36)}`;
         state.customRotations.push({
             id,
             label: cleanLabel,
-            steps: state.rotationSteps.map((s) => ({ ...s })),
+            initialEffects: [],
+            steps: [],
+        });
+        state.activeRotationId = id;
+        state.rotationSteps = [];
+        state.rotationInitialEffects = [];
+        persistRotationState({ edited: false });
+        ui.renderSimulation();
+        showToast(`Created new rotation "${cleanLabel}" — click + Add Skill… to add steps`, "ok");
+    });
+
+    document.getElementById("saveRotationBtn")?.addEventListener("click", () => {
+        if (state.rotationSteps.length === 0) {
+            showToast("Add at least one skill before saving a rotation copy", "err");
+            return;
+        }
+        const label = prompt("Name this rotation:", activeCustomRot ? `${activeCustomRot.label} Copy` : "");
+        if (!label || !label.trim()) return;
+        const cleanLabel = label.trim().slice(0, 32);
+        const id = `rot_${slugifyBuildId(cleanLabel)}_${Date.now().toString(36)}`;
+        state.customRotations.push({
+            id,
+            label: cleanLabel,
+            initialEffects: Array.isArray(state.rotationInitialEffects) ? state.rotationInitialEffects.slice() : [],
+            steps: state.rotationSteps.map(cloneRotationStep),
         });
         state.activeRotationId = id;
         persistRotationState({ edited: false });
         ui.renderSimulation();
-        showToast(`Saved combo "${cleanLabel}" to combos/combos.json`, "ok");
+        showToast(
+            state.diskApiAvailable
+                ? `Saved rotation "${cleanLabel}" to combos/combos.json`
+                : `Saved rotation "${cleanLabel}" to browser storage`,
+            "ok"
+        );
     });
 
     document.getElementById("clearRotationBtn")?.addEventListener("click", () => {
@@ -642,17 +973,16 @@ export function renderRotationView(out) {
     const addSelBtn = document.getElementById("addSelectedSkillRotBtn");
     if (addSelBtn && selectedSkillObj) {
         addSelBtn.addEventListener("click", () => {
-            state.rotationSteps.push({
-                skillId: selectedSkillObj.id,
-                isBackstab: false,
-                targetIsCCd: false,
-                targetBelow30Pct: false,
-                comboBonusPct: 0,
-                delaySec: 0,
-                weaponProc: "",
-            });
+            const nextPreview = getNextAutoStagePreview(selectedSkillObj, state.rotationSteps);
+            state.rotationSteps.push(createRotationStepForSkill(selectedSkillObj));
             persistRotationState();
             ui.renderSimulation();
+            if (nextPreview) {
+                showToast(
+                    `Added #${state.rotationSteps.length} ${selectedSkillObj.name} (${nextPreview.stage.label} — ${nextPreview.index + 1}/${nextPreview.count})`,
+                    "ok"
+                );
+            }
         });
     }
 
@@ -660,6 +990,19 @@ export function renderRotationView(out) {
 
     out.querySelectorAll(".rot-step-row").forEach((row) => {
         const idx = parseInt(row.dataset.rotIdx, 10);
+        row.querySelectorAll("[data-rot-stage]").forEach((sel) => {
+            sel.addEventListener("change", () => {
+                const v = sel.value;
+                if (v === "auto" || v === "all") {
+                    state.rotationSteps[idx].stageIndex = v;
+                } else {
+                    const num = parseInt(v, 10);
+                    state.rotationSteps[idx].stageIndex = Number.isFinite(num) ? num : "all";
+                }
+                persistRotationState();
+                ui.renderSimulation();
+            });
+        });
         row.querySelectorAll("[data-rot-flag]").forEach((cb) => {
             cb.addEventListener("change", () => {
                 state.rotationSteps[idx][cb.dataset.rotFlag] = Boolean(cb.checked);
@@ -679,13 +1022,47 @@ export function renderRotationView(out) {
                 ui.renderSimulation();
             });
         });
+        row.querySelectorAll("[data-rot-add-debuff]").forEach((sel) => {
+            sel.addEventListener("change", () => {
+                const eid = sel.value || "";
+                if (!eid || !getRotationExtraEffect(eid)) return;
+                const list = Array.isArray(state.rotationSteps[idx].appliedDebuffs)
+                    ? state.rotationSteps[idx].appliedDebuffs.slice()
+                    : [];
+                if (!list.includes(eid)) list.push(eid);
+                state.rotationSteps[idx].appliedDebuffs = list;
+                persistRotationState();
+                ui.renderSimulation();
+            });
+        });
+        row.querySelectorAll("[data-rot-rm-debuff]").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const eid = btn.dataset.effId;
+                const list = Array.isArray(state.rotationSteps[idx].appliedDebuffs)
+                    ? state.rotationSteps[idx].appliedDebuffs.filter((x) => x !== eid)
+                    : [];
+                state.rotationSteps[idx].appliedDebuffs = list;
+                persistRotationState();
+                ui.renderSimulation();
+            });
+        });
         row.querySelectorAll("[data-rot-num]").forEach((inp) => {
+            const parseNum = () => {
+                const raw = parseFloat(inp.value);
+                if (!Number.isFinite(raw)) return 0;
+                const field = inp.dataset.rotNum;
+                if (field === "delaySec" || field === "travelTimeSec") {
+                    return Math.max(0, Math.round(raw * 1000) / 1000);
+                }
+                return raw;
+            };
             inp.addEventListener("input", () => {
-                state.rotationSteps[idx][inp.dataset.rotNum] = parseFloat(inp.value) || 0;
+                state.rotationSteps[idx][inp.dataset.rotNum] = parseNum();
                 persistRotationState();
             });
             inp.addEventListener("change", () => {
-                state.rotationSteps[idx][inp.dataset.rotNum] = parseFloat(inp.value) || 0;
+                state.rotationSteps[idx][inp.dataset.rotNum] = parseNum();
                 persistRotationState();
                 ui.renderSimulation();
             });
@@ -702,7 +1079,19 @@ export function renderRotationView(out) {
                     state.rotationSteps[idx + 1] = state.rotationSteps[idx];
                     state.rotationSteps[idx] = tmp;
                 } else if (act === "dup") {
-                    state.rotationSteps.splice(idx + 1, 0, { ...state.rotationSteps[idx] });
+                    const dupStep = cloneRotationStep(state.rotationSteps[idx]);
+                    const dupSkill = skillById.get(dupStep.skillId);
+                    const dupStages = dupSkill ? getSkillStages(dupSkill) : [];
+                    if (
+                        dupStages.length > 1 &&
+                        dupStep.stageIndex != null &&
+                        dupStep.stageIndex !== "auto" &&
+                        dupStep.stageIndex !== "all" &&
+                        Number.isFinite(Number(dupStep.stageIndex))
+                    ) {
+                        dupStep.stageIndex = (Math.floor(Number(dupStep.stageIndex)) + 1) % dupStages.length;
+                    }
+                    state.rotationSteps.splice(idx + 1, 0, dupStep);
                 } else if (act === "del") {
                     state.rotationSteps.splice(idx, 1);
                 }
@@ -711,6 +1100,93 @@ export function renderRotationView(out) {
             });
         });
     });
+
+    // Pointer-based drag-and-drop reordering for rotation steps (works on both desktop mouse & mobile touch)
+    const stepsListEl = out.querySelector(".rot-steps-list");
+    if (stepsListEl && state.rotationSteps.length > 1) {
+        const startStepDrag = (e, rowEl, fromIdx) => {
+            if (e.pointerType === "mouse" && e.button !== 0) return;
+            const startY = e.clientY;
+            let dragging = false;
+            let dropIdx = fromIdx;
+            const allRows = Array.from(stepsListEl.querySelectorAll(".rot-step-row"));
+
+            const clearDropIndicators = () => {
+                for (const r of allRows) {
+                    r.classList.remove("rot-drop-before", "rot-drop-after");
+                }
+            };
+
+            const onMove = (ev) => {
+                if (!dragging) {
+                    if (Math.abs(ev.clientY - startY) < 6) return;
+                    dragging = true;
+                    rowEl.classList.add("is-dragging");
+                    stepsListEl.classList.add("is-reordering");
+                }
+                if (ev.cancelable) ev.preventDefault();
+                clearDropIndicators();
+
+                let targetPos = allRows.length;
+                for (let rIdx = 0; rIdx < allRows.length; rIdx++) {
+                    const rect = allRows[rIdx].getBoundingClientRect();
+                    const midY = rect.top + rect.height / 2;
+                    if (ev.clientY < midY) {
+                        targetPos = rIdx;
+                        break;
+                    }
+                }
+                dropIdx = targetPos;
+                if (targetPos < allRows.length) {
+                    if (targetPos !== fromIdx && targetPos !== fromIdx + 1) {
+                        allRows[targetPos].classList.add("rot-drop-before");
+                    }
+                } else if (allRows.length > 0 && fromIdx !== allRows.length - 1) {
+                    allRows[allRows.length - 1].classList.add("rot-drop-after");
+                }
+            };
+
+            const onEnd = () => {
+                document.removeEventListener("pointermove", onMove);
+                document.removeEventListener("pointerup", onEnd);
+                document.removeEventListener("pointercancel", onEnd);
+                rowEl.classList.remove("is-dragging");
+                stepsListEl.classList.remove("is-reordering");
+                clearDropIndicators();
+
+                if (dragging && dropIdx !== fromIdx && dropIdx !== fromIdx + 1) {
+                    const [moved] = state.rotationSteps.splice(fromIdx, 1);
+                    const adjusted = dropIdx > fromIdx ? dropIdx - 1 : dropIdx;
+                    state.rotationSteps.splice(adjusted, 0, moved);
+                    persistRotationState();
+                    ui.renderSimulation();
+                }
+            };
+
+            document.addEventListener("pointermove", onMove, { passive: false });
+            document.addEventListener("pointerup", onEnd);
+            document.addEventListener("pointercancel", onEnd);
+        };
+
+        stepsListEl.querySelectorAll(".rot-step-row").forEach((rowEl) => {
+            const fromIdx = parseInt(rowEl.dataset.rotIdx, 10);
+            const handle = rowEl.querySelector(".rot-drag-handle");
+            if (handle) {
+                handle.addEventListener("pointerdown", (e) => {
+                    e.preventDefault();
+                    startStepDrag(e, rowEl, fromIdx);
+                });
+            }
+            const mainHdr = rowEl.querySelector(".rot-step-main");
+            if (mainHdr) {
+                mainHdr.addEventListener("pointerdown", (e) => {
+                    if (e.pointerType !== "mouse") return;
+                    if (e.target.closest("button, input, select, label, a, .rot-drag-handle")) return;
+                    startStepDrag(e, rowEl, fromIdx);
+                });
+            }
+        });
+    }
 }
 
 export function openRotSkillPickerModal() {
@@ -803,6 +1279,10 @@ export function renderRotSkillPicker() {
                                     : "";
                             const castStr = s.castTimeSec > 0 ? `${s.castTimeSec}s cast` : "Instant";
                             const cdStr = s.cooldownSec > 0 ? `${s.cooldownSec}s CD` : "No CD";
+                            const nextStagePreview = getNextAutoStagePreview(s, state.rotationSteps);
+                            const stageCardBadge = nextStagePreview
+                                ? `<span class="stag stag-stage">Next: ${escHtml(nextStagePreview.stage.label)} (${nextStagePreview.index + 1}/${nextStagePreview.count})</span>`
+                                : "";
                             return `
                             <button type="button" class="rot-picker-card ${isUtil ? "rot-picker-card-util" : ""}" data-rp-add="${escHtml(s.id)}" title="${escHtml(s.description || s.name)}">
                                 ${skIcon ? `<img class="rot-picker-card-icon" src="${escHtml(skIcon)}" alt="" loading="lazy" />` : ""}
@@ -813,6 +1293,7 @@ export function renderRotSkillPicker() {
                                     <div class="rot-picker-card-tags">
                                         <span class="stag ${typeCls}">${typeTxt}</span>
                                         ${varBadge}
+                                        ${stageCardBadge}
                                         ${formatSkillCastBadge(s)}
                                         ${formatSkillGcdBadge(s)}
                                     </div>
@@ -836,19 +1317,15 @@ export function renderRotSkillPicker() {
             const sid = btn.dataset.rpAdd;
             const sk = state.allSkills.find((x) => x.id === sid);
             if (!sk) return;
-            state.rotationSteps.push({
-                skillId: sid,
-                isBackstab: false,
-                targetIsCCd: false,
-                targetBelow30Pct: false,
-                comboBonusPct: 0,
-                delaySec: 0,
-                weaponProc: "",
-            });
+            const nextPreview = getNextAutoStagePreview(sk, state.rotationSteps);
+            state.rotationSteps.push(createRotationStepForSkill(sk));
             persistRotationState();
             ui.renderSimulation();
-            renderRotSkillPickerQueue();
-            showToast(`Added #${state.rotationSteps.length} ${sk.name}`, "ok");
+            renderRotSkillPicker();
+            const stageSuffix = nextPreview
+                ? ` (${nextPreview.stage.label} — ${nextPreview.index + 1}/${nextPreview.count})`
+                : "";
+            showToast(`Added #${state.rotationSteps.length} ${sk.name}${stageSuffix}`, "ok");
         });
     });
 
@@ -867,10 +1344,30 @@ export function renderRotSkillPickerQueue() {
         return;
     }
     const skillById = new Map(state.allSkills.map((s) => [s.id, s]));
+    const qStageCursor = new Map();
+    const qCounts = new Map();
+    for (const st of state.rotationSteps) {
+        qCounts.set(st.skillId, (qCounts.get(st.skillId) || 0) + 1);
+    }
     queueEl.innerHTML = `<span class="buff-presets-lbl">Queue (${state.rotationSteps.length}):</span>${state.rotationSteps
         .map((st, idx) => {
             const sk = skillById.get(st.skillId);
-            return `<span class="rot-picker-q-chip">${idx + 1}. ${escHtml(sk ? sk.name : st.skillId)}</span>`;
+            let stageTag = "";
+            if (sk) {
+                const stages = getSkillStages(sk);
+                if (stages.length > 1) {
+                    if (st.stageIndex === "auto" || (st.stageIndex == null && STAGED_WEAVE_SKILL_IDS.has(sk.id) && (qCounts.get(sk.id) || 0) > 1)) {
+                        const c = qStageCursor.get(sk.id) || 0;
+                        stageTag = ` #${c + 1}`;
+                        qStageCursor.set(sk.id, (c + 1) % stages.length);
+                    } else if (st.stageIndex !== "all" && st.stageIndex != null && Number.isFinite(Number(st.stageIndex))) {
+                        const n = Math.max(0, Math.min(stages.length - 1, Math.floor(Number(st.stageIndex))));
+                        stageTag = ` #${n + 1}`;
+                        qStageCursor.set(sk.id, (n + 1) % stages.length);
+                    }
+                }
+            }
+            return `<span class="rot-picker-q-chip">${idx + 1}. ${escHtml(sk ? sk.name : st.skillId)}${stageTag}</span>`;
         })
         .join("")}`;
 }

@@ -39,12 +39,16 @@ export const SKILL_STATUS_GRANTS = Object.freeze({
         },
     ],
     shadowplay_toxic_shot: [{ status: "poisoned", label: "Poisoned", durationSec: 10.0 }],
+    shadowplay_pin_down: [{ status: "bleeding", label: "Bleeding", durationSec: 14.0, requiresBackstab: true }],
 
+    archery_piercing_shot: [{ status: "bleeding", label: "Bleeding", durationSec: 14.0 }],
     archery_charged_bolt: [{ status: "slowed", label: "Slowed", durationSec: 2.5 }],
     archery_charged_bolt_short: [{ status: "slowed", label: "Slowed", durationSec: 2.5 }],
     archery_charged_bolt_fast: [{ status: "slowed", label: "Slowed", durationSec: 2.5 }],
     archery_snipe: [{ status: "tripped", label: "Tripped", durationSec: 3.0, isCC: true, requiresAny: ["snared"] }],
 
+    sorcery_flamebolt: [{ status: "burning", label: "Burning", durationSec: 4.0 }],
+    sorcery_flamebolt_flame: [{ status: "burning", label: "Burning", durationSec: 4.0 }],
     sorcery_freezing_arrow: [{ status: "freezing", label: "Freezing", durationSec: 4.0 }],
     sorcery_freezing_earth: [{ status: "freezing", label: "Freezing", durationSec: 4.0 }],
     sorcery_frigid_tracks: [{ status: "freezing", label: "Freezing", durationSec: 4.0 }],
@@ -112,6 +116,191 @@ export const TARGET_COMBO_STATUSES = Object.freeze([
 ]);
 
 const TARGET_STATUS_BY_ID = new Map(TARGET_COMBO_STATUSES.map((s) => [s.id, s]));
+
+/**
+ * Extra debuffs & status effects users can toggle rotation-wide or apply on any individual
+ * rotation step (e.g. Delirium passive 5% Bleed proc, Puncture -2,000 P.Def, or teammate combos).
+ */
+export const ROTATION_EXTRA_EFFECTS = Object.freeze([
+    {
+        id: "bleeding",
+        kind: "status",
+        status: "bleeding",
+        label: "Bleeding (Delirium / Bleed)",
+        shortLabel: "Bleeding",
+        durationSec: 14.0,
+        isCC: false,
+    },
+    {
+        id: "puncture",
+        kind: "debuff",
+        debuffId: "puncture",
+        label: "Puncture (-2,000 P.Def)",
+        shortLabel: "Puncture (-2k PDef)",
+        durationSec: 5.0,
+        addDefense: { physicalDefense: -2000 },
+    },
+    {
+        id: "shocked",
+        kind: "status",
+        status: "shocked",
+        label: "Shocked",
+        shortLabel: "Shocked",
+        durationSec: 8.0,
+        isCC: false,
+    },
+    {
+        id: "freezing",
+        kind: "status",
+        status: "freezing",
+        label: "Freezing",
+        shortLabel: "Freezing",
+        durationSec: 4.0,
+        isCC: false,
+    },
+    {
+        id: "burning",
+        kind: "status",
+        status: "burning",
+        label: "Burning",
+        shortLabel: "Burning",
+        durationSec: 5.0,
+        isCC: false,
+    },
+    {
+        id: "poisoned",
+        kind: "status",
+        status: "poisoned",
+        label: "Poisoned",
+        shortLabel: "Poisoned",
+        durationSec: 10.0,
+        isCC: false,
+    },
+    {
+        id: "distressed",
+        kind: "status",
+        status: "distressed",
+        label: "Distressed",
+        shortLabel: "Distressed",
+        durationSec: 4.0,
+        isCC: false,
+    },
+    {
+        id: "shaken",
+        kind: "status",
+        status: "shaken",
+        label: "Shaken",
+        shortLabel: "Shaken",
+        durationSec: 3.0,
+        isCC: false,
+    },
+    {
+        id: "slowed",
+        kind: "status",
+        status: "slowed",
+        label: "Slowed",
+        shortLabel: "Slowed",
+        durationSec: 3.0,
+        isCC: false,
+    },
+    {
+        id: "snared",
+        kind: "status",
+        status: "snared",
+        label: "Snared",
+        shortLabel: "Snared",
+        durationSec: 3.5,
+        isCC: false,
+    },
+    {
+        id: "charmed",
+        kind: "status",
+        status: "charmed",
+        label: "Charmed",
+        shortLabel: "Charmed",
+        durationSec: 8.0,
+        isCC: false,
+    },
+    {
+        id: "stunned",
+        kind: "status",
+        status: "stunned",
+        label: "Stunned (CC)",
+        shortLabel: "Stunned",
+        durationSec: 2.0,
+        isCC: true,
+    },
+    {
+        id: "tripped",
+        kind: "status",
+        status: "tripped",
+        label: "Tripped (CC)",
+        shortLabel: "Tripped",
+        durationSec: 2.5,
+        isCC: true,
+    },
+    {
+        id: "impaled",
+        kind: "status",
+        status: "impaled",
+        label: "Impaled (CC)",
+        shortLabel: "Impaled",
+        durationSec: 2.5,
+        isCC: true,
+    },
+    {
+        id: "resurgence",
+        kind: "status",
+        status: "resurgence",
+        label: "Resurgence (Ally HoT)",
+        shortLabel: "Resurgence",
+        durationSec: 10.0,
+        isCC: false,
+        targetSide: "ally",
+    },
+    {
+        id: "dissonance",
+        kind: "debuff",
+        debuffId: "dissonance",
+        label: "Dissonance (-320 M.Def)",
+        shortLabel: "Dissonance (-320 MDef)",
+        durationSec: 6.0,
+        addDefense: { magicDefense: -320 },
+    },
+    {
+        id: "wallop_shred",
+        kind: "debuff",
+        debuffId: "wallop_shred",
+        label: "Wallop (-480 P.Def)",
+        shortLabel: "Wallop (-480 PDef)",
+        durationSec: 5.0,
+        addDefense: { physicalDefense: -480 },
+    },
+    {
+        id: "stalkers_mark",
+        kind: "debuff",
+        debuffId: "stalkers_mark",
+        label: "Stalker's Mark (-60% Heal)",
+        shortLabel: "Stalker's Mark (-60% Heal)",
+        durationSec: 12.0,
+        addDefense: { receivedHealingPct: -60 },
+    },
+    {
+        id: "enervate",
+        kind: "debuff",
+        debuffId: "enervate",
+        label: "Enervate (-60% Heal)",
+        shortLabel: "Enervate (-60% Heal)",
+        durationSec: 5.0,
+        addDefense: { receivedHealingPct: -60 },
+    },
+]);
+
+const ROTATION_EXTRA_EFFECT_BY_ID = new Map(ROTATION_EXTRA_EFFECTS.map((e) => [e.id, e]));
+
+export function getRotationExtraEffect(id) {
+    return ROTATION_EXTRA_EFFECT_BY_ID.get(String(id || "").toLowerCase()) || null;
+}
 
 export const SKILL_COMBO_BONUSES = Object.freeze({
     vitalism_mend: [
@@ -338,7 +527,11 @@ export function evaluateManualComboStatuses(skill, targetStatuses) {
  * Returns { comboBonusPct, bonusCritRatePct, autoCCLabel, matchedLabels, consumedStatuses }.
  */
 export function evaluateActiveSkillCombos(skill, activeStatuses, atSec) {
-    const live = (activeStatuses || []).filter((st) => st.expiresAtSec > atSec + 1e-6);
+    const live = (activeStatuses || []).filter(
+        (st) =>
+            (st.startedAtSec == null || st.startedAtSec <= atSec + 1e-6) &&
+            st.expiresAtSec > atSec + 1e-6
+    );
     const hasStatus = (name) => live.some((st) => st.status === name);
 
     let comboBonusPct = 0;

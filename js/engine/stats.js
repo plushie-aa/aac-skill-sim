@@ -1105,6 +1105,20 @@ export const COMBAT_MODIFIERS = {
             blockPct: 100,
         },
     },
+    berserkers_instinct: {
+        id: "berserkers_instinct",
+        name: "Berserker's Instinct (3pc Set)",
+        shortEffect: "+1,000 Atk Spd",
+        side: "attacker",
+        category: "weapon_proc",
+        aacBuffId: 9000756,
+        weaponTypes: [],
+        icon: "assets/icons/icon_skill_fight06.png",
+        description: "Enlightened Berserker 3-Piece Set proc (AA Classic buff 9000756): Taking damage triggers +1,000 Attack Speed for 30s (3m cooldown).",
+        addOffense: {
+            attackSpeed: 1000,
+        },
+    },
 
     // =========================================================================
     // AA Classic 1.3.6 Costume Charm / Enlightenment 2-Set Bonuses (mutually exclusive)
@@ -2279,7 +2293,8 @@ export function effectiveGcdSec(
  *  - True Off-GCD skills (gcdSec === 0, no fireIntervalSec) -> 0s rotation footprint, burst = null
  *  - No-GCD rapid-fire skills (gcdSec === 0, fireIntervalSec > 0, e.g. Endless Arrows / Mana Stars)
  *  - Reduced-GCD skills (0 < gcdSec < baseGcdSec, e.g. Resurgence 0.5s, Rapid Strike 0.4s)
- *  - Multi-hit reduced-GCD chains (e.g. Triple Slash 1.5s, Fervent Healing 2.0s, Gods' Whip 1.5s)
+ *  - Multi-hit reduced-GCD chains (e.g. Triple Slash 1.5s, Fervent Healing 2.0s)
+ *  - Inherently Off-GCD instant skills (gcdSec === 0, e.g. Gods' Whip, Spell Shield, Hollow Deadeye)
  *  - Optional per-step overrides in rotation context (context.offGcd / context.gcdOverrideSec)
  */
 export function resolveSkillTiming(skill, actor, totalExpected, constants = DEFAULT_CONSTANTS, context = {}) {

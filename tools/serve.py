@@ -34,6 +34,9 @@ import import_buff  # noqa: E402
 
 REPO_ROOT = TOOLS_DIR.parent
 BUILDS_DIR = REPO_ROOT / "builds"
+GEAR_TEMPLATES_FILE = BUILDS_DIR / "gear-templates.json"
+SKILL_BUILDS_FILE = BUILDS_DIR / "skill-builds.json"
+NON_CHARACTER_BUILD_FILES = {GEAR_TEMPLATES_FILE.name, SKILL_BUILDS_FILE.name}
 EXAMPLE_BUILDS_DIR = REPO_ROOT / "example-builds"
 COMBOS_FILE = REPO_ROOT / "combos" / "combos.json"
 BUFF_LOADOUTS_FILE = REPO_ROOT / "buffs" / "loadouts.json"
@@ -77,7 +80,7 @@ def rebuild_builds_index() -> list[str]:
     files = [
         p.name
         for p in sorted(BUILDS_DIR.glob("*.json"))
-        if not p.name.startswith("_") and VALID_ID_RE.match(p.stem)
+        if not p.name.startswith("_") and p.name not in NON_CHARACTER_BUILD_FILES and VALID_ID_RE.match(p.stem)
     ]
     atomic_write_json(BUILDS_DIR / "_index.json", {"files": files})
     return files
@@ -88,7 +91,7 @@ def _load_builds_from_dir(target_dir: Path, rel_prefix: str, *, is_example: bool
         return []
     builds = []
     for path in sorted(target_dir.glob("*.json")):
-        if not VALID_ID_RE.match(path.stem):
+        if path.name in NON_CHARACTER_BUILD_FILES or not VALID_ID_RE.match(path.stem):
             continue
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
@@ -338,6 +341,48 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
                 },
             )
             return
+        if parsed.path == "/api/gear-templates":
+            templates = []
+            if GEAR_TEMPLATES_FILE.exists():
+                try:
+                    loaded = json.loads(GEAR_TEMPLATES_FILE.read_text(encoding="utf-8"))
+                    if isinstance(loaded, list):
+                        templates = loaded
+                    elif isinstance(loaded, dict) and isinstance(loaded.get("templates"), list):
+                        templates = loaded["templates"]
+                except (OSError, json.JSONDecodeError):
+                    templates = []
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "ok": True,
+                    "mode": "disk",
+                    "filename": "builds/gear-templates.json",
+                    "templates": templates,
+                },
+            )
+            return
+        if parsed.path == "/api/skill-builds":
+            skill_builds = []
+            if SKILL_BUILDS_FILE.exists():
+                try:
+                    loaded = json.loads(SKILL_BUILDS_FILE.read_text(encoding="utf-8"))
+                    if isinstance(loaded, list):
+                        skill_builds = loaded
+                    elif isinstance(loaded, dict) and isinstance(loaded.get("skillBuilds"), list):
+                        skill_builds = loaded["skillBuilds"]
+                except (OSError, json.JSONDecodeError):
+                    skill_builds = []
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "ok": True,
+                    "mode": "disk",
+                    "filename": "builds/skill-builds.json",
+                    "skillBuilds": skill_builds,
+                },
+            )
+            return
         if parsed.path == "/api/economy-prices":
             data = None
             if ECONOMY_PRICES_FILE.exists():
@@ -566,6 +611,56 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
                     "mode": "disk",
                     "filename": "buffs/loadouts.json",
                     "count": len(loadouts),
+                },
+            )
+            return
+        if parsed.path == "/api/gear-templates":
+            payload = self._read_json_body()
+            if payload is None:
+                return
+            templates = payload if isinstance(payload, list) else (payload.get("templates") if isinstance(payload, dict) else None)
+            if not isinstance(templates, list):
+                self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Expected templates array"})
+                return
+            try:
+                atomic_write_json(GEAR_TEMPLATES_FILE, {"templates": templates})
+            except OSError as exc:
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Write failed: {exc}"})
+                return
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "ok": True,
+                    "mode": "disk",
+                    "filename": "builds/gear-templates.json",
+                    "count": len(templates),
+                },
+            )
+            return
+        if parsed.path == "/api/skill-builds":
+            payload = self._read_json_body()
+            if payload is None:
+                return
+            skill_builds = (
+                payload
+                if isinstance(payload, list)
+                else (payload.get("skillBuilds") if isinstance(payload, dict) else None)
+            )
+            if not isinstance(skill_builds, list):
+                self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Expected skillBuilds array"})
+                return
+            try:
+                atomic_write_json(SKILL_BUILDS_FILE, {"skillBuilds": skill_builds})
+            except OSError as exc:
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Write failed: {exc}"})
+                return
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "ok": True,
+                    "mode": "disk",
+                    "filename": "builds/skill-builds.json",
+                    "count": len(skill_builds),
                 },
             )
             return
