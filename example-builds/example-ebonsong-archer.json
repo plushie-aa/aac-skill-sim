@@ -10,7 +10,7 @@
     "category": "archer",
     "title": "General",
     "equipmentType": "dual_wield",
-    "gearScore": 7282.3,
+    "gearScore": 8459.6,
     "darugearBuffs": [
       {
         "id": 6605,
@@ -44,79 +44,78 @@
       "Allegretto",
       "Zeal"
     ],
-    "importedAt": "2026-11-25T04:00:50.946Z"
+    "importedAt": "2026-11-25T06:34:47.994Z"
   },
   "shareUrl": null,
   "darugearUrl": null,
   "shareCode": null,
   "className": "Ebonsong",
   "level": 55,
-  "gearScore": 7282.3,
-  "maxHealth": 19691,
-  "maxMana": 11613,
+  "gearScore": 8459.6,
+  "maxHealth": 23930,
+  "maxMana": 14547,
   "baseAttributes": {
-    "str": 158,
+    "str": 8,
     "agi": 458,
     "sta": 158,
-    "int": 8,
+    "int": 158,
     "spi": 8
   },
   "attributes": {
-    "str": 371,
-    "agi": 1666,
-    "sta": 243,
-    "int": 33,
-    "spi": 33
+    "str": 33,
+    "int": 306,
+    "agi": 1657,
+    "spi": 33,
+    "sta": 639
   },
   "offense": {
-    "meleeAttack": 663.32,
-    "rangedAttack": 1010.2,
-    "magicAttack": 6.6,
-    "healingPower": 6.6,
-    "meleeAccuracyPct": 95.7,
+    "meleeAttack": 779.66,
+    "rangedAttack": 1164.5,
+    "magicAttack": 61.2,
+    "healingPower": 743.6,
+    "meleeAccuracyPct": 91.6,
     "rangedAccuracyPct": 100,
-    "magicAccuracyPct": 91.6,
-    "meleeCritRatePct": 49.5,
-    "rangedCritRatePct": 31.6,
-    "magicCritRatePct": 4.6,
+    "magicAccuracyPct": 95,
+    "meleeCritRatePct": 45.6,
+    "rangedCritRatePct": 35.6,
+    "magicCritRatePct": 8.4,
     "healCritRatePct": 0.9,
     "meleeCritBonusPct": 60.3,
-    "rangedCritBonusPct": 116.3,
+    "rangedCritBonusPct": 199.3,
     "magicCritBonusPct": 60.3,
     "healCritBonusPct": 60.3,
-    "meleeSkillDamagePct": 0,
-    "rangedSkillDamagePct": 0,
-    "magicSkillDamagePct": 0,
+    "meleeSkillDamagePct": 3,
+    "rangedSkillDamagePct": 11.4,
+    "magicSkillDamagePct": 5,
     "healingPct": 0,
     "backstabMeleeDamagePct": 0,
     "backstabRangedDamagePct": 0,
     "backstabMagicDamagePct": 0,
-    "defensePenetration": 2826,
-    "magicDefensePenetration": 0,
+    "focus": 0,
     "shieldDefPenRatePct": 0,
     "shieldDefPenPct": 0,
-    "focus": 1710,
-    "attackSpeed": 374,
+    "defensePenetration": 3032,
+    "magicDefensePenetration": 0,
+    "attackSpeed": 230,
     "castTimePct": 100
   },
   "defense": {
-    "physicalDefense": 7974,
-    "magicDefense": 9049,
+    "physicalDefense": 9104,
+    "magicDefense": 8818,
     "shieldPhysicalDefense": 0,
-    "toughness": 1765,
-    "resilience": 2400,
-    "evasionPct": 21.5,
-    "parryPct": 8.9,
-    "rangedParryPct": 0,
-    "blockPct": 0,
     "hasShield": false,
     "dualWieldRangedParry": false,
-    "receivedMeleeDrPct": 3,
-    "receivedRangedDrPct": 3,
-    "receivedMagicDrPct": 3,
-    "fixedMeleeDr": 47,
-    "fixedRangedDr": 47,
-    "fixedMagicDr": 50,
+    "parryPct": 4,
+    "blockPct": 0,
+    "evasionPct": 41.9,
+    "resilience": 3360,
+    "toughness": 3844,
+    "receivedMeleeDrPct": 11.9,
+    "receivedRangedDrPct": 5.9,
+    "receivedMagicDrPct": 11.9,
+    "fixedMeleeDr": 50,
+    "fixedRangedDr": 50,
+    "fixedMagicDr": 49,
     "receivedHealingPct": 0
   },
   "modifiers": [],
@@ -129,62 +128,89 @@
       "name": "Ranged Basic Costume",
       "type": "Synthesis Gear",
       "icon": "assets/icons/icon_item_3288.png",
-      "gradeId": 10,
-      "gradeName": "Legendary",
-      "gradeColor": "#ffb326",
+      "gradeId": 11,
+      "gradeName": "Mythic",
+      "gradeColor": "#ef233c",
+      "lunafrost": {
+        "name": "Gale Charm",
+        "text": "Gale Enlightenment (2): Critical strikes increase movement speed by 3%. Stacks up to 10 times."
+      },
       "synthStats": [
-        "Ranged Attack (34.5~38.5) +54",
-        "Ranged Critical Rate (3.1~3.8%) +4.5%",
-        "Ranged Critical Damage (8.2~9.2%) +23%",
-        "Defense Penetration (525~595) +580"
+        "Ranged Critical Damage (9.5~10.5%) +10.5%",
+        "Ranged Critical Rate (3.9~4.6%) +4.6%",
+        "Ranged Attack (39~43) +43",
+        "Defense Penetration (595~675) +675",
+        "Ranged Skill Damage (2.9~3.2%) +3.2%"
       ]
     },
     {
       "slotId": 1,
       "slotName": "Head",
-      "itemId": 31516,
-      "name": "Ayanad Gale Cap",
+      "itemId": 35706,
+      "name": "Dashing Evanescence Cap",
       "type": "Leather",
-      "icon": "assets/icons/costume_hm/nu_f_hm_leather175.png",
+      "icon": "assets/icons/costume_hm/nu_m_hm_leather199.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 108,
+      "ptemper": 114,
+      "mtemper": 113,
       "lunafrost": {
         "name": "Astral Gale Lunadrop",
         "text": "Agility +9"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
+        },
+        {
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
+        },
+        {
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
+        },
+        {
+          "name": "Vivid Earth Lunascale: Mastery",
+          "text": "Toughness +176"
         }
       ]
     },
     {
       "slotId": 2,
       "slotName": "Chest",
-      "itemId": 31517,
-      "name": "Ayanad Gale Jerkin",
+      "itemId": 35707,
+      "name": "Dashing Evanescence Jerkin",
       "type": "Leather",
-      "icon": "assets/icons/costume_ar/nu_f_ar_leather175.png",
+      "icon": "assets/icons/costume_ar/nu_m_ar_leather199.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 108,
+      "ptemper": 111,
+      "mtemper": 115,
       "lunafrost": {
         "name": "Honorbold Warrior's Lunafrost",
         "text": "Received Damage -3%"
       },
       "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
+        {
+          "name": "Radiant Earth Lunagem: Flexibility",
+          "text": "Resilience +480"
+        },
         {
           "name": "Radiant Earth Lunagem: Flexibility",
           "text": "Resilience +480"
@@ -217,19 +243,28 @@
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 106,
+      "ptemper": 110,
+      "mtemper": 115,
       "lunafrost": {
-        "name": "Astral Gale Lunadrop",
-        "text": "Agility +9"
+        "name": "Erenor Gale Lunafrost",
+        "text": "Ranged Attack +10"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
+        },
+        {
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
+        },
+        {
+          "name": "Lucid Eternal Songcraft Lunagem",
+          "text": "Increases Zeal duration +0.7 seconds."
         }
       ]
     },
@@ -243,84 +278,112 @@
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 106,
+      "ptemper": 114,
+      "mtemper": 113,
       "lunafrost": {
-        "name": "Astral Gale Lunadrop",
-        "text": "Agility +9"
+        "name": "Erenor Gale Lunafrost",
+        "text": "Ranged Attack +10"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
+        },
+        {
+          "name": "Lucid Wave Lunagem: Defense",
+          "text": "Physical Defense +100"
         }
       ]
     },
     {
       "slotId": 5,
       "slotName": "Hands",
-      "itemId": 31519,
-      "name": "Ayanad Gale Fists",
+      "itemId": 35709,
+      "name": "Dashing Evanescence Fists",
       "type": "Leather",
-      "icon": "assets/icons/costume_gv/nu_m_gv_leather175.png",
+      "icon": "assets/icons/costume_gv/nu_m_gv_leather199.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 108,
+      "ptemper": 111,
+      "mtemper": 113,
       "lunafrost": {
-        "name": "Astral Gale Lunadrop",
-        "text": "Agility +9"
+        "name": "Honorbold Agility Lunafrost",
+        "text": "Ranged Critical Damage +12%"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Finesse",
+          "text": "Evasion +3%"
         }
       ]
     },
     {
       "slotId": 6,
       "slotName": "Cloak",
-      "itemId": 43122,
-      "name": "Erenor Flaming Arrowflash Cloak",
+      "itemId": 43116,
+      "name": "Erenor Flaming Windsong Cloak",
       "type": "Cloak",
-      "icon": "assets/icons/costume_cp/nu_m_cp_cloth289.png",
-      "gradeId": 9,
-      "gradeName": "Epic",
-      "gradeColor": "#f0f6ff",
+      "icon": "assets/icons/costume_cp/nu_m_cp_cloth286.png",
+      "gradeId": 11,
+      "gradeName": "Mythic",
+      "gradeColor": "#ef233c",
+      "lunafrost": {
+        "name": "Perfect Gale Lunafrost",
+        "text": "Increases Agility +4 with each attack, stacking up to 5 times. Increases all Attacks +3 when the max number of stacks is reached."
+      },
       "synthStats": [
-        "Agility (80~91) +102",
-        "Stamina (69~79) +60",
-        "Ranged Critical Damage +15%"
+        "Ranged Critical Damage (11.2~12%) +12%",
+        "Stamina (108~123) +123",
+        "Intelligence (108~123) +123",
+        "Agility (108~123) +123"
       ]
     },
     {
       "slotId": 7,
       "slotName": "Legs",
-      "itemId": 31518,
-      "name": "Ayanad Gale Breeches",
+      "itemId": 35708,
+      "name": "Dashing Evanescence Breeches",
       "type": "Leather",
-      "icon": "assets/icons/costume_pt/nu_f_pt_leather175.png",
+      "icon": "assets/icons/costume_pt/nu_f_pt_leather198.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 108,
+      "ptemper": 113,
+      "mtemper": 114,
       "lunafrost": {
-        "name": "Astral Gale Lunadrop",
-        "text": "Agility +9"
+        "name": "Honorbold Experienced Lunafrost",
+        "text": "Toughness +335"
       },
       "lunagems": [
+        {
+          "name": "Radiant Earth Lunagem: Mastery",
+          "text": "Toughness +353"
+        },
         {
           "name": "Radiant Earth Lunagem: Mastery",
           "text": "Toughness +353"
@@ -346,46 +409,55 @@
     {
       "slotId": 8,
       "slotName": "Feet",
-      "itemId": 31520,
-      "name": "Ayanad Gale Boots",
+      "itemId": 35710,
+      "name": "Dashing Evanescence Boots",
       "type": "Leather",
-      "icon": "assets/icons/costume_bo/nu_f_bo_leather175.png",
+      "icon": "assets/icons/costume_bo/nu_m_bo_leather199.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 108,
+      "ptemper": 111,
+      "mtemper": 114,
       "lunafrost": {
-        "name": "Flawless Assassin's Lunafrost",
-        "text": "Move Speed +5%"
+        "name": "Honorbold Experienced Lunafrost",
+        "text": "Toughness +335"
       },
       "lunagems": [
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
         },
         {
-          "name": "Lucid Wave Lunagem: Magic Defense",
-          "text": "Magic Defense +100"
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
+        },
+        {
+          "name": "Lucid Earth Lunagem: Celerity",
+          "text": "Move Speed +3%"
+        },
+        {
+          "name": "Lucid Refined Lunagem: Defense",
+          "text": "Physical Defense +100"
         }
       ]
     },
     {
       "slotId": 9,
       "slotName": "Undergarments",
-      "itemId": 8001856,
-      "name": "Ranged Black Cat Undergarments",
+      "itemId": 8001844,
+      "name": "Ranged Black Pearl Undergarments",
       "type": "Synthesis Gear",
-      "icon": "assets/icons/costume_set/nu_f_in_pants008_df.png",
-      "gradeId": 10,
-      "gradeName": "Legendary",
-      "gradeColor": "#ffb326",
+      "icon": "assets/icons/costume_set/nu_f_in_pants007_df.png",
+      "gradeId": 11,
+      "gradeName": "Mythic",
+      "gradeColor": "#ef233c",
       "lunafrost": {
-        "name": "Astral Gale Lunadrop",
-        "text": "Agility +9"
+        "name": "Secret Gale Lunatear",
+        "text": "Agility +15"
       },
       "lunagems": [
         {
@@ -406,54 +478,56 @@
         }
       ],
       "synthStats": [
-        "Ranged Critical Damage +18%",
-        "Defense Penetration (360~400) +540",
-        "Attack Speed +45%"
+        "Received Melee Damage (-5.5~-6%) -6%",
+        "Defense Penetration (415~461) +461",
+        "Received Magic Damage (-5.5~-6%) -6%",
+        "Ranged Critical Rate (3.3~4%) +4%",
+        "Ranged Skill Damage (2.7~3.2%) +3.2%"
       ]
     },
     {
       "slotId": 10,
       "slotName": "Neck",
-      "itemId": 9001877,
-      "name": "Enlightened Ayanad Gale Necklace",
+      "itemId": 9002024,
+      "name": "Enlightened Berserker Necklace",
       "type": "Necklace",
-      "icon": "assets/icons/aac/enlightened_gale_necklace.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/bloodlust_necklace.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Tracker Lunafrost",
-        "text": "Ranged Attack +3; Magic Defense +53"
+        "name": "Hollow Archery Mark",
+        "text": "Enlightens Deadeye, |ns;corrupting its essence, transforming it into |ns;Hollow Deadeye."
       }
     },
     {
       "slotId": 11,
       "slotName": "Earring",
-      "itemId": 9001889,
-      "name": "Enlightened Ayanad Gale Earring",
+      "itemId": 9001888,
+      "name": "Enlightened Ayanad Wave Earring",
       "type": "Earring",
-      "icon": "assets/icons/aac/enlightened_gale_earring.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/enlightened_wave_earring.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Tracker Lunafrost",
-        "text": "Ranged Attack +3; Magic Defense +53"
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
       }
     },
     {
       "slotId": 12,
       "slotName": "Earring",
-      "itemId": 18819,
-      "name": "Delphinad Gale Earring",
+      "itemId": 9001928,
+      "name": "Enlightened Shadow Earrings",
       "type": "Earring",
-      "icon": "assets/icons/icon_item_earring_0032.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
+      "icon": "assets/icons/aac/shadow_earring.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Tracker Lunafrost",
-        "text": "Ranged Attack +3; Magic Defense +53"
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
       }
     },
     {
@@ -463,145 +537,209 @@
       "name": "Enlightened Ayanad Gale Ring",
       "type": "Ring",
       "icon": "assets/icons/aac/enlightened_gale_ring.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
       "lunafrost": {
-        "name": "Distorted Tracker Lunafrost",
-        "text": "Ranged Attack +3; Magic Defense +53"
+        "name": "Perfect Gale Lunasigil",
+        "text": "Agility +35"
       }
     },
     {
       "slotId": 14,
       "slotName": "Ring",
-      "itemId": 9001884,
-      "name": "Enlightened Ayanad Gale Ring",
+      "itemId": 28802,
+      "name": "Flawless Dream Ring",
       "type": "Ring",
-      "icon": "assets/icons/aac/enlightened_gale_ring.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
+      "icon": "assets/icons/icon_item_ring_0020.png",
+      "gradeId": 7,
+      "gradeName": "Celestial",
+      "gradeColor": "#ff5c6a",
       "lunafrost": {
-        "name": "Distorted Tracker Lunafrost",
-        "text": "Ranged Attack +3; Magic Defense +53"
+        "name": "Indomitable Tracker Lunafrost",
+        "text": "Physical Defense +53; Ranged Attack +3"
       }
     },
     {
       "slotId": 15,
       "slotName": "Right Hand Weapon",
-      "itemId": 31338,
-      "name": "Ayanad Flame Katana",
-      "type": "Katana",
-      "icon": "assets/icons/icon_item_blade_1h_0083.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "ptemper": 106,
+      "itemId": 40603,
+      "name": "Fatesealer",
+      "type": "Obsidian Shortspear",
+      "icon": "assets/icons/icon_item_spear_1h_0091.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "ptemper": 115,
+      "mtemper": 110,
+      "lunafrost": {
+        "name": "Perfect Destroyer Lunafrost (1H)",
+        "text": "Activates the effects of Dimensional Destroyer on attack."
+      },
       "lunagems": [
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
         }
       ]
     },
     {
       "slotId": 16,
       "slotName": "Left Hand Weapon",
-      "itemId": 31324,
-      "name": "Ayanad Flame Sword",
-      "type": "Sword",
-      "icon": "assets/icons/icon_item_sword_1h_0091.png",
-      "gradeId": 8,
-      "gradeName": "Divine",
-      "gradeColor": "#d9a466",
-      "ptemper": 106,
+      "itemId": 40572,
+      "name": "Assassin's Secret",
+      "type": "Dagger",
+      "icon": "assets/icons/icon_item_dagger_0099.png",
+      "gradeId": 9,
+      "gradeName": "Epic",
+      "gradeColor": "#f0f6ff",
+      "lunafrost": {
+        "name": "Honorbold Prophet's Lunafrost",
+        "text": "Magic Skill Damage +2%"
+      },
       "lunagems": [
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
         },
         {
-          "name": "Radiant Gale Lunagem: Mastery",
-          "text": "Focus +285"
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
+        },
+        {
+          "name": "Lucid Gale Lunagem: Serenity",
+          "text": "Ranged Critical Damage +4%"
         }
       ]
     },
     {
       "slotId": 17,
       "slotName": "Ranged Weapon",
-      "itemId": 31409,
-      "name": "Ayanad Gale Bow",
+      "itemId": 40621,
+      "name": "Deathfletcher",
       "type": "Bow",
-      "icon": "assets/icons/icon_item_bow_0086.png",
+      "icon": "assets/icons/icon_item_bow_0094.png",
       "gradeId": 9,
       "gradeName": "Epic",
       "gradeColor": "#f0f6ff",
-      "ptemper": 113,
+      "ptemper": 115,
+      "lunafrost": {
+        "name": "Honorbold Sniper's Lunafrost",
+        "text": "Ranged Skill Damage +2%"
+      },
       "lunagems": [
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
+        },
+        {
+          "name": "Vivid Gale Lunascale: Pierce",
+          "text": "Defense Penetration +30"
+        },
+        {
+          "name": "Vivid Gale Lunascale: Pierce",
+          "text": "Defense Penetration +30"
         }
       ]
     },
     {
       "slotId": 18,
       "slotName": "Instrument",
-      "itemId": 31424,
-      "name": "Ayanad Gale Lute",
+      "itemId": 35572,
+      "name": "Aria of Archery",
       "type": "Lute",
-      "icon": "assets/icons/icon_item_ins_s_0048.png",
+      "icon": "assets/icons/icon_item_ins_s_0058.png",
       "gradeId": 8,
       "gradeName": "Divine",
       "gradeColor": "#d9a466",
       "lunafrost": {
-        "name": "Distorted Tracker Lunafrost",
-        "text": "Ranged Attack +3; Magic Defense +53"
+        "name": "Indomitable Tracker Lunafrost",
+        "text": "Physical Defense +53; Ranged Attack +3"
       },
       "lunagems": [
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
         },
         {
-          "name": "Lucid Gale Lunagem: Pierce",
-          "text": "Defense Penetration +60"
+          "name": "Lucid Fire Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
+        },
+        {
+          "name": "Lucid Refined Lunagem: Sharpshot",
+          "text": "Ranged Attack +6"
+        },
+        {
+          "name": "Vivid Gale Lunascale: Pierce",
+          "text": "Defense Penetration +30"
+        },
+        {
+          "name": "Vivid Gale Lunascale: Pierce",
+          "text": "Defense Penetration +30"
         }
       ]
     }
@@ -651,5 +789,5 @@
   },
   "savedId": "example-ebonsong-archer",
   "filename": "builds/example-ebonsong-archer.json",
-  "savedAt": "2026-11-25T04:56:49.825056+00:00"
+  "savedAt": "2026-11-25T06:36:24.142766+00:00"
 }
