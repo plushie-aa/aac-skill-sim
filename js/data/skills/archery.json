@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_archery.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 18,
+  "skillCount": 19,
   "skills": [
     {
       "id": "archery_charged_bolt",
@@ -637,6 +637,22 @@
       "cooldownSec": 60.0,
       "castTimeSec": 0.0,
       "icon": "icon_hollow_deadeye.png"
+    },
+    {
+      "id": "archery_snare",
+      "skillset": "archery",
+      "name": "Snare",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE 5m Snared (3.5s PvP) + -15% Evd/Blk/Pry",
+      "damageType": "utility",
+      "scalingStat": "rangedAttack",
+      "abilityLevel": 30,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_wild14.png",
+      "description": "Removes Shackle from the caster, Snares enemies within 5m (3.5s PvP / 7s PvE), and reduces targets' Evasion, Block, and Parry rates (-15%). Enables Snipe / Concussive / Tiger Strike Snared combos."
     }
   ]
 }

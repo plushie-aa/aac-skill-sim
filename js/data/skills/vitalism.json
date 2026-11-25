@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_vitalism.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 13,
+  "skillCount": 15,
   "skills": [
     {
       "id": "vitalism_holy_bolt",
@@ -650,6 +650,38 @@
       "gcdSec": 0.4,
       "gcdNote": "Reduced GCD (0.40s base per cast, scales with Attack Speed)",
       "ancestralElement": "lightning"
+    },
+    {
+      "id": "vitalism_mirror_light",
+      "skillset": "vitalism",
+      "name": "Mirror Light (Enemy)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "Snared (3s PvP) + +12% Recv Dmg & -30% Recv Heal (15s)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "abilityLevel": 3,
+      "cooldownSec": 15.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_love02.png",
+      "description": "Enemy cast: inflicts Snare (3.0s PvP / 6.0s PvE), increases target Received Damage +12%, and decreases target Received Healing -30% for 15s."
+    },
+    {
+      "id": "vitalism_whirlwind_blessing",
+      "skillset": "vitalism",
+      "name": "Whirlwind's Blessing",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE 30m Slowed (-15% Move, -175 Atk Spd for 30s)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "abilityLevel": 55,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_love29.png",
+      "description": "Increases ally Attack Speed +250 and Move Speed +20% within 30m, and decreases enemy Attack Speed -175 and Move Speed -15% for 30s."
     }
   ]
 }

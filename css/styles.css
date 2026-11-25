@@ -3929,6 +3929,57 @@ button.danger-sm:hover {
     color: #fde68a;
 }
 
+.stag-cc {
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(192, 132, 252, 0.55);
+    color: #e9d5ff;
+}
+
+.stag-cc-sub {
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(192, 132, 252, 0.36);
+    color: #ddd6fe;
+}
+
+.stag-debuff-role {
+    background: rgba(249, 115, 22, 0.18);
+    border: 1px solid rgba(251, 146, 60, 0.5);
+    color: #fed7aa;
+}
+
+.stag-equip {
+    background: rgba(20, 184, 166, 0.18);
+    border: 1px solid rgba(45, 212, 191, 0.55);
+    color: #99f6e4;
+}
+
+.stag-equipped-hit {
+    background: rgba(34, 197, 94, 0.18);
+    border: 1px solid rgba(74, 222, 128, 0.5);
+    color: #86efac;
+    font-weight: 700;
+}
+
+.pill-equip {
+    border-color: rgba(45, 212, 191, 0.45);
+    color: #99f6e4;
+}
+
+.pill-equip.active {
+    background: rgba(20, 184, 166, 0.28);
+    border-color: rgba(45, 212, 191, 0.85);
+    color: #ccfbf1;
+}
+
+.rot-picker-card-equip {
+    border-color: rgba(45, 212, 191, 0.32);
+    background: rgba(15, 35, 42, 0.55);
+}
+
+.rot-picker-card-equip:hover {
+    border-color: rgba(45, 212, 191, 0.72);
+}
+
 .stag-cast {
     background: rgba(168, 85, 247, 0.16);
     border: 1px solid rgba(192, 132, 252, 0.45);
@@ -7778,6 +7829,24 @@ body.simple-mode .eff-stat-tile {
 /* Settings — Credits & License Tab */
 .credits-card {
     gap: 8px;
+}
+
+.credits-badges {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.credits-version-pill {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: #86efac;
+    background: rgba(34, 197, 94, 0.14);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    padding: 2px 8px;
+    border-radius: 999px;
 }
 
 .credits-author-pill {

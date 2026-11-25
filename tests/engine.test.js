@@ -4945,5 +4945,156 @@ export async function runAllTests() {
         assert(p21.some((s) => s.unit_attribute_id === 199 && s.display_text.startsWith("PvE Received Damage")), "aid 199 labeled PvE Received Damage");
     });
 
+    await test("61. Non-damage CC/debuff active skills & Equip Effects (Corrupted Kyrios pull, Wicked Whisper, Mirror Light, Charmed Bulwark, Banshee Wail, Ayanad Earring)", async () => {
+        const idxRes = await fetch("../js/data/skills/index.json", { cache: "no-store" });
+        assert(idxRes.ok, "js/data/skills/index.json loads");
+        const idx = await idxRes.json();
+        assert(
+            idx.skillsets.some((t) => t.skillset === "equipment" && t.file === "equipment.json"),
+            "skills/index.json includes equipment.json (Equip Effects)"
+        );
+
+        const skillMap = new Map();
+        for (const meta of idx.skillsets) {
+            const r = await fetch(`../js/data/skills/${meta.file}`, { cache: "no-store" });
+            assert(r.ok, `skills/${meta.file} loads`);
+            const d = await r.json();
+            for (const s of d.skills || []) skillMap.set(s.id, s);
+        }
+
+        // Verify key new non-damage CC/debuff class skills & equip effects exist as utility skills
+        const kyriosPull = skillMap.get("equip_corrupted_kyrios_pull");
+        const wickedSup = skillMap.get("equip_wicked_whisper_supreme");
+        const ayanadEar = skillMap.get("equip_ayanad_earring_crit");
+        const mirrorLight = skillMap.get("vitalism_mirror_light");
+        const startling = skillMap.get("songcraft_startling_strain");
+        const bulwark = skillMap.get("songcraft_bulwark_ballad");
+        const banshee = skillMap.get("witchcraft_banshee_wail");
+        const archerySnare = skillMap.get("archery_snare");
+        const arcLightning = skillMap.get("sorcery_arc_lightning");
+        const snipe = skillMap.get("archery_snipe");
+        const precision = skillMap.get("battlerage_precision_strike");
+
+        assert(kyriosPull && kyriosPull.kind === "utility" && kyriosPull.gcdSec === 0, "Corrupted / Primal Kyrios Pull exists as Off-GCD utility");
+        assert(wickedSup && wickedSup.kind === "utility", "Supreme Wicked Whisper Dagger exists as utility debuff");
+        assert(ayanadEar && ayanadEar.kind === "utility" && ayanadEar.gcdSec === 0, "Great Ayanad Earring exists as Off-GCD utility");
+        assert(mirrorLight && mirrorLight.kind === "utility", "Mirror Light (Enemy) exists as utility debuff");
+        assert(startling && startling.kind === "utility", "Startling Strain exists as utility CC");
+        assert(bulwark && bulwark.kind === "utility", "[Perform] Bulwark Ballad exists as utility debuff");
+        assert(banshee && banshee.kind === "utility", "Banshee Wail exists as utility CC");
+        assert(archerySnare && archerySnare.kind === "utility", "Archery Snare exists as utility CC/debuff");
+
+        const attacker = createDefaultCharacter({
+            name: "Combo Tester",
+            attackSpeedPct: 100,
+            castTimePct: 100,
+            offense: {
+                meleeAttack: 1100,
+                rangedAttack: 1100,
+                magicAttack: 1100,
+                meleeCritRatePct: 25,
+                rangedCritRatePct: 25,
+                magicCritRatePct: 25,
+                meleeCritBonusPct: 150,
+                rangedCritBonusPct: 150,
+                magicCritBonusPct: 150,
+            },
+        });
+        const defender = createDefaultCharacter({
+            name: "Dummy Target",
+            maxHealth: 40000,
+            defense: {
+                physicalDefense: 6000,
+                magicDefense: 6000,
+                evasionPct: 20,
+                parryPct: 20,
+                blockPct: 20,
+                shieldPhysicalDefense: 1000,
+                toughness: 1000,
+                resilience: 2000,
+            },
+        });
+
+        // 1. Corrupted Kyrios Pull (Off-GCD 0.00s) -> grants Pulled CC span & triggers auto-CC on follow-up
+        const rotKyrios = simulateRotation(attacker, defender, [
+            { skill: kyriosPull },
+            { skill: precision },
+        ]);
+        assert(rotKyrios.steps[0].durationSec === 0, "Corrupted Kyrios Pull takes 0.00s (Off-GCD)");
+        assert(
+            rotKyrios.effectSpans.some((sp) => sp.id === "pulled" && sp.isCC),
+            "Corrupted Kyrios Pull records Pulled CC span on timeline"
+        );
+        assert(
+            rotKyrios.steps[1].autoCCLabel && rotKyrios.steps[1].autoCCLabel.includes("Pulled"),
+            "Precision Strike after Corrupted Kyrios Pull gets Auto-CC bypass"
+        );
+
+        // 2. Supreme Wicked Whisper (-850 PDef/MDef) & Mirror Light (+12% Recv Dmg) boost follow-up Arc Lightning
+        const baseArc = simulateRotation(attacker, defender, [{ skill: arcLightning }]);
+        const wwArc = simulateRotation(attacker, defender, [{ skill: wickedSup }, { skill: arcLightning }]);
+        const mlArc = simulateRotation(attacker, defender, [{ skill: mirrorLight }, { skill: arcLightning }]);
+        assert(
+            wwArc.totalDamageExpected > baseArc.totalDamageExpected * 1.03,
+            `Supreme Wicked Whisper (-850 MDef) increases Arc Lightning expected dmg (${Math.round(baseArc.totalDamageExpected)} -> ${Math.round(wwArc.totalDamageExpected)})`
+        );
+        assert(
+            mlArc.totalDamageExpected > baseArc.totalDamageExpected * 1.1,
+            `Mirror Light (+12% Recv Dmg) increases Arc Lightning expected dmg (${Math.round(baseArc.totalDamageExpected)} -> ${Math.round(mlArc.totalDamageExpected)})`
+        );
+
+        // 3. Startling Strain (0-2s Stun -> 2-14s Charm + -20% Cast Time) + Bulwark Ballad (-50% PDef/MDef on Charm)
+        const rotCharm = simulateRotation(attacker, defender, [
+            { skill: startling },
+            { skill: bulwark },
+            { skill: arcLightning, delaySec: 0 },
+        ]);
+        const charmSpan = rotCharm.effectSpans.find((sp) => sp.id === "charmed");
+        const unguardedSpan = rotCharm.effectSpans.find((sp) => sp.id === "charm_unguarded");
+        assert(charmSpan && charmSpan.startSec >= 1.9, "Startling Strain schedules Charmed after 2.0s Stun");
+        assert(unguardedSpan && unguardedSpan.startSec >= 1.9, "Bulwark Ballad activates Charm: Unguarded once Charm begins");
+        assert(
+            rotCharm.steps[2].result.expected > baseArc.totalDamageExpected * 1.15,
+            `Charmed Bulwark Ballad (-50% MDef) boosts Arc Lightning (${Math.round(baseArc.totalDamageExpected)} -> ${Math.round(rotCharm.steps[2].result.expected)})`
+        );
+        assert(
+            rotCharm.steps[2].castSec < baseArc.steps[0].castSec,
+            `Startling Strain -20% Cast Time speeds up Arc Lightning (${baseArc.steps[0].castSec.toFixed(2)}s -> ${rotCharm.steps[2].castSec.toFixed(2)}s)`
+        );
+
+        // 4. Banshee Wail delayed Fear (0-2.8s) -> Stun (2.8-4.8s)
+        const rotBanshee = simulateRotation(attacker, defender, [{ skill: banshee }]);
+        const fearSp = rotBanshee.effectSpans.find((sp) => sp.id === "feared");
+        const stunSp = rotBanshee.effectSpans.find((sp) => sp.id === "stunned");
+        assert(fearSp && stunSp && stunSp.startSec > fearSp.startSec + 2.5, "Banshee Wail chains Feared (2.8s) -> Stunned (2.0s)");
+
+        // 5. Great Ayanad Earring (+70% Crit Rate for 2.0s) boosts crit rate within 2s and expires after
+        const rotAyanad = simulateRotation(attacker, defender, [
+            { skill: ayanadEar },
+            { skill: precision },
+            { skill: precision, delaySec: 2.5 },
+            { skill: precision },
+        ]);
+        const crInside = rotAyanad.steps[1].result.breakdown.effectiveCritRatePct;
+        const crAfter = rotAyanad.steps[3].result.breakdown.effectiveCritRatePct;
+        assert(
+            crInside > crAfter + 50,
+            `Great Ayanad Earring boosts crit rate inside 2.0s window (${crInside.toFixed(1)}% vs ${crAfter.toFixed(1)}% after expiry)`
+        );
+
+        // 6. Archery Snare applies Snared (triggers Snipe +18% combo) and lowers target avoidance
+        const baseSnipe = simulateRotation(attacker, defender, [{ skill: snipe }]);
+        const snareSnipe = simulateRotation(attacker, defender, [{ skill: archerySnare }, { skill: snipe }]);
+        assert(
+            snareSnipe.steps[1].autoComboBonusPct >= 18,
+            `Archery Snare triggers Snipe Snared combo (+${snareSnipe.steps[1].autoComboBonusPct}%)`
+        );
+        assert(
+            snareSnipe.steps[1].result.breakdown.avoidance.connectPct >
+                baseSnipe.steps[0].result.breakdown.avoidance.connectPct,
+            "Archery Snare reduces target Evasion/Block/Parry avoidance"
+        );
+    });
+
     return results;
 }

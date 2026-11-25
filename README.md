@@ -1,4 +1,4 @@
-# ArcheAge Classic Skill & Damage Simulator
+# ArcheAge Classic Skill & Damage Simulator `v0.2.0`
 
 HTML + vanilla JavaScript (ES Modules) damage, gear, and build economy simulator for ArcheAge Classic.
 
@@ -16,7 +16,7 @@ python tools/serve.py --host 127.0.0.1 --port 8765
 
 Then open:
 - **Simulator:** `http://127.0.0.1:8765/index.html`
-- **Engine Unit Tests:** `http://127.0.0.1:8765/tests/run-tests.html` (`44 / 44` tests)
+- **Engine Unit Tests:** `http://127.0.0.1:8765/tests/run-tests.html` (`61 / 61` tests)
 
 ## Sharing Comparisons & Shortcuts
 
@@ -54,7 +54,7 @@ Open **`⚙ Settings → Sync & Backup`** and click **Resync All from DaruGear**
 - `builds/` (gitignored), `buffs/`, `combos/`, `economy/` — Local JSON persistence (with automatic browser `localStorage` backup) for personal saved builds, custom buffs & buff loadouts, saved rotations, and economy price books / AH snapshots.
 - `addon/skill_dumper/` — In-game ArcheAge Classic Lua skill dumper addon (with Michael Client support).
 - `tools/` — Local API dev server (`serve.py`), DaruGear scraper/sync (`darugear_sync.py`), Auction House price scraper (`economy_sync.py`), gear catalog builder (`build_gear_catalog.py`), AA Classic buff importer (`import_buff.py`), metadata fetcher (`fetch_aaclassic_meta.py`), metadata/rank applier (`apply_metadata_and_ranks.py`), and dump parser (`parse_dumps.py`).
-- `tests/` — Browser ES Module test suite (`run-tests.html`, `engine.test.js` — `44 / 44` tests).
+- `tests/` — Browser ES Module test suite (`run-tests.html`, `engine.test.js` — `61 / 61` tests).
 - `.github/workflows/pages.yml` — Automated GitHub Pages static deployment workflow.
 
 ## License

@@ -16,6 +16,7 @@ export {
     resolveCostumeCharmInfo,
 } from "../adapters/darugear_calc.js";
 export {
+    APP_VERSION,
     DEFAULT_CONSTANTS,
     getRuntimeConstantsOverrides,
     mergeConstants,

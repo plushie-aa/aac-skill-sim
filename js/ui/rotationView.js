@@ -52,6 +52,48 @@ const QUICK_ROTATION_EFFECT_IDS = [
     "distressed",
 ];
 
+function getUtilityRoleBadge(skill) {
+    if (!skill) return { cls: "stag-util", label: "UTILITY", roleText: "Combo Buff" };
+    if (skill.skillset === "equipment") {
+        const isCc = skill.utilityRole === "cc";
+        return {
+            cls: "stag-equip",
+            label: isCc ? "EQUIP CC" : "EQUIP",
+            roleText: isCc ? "Equip CC" : "Equip Debuff",
+        };
+    }
+    if (skill.utilityRole === "cc") return { cls: "stag-cc", label: "CC", roleText: "CC" };
+    if (skill.utilityRole === "debuff") return { cls: "stag-debuff-role", label: "DEBUFF", roleText: "Debuff" };
+    return { cls: "stag-util", label: "UTILITY", roleText: "Combo Buff" };
+}
+
+function isEquipSkillActiveOnChar(skill, char) {
+    if (!skill || skill.skillset !== "equipment") return false;
+    const slots = char?.rawDaruGear?.slots;
+    if (!Array.isArray(slots) || slots.length === 0) return false;
+    const matchItems = Array.isArray(skill.equipMatchItemIds) ? skill.equipMatchItemIds : [];
+    const matchSets = Array.isArray(skill.equipMatchSetIds) ? skill.equipMatchSetIds : [];
+    if (matchItems.length > 0) {
+        for (const sl of slots) {
+            const iid = Number(sl?.item?.id);
+            if (Number.isFinite(iid) && matchItems.includes(iid)) return true;
+        }
+    }
+    if (matchSets.length > 0) {
+        const minPcs = Math.max(1, Number(skill.equipMatchMinPieces) || 1);
+        let count = 0;
+        for (const sl of slots) {
+            const seList = sl?.item?.set_effects;
+            if (!Array.isArray(seList)) continue;
+            if (seList.some((se) => matchSets.includes(Number(se?.equip_item_set_id)))) {
+                count++;
+            }
+        }
+        if (count >= minPcs) return true;
+    }
+    return false;
+}
+
 function cloneRotationStep(s) {
     const out = { ...s };
     if (Array.isArray(s?.appliedDebuffs)) {
@@ -327,20 +369,25 @@ export function renderRotationView(out) {
                       const baseSkillGcd = hasCustomGcd ? Number(effSk.gcdSec) : effSk.flags?.noGcd ? 0 : 1.0;
                       const isInherentOffGcd =
                           baseSkillGcd === 0 && !hasCast && !(Number(effSk.fireIntervalSec) > 0);
+                      const utilMeta = isUtilSk ? getUtilityRoleBadge(effSk) : null;
                       const typeCls = isUtilSk
-                          ? "stag-util"
+                          ? utilMeta.cls
                           : isHealSk
                             ? "stag-heal"
                             : sk.damageType === "magic"
                               ? "stag-magic"
                               : "stag-phys";
                       const typeTxt = isUtilSk
-                          ? "UTILITY"
+                          ? utilMeta.label
                           : isHealSk
                             ? "HEAL"
                             : sk.damageType === "magic"
                               ? "MAGIC"
                               : "PHYS";
+                      const utilGrantBadge =
+                          isUtilSk && !effSk.comboEffect?.summary && effSk.utilitySummary
+                              ? `<span class="stag ${effSk.utilityRole === "cc" ? "stag-cc-sub" : "stag-combo"}" title="${escHtml(effSk.description || effSk.utilitySummary)}">&#10022; ${escHtml(effSk.utilitySummary)}</span>`
+                              : "";
                       const autoComboBadges = (srA?.autoComboLabels || [])
                           .map(
                               (lbl) =>
@@ -439,6 +486,7 @@ export function renderRotationView(out) {
                               ${formatSkillCastBadge(effSk, srA)}
                               ${formatSkillGcdBadge(effSk)}
                               ${formatSkillComboBadge(effSk)}
+                              ${utilGrantBadge}
                               ${procBadge}${stepExtraBadges}${autoComboBadges}${autoCcBadge}${activeDebBadges}
                           </div>
                           ${activeEffectsStripHtml}
@@ -500,8 +548,12 @@ export function renderRotationView(out) {
                 const stageShort = s.stageIndex != null ? ` #${s.stageIndex + 1}` : "";
                 const stageTip = s.stageIndex != null ? ` [${s.stageLabel} (${s.stageIndex + 1}/${s.stageCount})]` : "";
                 if (isOffGcdStep) {
+                    const utilSummary =
+                        s.grantedStatuses?.length > 0
+                            ? `Applies ${s.grantedStatuses.join(", ")}`
+                            : s.grantedComboEffect?.summary || s.skill.utilitySummary || "Utility";
                     const tip = s.isUtility
-                        ? `${s.skill.name}${stageTip}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • ${s.grantedComboEffect?.summary || "Utility"}`
+                        ? `${s.skill.name}${stageTip}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • ${utilSummary}`
                         : `${s.skill.name}${stageTip}: Off-GCD @ ${fmtDec(s.startSec, 2)}s (0.00s) • Expected ${fmtInt(s.result.expected)}`;
                     return `<div class="rot-tl-seg ${s.isUtility ? "seg-util-offgcd" : "seg-offgcd"} ${isKillStep ? "seg-kill" : ""}" title="${escHtml(tip)}">&#9889;</div>`;
                 }
@@ -519,8 +571,12 @@ export function renderRotationView(out) {
                     s.travelTimeSec > 0.001
                         ? ` • Travel +${fmtDec(s.travelTimeSec, 2)}s (lands @ ${fmtDec(s.impactSec, 2)}s)`
                         : "";
+                const utilTipSummary =
+                    s.grantedStatuses?.length > 0
+                        ? `Applies ${s.grantedStatuses.join(", ")}`
+                        : s.grantedComboEffect?.summary || s.skill.utilitySummary || "Utility";
                 const tip = s.isUtility
-                    ? `${s.skill.name}${stageTip}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary})${travelTip} • ${s.grantedComboEffect?.summary || "Utility"}`
+                    ? `${s.skill.name}${stageTip}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary})${travelTip} • ${utilTipSummary}`
                     : `${s.skill.name}${stageTip}: ${fmtDec(s.startSec, 2)}s → ${fmtDec(s.endSec, 2)}s (${timeSummary})${travelTip}${procTip} • Expected ${fmtInt(s.result.expected)}`;
                 if (hasSplitCast) {
                     const castPct = Math.min(95, Math.max(5, (s.castSec / s.durationSec) * 100));
@@ -718,6 +774,7 @@ export function renderRotationView(out) {
                                     : res.kind === "heal"
                                       ? `100% / ${fmtDec(res.breakdown.critRatePct)}%`
                                       : `${fmtDec(res.breakdown.avoidance.connectPct)}% / ${fmtDec(res.breakdown.effectiveCritRatePct)}%`;
+                            const utilRoleTxt = sA.isUtility ? getUtilityRoleBadge(sk).roleText : "";
                             return `
                             <tr class="${sA.isUtility ? "rot-util-tr" : ""}">
                                 <td>
@@ -726,15 +783,15 @@ export function renderRotationView(out) {
                                         ${skIcon ? `<img class="table-skill-icon" src="${escHtml(skIcon)}" alt="" loading="lazy" />` : ""}
                                         <div>
                                             <div class="skill-name">${escHtml(sk.name)}${sA.stageIndex != null ? ` <span class="stag stag-stage">${escHtml(sA.stageLabel)} (${sA.stageIndex + 1}/${sA.stageCount})</span>` : ""}</div>
-                                            <div class="skill-meta">${sA.isUtility ? "Utility" : formatRankTag(sA.result)}${flagBadges.length > 0 ? ` &bull; ${escHtml(flagBadges.join(" • "))}` : ""}</div>
+                                            <div class="skill-meta">${sA.isUtility ? escHtml(utilRoleTxt) : formatRankTag(sA.result)}${flagBadges.length > 0 ? ` &bull; ${escHtml(flagBadges.join(" • "))}` : ""}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td data-label="A Window">${fmtWin(sA)}</td>
-                                <td class="val-a" data-label="A Expected">${sA.isUtility ? `<span class="skill-meta">Combo Buff</span>` : fmtInt(sA.result.expected)}</td>
+                                <td class="val-a" data-label="A Expected">${sA.isUtility ? `<span class="skill-meta">${escHtml(utilRoleTxt)}</span>` : fmtInt(sA.result.expected)}</td>
                                 <td data-label="A Hit / Crit">${hitCritStr(sA.result)}</td>
                                 <td data-label="B Window">${fmtWin(sB)}</td>
-                                <td class="val-b" data-label="B Expected">${sB.isUtility ? `<span class="skill-meta">Combo Buff</span>` : fmtInt(sB.result.expected)}</td>
+                                <td class="val-b" data-label="B Expected">${sB.isUtility ? `<span class="skill-meta">${escHtml(utilRoleTxt)}</span>` : fmtInt(sB.result.expected)}</td>
                                 <td data-label="B Hit / Crit">${hitCritStr(sB.result)}</td>
                                 <td class="${sA.isUtility ? "delta-tie" : dCls}" data-label="A vs B">${sA.isUtility ? "&mdash;" : fmtDeltaPct(dPct)}</td>
                             </tr>`;
@@ -1219,19 +1276,24 @@ export function renderRotSkillPicker() {
     const matchesFilter = (s) => {
         if (variant !== "all" && (s.variant || "base") !== variant) return false;
         if (q) {
-            const hay = `${s.name} ${s.skillset} ${s.variant || ""} ${s.damageType || ""} ${s.kind || ""}`.toLowerCase();
+            const hay = `${s.name} ${s.skillset} ${s.variant || ""} ${s.damageType || ""} ${s.kind || ""} ${s.utilityRole || ""} ${s.utilitySummary || ""} ${s.equipSource || ""} ${s.description || ""}`.toLowerCase();
             if (!hay.includes(q)) return false;
         }
         return true;
     };
 
     const allFiltered = state.allSkills.filter(matchesFilter);
+    const treeLabelByKey = new Map(
+        state.skillsetsMeta.map((t) => [t.skillset, t.label || (t.skillset === "equipment" ? "Equip Effects" : cap(t.skillset))])
+    );
     treeBar.innerHTML = [
         `<button type="button" class="pill ${state.rotPickerTree === "all" ? "active" : ""}" data-rp-tree="all">All <span class="pill-count">${allFiltered.length}</span></button>`,
         ...state.skillsetsMeta.map((t) => {
             const k = t.skillset;
             const cnt = (state.skillsByTree[k] || []).filter(matchesFilter).length;
-            return `<button type="button" class="pill ${state.rotPickerTree === k ? "active" : ""}" data-rp-tree="${escHtml(k)}">${escHtml(cap(k))} <span class="pill-count">${cnt}</span></button>`;
+            const lbl = treeLabelByKey.get(k) || cap(k);
+            const eqCls = k === "equipment" ? " pill-equip" : "";
+            return `<button type="button" class="pill${eqCls} ${state.rotPickerTree === k ? "active" : ""}" data-rp-tree="${escHtml(k)}">${escHtml(lbl)} <span class="pill-count">${cnt}</span></button>`;
         }),
     ].join("");
     treeBar.querySelectorAll("[data-rp-tree]").forEach((btn) => {
@@ -1248,26 +1310,36 @@ export function renderRotSkillPicker() {
 
     const sectionsHtml = treesToShow
         .map((treeKey) => {
-            const list = (state.skillsByTree[treeKey] || []).filter(matchesFilter);
+            let list = (state.skillsByTree[treeKey] || []).filter(matchesFilter);
             if (list.length === 0) return "";
+            if (treeKey === "equipment") {
+                list = list.slice().sort((a, b) => {
+                    const aEq = (isEquipSkillActiveOnChar(a, state.buildA) ? 2 : 0) + (isEquipSkillActiveOnChar(a, state.buildB) ? 1 : 0);
+                    const bEq = (isEquipSkillActiveOnChar(b, state.buildA) ? 2 : 0) + (isEquipSkillActiveOnChar(b, state.buildB) ? 1 : 0);
+                    return bEq - aEq;
+                });
+            }
+            const hdrLabel = treeLabelByKey.get(treeKey) || cap(treeKey);
             return `
             <div class="rot-picker-tree-sec">
-                <div class="rot-picker-tree-hdr">${escHtml(cap(treeKey))} (${list.length})</div>
+                <div class="rot-picker-tree-hdr">${escHtml(hdrLabel)} (${list.length})</div>
                 <div class="rot-picker-grid">
                     ${list
                         .map((s) => {
                             const skIcon = skillIconUrl(s);
                             const isUtil = s.kind === "utility";
                             const isHeal = s.kind === "heal";
+                            const isEquip = s.skillset === "equipment";
+                            const utilMeta = isUtil ? getUtilityRoleBadge(s) : null;
                             const typeCls = isUtil
-                                ? "stag-util"
+                                ? utilMeta.cls
                                 : isHeal
                                   ? "stag-heal"
                                   : s.damageType === "magic"
                                     ? "stag-magic"
                                     : "stag-phys";
                             const typeTxt = isUtil
-                                ? "UTILITY"
+                                ? utilMeta.label
                                 : isHeal
                                   ? "HEAL"
                                   : s.damageType === "magic"
@@ -1277,6 +1349,12 @@ export function renderRotSkillPicker() {
                                 s.variant && s.variant !== "base"
                                     ? `<span class="stag ${s.variant === "hollow" ? "stag-hollow" : "stag-var"}">${escHtml(cap(s.variant))}</span>`
                                     : "";
+                            const eqOnA = isEquip && isEquipSkillActiveOnChar(s, state.buildA);
+                            const eqOnB = isEquip && isEquipSkillActiveOnChar(s, state.buildB);
+                            const equippedBadge =
+                                eqOnA || eqOnB
+                                    ? `<span class="stag stag-equipped-hit" title="Currently equipped on ${eqOnA && eqOnB ? "Build A & Build B" : eqOnA ? "Build A" : "Build B"}">&#10003; Equipped (${eqOnA && eqOnB ? "A+B" : eqOnA ? "A" : "B"})</span>`
+                                    : "";
                             const castStr = s.castTimeSec > 0 ? `${s.castTimeSec}s cast` : "Instant";
                             const cdStr = s.cooldownSec > 0 ? `${s.cooldownSec}s CD` : "No CD";
                             const nextStagePreview = getNextAutoStagePreview(s, state.rotationSteps);
@@ -1284,7 +1362,7 @@ export function renderRotSkillPicker() {
                                 ? `<span class="stag stag-stage">Next: ${escHtml(nextStagePreview.stage.label)} (${nextStagePreview.index + 1}/${nextStagePreview.count})</span>`
                                 : "";
                             return `
-                            <button type="button" class="rot-picker-card ${isUtil ? "rot-picker-card-util" : ""}" data-rp-add="${escHtml(s.id)}" title="${escHtml(s.description || s.name)}">
+                            <button type="button" class="rot-picker-card ${isEquip ? "rot-picker-card-equip" : isUtil ? "rot-picker-card-util" : ""}" data-rp-add="${escHtml(s.id)}" title="${escHtml(s.description || s.name)}">
                                 ${skIcon ? `<img class="rot-picker-card-icon" src="${escHtml(skIcon)}" alt="" loading="lazy" />` : ""}
                                 <div class="rot-picker-card-info">
                                     <div class="rot-picker-card-top">
@@ -1292,6 +1370,7 @@ export function renderRotSkillPicker() {
                                     </div>
                                     <div class="rot-picker-card-tags">
                                         <span class="stag ${typeCls}">${typeTxt}</span>
+                                        ${equippedBadge}
                                         ${varBadge}
                                         ${stageCardBadge}
                                         ${formatSkillCastBadge(s)}

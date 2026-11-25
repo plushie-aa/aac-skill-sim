@@ -10,6 +10,7 @@
  */
 
 import {
+    APP_VERSION,
     ARMOR_TYPES,
     BUILD_CATEGORIES,
     COMBAT_MODIFIERS,
@@ -412,6 +413,7 @@ export function buildWorkspaceBackupPayload() {
         });
     return {
         schemaVersion: 1,
+        appVersion: APP_VERSION,
         type: "aac-sim-workspace-backup",
         exportedAt: new Date().toISOString(),
         settings: normalizeSimSettings(state.settings),
@@ -1061,6 +1063,9 @@ export function bindSettingsModalEvents() {
             setActiveSettingsTab(btn.dataset.settingsTab);
         });
     });
+
+    const creditsVerEl = document.getElementById("creditsVersionPill");
+    if (creditsVerEl) creditsVerEl.textContent = `v${APP_VERSION}`;
 
     // Display & Rounding
     document.getElementById("settingsAdvancedModeChk")?.addEventListener("change", (e) => {

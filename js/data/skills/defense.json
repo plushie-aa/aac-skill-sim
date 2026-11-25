@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_defense.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 7,
+  "skillCount": 10,
   "skills": [
     {
       "id": "defense_shield_slam",
@@ -234,6 +234,54 @@
       "cooldownSec": 42.0,
       "castTimeSec": 0.0,
       "icon": "icon_hollow_ollos_hammer.png"
+    },
+    {
+      "id": "defense_mocking_howl",
+      "skillset": "defense",
+      "name": "Mocking Howl",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE Distressed (6s: -60% Heal, triggers Distressed combos)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "abilityLevel": 30,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_adamant07.png",
+      "description": "Provokes nearby enemies and inflicts Distressed for 6.0s (-60% Received Healing, -20% Skill Damage, enables Precision Strike / Shadowsmite / Skewer Distressed combos)."
+    },
+    {
+      "id": "defense_imprison",
+      "skillset": "defense",
+      "name": "Imprison",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Traps enemies inside stone wall (14s)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "abilityLevel": 40,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_love10.png",
+      "description": "Raises a stone prison wall around the area for 14s, trapping enemies inside."
+    },
+    {
+      "id": "defense_fortress",
+      "skillset": "defense",
+      "name": "Fortress",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Shoves 5 enemies (10m) + pulls allies & +1,500 Mettle",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "abilityLevel": 55,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_adamant29.png",
+      "description": "Shoves away up to 5 enemies within 10m regardless of status, pulls 5 raid members closer (-50% received damage), and grants +1,500 Mettle."
     }
   ]
 }

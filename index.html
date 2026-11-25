@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ArcheAge Classic Skill Simulator</title>
-    <link rel="stylesheet" href="css/styles.css?v=53" />
+    <link rel="stylesheet" href="css/styles.css?v=55" />
 </head>
 <body>
     <div class="app-shell">
@@ -291,7 +291,7 @@
                 <span class="hint-inline">Click skills to append in order &bull; click Done when finished</span>
             </div>
             <div class="rot-picker-controls">
-                <input type="text" id="rotPickerSearch" placeholder="Search skills by name or skillset..." autocomplete="off" />
+                <input type="text" id="rotPickerSearch" placeholder="Search skill, CC, debuff, or equip effect (e.g. Kyrios, pull, stun)..." autocomplete="off" />
                 <div class="seg-group" id="rotPickerVariantPills">
                     <button type="button" class="seg-btn active" data-rp-variant="all">All</button>
                     <button type="button" class="seg-btn" data-rp-variant="base">Base</button>
@@ -574,7 +574,10 @@
                     <div class="settings-sync-card credits-card">
                         <div class="settings-sync-head">
                             <strong>ArcheAge Classic Skill &amp; Damage Simulator</strong>
-                            <span class="credits-author-pill">Created by Plushie</span>
+                            <span class="credits-badges">
+                                <span id="creditsVersionPill" class="credits-version-pill" title="Semantic Version">v0.2.0</span>
+                                <span class="credits-author-pill">Created by Plushie</span>
+                            </span>
                         </div>
                         <div class="credits-links-row">
                             <a class="credits-link-btn primary" href="https://github.com/plushie-aa/aac-skill-sim" target="_blank" rel="noopener noreferrer">GitHub Repository &#8599;</a>
@@ -647,6 +650,6 @@ SOFTWARE.</pre>
 
     <div id="toastBar" class="toast-bar hidden" role="status" aria-live="polite"></div>
 
-    <script type="module" src="js/ui/app.js?v=85"></script>
+    <script type="module" src="js/ui/app.js?v=87"></script>
 </body>
 </html>

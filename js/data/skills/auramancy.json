@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_auramancy.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 5,
+  "skillCount": 8,
   "skills": [
     {
       "id": "auramancy_comets_boon",
@@ -193,6 +193,55 @@
       "cooldownSec": 12.0,
       "castTimeSec": 0.0,
       "icon": "icon_hollow_comets_boon.png"
+    },
+    {
+      "id": "auramancy_thwart",
+      "skillset": "auramancy",
+      "name": "Thwart",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE 6m Shaken (3s) + 1x Inspired (combos w/ Whirlwind/Shield Slam)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "abilityLevel": 1,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_will24.png",
+      "description": "Inflicts Shaken on enemies within 6m (-27% Move Speed, -8% Skill Damage, -75 Attack Speed for 3s) and grants 1 stack of Inspired."
+    },
+    {
+      "id": "auramancy_thwart_stone",
+      "skillset": "auramancy",
+      "name": "Thwart (Stone)",
+      "variant": "ancestral",
+      "ancestralElement": "stone",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE 6m +20 Received Damage (5s) + 1x Inspired",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "abilityLevel": 1,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_will24.png",
+      "description": "Increases received damage +20 on enemies in a 6m radius for 5s and grants 1 stack of Inspired."
+    },
+    {
+      "id": "auramancy_leech",
+      "skillset": "auramancy",
+      "name": "Leech",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Interrupts + Asleep CC (4.5s PvP) & steals 1 buff",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "abilityLevel": 40,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_will07.png",
+      "description": "Interrupts casting, inflicts Sleep (4.5s PvP / 9s PvE), and steals 1 beneficial buff from the target. Direct damage wakes the target."
     }
   ]
 }

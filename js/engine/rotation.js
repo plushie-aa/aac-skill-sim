@@ -231,6 +231,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                 label: eff.shortLabel || eff.label,
                 durationSec: eff.durationSec,
                 addDefense: eff.addDefense || {},
+                mulDefense: eff.mulDefense || {},
                 sourceSkillId,
                 startedAtSec,
                 expiresAtSec,
@@ -370,13 +371,34 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         const stepProcId =
             step.weaponProc && COMBAT_MODIFIERS[step.weaponProc] ? String(step.weaponProc) : null;
         const stepProcMod = stepProcId ? COMBAT_MODIFIERS[stepProcId] : null;
-        const stepActor =
+        let stepActor =
             stepProcId && !existingAttModIds.has(stepProcId)
                 ? applyModifiers(effActor, [stepProcId])
                 : effActor;
 
-        // Evaluate active statuses/debuffs at step start + projectile travel time (preserves cast-start combo windows while delaying mid-air projectiles)
+        // Apply active combo buffs that temporarily modify cast time (e.g. Startling Strain -20% Cast Time for 5s)
+        const activeCastDeltaPct = activeComboEffects
+            .filter((eff) => eff.expiresAtSec > startSec + 1e-6 && Number(eff.castTimeDeltaPct))
+            .reduce((acc, eff) => acc + Number(eff.castTimeDeltaPct), 0);
+        if (Math.abs(activeCastDeltaPct) > 1e-6) {
+            const curCastPct = Number(stepActor?.offense?.castTimePct ?? 100);
+            stepActor = {
+                ...stepActor,
+                offense: {
+                    ...(stepActor.offense || {}),
+                    castTimePct: Math.max(40, curCastPct + activeCastDeltaPct),
+                },
+            };
+        }
+
+        // Evaluate active statuses at step start + travel time (preserves cast-start combo windows),
+        // and target defense debuffs at hit time (cast end + travel time) so delayed debuffs like
+        // Charmed Bulwark Ballad apply when a cast-time spell lands.
         const comboEvalSec = startSec + travelTimeSec;
+        const estCastSec = removeCastTime
+            ? 0
+            : Math.max(0, (Number(skill.castTimeSec) || 0) * ((Number(stepActor?.offense?.castTimePct ?? 100)) / 100));
+        const debuffEvalSec = startSec + estCastSec + travelTimeSec;
 
         // 2. Detect active damage/heal combo multipliers, next-skill crit procs, and auto-CC bypass
         const liveStatusesAtStep = autoCombosEnabled
@@ -390,12 +412,12 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             ? evaluateActiveSkillCombos(skill, activeStatuses, comboEvalSec)
             : { comboBonusPct: 0, bonusCritRatePct: 0, autoCCLabel: null, matchedLabels: [], consumedStatuses: [] };
 
-        // 3. Apply any active rotation-applied target debuffs (e.g. Stalker's Mark, Dissonance, Wallop, Puncture)
+        // 3. Apply any active rotation-applied target debuffs (e.g. Stalker's Mark, Dissonance, Wallop, Puncture, Charmed Bulwark)
         const liveDebuffs = autoCombosEnabled
             ? activeDebuffs.filter(
                   (d) =>
-                      (d.startedAtSec == null || d.startedAtSec <= comboEvalSec + 1e-6) &&
-                      d.expiresAtSec > comboEvalSec + 1e-6 &&
+                      (d.startedAtSec == null || d.startedAtSec <= debuffEvalSec + 1e-6) &&
+                      d.expiresAtSec > debuffEvalSec + 1e-6 &&
                       !existingDefModIds.has(d.id)
               )
             : [];
@@ -443,8 +465,19 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     nextDef[k] = (Number(nextDef[k]) || 0) + Number(delta);
                 }
             }
+            for (const deb of liveDebuffs) {
+                for (const [k, factor] of Object.entries(deb.mulDefense || {})) {
+                    const f = Number(factor);
+                    if (Number.isFinite(f)) {
+                        nextDef[k] = (Number(nextDef[k]) || 0) * f;
+                    }
+                }
+            }
             if (nextDef.physicalDefense < 0) nextDef.physicalDefense = 0;
             if (nextDef.magicDefense < 0) nextDef.magicDefense = 0;
+            if (nextDef.evasionPct < 0) nextDef.evasionPct = 0;
+            if (nextDef.parryPct < 0) nextDef.parryPct = 0;
+            if (nextDef.blockPct < 0) nextDef.blockPct = 0;
             stepTarget = { ...effTarget, defense: nextDef };
         }
 
@@ -594,7 +627,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                 const lr = actorT7Effects.find((e) => Boolean(e.effect?.startlingStrainImmediateCharm));
                 if (lr) {
                     grants = [
-                        ...grants.filter((g) => g.status !== "stunned"),
+                        ...grants.filter((g) => g.status !== "stunned" && g.status !== "charmed"),
                         {
                             status: "charmed",
                             label: `Charmed (${lr.name})`,
@@ -613,11 +646,25 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     )
                     .map((st) => st.status)
             );
+            const resolveRequiredStatusStart = (reqList, waitStatusId) => {
+                if (!Array.isArray(reqList) || reqList.length === 0) return impactSec;
+                if (reqList.some((req) => liveStatusSet.has(req))) return impactSec;
+                if (waitStatusId) {
+                    const pending = activeStatuses.find(
+                        (st) =>
+                            st.status === waitStatusId &&
+                            st.expiresAtSec > impactSec + 1e-6 &&
+                            Number(st.startedAtSec) > comboEvalSec
+                    );
+                    if (pending) return Math.max(impactSec, Number(pending.startedAtSec));
+                }
+                return null;
+            };
             for (const g of grants) {
                 if (g.requiresBackstab && !stepIsBackstab) continue;
-                if (Array.isArray(g.requiresAny) && !g.requiresAny.some((req) => liveStatusSet.has(req))) {
-                    continue;
-                }
+                const reqStart = resolveRequiredStatusStart(g.requiresAny, g.waitForStatus);
+                if (reqStart == null) continue;
+                const grantStartSec = reqStart + (Number(g.delaySec) || 0);
                 const prevIdx = activeStatuses.findIndex((st) => st.status === g.status);
                 let grantDurationSec = Number(g.durationSec || 0);
                 if (
@@ -625,11 +672,11 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     skill.id === "vitalism_resurgence" &&
                     g.status === "resurgence" &&
                     prevIdx >= 0 &&
-                    activeStatuses[prevIdx].expiresAtSec > impactSec
+                    activeStatuses[prevIdx].expiresAtSec > grantStartSec
                 ) {
                     const nd = actorT7Effects.find((e) => Number(e.effect?.resurgenceStackMaxSec) > 0);
                     if (nd) {
-                        const remaining = Math.max(0, activeStatuses[prevIdx].expiresAtSec - impactSec);
+                        const remaining = Math.max(0, activeStatuses[prevIdx].expiresAtSec - grantStartSec);
                         grantDurationSec = Math.min(Number(nd.effect.resurgenceStackMaxSec), remaining + grantDurationSec);
                     }
                 }
@@ -637,47 +684,53 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     ...g,
                     durationSec: grantDurationSec,
                     sourceSkillId: skill.id,
-                    startedAtSec: impactSec,
-                    expiresAtSec: impactSec + grantDurationSec,
+                    startedAtSec: grantStartSec,
+                    expiresAtSec: grantStartSec + grantDurationSec,
                 };
                 if (prevIdx >= 0) activeStatuses[prevIdx] = nextSt;
                 else activeStatuses.push(nextSt);
                 recordEffectSpan({
                     id: g.status,
                     label: g.label,
-                    kind: "status",
+                    kind: g.targetSide === "self" ? "combo_buff" : "status",
                     isCC: Boolean(g.isCC),
-                    startSec: impactSec,
+                    startSec: grantStartSec,
                     endSec: nextSt.expiresAtSec,
                     durationSec: grantDurationSec,
                 });
                 grantedStatuses.push(g.label);
             }
 
-            const debGrant = SKILL_DEBUFF_GRANTS[skill.id];
+            const rawDebGrant = SKILL_DEBUFF_GRANTS[skill.id];
+            const debGrants = Array.isArray(rawDebGrant) ? rawDebGrant : rawDebGrant ? [rawDebGrant] : [];
             const skipDissonanceDebuff =
                 isBaseVariant &&
                 skill.id === "songcraft_dissonance" &&
                 actorT7Effects.some((e) => Boolean(e.effect?.dissonanceNoDebuff));
-            if (debGrant && !skipDissonanceDebuff) {
-                const prevIdx = activeDebuffs.findIndex((d) => d.id === debGrant.id);
-                const nextDeb = {
-                    ...debGrant,
-                    sourceSkillId: skill.id,
-                    startedAtSec: impactSec,
-                    expiresAtSec: impactSec + Number(debGrant.durationSec || 0),
-                };
-                if (prevIdx >= 0) activeDebuffs[prevIdx] = nextDeb;
-                else activeDebuffs.push(nextDeb);
-                recordEffectSpan({
-                    id: debGrant.id,
-                    label: debGrant.label,
-                    kind: "debuff",
-                    startSec: impactSec,
-                    endSec: nextDeb.expiresAtSec,
-                    durationSec: Number(debGrant.durationSec || 0),
-                });
-                grantedStatuses.push(debGrant.label);
+            if (debGrants.length > 0 && !skipDissonanceDebuff) {
+                for (const debGrant of debGrants) {
+                    const reqStart = resolveRequiredStatusStart(debGrant.requiresAny, debGrant.waitForStatus);
+                    if (reqStart == null) continue;
+                    const debStartSec = reqStart + (Number(debGrant.delaySec) || 0);
+                    const prevIdx = activeDebuffs.findIndex((d) => d.id === debGrant.id);
+                    const nextDeb = {
+                        ...debGrant,
+                        sourceSkillId: skill.id,
+                        startedAtSec: debStartSec,
+                        expiresAtSec: debStartSec + Number(debGrant.durationSec || 0),
+                    };
+                    if (prevIdx >= 0) activeDebuffs[prevIdx] = nextDeb;
+                    else activeDebuffs.push(nextDeb);
+                    recordEffectSpan({
+                        id: debGrant.id,
+                        label: debGrant.label,
+                        kind: "debuff",
+                        startSec: debStartSec,
+                        endSec: nextDeb.expiresAtSec,
+                        durationSec: Number(debGrant.durationSec || 0),
+                    });
+                    grantedStatuses.push(debGrant.label);
+                }
             }
 
             // T7 Deathfletcher (40618 / 40620): Basic Stalker's Mark decreases target's Physical Defense -390
@@ -685,14 +738,15 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                 const df = actorT7Effects.find((e) => Number(e.effect?.stalkersMarkDefShred) > 0);
                 if (df) {
                     const shred = Number(df.effect.stalkersMarkDefShred);
+                    const dfDur = Number(debGrants[0]?.durationSec || 12.0);
                     const dfDeb = {
                         id: "deathfletcher_mark",
                         label: `${df.name} (-${shred} PDef)`,
-                        durationSec: Number(debGrant?.durationSec || 12.0),
+                        durationSec: dfDur,
                         addDefense: { physicalDefense: -shred },
                         sourceSkillId: skill.id,
                         startedAtSec: impactSec,
-                        expiresAtSec: impactSec + Number(debGrant?.durationSec || 12.0),
+                        expiresAtSec: impactSec + dfDur,
                     };
                     const prevDfIdx = activeDebuffs.findIndex((d) => d.id === dfDeb.id);
                     if (prevDfIdx >= 0) activeDebuffs[prevDfIdx] = dfDeb;

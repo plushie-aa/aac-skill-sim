@@ -7,7 +7,7 @@
     {
       "skillset": "battlerage",
       "file": "battlerage.json",
-      "skillCount": 14,
+      "skillCount": 16,
       "dumpSource": "per_skillset_naked (skill_dump_battlerage.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -15,7 +15,7 @@
     {
       "skillset": "witchcraft",
       "file": "witchcraft.json",
-      "skillCount": 6,
+      "skillCount": 14,
       "dumpSource": "per_skillset_naked (skill_dump_witchcraft.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -23,7 +23,7 @@
     {
       "skillset": "defense",
       "file": "defense.json",
-      "skillCount": 7,
+      "skillCount": 10,
       "dumpSource": "per_skillset_naked (skill_dump_defense.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -31,7 +31,7 @@
     {
       "skillset": "auramancy",
       "file": "auramancy.json",
-      "skillCount": 5,
+      "skillCount": 8,
       "dumpSource": "per_skillset_naked (skill_dump_auramancy.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -39,7 +39,7 @@
     {
       "skillset": "occultism",
       "file": "occultism.json",
-      "skillCount": 14,
+      "skillCount": 16,
       "dumpSource": "per_skillset_naked (skill_dump_occultism.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -47,7 +47,7 @@
     {
       "skillset": "archery",
       "file": "archery.json",
-      "skillCount": 18,
+      "skillCount": 19,
       "dumpSource": "per_skillset_naked (skill_dump_archery.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -71,7 +71,7 @@
     {
       "skillset": "songcraft",
       "file": "songcraft.json",
-      "skillCount": 7,
+      "skillCount": 13,
       "dumpSource": "per_skillset_naked (skill_dump_songcraft.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -79,8 +79,17 @@
     {
       "skillset": "vitalism",
       "file": "vitalism.json",
-      "skillCount": 13,
+      "skillCount": 15,
       "dumpSource": "per_skillset_naked (skill_dump_vitalism.txt)",
+      "skillsetLevel": 55,
+      "isMaxLevel": true
+    },
+    {
+      "skillset": "equipment",
+      "label": "Equip Effects",
+      "file": "equipment.json",
+      "skillCount": 31,
+      "dumpSource": "item_special_effects + set_bonus_procs",
       "skillsetLevel": 55,
       "isMaxLevel": true
     }

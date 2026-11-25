@@ -1,0 +1,671 @@
+{
+  "skillset": "equipment",
+  "label": "Equip Effects",
+  "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
+  "dumpSource": "item_special_effects + set_bonus_procs",
+  "skillsetLevel": 55,
+  "isMaxLevel": true,
+  "skillCount": 31,
+  "skills": [
+    {
+      "id": "equip_corrupted_kyrios_pull",
+      "skillset": "equipment",
+      "name": "Corrupted / Primal Kyrios Pull",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "20m AoE Pull CC (Anthalon 4pc Proc, Off-GCD)",
+      "equipSource": "Corrupted Kyrios / Primal Kyrios 4pc Set",
+      "equipMatchSetIds": [
+        111,
+        174,
+        9000113
+      ],
+      "equipMatchMinPieces": 4,
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0.0,
+      "gcdNote": "Off-GCD armor set proc (0.00s GCD)",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "flags": {
+        "noGcd": true
+      },
+      "icon": "https://darugear.com/assets/icons/costume_hm/nu_m_hm_cloth226.png",
+      "description": "4pc Corrupted Kyrios / Primal Kyrios Proc — Anthalon's Necromantic Flame: Pulls all enemies within 20m toward you and inflicts 250–300 Magic Damage every second."
+    },
+    {
+      "id": "equip_grimghast_nightmare_grinder",
+      "skillset": "equipment",
+      "name": "Grimghast 7pc: Nightmare Grinder",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Shackled (2s) + Siege DoT (Grimghast 7pc Proc, Off-GCD)",
+      "equipSource": "Grimghast 7pc Set",
+      "equipMatchSetIds": [
+        159
+      ],
+      "equipMatchMinPieces": 7,
+      "damageType": "utility",
+      "scalingStat": "rangedAttack",
+      "gcdSec": 0.0,
+      "gcdNote": "Off-GCD armor set proc (0.00s GCD)",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "flags": {
+        "noGcd": true
+      },
+      "icon": "https://darugear.com/assets/icons/costume_ar/nu_m_ar_metal212.png",
+      "description": "7pc Grimghast Proc — Nightmare Grinder: Shackles an enemy for 2.0s and inflicts 950 continuous Siege Damage."
+    },
+    {
+      "id": "equip_titans_talon_stun",
+      "skillset": "equipment",
+      "name": "Titan's Talon (2pc Set Stun)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "12m Forward Lunge + Stunned (2s CC)",
+      "equipSource": "Titan's Talon + Titan's Pain 2pc",
+      "equipMatchItemIds": [
+        42570
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_dagger_0102.png",
+      "description": "Use: Propels caster 12m forward dealing 3,376 Physical Damage. With 2pc set bonus, Stuns all enemies hit by Titan's Talon for 2.0s."
+    },
+    {
+      "id": "equip_kraken_spear_pull",
+      "skillset": "equipment",
+      "name": "Kraken Pillager Pull (Tentacle)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Pulls 3 enemies (20m) + Slowed (6s)",
+      "equipSource": "Arcadian / Bleak Arcadian Sea Pillager",
+      "equipMatchItemIds": [
+        25971,
+        43075
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_spear_2h_0041.png",
+      "description": "Use: Seizes enemies with Kraken tentacles, pulling up to 3 enemies within 20m toward you and Slowing them for 6.0s."
+    },
+    {
+      "id": "equip_kraken_scepter_snare",
+      "skillset": "equipment",
+      "name": "Kraken Sovereign (10m Snare)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "10m AoE Snared (3s PvP) + Slowed (6s)",
+      "equipSource": "Arcadian / Bleak Arcadian Sea Sovereign",
+      "equipMatchItemIds": [
+        25972,
+        43076
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_staff_1h_0058.png",
+      "description": "Use: Creates a 10m mucus-covered area that Snares enemies (3s PvP / 6s PvE), Slows them, and deals damage over time."
+    },
+    {
+      "id": "equip_kraken_shield_ink",
+      "skillset": "equipment",
+      "name": "Kraken Guardian (Ink Cloud)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "12m Slowed + -30% Enemy Acc + 10s Stealth",
+      "equipSource": "Arcadian / Bleak Arcadian Sea Guardian",
+      "equipMatchItemIds": [
+        25973,
+        43077
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_shield_0055.png",
+      "description": "Use: Sprays dark ink 12m in every direction, concealing the caster for 10s and reducing enemies' Move Speed, Accuracy (-30%), and Stealth Detection."
+    },
+    {
+      "id": "equip_red_dragon_roar_trip",
+      "skillset": "equipment",
+      "name": "Red Dragon Roar (AoE Trip)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "15m Meteor AoE Tripped (3.0s CC)",
+      "equipSource": "Berserk Red Dragon Roar",
+      "equipMatchItemIds": [
+        28905
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_1413.png",
+      "description": "Use: Calls down a meteor at 15m dealing 3,364 Magic Damage and Tripping all enemies hit for 3.0s."
+    },
+    {
+      "id": "equip_cometshard_staff_trip",
+      "skillset": "equipment",
+      "name": "Cometshard Staff (Leap Trip)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "22m Meteor Leap + AoE Tripped (1.0s CC)",
+      "equipSource": "Cometshard Staff",
+      "equipMatchItemIds": [
+        9001013
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/aac/comet_staff.png",
+      "description": "Use: Become a meteor, leaping up to 22m to deal 3,364 AoE Magic Damage and Tripping all enemies hit for 1.0s."
+    },
+    {
+      "id": "equip_red_dragon_wing_reaper",
+      "skillset": "equipment",
+      "name": "Red Dragon / Anthalon Wing-Reaper",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE Launch + Slowed (-30% for 3s)",
+      "equipSource": "Berserk Red Dragon / Primal Anthalon Wing-Reaper",
+      "equipMatchItemIds": [
+        28901,
+        9002459
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_1412.png",
+      "description": "Use: Launches enemies in a 3m front radius into the air (3,076 Physical Damage) and Slows Move Speed -30% for 3.0s."
+    },
+    {
+      "id": "equip_titans_pain_shock",
+      "skillset": "equipment",
+      "name": "Titan's Pain (AoE Shock)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "15m AoE Shocked (8s; triggers Arc Lightning +43%)",
+      "equipSource": "Titan's Pain",
+      "equipMatchItemIds": [
+        42572
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 1.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_staff_1h_0092.png",
+      "description": "Use: Fires a 15m electrical bolt dealing 3,676 Magic Damage and inflicting Shocked (8s) on all enemies hit."
+    },
+    {
+      "id": "equip_berserker_plate_trip",
+      "skillset": "equipment",
+      "name": "Thundering Berserker's Plate (Trip)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Falling Ruins AoE Tripped (2.0s CC) + Wall",
+      "equipSource": "Thundering Berserker's Plate",
+      "equipMatchItemIds": [
+        9001822
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_4542.png",
+      "description": "Use: Drops ruins in a half-circle in front of the caster, dealing damage, Tripping enemies hit (2.0s), and leaving a temporary wall."
+    },
+    {
+      "id": "equip_berserker_fangs_root",
+      "skillset": "equipment",
+      "name": "Thundering Berserker's Fangs (Root)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "3.0s Delayed Shock → 5m AoE Snared/Rooted (3s)",
+      "equipSource": "Thundering Berserker's Fangs",
+      "equipMatchItemIds": [
+        9001821
+      ],
+      "damageType": "utility",
+      "scalingStat": "rangedAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_4543.png",
+      "description": "Use: Deals ranged damage and triggers an electric shock 3.0s later, rooting/snaring all enemies within 5m."
+    },
+    {
+      "id": "equip_wicked_whisper_supreme",
+      "skillset": "equipment",
+      "name": "Supreme Wicked Whisper (-850 Def)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE 8m -850 PDef & MDef (8.0s)",
+      "equipSource": "Supreme Wicked Whisper Dagger",
+      "equipMatchItemIds": [
+        40882
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_dagger_0101.png",
+      "description": "Use: Decreases Physical Defense and Magic Defense -850 for all enemies within 8m for 8.0s."
+    },
+    {
+      "id": "equip_wicked_whisper_prime",
+      "skillset": "equipment",
+      "name": "Prime Wicked Whisper (-675 Def)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE 8m -675 PDef & MDef (6.0s)",
+      "equipSource": "Prime Wicked Whisper Dagger",
+      "equipMatchItemIds": [
+        39726
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_dagger_0096.png",
+      "description": "Use: Decreases Physical Defense and Magic Defense -675 for all enemies within 8m for 6.0s."
+    },
+    {
+      "id": "equip_wicked_whisper_superior",
+      "skillset": "equipment",
+      "name": "Superior Wicked Whisper (-500 Def)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE 8m -500 PDef & MDef (5.0s)",
+      "equipSource": "Superior Wicked Whisper Dagger",
+      "equipMatchItemIds": [
+        39722
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_dagger_0097.png",
+      "description": "Use: Decreases Physical Defense and Magic Defense -500 for all enemies within 8m for 5.0s."
+    },
+    {
+      "id": "equip_ynys_ring_shred",
+      "skillset": "equipment",
+      "name": "Ynys Guardian Ring Shred (4x = -700)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "Proc 4x Stacks: -700 PDef & MDef (5s, Off-GCD)",
+      "equipSource": "Holy / Enlightened Ynys Guardian Ring",
+      "equipMatchItemIds": [
+        39146,
+        9001916
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "gcdSec": 0.0,
+      "gcdNote": "Off-GCD ring proc (0.00s GCD)",
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "flags": {
+        "noGcd": true
+      },
+      "icon": "https://darugear.com/assets/icons/quest/icon_item_quest221.png",
+      "description": "Proc: Decreases target Physical Defense and Magic Defense -175 per stack for 5s (up to 4 stacks = -700 PDef & MDef)."
+    },
+    {
+      "id": "equip_fangbane_silence",
+      "skillset": "equipment",
+      "name": "Fangbane (20m AoE Silence)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "20m Beam Silenced (2.0s)",
+      "equipSource": "Fangbane / Sapphire Fangbane",
+      "equipMatchItemIds": [
+        26516,
+        9001455
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_sword_1h_0064.png",
+      "description": "Use — Penetrating Light: Generates burning light up to 20m dealing 4,788 Magic Damage and Silencing enemies for 2.0s."
+    },
+    {
+      "id": "equip_glory_sash_bind",
+      "skillset": "equipment",
+      "name": "Glory Sash (25m Bind / Snare)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "0.6s Cast → 25m Snared/Bound (2.0s)",
+      "equipSource": "Cruel / Charming / Elegant Glory Sash",
+      "equipMatchItemIds": [
+        38223,
+        43079,
+        43168
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.6,
+      "icon": "https://darugear.com/assets/icons/icon_item_belt_cloth_0003.png",
+      "description": "Use: Binds/Snares a target up to 25m away for 2.0s and deals Magic Damage over 2s."
+    },
+    {
+      "id": "equip_jolas_grudge_stun",
+      "skillset": "equipment",
+      "name": "Jola's Eternal Grudge (5s Stun)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Stunned (5.0s CC)",
+      "equipSource": "Jola's Eternal Grudge / Destructive Grudge",
+      "equipMatchItemIds": [
+        30060,
+        43074
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_shield_0083.png",
+      "description": "Use — Jola's Grudge: Stuns a target for 5.0s (cannot be used in Arena)."
+    },
+    {
+      "id": "equip_mistsong_malice_antiheal",
+      "skillset": "equipment",
+      "name": "Mistsong Eternal Malice (-10% Heal)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "20m Chilling Beam: -10% Recv Healing (6s)",
+      "equipSource": "Excrescent / Mistsong Eternal Malice",
+      "equipMatchItemIds": [
+        42034,
+        42035,
+        42036
+      ],
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_mace_2h_0076.png",
+      "description": "Use: Shoots chilling energy at enemies within 20m, dealing continuous Magic Damage and reducing Received Healing -10%."
+    },
+    {
+      "id": "equip_ayanad_earring_crit",
+      "skillset": "equipment",
+      "name": "Great Ayanad / Scholar Earring (+70% Crit)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "+70% All Critical Rates for 2.0s (Off-GCD)",
+      "equipSource": "Great Ayanad / Enlightened Scholar's Earring",
+      "equipMatchItemIds": [
+        33154,
+        9001917
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0.0,
+      "gcdNote": "Off-GCD earring active (0.00s GCD)",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "flags": {
+        "noGcd": true
+      },
+      "icon": "https://darugear.com/assets/icons/icon_item_1810.png",
+      "description": "Use: Increases all Critical Rates (Melee, Ranged, Magic & Healing) +70% for 2.0s."
+    },
+    {
+      "id": "equip_pioneer_earring_crit",
+      "skillset": "equipment",
+      "name": "Pioneer / Voyager Earring (+35% Crit)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "+35% All Critical Rates for 2.0s (Off-GCD)",
+      "equipSource": "Pioneer / Enlightened Voyager Earring",
+      "equipMatchItemIds": [
+        39055,
+        9001923
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0.0,
+      "gcdNote": "Off-GCD earring active (0.00s GCD)",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "flags": {
+        "noGcd": true
+      },
+      "icon": "https://darugear.com/assets/icons/icon_item_2734.png",
+      "description": "Use: Increases all Critical Rates (Melee, Ranged, Magic & Healing) +35% for 2.0s."
+    },
+    {
+      "id": "equip_pristine_wit_instant",
+      "skillset": "equipment",
+      "name": "Pristine Wit (Instant Freezing Arrow)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "Instant Freezing Arrow (12s, Off-GCD)",
+      "equipSource": "Corrupted / Harbinger's / Sapphire Pristine Wit",
+      "equipMatchItemIds": [
+        26515,
+        28950,
+        9001465
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0.0,
+      "gcdNote": "Off-GCD staff active (0.00s GCD)",
+      "cooldownSec": 180.0,
+      "castTimeSec": 0.0,
+      "flags": {
+        "noGcd": true
+      },
+      "icon": "https://darugear.com/assets/icons/aac/aac_sapphire_staff_2h.png",
+      "description": "Use: Increases Flamebolt damage +15% and eliminates the Cast Time for Freezing Arrow (12s Sapphire / 5s Serpentis).",
+      "comboEffect": {
+        "id": "pristine_wit",
+        "label": "Pristine Wit",
+        "summary": "Instant Freezing Arrow (12s)",
+        "durationSec": 12.0,
+        "removesCastTimeFor": [
+          "sorcery_freezing_arrow"
+        ]
+      }
+    },
+    {
+      "id": "equip_honor_abeyance_stun",
+      "skillset": "equipment",
+      "name": "Honor Abeyance Sword (AoE Stun)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE Stunned (2.0s CC)",
+      "equipSource": "Honor Abeyance Sword / Commanding Greatsword",
+      "equipMatchItemIds": [
+        18394,
+        18396,
+        28460,
+        28462
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_sword_1h_0024.png",
+      "description": "Use: Deals AoE Physical Damage and inflicts Stun for 2.0s (shares 2m Honor item cooldown)."
+    },
+    {
+      "id": "equip_honor_perdition_impale",
+      "skillset": "equipment",
+      "name": "Honor Perdition Spear (AoE Impale)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE Impaled (2.0s CC; triggers Arc Lightning +45%)",
+      "equipSource": "Honor Perdition Shortspear / Judgment Longspear",
+      "equipMatchItemIds": [
+        18414,
+        18416,
+        28471,
+        28472
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_spear_1h_0054.png",
+      "description": "Use: Deals AoE Physical Damage and Impales enemies for 2.0s (triggers Arc Lightning +45% & auto-CC bypass)."
+    },
+    {
+      "id": "equip_honor_silent_greataxe",
+      "skillset": "equipment",
+      "name": "Honor Silent Greataxe (AoE Silence)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE Silenced (4.0s)",
+      "equipSource": "Honor Silent / Silence Greataxe",
+      "equipMatchItemIds": [
+        18404,
+        28466
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_axe_2h_0023.png",
+      "description": "Use: Deals AoE Physical Damage and inflicts Silence for 3.0–4.0s."
+    },
+    {
+      "id": "equip_honor_entangling_bow",
+      "skillset": "equipment",
+      "name": "Honor Entangling Bow (AoE Snare)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE Snared (4.0s)",
+      "equipSource": "Honor Entangling / Entanglement Bow",
+      "equipMatchItemIds": [
+        18418,
+        28473
+      ],
+      "damageType": "utility",
+      "scalingStat": "rangedAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_bow_0041.png",
+      "description": "Use: Deals AoE Ranged Damage and Snares enemies for 3.0–4.0s."
+    },
+    {
+      "id": "equip_honor_withering_club",
+      "skillset": "equipment",
+      "name": "Honor Withering Club (AoE Distressed)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE Distressed (7s: -60% Heal, triggers Distressed combos)",
+      "equipSource": "Honor Withering Club / Greatclub",
+      "equipMatchItemIds": [
+        18406,
+        18408,
+        28467,
+        28468
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_mace_1h_0012.png",
+      "description": "Use: Deals AoE Physical Damage and inflicts Distressed (-60% Received Healing) for 3.0–7.0s."
+    },
+    {
+      "id": "equip_honor_binding_shield",
+      "skillset": "equipment",
+      "name": "Honor Binding Shield (AoE Slow)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE Slowed (-60% Move Speed, 4.0s)",
+      "equipSource": "Honor Binding / Decelerator Shield",
+      "equipMatchItemIds": [
+        18420,
+        28513
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_shield_0024.png",
+      "description": "Use: Deals AoE Physical Damage and decreases enemy Move Speed -60% for 4.0s."
+    },
+    {
+      "id": "equip_honor_dominating_staff",
+      "skillset": "equipment",
+      "name": "Honor Dominating Staff (AoE Enervate)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "AoE -50% Recv Healing + Mana Drain (5.0s)",
+      "equipSource": "Honor Dominating / Domination Staff",
+      "equipMatchItemIds": [
+        18412,
+        28470
+      ],
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_staff_2h_0007.png",
+      "description": "Use: Deals AoE Magic Damage, drains mana over 5s, decreases Received Healing -50%, and extends Stun/Trip +30% on Enervated enemies."
+    },
+    {
+      "id": "equip_suns_glare_blind",
+      "skillset": "equipment",
+      "name": "Sun's Glare Longspear (AoE Blind)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "6m AoE Blinded (-25% Melee Acc, 6.0s)",
+      "equipSource": "Sun's Glare Longspear",
+      "equipMatchItemIds": [
+        21234
+      ],
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_item_spear_2h_0043.png",
+      "description": "Use: Releases powerful light to Blind all enemies within 6m for 6.0s (-25% Melee Accuracy)."
+    }
+  ]
+}

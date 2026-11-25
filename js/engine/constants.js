@@ -3,6 +3,8 @@
  * Matches js/data/constants.json and live client unitInfo observations.
  */
 
+export const APP_VERSION = "0.2.0";
+
 export const DEFAULT_CONSTANTS = Object.freeze({
     gameVersion: "ArcheAge Classic 1.3.6 (3.5)",
     level: 55,

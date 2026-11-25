@@ -1,5 +1,5 @@
 {
-  "activeId": "rot_whip-weave_mwva7xth",
+  "activeId": "tank_initiator_cc",
   "combos": [
     {
       "id": "darkrunner_burst",
@@ -316,20 +316,37 @@
       "initialEffects": [],
       "steps": [
         {
-          "skillId": "defense_shield_slam",
+          "skillId": "auramancy_vicious_implosion",
           "isBackstab": false,
           "targetIsCCd": false,
           "targetBelow30Pct": false,
           "comboBonusPct": 0,
-          "delaySec": 0
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
         },
         {
-          "skillId": "defense_bull_rush",
+          "skillId": "equip_kraken_scepter_snare",
           "isBackstab": false,
-          "targetIsCCd": true,
+          "targetIsCCd": false,
           "targetBelow30Pct": false,
-          "comboBonusPct": 30,
-          "delaySec": 0
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
+        },
+        {
+          "skillId": "occultism_stillness",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
         },
         {
           "skillId": "occultism_hell_spear",
@@ -340,12 +357,37 @@
           "delaySec": 0
         },
         {
-          "skillId": "defense_ollos_hammer",
+          "skillId": "occultism_summon_crows",
           "isBackstab": false,
-          "targetIsCCd": true,
+          "targetIsCCd": false,
           "targetBelow30Pct": false,
           "comboBonusPct": 0,
-          "delaySec": 0
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
+        },
+        {
+          "skillId": "occultism_crippling_mire",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
+        },
+        {
+          "skillId": "occultism_summon_wraith",
+          "isBackstab": false,
+          "targetIsCCd": false,
+          "targetBelow30Pct": false,
+          "comboBonusPct": 0,
+          "delaySec": 0,
+          "travelTimeSec": 0,
+          "weaponProc": "",
+          "appliedDebuffs": []
         }
       ]
     },
@@ -469,115 +511,79 @@
   ],
   "steps": [
     {
-      "skillId": "shadowplay_drop_back",
+      "skillId": "auramancy_vicious_implosion",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
       "comboBonusPct": 0,
       "delaySec": 0,
+      "travelTimeSec": 0,
       "weaponProc": "",
-      "offGcd": false
+      "appliedDebuffs": []
     },
     {
-      "skillId": "sorcery_gods_whip",
-      "isBackstab": false,
-      "targetIsCCd": false,
-      "targetBelow30Pct": false,
-      "comboBonusPct": 0,
-      "delaySec": 0.1,
-      "weaponProc": "",
-      "offGcd": true
-    },
-    {
-      "skillId": "sorcery_flamebolt_flame",
+      "skillId": "equip_kraken_scepter_snare",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
       "comboBonusPct": 0,
       "delaySec": 0,
+      "travelTimeSec": 0,
       "weaponProc": "",
-      "offGcd": true
+      "appliedDebuffs": []
     },
     {
-      "skillId": "sorcery_gods_whip",
-      "isBackstab": false,
-      "targetIsCCd": false,
-      "targetBelow30Pct": false,
-      "comboBonusPct": 0,
-      "delaySec": 0.1,
-      "weaponProc": "",
-      "offGcd": true
-    },
-    {
-      "skillId": "sorcery_flamebolt_flame",
+      "skillId": "occultism_stillness",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
       "comboBonusPct": 0,
       "delaySec": 0,
+      "travelTimeSec": 0,
       "weaponProc": "",
-      "offGcd": true
+      "appliedDebuffs": []
     },
     {
-      "skillId": "sorcery_gods_whip",
+      "skillId": "occultism_hell_spear",
       "isBackstab": false,
-      "targetIsCCd": false,
+      "targetIsCCd": true,
       "targetBelow30Pct": false,
       "comboBonusPct": 0,
-      "delaySec": 0.1,
-      "weaponProc": "",
-      "offGcd": true
+      "delaySec": 0
     },
     {
-      "skillId": "sorcery_flamebolt_flame",
-      "isBackstab": false,
-      "targetIsCCd": false,
-      "targetBelow30Pct": false,
-      "comboBonusPct": 0,
-      "delaySec": 0,
-      "weaponProc": "",
-      "offGcd": true
-    },
-    {
-      "skillId": "sorcery_gods_whip",
-      "isBackstab": false,
-      "targetIsCCd": false,
-      "targetBelow30Pct": false,
-      "comboBonusPct": 0,
-      "delaySec": 0.1,
-      "weaponProc": "",
-      "offGcd": true
-    },
-    {
-      "skillId": "sorcery_flamebolt_flame",
+      "skillId": "occultism_summon_crows",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
       "comboBonusPct": 0,
       "delaySec": 0,
+      "travelTimeSec": 0,
       "weaponProc": "",
-      "offGcd": true
+      "appliedDebuffs": []
     },
     {
-      "skillId": "sorcery_gods_whip",
-      "isBackstab": false,
-      "targetIsCCd": false,
-      "targetBelow30Pct": false,
-      "comboBonusPct": 0,
-      "delaySec": 0.1,
-      "weaponProc": "",
-      "offGcd": true
-    },
-    {
-      "skillId": "sorcery_flamebolt_flame",
+      "skillId": "occultism_crippling_mire",
       "isBackstab": false,
       "targetIsCCd": false,
       "targetBelow30Pct": false,
       "comboBonusPct": 0,
       "delaySec": 0,
+      "travelTimeSec": 0,
       "weaponProc": "",
-      "offGcd": true
+      "appliedDebuffs": []
+    },
+    {
+      "skillId": "occultism_summon_wraith",
+      "isBackstab": false,
+      "targetIsCCd": false,
+      "targetBelow30Pct": false,
+      "comboBonusPct": 0,
+      "delaySec": 0,
+      "travelTimeSec": 0,
+      "weaponProc": "",
+      "appliedDebuffs": []
     }
   ],
-  "updatedAt": 1795564771736
+  "updatedAt": 1795650015474
 }

@@ -1154,7 +1154,7 @@ export function buildCustomSkill() {
 
 export function formatFormulaShort(skill, rankSpec) {
     if (skill?.kind === "utility") {
-        return skill.comboEffect?.summary || "Utility / Combo Enabler";
+        return skill.utilitySummary || skill.comboEffect?.summary || "Utility / Combo Enabler";
     }
     const src = rankSpec || skill;
     const statShort =
@@ -1210,7 +1210,8 @@ export function getEffectiveSkill(rawSkill) {
 
 export function skillIconUrl(skill) {
     if (!skill?.icon) return "";
-    const clean = String(skill.icon).replace(/\\/g, "/");
+    const clean = String(skill.icon).replace(/\\/g, "/").trim();
+    if (/^https?:\/\//i.test(clean)) return clean;
     return clean.startsWith("assets/") ? clean : `assets/icons/${clean}`;
 }
 

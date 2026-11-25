@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_occultism.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 14,
+  "skillCount": 16,
   "skills": [
     {
       "id": "occultism_mana_stars",
@@ -497,6 +497,38 @@
       "cooldownSec": 18.0,
       "castTimeSec": 0.0,
       "icon": "icon_hollow_absorb_lifeforce.png"
+    },
+    {
+      "id": "occultism_stillness",
+      "skillset": "occultism",
+      "name": "Stillness",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "AoE 5m Interrupt + Silenced (3.5s) & breaks Fear",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "abilityLevel": 25,
+      "cooldownSec": 36.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_death07.png",
+      "description": "Interrupts all enemy casting within 5m and inflicts Silence for 3.5s. Removes Fear from the caster."
+    },
+    {
+      "id": "occultism_telekinesis",
+      "skillset": "occultism",
+      "name": "Telekinesis",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Channeled Lift CC (up to 10s, stays active under damage)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "abilityLevel": 20,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_death10.png",
+      "description": "Suspends an enemy in the air for up to 10s. Prevents all target actions even while taking damage (ends if caster moves or acts)."
     }
   ]
 }
