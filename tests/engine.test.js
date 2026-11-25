@@ -4769,5 +4769,181 @@ export async function runAllTests() {
         assert(getItemSpecialEffect(35560)?.dissonanceNoDebuff === true, "T6 Dirgebringer #35560 shares Basic Dissonance combat hook");
     });
 
+    // 59. Corrupted Kyrios & Primal Kyrios Set Proc Effects + Primal Kyrios 7pc DR Sign Fix
+    await test("Corrupted Kyrios, Primal Kyrios, and Dungeon/Boss armor sets include verbatim proc effects and exact Primal Kyrios 7pc DR", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const baseChar = createBlankGearBuild(catalog, { name: "Kyrios Tester" });
+        const player = createDefaultRawPlayer();
+
+        // 1. Corrupted Kyrios 7pc (set 111): 4pc Anthalon's Necromantic Flame + 7pc Anthalon Mind Absorb
+        const corrPieces = catalog.allItems.filter((it) => it.eiset_id === 111);
+        assert(corrPieces.length === 7, `Found all 7 Corrupted Kyrios pieces (got ${corrPieces.length})`);
+        let corrSlots = createEmptyGearSlots();
+        for (const it of corrPieces) {
+            corrSlots = equipCatalogItemInSlot(corrSlots, it.slotid[0], it, { gradeId: 9 }, catalog);
+        }
+        const corrGranted = computeGearItemGrantedStats(corrSlots[1], 1, corrSlots);
+        const corrSet = corrGranted.setEffects.find((s) => s.setId === 111);
+        assert(
+            corrSet && corrSet.equippedCount === 7 && corrSet.tiers.length === 2,
+            "Corrupted Kyrios resolves 7/7 with 4pc & 7pc tiers"
+        );
+        assert(
+            corrSet.tiers[0].summary.includes("Anthalon's Necromantic Flame") &&
+                corrSet.tiers[0].summary.includes("Pulls all enemies within 20m"),
+            `Corrupted Kyrios 4pc shows Necromantic Flame proc (${corrSet.tiers[0].summary})`
+        );
+        assert(
+            corrSet.tiers[1].summary.includes("Anthalon Mind Absorb") &&
+                corrSet.tiers[1].summary.includes("Teleports caster to up to 5 enemies"),
+            `Corrupted Kyrios 7pc shows Mind Absorb proc (${corrSet.tiers[1].summary})`
+        );
+        const corrActive = computeActiveSetEffectSummaries(corrSlots);
+        assert(
+            corrActive.some((s) => s.summary.includes("Anthalon's Necromantic Flame") && s.summary.includes("Anthalon Mind Absorb")),
+            "Corrupted Kyrios procs appear in Active Gear Buffs"
+        );
+
+        // 2. Primal Kyrios 7pc (set 9000113): 4pc Toughness +700 + Necromantic Flame, 7pc +4.5% DR + Primal Anthalon Mind Absorb
+        const primPieces = catalog.allItems.filter((it) => it.eiset_id === 9000113);
+        assert(primPieces.length === 7, `Found all 7 Primal Kyrios pieces (got ${primPieces.length})`);
+        let primSlots = createEmptyGearSlots();
+        for (const it of primPieces) {
+            primSlots = equipCatalogItemInSlot(primSlots, it.slotid[0], it, { gradeId: 9 }, catalog);
+        }
+        const primGranted = computeGearItemGrantedStats(primSlots[1], 1, primSlots);
+        const primSet = primGranted.setEffects.find((s) => s.setId === 9000113);
+        assert(
+            primSet && primSet.equippedCount === 7 && primSet.tiers.length === 2,
+            "Primal Kyrios resolves 7/7 with 4pc & 7pc tiers"
+        );
+        assert(
+            primSet.tiers[0].summary.includes("Toughness +700") &&
+                primSet.tiers[0].summary.includes("Anthalon's Necromantic Flame (on receiving damage)"),
+            `Primal Kyrios 4pc shows Toughness +700 & Necromantic Flame (${primSet.tiers[0].summary})`
+        );
+        assert(
+            primSet.tiers[1].summary.includes("Primal Anthalon Mind Absorb (on dealing damage)"),
+            `Primal Kyrios 7pc shows Primal Anthalon Mind Absorb (${primSet.tiers[1].summary})`
+        );
+
+        // Verify Primal Kyrios 7pc actually REDUCES received damage by +4.5% DR (fixed DaruGear +45 sign bug!)
+        const primChar7 = recalculateCharacterFromGearBuilder(baseChar, primSlots, player, catalog).character;
+        let primSlots6 = primSlots.map((s) => (s.id === 1 ? { ...s, item: null } : s));
+        const primChar6 = recalculateCharacterFromGearBuilder(baseChar, primSlots6, player, catalog).character;
+        assertApprox(
+            primChar7.defense.receivedMeleeDrPct - primChar6.defense.receivedMeleeDrPct,
+            4.5,
+            0.05,
+            `Primal Kyrios 7pc grants +4.5% Received Melee DR (7pc=${primChar7.defense.receivedMeleeDrPct}%, 6pc=${primChar6.defense.receivedMeleeDrPct}%)`
+        );
+        assertApprox(
+            primChar7.defense.receivedMagicDrPct - primChar6.defense.receivedMagicDrPct,
+            4.5,
+            0.05,
+            `Primal Kyrios 7pc grants +4.5% Received Magic DR`
+        );
+
+        // 3. Mistsong 7pc non-numeric tier (Hexbane set 414) renders cleanly
+        const hexPieces = catalog.allItems.filter((it) => it.eiset_id === 414);
+        let hexSlots = createEmptyGearSlots();
+        for (const it of hexPieces) {
+            hexSlots = equipCatalogItemInSlot(hexSlots, it.slotid[0], it, { gradeId: 9 }, catalog);
+        }
+        const hexSet = computeGearItemGrantedStats(hexSlots[1], 1, hexSlots).setEffects.find((s) => s.setId === 414);
+        assert(
+            hexSet && hexSet.tiers.some((t) => t.numPieces === 7 && t.active && t.summary.includes("Amplified Black Magic")),
+            `Hexbane 7pc renders Amplified Black Magic tier cleanly`
+        );
+    });
+
+    // 60. Regression Guards: Flat vs % Set Attack (Tempting Melody/Recollections), Fixed Melee/Ranged/Magic DR (142/144/146), parseGearStatLine Fixed DR & PvE Labels
+    await test("Regression guards: Tempting Melody/Recollections flat Magic Atk, Fixed Melee/Ranged/Magic DR (142/144/146), parseGearStatLine Fixed DR & PvE 196-199 labels", async () => {
+        const catalog = await loadGearCatalog("../js/data/gear_catalog");
+        const baseChar = createBlankGearBuild(catalog, { name: "Stat Audit Tester" });
+        const player = createDefaultRawPlayer();
+
+        // 1. Tempting Melody 3pc (set 416) adds +10.8 flat Magic Attack (NOT +10,802%!)
+        const tmPieces = catalog.allItems.filter((it) => it.eiset_id === 416).slice(0, 3);
+        let tmSlots = createEmptyGearSlots();
+        for (const it of tmPieces) {
+            tmSlots = equipCatalogItemInSlot(tmSlots, it.slotid[0], it, { gradeId: 9 }, catalog);
+        }
+        const tmChar3 = recalculateCharacterFromGearBuilder(baseChar, tmSlots, player, catalog).character;
+        let tmSlots2 = tmSlots.map((s) => (s.id === tmPieces[2].slotid[0] ? { ...s, item: null } : s));
+        const tmChar2 = recalculateCharacterFromGearBuilder(baseChar, tmSlots2, player, catalog).character;
+        assert(
+            tmChar3.offense.magicAttack < 500 && tmChar3.offense.magicAttack - tmChar2.offense.magicAttack > 8 && tmChar3.offense.magicAttack - tmChar2.offense.magicAttack < 50,
+            `Tempting Melody 3pc adds flat +10.8 Magic Atk instead of exploding by +10,802% (3pc=${tmChar3.offense.magicAttack}, 2pc=${tmChar2.offense.magicAttack})`
+        );
+
+        // 2. Fixed Melee (142), Ranged (144), and Magic (146) DR apply strictly to their own damage types
+        const shieldItem = catalog.allItems.find((it) => it.type === "Shield" && it.level >= 55);
+        let shieldBase = createEmptyGearSlots();
+        shieldBase = equipCatalogItemInSlot(shieldBase, 16, shieldItem, { gradeId: 9 }, catalog);
+        const baseDef = recalculateCharacterFromGearBuilder(baseChar, shieldBase, player, catalog).character.defense;
+
+        const wardenSlots = setSlotItemLunafrost(shieldBase, 16, 29663, catalog); // Fixed Melee -15
+        const wardenDef = recalculateCharacterFromGearBuilder(baseChar, wardenSlots, player, catalog).character.defense;
+        assert(
+            wardenDef.fixedMeleeDr === baseDef.fixedMeleeDr + 15 &&
+                wardenDef.fixedRangedDr === baseDef.fixedRangedDr &&
+                wardenDef.fixedMagicDr === baseDef.fixedMagicDr,
+            `Honorhewn Warden (aid 142) adds +15 ONLY to fixedMeleeDr (M:${wardenDef.fixedMeleeDr - baseDef.fixedMeleeDr}, R:${wardenDef.fixedRangedDr - baseDef.fixedRangedDr}, Mg:${wardenDef.fixedMagicDr - baseDef.fixedMagicDr})`
+        );
+
+        const sbSlots = setSlotItemLunafrost(shieldBase, 16, 29665, catalog); // Fixed Ranged -15
+        const sbDef = recalculateCharacterFromGearBuilder(baseChar, sbSlots, player, catalog).character.defense;
+        assert(
+            sbDef.fixedMeleeDr === baseDef.fixedMeleeDr &&
+                sbDef.fixedRangedDr === baseDef.fixedRangedDr + 15 &&
+                sbDef.fixedMagicDr === baseDef.fixedMagicDr,
+            `Honorhewn Shield-Bearer (aid 144) adds +15 ONLY to fixedRangedDr (R:+${sbDef.fixedRangedDr - baseDef.fixedRangedDr})`
+        );
+
+        const llSlots = setSlotItemLunafrost(shieldBase, 16, 29664, catalog); // Fixed Magic -15
+        const llDef = recalculateCharacterFromGearBuilder(baseChar, llSlots, player, catalog).character.defense;
+        assert(
+            llDef.fixedMeleeDr === baseDef.fixedMeleeDr &&
+                llDef.fixedRangedDr === baseDef.fixedRangedDr &&
+                llDef.fixedMagicDr === baseDef.fixedMagicDr + 15,
+            `Honorhewn Last Line (aid 146) adds +15 ONLY to fixedMagicDr (Mg:+${llDef.fixedMagicDr - baseDef.fixedMagicDr})`
+        );
+
+        const patSlots = setSlotItemLunafrost(shieldBase, 16, 29666, catalog); // Patience: 142+144+146 (-10 each)
+        const patDef = recalculateCharacterFromGearBuilder(baseChar, patSlots, player, catalog).character.defense;
+        assert(
+            patDef.fixedMeleeDr === baseDef.fixedMeleeDr + 10 &&
+                patDef.fixedRangedDr === baseDef.fixedRangedDr + 10 &&
+                patDef.fixedMagicDr === baseDef.fixedMagicDr + 10,
+            "Honorhewn Patience (142+144+146) adds +10 to Melee, Ranged, and Magic Fixed DR"
+        );
+        const patGranted = computeGearItemGrantedStats(patSlots[16], 16, patSlots);
+        assert(
+            patGranted.enchantBonuses.some((b) => b.label === "Fixed DR" && b.value === 10),
+            "Honorhewn Patience collapses 142/144/146 into Fixed DR +10 in Granted Stats"
+        );
+
+        // 3. parseGearStatLine parses Fixed Received Damage as fixed DR, NOT % Received DR
+        const pFixM = parseGearStatLine("Fixed Received Damage -30");
+        const pFixR = parseGearStatLine("Fixed Received Ranged -15");
+        const pFixMg = parseGearStatLine("Fixed Received Magic -15");
+        assert(
+            pFixM.addDefense.fixedMeleeDr === 30 && !pFixM.addDefense.receivedMeleeDrPct,
+            "parseGearStatLine maps 'Fixed Received Damage -30' to fixedMeleeDr=30 (not +30% DR)"
+        );
+        assert(
+            pFixR.addDefense.fixedRangedDr === 15 && pFixMg.addDefense.fixedMagicDr === 15,
+            "parseGearStatLine maps Fixed Ranged/Magic to fixedRangedDr/fixedMagicDr"
+        );
+
+        // 4. Costume synth pool 21 PvE labels match real attribute IDs 196-199
+        const p21 = catalog.synthPools["21"]?.["9"] || [];
+        assert(p21.some((s) => s.unit_attribute_id === 196 && s.display_text.startsWith("PvE Melee Skill Dmg")), "aid 196 labeled PvE Melee Skill Dmg");
+        assert(p21.some((s) => s.unit_attribute_id === 197 && s.display_text.startsWith("PvE Ranged Skill Dmg")), "aid 197 labeled PvE Ranged Skill Dmg");
+        assert(p21.some((s) => s.unit_attribute_id === 198 && s.display_text.startsWith("PvE Magic Skill Dmg")), "aid 198 labeled PvE Magic Skill Dmg");
+        assert(p21.some((s) => s.unit_attribute_id === 199 && s.display_text.startsWith("PvE Received Damage")), "aid 199 labeled PvE Received Damage");
+    });
+
     return results;
 }

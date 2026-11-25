@@ -218,9 +218,11 @@ const ITEM_BONUS_ATTR_META = Object.freeze({
     121: { label: "Melee Backstab", unit: "%" },
     122: { label: "Ranged Backstab", unit: "%" },
     123: { label: "Magic Backstab", unit: "%" },
-    142: { label: "Fixed DR", unit: "", negate: true },
+    142: { label: "Fixed Melee DR", unit: "", negate: true },
     143: { label: "Recv Melee Dmg", unit: "%" },
+    144: { label: "Fixed Ranged DR", unit: "", negate: true },
     145: { label: "Recv Ranged Dmg", unit: "%" },
+    146: { label: "Fixed Magic DR", unit: "", negate: true },
     147: { label: "Recv Magic Dmg", unit: "%" },
     175: { label: "Healing Power", unit: "" },
     176: { label: "Crit Heal Bonus", unit: "%" },
@@ -231,7 +233,10 @@ const ITEM_BONUS_ATTR_META = Object.freeze({
     183: { label: "Resilience", unit: "" },
     184: { label: "Magic Def Pen", unit: "" },
     185: { label: "Heal Crit Rate", unit: "%" },
-    199: { label: "Swim Speed", unit: "%" },
+    196: { label: "PvE Melee Skill Dmg", unit: "%" },
+    197: { label: "PvE Ranged Skill Dmg", unit: "%" },
+    198: { label: "PvE Magic Skill Dmg", unit: "%" },
+    199: { label: "PvE Recv Dmg", unit: "%" },
     204: { label: "Shield Pen Rate", unit: "%" },
     206: { label: "Shield Pen", unit: "%" },
     218: { label: "Attack Speed", unit: "" },
@@ -283,6 +288,11 @@ function summarizeAttrMap(attrObj, { excludeIds = null } = {}) {
         out.push({ label: "Melee/Ranged Atk", value: byId.get(998), unit: "%" });
         [998, 999].forEach((k) => consumed.add(k));
     }
+    // Collapse identical Fixed Melee/Ranged/Magic DR (142, 144, 146)
+    if (byId.has(142) && byId.get(142) === byId.get(144) && byId.get(142) === byId.get(146)) {
+        out.push({ label: "Fixed DR", value: byId.get(142), unit: "" });
+        [142, 144, 146].forEach((k) => consumed.add(k));
+    }
 
     const byLabel = new Map();
     for (const [aid, val] of byId.entries()) {
@@ -313,11 +323,91 @@ function inferEquipmentSetName(itemName) {
     return stripped ? `${stripped} Set` : `${clean} Set`;
 }
 
+/**
+ * Verbatim AA Classic 1.3.6 (3.5) Set Bonus Proc & Extra Tier Descriptions
+ * (sourced from aa-classic.com `set_data.bonuses`) for sets whose proc text or
+ * non-numeric 7pc tiers are omitted from DaruGear's numeric `unit_attribute_id` rows.
+ */
+export const SET_BONUS_EXTRA_NOTES = Object.freeze({
+    111: Object.freeze({
+        4: "Proc — Anthalon's Necromantic Flame: Pulls all enemies within 20m toward you and inflicts 250–300 Magic Damage every second.",
+        7: "Proc — Anthalon Mind Absorb: Teleports caster to up to 5 enemies, dealing 300–350 Magic Damage to each one and recovering an equal amount of mana.",
+    }),
+    174: Object.freeze({
+        4: "Proc — Anthalon's Necromantic Flame: Pulls all enemies within 20m toward you and inflicts 250–300 Magic Damage every second.",
+        7: "Proc — Anthalon Mind Absorb: Teleports caster to up to 5 enemies, dealing 300–350 Magic Damage to each one and recovering an equal amount of mana.",
+    }),
+    9000113: Object.freeze({
+        4: "Proc — Anthalon's Necromantic Flame (on receiving damage): Pulls all enemies within 20m toward you and inflicts 250–300 Magic Damage every second.",
+        7: "Proc — Primal Anthalon Mind Absorb (on dealing damage): Teleports caster to up to 5 enemies, dealing 300–350 Magic Damage to each one and recovering an equal amount of mana.",
+    }),
+    112: Object.freeze({
+        4: "Proc — Yaksa Stab: Lunge forward and deal 900 Physical Damage.",
+        7: "Proc — Yaksa Whirl Smash: Deals 500 Physical Damage with a weapon swing and 800 Physical Damage with a weapon smash.",
+    }),
+    113: Object.freeze({
+        4: "Proc — Barrage: Launches an enemy into the air and shoots them up to 10 times, dealing 165 Ranged Damage each hit.",
+        7: "Proc — Hand Cannon: Deals 1,200 Siege Damage to all targets within a 4m radius.",
+    }),
+    159: Object.freeze({
+        4: "Proc — Barrage: Launches an enemy into the air and shoots them up to 10 times, dealing 165 Ranged Damage each hit.",
+        7: "Proc — Nightmare Grinder: Shackles an enemy for 2s and inflicts 950 continuous Siege Damage.",
+    }),
+    446: Object.freeze({
+        2: "Stuns all enemies hit by Titan's Talon.",
+    }),
+    169: Object.freeze({
+        7: "Decreases the durations of debuffs -10% (Stun, Trip, Fear, Snare, Shackle, Silence, Sleep, Impale, Slow).",
+    }),
+    414: Object.freeze({
+        7: "Increases Melee Critical Rate +0.4% per stack while Amplified Black Magic is active.",
+    }),
+    415: Object.freeze({
+        7: "Increases Ranged Attack +3 per stack while Revealed Talisman is activated.",
+    }),
+    9000018: Object.freeze({
+        7: "Increases Ranged Attack +3 per stack while Revealed Talisman is activated.",
+    }),
+    416: Object.freeze({
+        7: "Increases Critical Healing Bonus and Magic Critical Damage +0.2% per stack while Tempting Melody is activated.",
+    }),
+    417: Object.freeze({
+        7: "Increases Critical Healing Bonus and Magic Critical Damage +0.2% per stack while Tempting Melody is activated.",
+    }),
+});
+
+/**
+ * Normalize known DaruGear `set_effect.csv` attribute/sign bugs at runtime so both
+ * freshly equipped sets and previously saved builds compute accurately:
+ *  - Primal Kyrios 7pc (set 9000113, aid 58): +45 -> -45 (-4.5% received damage = +4.5% DR)
+ *  - Flat Magic/Ranged/Melee Attack set bonuses (e.g. Tempting Melody 3pc set 416,
+ *    Recollections 7pc set 196) where DaruGear mis-tagged flat ×1000 values (e.g. 10,802 = +10.8)
+ *    as % attributes (aid 87/999/998) instead of flat attributes (aid 35/34/33).
+ */
+function normalizeSetEffectEntry(se) {
+    let aid = se?.unit_attribute_id != null && Number.isFinite(Number(se.unit_attribute_id))
+        ? Number(se.unit_attribute_id)
+        : null;
+    let rawVal = se?.calculated_value != null ? Number(se.calculated_value) : Number(se?.value);
+    if (aid == null || !Number.isFinite(rawVal)) return { aid, rawVal };
+    if (Number(se?.equip_item_set_id) === 9000113 && aid === 58 && rawVal > 0) {
+        rawVal = -Math.abs(rawVal);
+    }
+    const bn = String(se?.buff_name || "");
+    if (!bn.includes("%") && Math.abs(rawVal) >= 1000) {
+        if (aid === 87) aid = 35;
+        else if (aid === 999) aid = 34;
+        else if (aid === 998) aid = 33;
+    }
+    return { aid, rawVal };
+}
+
 function buildSetEffectGroup(rawSetEffects, setName, sourceKind, allSlots) {
     if (!Array.isArray(rawSetEffects) || rawSetEffects.length === 0) return null;
     const setId = rawSetEffects[0]?.equip_item_set_id;
     if (setId == null) return null;
     const equippedCount = Array.isArray(allSlots) ? getPieceCount(setId, allSlots) : 1;
+    const extraTierNotes = SET_BONUS_EXTRA_NOTES[Number(setId)] || null;
 
     // Group entries by num_pieces threshold ascending, deduplicating repeated attr IDs from lower tiers
     const byThreshold = new Map();
@@ -326,6 +416,14 @@ function buildSetEffectGroup(rawSetEffects, setName, sourceKind, allSlots) {
         if (pcs <= 0) continue;
         if (!byThreshold.has(pcs)) byThreshold.set(pcs, []);
         byThreshold.get(pcs).push(se);
+    }
+    if (extraTierNotes) {
+        for (const pcsKey of Object.keys(extraTierNotes)) {
+            const pcs = Number(pcsKey);
+            if (pcs > 0 && !byThreshold.has(pcs)) {
+                byThreshold.set(pcs, []);
+            }
+        }
     }
     const sortedPcs = Array.from(byThreshold.keys()).sort((a, b) => a - b);
     if (sortedPcs.length === 0) return null;
@@ -337,9 +435,8 @@ function buildSetEffectGroup(rawSetEffects, setName, sourceKind, allSlots) {
         const tierAttrs = {};
         const fallbackNotes = [];
         for (const se of rows) {
-            const hasAttr = se.unit_attribute_id != null && Number.isFinite(Number(se.unit_attribute_id));
-            const aid = hasAttr ? Number(se.unit_attribute_id) : null;
-            const rawVal = se.calculated_value != null ? se.calculated_value : se.value;
+            const { aid, rawVal } = normalizeSetEffectEntry(se);
+            const hasAttr = aid != null;
             if (hasAttr && !seenAttrIds.has(aid)) {
                 seenAttrIds.add(aid);
                 if (ITEM_BONUS_ATTR_META[aid]) {
@@ -353,6 +450,9 @@ function buildSetEffectGroup(rawSetEffects, setName, sourceKind, allSlots) {
             } else if (!hasAttr && se.buff_name && !String(se.buff_name).includes("#{")) {
                 fallbackNotes.push(String(se.buff_name).trim());
             }
+        }
+        if (extraTierNotes?.[pcs]) {
+            fallbackNotes.push(extraTierNotes[pcs]);
         }
         const entries = summarizeAttrMap(tierAttrs);
         const parts = entries.map((e) => `${e.label} ${formatAttrVal(e.value, e.unit)}`);
@@ -1440,17 +1540,19 @@ export function calculateDaruGearStats(player, slots) {
             const setId = eq.seteffects[0].equip_item_set_id;
             const pieceCnt = getPieceCount(setId, slots);
             for (const se of eq.seteffects) {
+                const { aid, rawVal } = normalizeSetEffectEntry(se);
                 if (
+                    aid != null &&
                     pieceCnt >= se.num_pieces &&
                     !appliedSets.some(
                         (x) =>
-                            x.unit_attribute_id === se.unit_attribute_id &&
+                            x.unit_attribute_id === aid &&
                             x.equip_item_set_id === se.equip_item_set_id
                     )
                 ) {
-                    addAttr(o, se.unit_attribute_id, se.calculated_value);
+                    addAttr(o, aid, rawVal);
                     appliedSets.push({
-                        unit_attribute_id: se.unit_attribute_id,
+                        unit_attribute_id: aid,
                         equip_item_set_id: se.equip_item_set_id,
                     });
                 }
@@ -1576,11 +1678,12 @@ export function calculateDaruGearStats(player, slots) {
     n.rangedIncomingMul = Number((-((o[58] || 0) + (o[145] || 0))).toFixed(1));
     n.magicIncomingMul = Number((-((o[58] || 0) + (o[147] || 0))).toFixed(1));
 
-    // Note: in AA Classic / DaruGear, o[142] (incoming_damage_val) is negative for Fixed DR (e.g. -48 on Bulwark).
-    // Negating yields positive Fixed DR so unbaking/re-applying Bulwark round-trips cleanly without going negative.
+    // In AA Classic / DaruGear, o[142] (Melee), o[144] (Ranged), and o[146] (Magic) are negative for Fixed DR
+    // (e.g. -15 on Honorhewn Warden / Shield-Bearer / Last Line Lunafrosts & Cloak synthesis).
+    // Negating each by its own damage type yields positive Fixed DR without cross-leaking or dropping Ranged/Magic.
     n.meleeIncomingFixed = Number(Math.max(0, Math.round((n.pdef / (n.pdef + 9000)) * 100 - (o[142] || 0))).toFixed(0));
-    n.rangedIncomingFixed = Number(Math.max(0, Math.round((n.pdef / (n.pdef + 9000)) * 100 - (o[142] || 0))).toFixed(0));
-    n.magicIncomingFixed = Number(Math.max(0, Math.round((n.mdef / (n.mdef + 9000)) * 100 - (o[142] || 0))).toFixed(0));
+    n.rangedIncomingFixed = Number(Math.max(0, Math.round((n.pdef / (n.pdef + 9000)) * 100 - (o[144] || 0))).toFixed(0));
+    n.magicIncomingFixed = Number(Math.max(0, Math.round((n.mdef / (n.mdef + 9000)) * 100 - (o[146] || 0))).toFixed(0));
     n.receivedHealing = Number((o[56] || 0).toFixed(1));
 
     n.atk += n.str * 0.2;

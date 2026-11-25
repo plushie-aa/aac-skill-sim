@@ -133,7 +133,8 @@
         "bulwark_ballad:2",
         "ode_to_recovery_r5:4",
         "health_lift:6",
-        "drum_to_the_arena_5700"
+        "drum_to_the_arena_5700",
+        "rhythm_stacks:15"
       ],
       "consumables": {
         "food": "pigglewiggle_delight",

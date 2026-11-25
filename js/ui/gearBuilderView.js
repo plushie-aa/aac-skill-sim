@@ -915,8 +915,19 @@ export function renderGearBuilderView(out) {
                             <div><span>Focus / Cast</span><strong>${fmtInt(effSelf.offense.focus)} / ${fmtDec(effSelf.offense.castTimePct, 0)}%</strong></div>
                             <div><span>Def / M.Pen</span><strong>${fmtInt(effSelf.offense.defensePenetration)} / ${fmtInt(effSelf.offense.magicDefensePenetration)}</strong></div>
                             <div><span>Atk Spd</span><strong>${fmtInt(effSelf.offense.attackSpeed)}</strong></div>
-                            <div><span>Melee EHP</span><strong class="val-a">${fmtInt(effStats.defense.ehp.melee.vsAttackerEhp)}</strong></div>
-                            <div><span>Magic EHP</span><strong class="val-a">${fmtInt(effStats.defense.ehp.magic.vsAttackerEhp)}</strong></div>
+                        </div>
+                        <div class="gb-eff-block">
+                            <div class="gb-eff-grid">
+                                <div title="Self Effective Melee Attack (Atk × Skill Dmg × Crit × Acc). vs ${escHtml(effOpp.name)}: ${fmtInt(effStats.offense.melee.vsTargetEffectiveAttack)}"><span>Eff. Melee Atk</span><strong class="val-a">${fmtInt(effStats.offense.melee.selfEffectiveAttack)}</strong></div>
+                                <div title="Self Effective Ranged Attack (Atk × Skill Dmg × Crit × Acc). vs ${escHtml(effOpp.name)}: ${fmtInt(effStats.offense.ranged.vsTargetEffectiveAttack)}"><span>Eff. Ranged Atk</span><strong class="val-a">${fmtInt(effStats.offense.ranged.selfEffectiveAttack)}</strong></div>
+                                <div title="Self Effective Magic Attack (Atk × Skill Dmg × Crit × Acc). vs ${escHtml(effOpp.name)}: ${fmtInt(effStats.offense.magic.vsTargetEffectiveAttack)}"><span>Eff. Magic Atk</span><strong class="val-a">${fmtInt(effStats.offense.magic.selfEffectiveAttack)}</strong></div>
+                                <div title="Self Effective Healing Power (Heal Power × Outgoing Heal × Heal Crit). Cast-adjusted (${fmtDec(effStats.offense.healing.castTimePct)}% cast): ${fmtInt(effStats.offense.healing.castAdjustedHealingPower)}"><span>Eff. Heal Power</span><strong class="val-heal">${fmtInt(effStats.offense.healing.selfEffectiveHealingPower)}</strong></div>
+                            </div>
+                            <div class="gb-ehp-row">
+                                <div title="Effective Melee HP vs ${escHtml(effOpp.name)} (HP, Phys Def, Toughness, Resilience, Melee DR &amp; Avoidance)"><span>Melee EHP</span><strong class="val-a">${fmtInt(effStats.defense.ehp.melee.vsAttackerEhp)}</strong></div>
+                                <div title="Effective Ranged HP vs ${escHtml(effOpp.name)} (HP, Phys Def, Toughness, Resilience, Ranged DR &amp; Avoidance)"><span>Ranged EHP</span><strong class="val-a">${fmtInt(effStats.defense.ehp.ranged.vsAttackerEhp)}</strong></div>
+                                <div title="Effective Magic HP vs ${escHtml(effOpp.name)} (HP, Magic Def, Toughness, Resilience &amp; Magic DR)"><span>Magic EHP</span><strong class="val-a">${fmtInt(effStats.defense.ehp.magic.vsAttackerEhp)}</strong></div>
+                            </div>
                         </div>
                         <div class="gb-attr-strip">
                             <span>STR <strong>${fmtInt(effSelf.attributes.str)}</strong></span>

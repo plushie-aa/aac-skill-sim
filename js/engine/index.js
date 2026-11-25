@@ -4,6 +4,7 @@
 
 export {
     COSTUME_CHARM_DEFS,
+    SET_BONUS_EXTRA_NOTES,
     T7_OBSIDIAN_SPECIAL_EFFECTS,
     computeActiveSetEffectSummaries,
     computeGearItemGrantedStats,

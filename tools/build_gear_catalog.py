@@ -99,7 +99,7 @@ ATTR_META = {
     121: ("Backstab Melee Damage", 10, "%"),
     122: ("Backstab Ranged Damage", 10, "%"),
     123: ("Backstab Magic Damage", 10, "%"),
-    142: ("Fixed Received Damage", 1, ""),
+    142: ("Fixed Received Melee", 1, ""),
     143: ("Received Melee Damage", 10, "%"),
     144: ("Fixed Received Ranged", 1, ""),
     145: ("Received Ranged Damage", 10, "%"),
@@ -115,10 +115,10 @@ ATTR_META = {
     183: ("Resilience", 1, ""),
     184: ("Magic Defense Pen", 1, ""),
     185: ("Critical Heal Rate", 10, "%"),
-    196: ("PvE Received Damage", 10, "%"),
-    197: ("PvE Melee Skill Dmg", 10, "%"),
-    198: ("PvE Ranged Skill Dmg", 10, "%"),
-    199: ("PvE Magic Skill Dmg", 10, "%"),
+    196: ("PvE Melee Skill Dmg", 10, "%"),
+    197: ("PvE Ranged Skill Dmg", 10, "%"),
+    198: ("PvE Magic Skill Dmg", 10, "%"),
+    199: ("PvE Received Damage", 10, "%"),
     204: ("Shield Def Pen Rate", 10, "%"),
     206: ("Shield Def Pen", 10, "%"),
     218: ("Attack Speed", 1, ""),
@@ -575,6 +575,26 @@ def compile_gear_catalog(dl_dir=None, out_dir=None, icons_dir=None):
                 0, [],
             ))
     accs.sort(key=lambda x: (-x["level"], x["name"].lower()))
+
+    # Fix DaruGear sign & flat-vs-% attribute bugs in set_effect.csv:
+    # 1. Primal Kyrios 7pc (set 9000113, aid 58): +45 -> -45 (-4.5% received damage = +4.5% DR)
+    # 2. Flat Magic/Ranged/Melee Attack sets (e.g. Tempting Melody 3pc set 416, Recollections 7pc set 196)
+    #    where DaruGear tagged ×1000 flat values (1837 + 16300*lv/100) as % IDs 87/999/998 instead of 35/34/33.
+    for row in set_effects.get(9000113, []):
+        if row.get("unit_attribute_id") == 58 and (row.get("value") or 0) > 0:
+            row["value"] = -abs(row["value"])
+    for rows in set_effects.values():
+        for row in rows:
+            bn = str(row.get("buff_name") or "")
+            aid = row.get("unit_attribute_id")
+            est = abs(float(row.get("value") or 0)) + abs(float(row.get("linear_level_bonus") or 0)) * 0.5
+            if "%" not in bn and est >= 1000:
+                if aid == 87:
+                    row["unit_attribute_id"] = 35
+                elif aid == 999:
+                    row["unit_attribute_id"] = 34
+                elif aid == 998:
+                    row["unit_attribute_id"] = 33
 
     meta = {
         "version": 1,

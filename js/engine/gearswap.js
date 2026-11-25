@@ -530,6 +530,12 @@ export function parseGearStatLine(text) {
         setDef("toughness", absVal);
     } else if (low.includes("resilience")) {
         setDef("resilience", absVal);
+    } else if (low.includes("fixed") && low.includes("ranged")) {
+        setDef("fixedRangedDr", absVal);
+    } else if (low.includes("fixed") && low.includes("magic")) {
+        setDef("fixedMagicDr", absVal);
+    } else if (low.includes("fixed") && (low.includes("melee") || low.includes("received"))) {
+        setDef("fixedMeleeDr", absVal);
     } else if (low.includes("received melee damage")) {
         setDef("receivedMeleeDrPct", absVal);
     } else if (low.includes("received ranged damage")) {
@@ -637,6 +643,9 @@ export function applyGearDelta(character, delta, sign = 1) {
             k === "magicDefense" ||
             k === "toughness" ||
             k === "resilience" ||
+            k === "fixedMeleeDr" ||
+            k === "fixedRangedDr" ||
+            k === "fixedMagicDr" ||
             k === "evasionPct" ||
             k === "parryPct" ||
             k === "blockPct"
