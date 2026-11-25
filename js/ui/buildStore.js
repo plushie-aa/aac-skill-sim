@@ -52,6 +52,7 @@ async function loadBuildsManifestFromDir(dirName) {
                     if (data && typeof data === "object") {
                         data.savedId = data.savedId || f.replace(/\.json$/i, "");
                         data.filename = data.filename || `${dirName}/${f}`;
+                        if (dirName === "example-builds") data.isExample = true;
                         return data;
                     }
                 } catch {
@@ -327,7 +328,6 @@ export function hydrateDefaultSlotsFromDisk() {
     const pickA = byId("melee-crit-build") || byId("example-darkrunner-melee") || state.savedBuilds[0];
     const pickB =
         byId("melee-def-pen-build") ||
-        byId("example-abolisher-bruiser") ||
         byId("example-spellsinger-mage") ||
         state.savedBuilds[1] ||
         state.savedBuilds[0];

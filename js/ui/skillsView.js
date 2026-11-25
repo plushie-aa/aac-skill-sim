@@ -407,9 +407,12 @@ export function renderBreakdownBox(row) {
         const avoidDetailStr = av.bypassReason
             ? `0.0% (${escHtml(av.bypassReason)})`
             : `${fmtDec(av.totalAvoidancePct)}% (E ${fmtDec(av.rawEvadePct)}% + P ${fmtDec(av.rawParryPct)}%${!av.parryApplies && row.skill.scalingStat === "rangedAttack" ? " no DW" : ""} + B ${fmtDec(av.rawBlockPct)}%${!av.hasShield ? " no shield" : ""}; Focus -${fmtDec(av.focusNegationPct)}%)`;
+        const gemRowLbl = String(b.skillGemSummary || "").includes("(T7)")
+            ? "Skill Bonus (Gear / Gems)"
+            : "Skill Lunagems";
         const gemRow =
             b.skillGemBonusPct > 0
-                ? `<div class="wf-row"><span class="wf-k">Skill Lunagems</span><span class="wf-v delta-pos">+${fmtDec(b.skillGemBonusPct)}% (${escHtml(b.skillGemSummary)})</span></div>`
+                ? `<div class="wf-row"><span class="wf-k">${gemRowLbl}</span><span class="wf-v delta-pos">+${fmtDec(b.skillGemBonusPct)}% (${escHtml(b.skillGemSummary)})</span></div>`
                 : "";
         const comboRow =
             b.comboBonusPct > 0
@@ -422,6 +425,9 @@ export function renderBreakdownBox(row) {
         const enlRow = b.lifeEnlightenmentNote
             ? `<div class="wf-row"><span class="wf-k">Life Enlightenment (2-Set)</span><span class="wf-v delta-pos">${escHtml(b.lifeEnlightenmentNote)}</span></div>`
             : "";
+        const t7Row = b.t7EffectNote
+            ? `<div class="wf-row"><span class="wf-k">T7 Obsidian Effect</span><span class="wf-v delta-pos">${escHtml(b.t7EffectNote)}</span></div>`
+            : "";
         const secRow = res.secondary
             ? `<div class="wf-row"><span class="wf-k">+ Secondary: ${escHtml(res.secondary.label)}</span><span class="wf-v delta-pos">+${fmtInt(res.secondary.expected)} exp (+${fmtInt(res.secondary.normal)} norm${res.secondary.canCrit ? ` / +${fmtInt(res.secondary.crit)} crit` : ", no crit"})</span></div>`
             : "";
@@ -430,6 +436,7 @@ export function renderBreakdownBox(row) {
             <h4 class="${colorCls}">${escHtml(title)} &mdash; ${escHtml(row.skill.name)} (${escHtml(rankLabel)})</h4>
             <div class="wf-row"><span class="wf-k">Raw Formula</span><span class="wf-v">${b.rawBase} + ${b.rawScalingPct}% of ${fmtDec(b.attackPower)} (+${fmtDec(b.skillDamagePct)}% Dmg)</span></div>
             ${enlRow}
+            ${t7Row}
             ${treeBonusRow}
             ${gemRow}
             ${comboRow}

@@ -1370,6 +1370,7 @@ export function renderItemGrantedStatsHtml(granted) {
     ].filter(([, v]) => Number(v) !== 0);
 
     const equipEffects = Array.isArray(granted.equipEffects) ? granted.equipEffects : [];
+    const equipNotes = Array.isArray(granted.equipNotes) ? granted.equipNotes : [];
     const enchantBonuses = Array.isArray(granted.enchantBonuses)
         ? granted.enchantBonuses
         : Array.isArray(granted.bonuses)
@@ -1382,6 +1383,7 @@ export function renderItemGrantedStatsHtml(granted) {
         mainEntries.length === 0 &&
         attrEntries.length === 0 &&
         equipEffects.length === 0 &&
+        equipNotes.length === 0 &&
         enchantBonuses.length === 0 &&
         enchantNotes.length === 0 &&
         setEffects.length === 0 &&
@@ -1429,6 +1431,23 @@ export function renderItemGrantedStatsHtml(granted) {
                        })
                        .join("")}
                </div>`
+            : "";
+
+    const equipNotesHtml =
+        equipNotes.length > 0
+            ? `<div class="gb-is-notes-wrap">${equipNotes
+                  .map((n) => {
+                      const isT7 = n.kind === "t7";
+                      const cls = isT7
+                          ? `gb-is-note is-t7${n.engineFactored ? " is-factored" : ""}`
+                          : "gb-is-note";
+                      const badge =
+                          isT7 && n.engineFactored
+                              ? ` <span class="gb-is-t7-badge" title="Automatically factored into simulator math">Sim Active</span>`
+                              : "";
+                      return `<div class="${cls}"><strong>${isT7 ? "&#9733; " : ""}${escHtml(n.name)}:</strong>${badge} <span>${escHtml(n.text)}</span></div>`;
+                  })
+                  .join("")}</div>`
             : "";
 
     const enchantNotesHtml =
@@ -1480,6 +1499,7 @@ export function renderItemGrantedStatsHtml(granted) {
                    </div>`
                 : ""
         }
+        ${equipNotesHtml}
         ${
             enchantBonuses.length > 0
                 ? `<div class="gb-is-sub-sec">

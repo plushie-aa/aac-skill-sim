@@ -39,6 +39,7 @@ import {
     getPlayerStatMigration,
     getSynthPoolIndexForStat,
     getSynthSlotCountForGrade,
+    getT7ObsidianSpecialEffect,
     loadGearCatalog,
     normalizeEconomyPriceBook,
     recalculateCharacterFromGearBuilder,
@@ -182,6 +183,10 @@ function formatCatalogItemVariantHint(it) {
         if (effLabels.length > 0) {
             parts.push(`+${effLabels.join(", ")}`);
         }
+    }
+    const t7 = getT7ObsidianSpecialEffect(it.id);
+    if (t7?.shortText) {
+        parts.push(`★ ${t7.shortText}`);
     }
     return parts.join(" · ");
 }

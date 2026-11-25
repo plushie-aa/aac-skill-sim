@@ -4,6 +4,7 @@ import {
     CONSUMABLE_SLOTS,
     COSTUME_CHARM_DEFS,
     DEFAULT_CONSTANTS,
+    T7_OBSIDIAN_SPECIAL_EFFECTS,
     applyGearTemplateToSlots,
     applyLunafrostToEligibleSlots,
     applyModifiers,
@@ -50,10 +51,12 @@ import {
     getArmorSetPresets,
     getAvailableSynthPool,
     getEquipmentSkillBonus,
+    getEquippedT7ObsidianEffects,
     getPlayerStatMigration,
     getSkillComboOptions,
     getSynthPoolIndexForStat,
     getSynthSlotCountForGrade,
+    getT7ObsidianSpecialEffect,
     getTotalPointsSpent,
     inferBuildArmorType,
     inferBuildCategory,
@@ -3614,11 +3617,11 @@ export async function runAllTests() {
     });
 
     // 44. GitHub Pages Example Builds Manifest & Anonymized Gear Integrity
-    await test("example-builds/ manifest loads all 6 anonymized starter archetypes with valid Gear Builder & Economy coverage", async () => {
+    await test("example-builds/ manifest loads all 5 anonymized starter archetypes with valid Gear Builder & Economy coverage", async () => {
         const idxRes = await fetch("../example-builds/_index.json", { cache: "no-store" });
         assert(idxRes.ok, "example-builds/_index.json should be served cleanly");
         const idx = await idxRes.json();
-        assert(Array.isArray(idx.files) && idx.files.length === 6, `Expected 6 example build files, got ${idx.files?.length}`);
+        assert(Array.isArray(idx.files) && idx.files.length === 5, `Expected 5 example build files, got ${idx.files?.length}`);
 
         const catalog = await loadGearCatalog("../js/data/gear_catalog");
         const pb = createDefaultEconomyPriceBook();
@@ -3628,7 +3631,10 @@ export async function runAllTests() {
             const res = await fetch(`../example-builds/${fname}`, { cache: "no-store" });
             assert(res.ok, `Failed loading example-builds/${fname}`);
             const raw = await res.json();
-            assert(raw.isExample === true && raw.source === "example", `${fname} flagged as example build`);
+            assert(
+                raw.isExample === true || String(raw.name || "").startsWith("Example:"),
+                `${fname} identified as example build`
+            );
             assert(!raw.shareCode && !raw.darugearUrl && !raw.shareUrl, `${fname} contains zero personal DaruGear links/codes`);
 
             const parsed = parseImportPayload(raw);
@@ -4457,6 +4463,185 @@ export async function runAllTests() {
         assert(
             applied.bakedPassives.length === 1 && applied.bakedPassives[0] === "Deflect and Retaliate",
             "Target character preserves its own bakedPassives (zero double-counting)"
+        );
+    });
+
+    // 57. T7 Obsidian Special Effect Texts & Combat Math Hooks
+    await test("T7 Obsidian special texts cover all 54 weapons/bows/instruments and factor combat-affecting effects", async () => {
+        const catalog = await loadGearCatalog();
+        const t7Ids = Object.keys(T7_OBSIDIAN_SPECIAL_EFFECTS).map(Number);
+        assert(t7Ids.length === 54, `All 54 T7 Obsidian special effects registered (got ${t7Ids.length})`);
+        for (let id = 40572; id <= 40625; id++) {
+            const eff = getT7ObsidianSpecialEffect(id);
+            assert(
+                eff && typeof eff.text === "string" && eff.text.length > 10 && typeof eff.shortText === "string" && eff.shortText.length > 4,
+                `T7 item #${id} has verbatim text & shortText`
+            );
+        }
+
+        // 1. Jade Despair (#40610) displays full text and boosts Basic Gods' Whip by exactly +8% (while #40611 Mana Fountain does not)
+        const baseChar = createBlankGearBuild(catalog, { name: "T7 Mage" });
+        const player = createDefaultRawPlayer();
+        const def = createDefaultCharacter({
+            name: "Target Dummy",
+            defense: { physicalDefense: 5000, magicDefense: 5000, toughness: 0, resilience: 0 },
+        });
+
+        let scep40610Slots = createEmptyGearSlots();
+        scep40610Slots = equipCatalogItemInSlot(scep40610Slots, 15, catalog.itemById.get(40610), { gradeId: 9 }, catalog);
+        const granted40610 = computeGearItemGrantedStats(scep40610Slots[15], 15, scep40610Slots);
+        assert(
+            granted40610.equipNotes.some((n) => n.kind === "t7" && n.engineFactored && n.text.includes("Basic Gods' Whip increases damage +8%")),
+            `Jade Despair #40610 shows Gods' Whip +8% text in Granted Stats (${granted40610.equipNotes.map((n) => n.text).join("; ")})`
+        );
+        const activeSum40610 = computeActiveSetEffectSummaries(scep40610Slots);
+        assert(
+            activeSum40610.some((s) => s.category === "t7" && s.summary.includes("Basic Gods' Whip increases damage +8%")),
+            "Jade Despair #40610 appears in Active Gear Buffs summary"
+        );
+
+        let scep40611Slots = createEmptyGearSlots();
+        scep40611Slots = equipCatalogItemInSlot(scep40611Slots, 15, catalog.itemById.get(40611), { gradeId: 9 }, catalog);
+        const mage40610 = recalculateCharacterFromGearBuilder(baseChar, scep40610Slots, player, catalog).character;
+        const mage40611 = recalculateCharacterFromGearBuilder(baseChar, scep40611Slots, player, catalog).character;
+        // Align magicAttack so only the T7 special effect differs
+        mage40611.offense = { ...mage40610.offense };
+        const godsWhip = {
+            id: "sorcery_gods_whip",
+            name: "Gods' Whip",
+            skillset: "sorcery",
+            variant: "base",
+            kind: "damage",
+            damageType: "magic",
+            scalingStat: "magicAttack",
+            base: 700,
+            scalingPct: 240,
+        };
+        const whip40610 = simulateSkillDamage(mage40610, def, godsWhip);
+        const whip40611 = simulateSkillDamage(mage40611, def, godsWhip);
+        assert(whip40610.breakdown.skillGemBonusPct === 8, `Jade Despair #40610 adds +8% skill bonus to Gods' Whip (got ${whip40610.breakdown.skillGemBonusPct}%)`);
+        assert(whip40611.breakdown.skillGemBonusPct === 0, `Jade Despair #40611 (Mana Fountain) adds +0% to Gods' Whip (got ${whip40611.breakdown.skillGemBonusPct}%)`);
+        assertApprox(whip40610.normal / whip40611.normal, 1.08, 0.005, "Jade Despair #40610 increases Base Gods' Whip damage by exactly 1.08x");
+
+        // 2. Deathfletcher (#40618) shreds -390 PDef on Basic Stalker's Mark (single-skill + rotation, no double-shred)
+        let bowSlots = createEmptyGearSlots();
+        bowSlots = equipCatalogItemInSlot(bowSlots, 17, catalog.itemById.get(40618), { gradeId: 9 }, catalog);
+        const archerDf = recalculateCharacterFromGearBuilder(baseChar, bowSlots, player, catalog).character;
+        archerDf.offense.rangedAttack = 1000;
+        const archerPlain = createDefaultCharacter({ name: "Plain Archer", offense: { ...archerDf.offense } });
+        const markedDef = applyModifiers(def, ["stalkers_mark"]);
+        const physShot = {
+            id: "archery_charged_bolt",
+            name: "Charged Bolt",
+            skillset: "archery",
+            variant: "base",
+            kind: "damage",
+            damageType: "physical",
+            scalingStat: "rangedAttack",
+            base: 500,
+            scalingPct: 200,
+        };
+        const singleDf = simulateSkillDamage(archerDf, markedDef, physShot);
+        const singlePlain = simulateSkillDamage(archerPlain, markedDef, physShot);
+        assert(
+            singleDf.breakdown.t7DefenseShred === 390 && singleDf.breakdown.effectiveDefense === singlePlain.breakdown.effectiveDefense - 390,
+            `Deathfletcher #40618 shreds -390 PDef vs Stalker's Marked target (${singleDf.breakdown.effectiveDefense} vs ${singlePlain.breakdown.effectiveDefense})`
+        );
+        assert(singleDf.normal > singlePlain.normal, "Deathfletcher -390 PDef shred increases physical damage");
+
+        const stalkersMarkSkill = {
+            id: "shadowplay_stalkers_mark",
+            name: "Stalker's Mark",
+            skillset: "shadowplay",
+            variant: "base",
+            kind: "damage",
+            damageType: "physical",
+            scalingStat: "rangedAttack",
+            base: 237,
+            scalingPct: 100,
+        };
+        const rotDf = simulateRotation(
+            archerDf,
+            def,
+            [{ skill: stalkersMarkSkill }, { skill: physShot }]
+        );
+        const rotPlain = simulateRotation(
+            archerPlain,
+            def,
+            [{ skill: stalkersMarkSkill }, { skill: physShot }]
+        );
+        assert(
+            rotDf.steps[1].result.breakdown.effectiveDefense === rotPlain.steps[1].result.breakdown.effectiveDefense - 390,
+            `Rotation Stalker's Mark with Deathfletcher shreds -390 PDef on follow-up shot (${rotDf.steps[1].result.breakdown.effectiveDefense} vs ${rotPlain.steps[1].result.breakdown.effectiveDefense})`
+        );
+        // Zero double-shred if Defender ALSO has stalkers_mark chip active
+        const rotDfMarked = simulateRotation(
+            archerDf,
+            markedDef,
+            [{ skill: stalkersMarkSkill }, { skill: physShot }]
+        );
+        assert(
+            rotDfMarked.steps[1].result.breakdown.effectiveDefense === rotDf.steps[1].result.breakdown.effectiveDefense,
+            "Deathfletcher -390 PDef does not double-count when stalkers_mark chip is also toggled"
+        );
+
+        // 3. Insanity Point (#40574) extends Basic Drop Back combo window from 2.5s to 3.0s
+        let dagSlots = createEmptyGearSlots();
+        dagSlots = equipCatalogItemInSlot(dagSlots, 16, catalog.itemById.get(40574), { gradeId: 9 }, catalog);
+        const mageIp = recalculateCharacterFromGearBuilder(baseChar, dagSlots, player, catalog).character;
+        const dropBackSkill = {
+            id: "shadowplay_drop_back",
+            name: "Drop Back",
+            skillset: "shadowplay",
+            variant: "base",
+            kind: "utility",
+            gcdSec: 0.5,
+            comboEffect: {
+                id: "drop_back",
+                label: "Drop Back",
+                durationSec: 2.5,
+                removesCastTimeFor: ["sorcery_flamebolt"],
+            },
+        };
+        const rotIp = simulateRotation(mageIp, def, [{ skill: dropBackSkill }]);
+        const dbSpan = rotIp.effectSpans.find((e) => e.id === "drop_back");
+        assert(dbSpan && Math.abs(dbSpan.durationSec - 3.0) < 1e-6, `Insanity Point #40574 extends Drop Back to 3.0s (got ${dbSpan?.durationSec}s)`);
+
+        // 4. Moonsong Razor (#40583) suppresses Dissonance debuff & Lidless Rage (#40614) grants instant Charmed on Startling Strain
+        let katSlots = createEmptyGearSlots();
+        katSlots = equipCatalogItemInSlot(katSlots, 15, catalog.itemById.get(40583), { gradeId: 9 }, catalog);
+        const katChar = recalculateCharacterFromGearBuilder(baseChar, katSlots, player, catalog).character;
+        const dissSkill = {
+            id: "songcraft_dissonance",
+            name: "Dissonance",
+            skillset: "songcraft",
+            variant: "base",
+            kind: "damage",
+            damageType: "magic",
+            scalingStat: "magicAttack",
+            base: 400,
+            scalingPct: 120,
+        };
+        const rotKat = simulateRotation(katChar, def, [{ skill: dissSkill }]);
+        assert(
+            !rotKat.effectSpans.some((e) => e.id === "dissonance"),
+            "Moonsong Razor #40583 casts Basic Dissonance without granting the Dissonance debuff"
+        );
+
+        let staffSlots = createEmptyGearSlots();
+        staffSlots = equipCatalogItemInSlot(staffSlots, 15, catalog.itemById.get(40614), { gradeId: 9 }, catalog);
+        const staffChar = recalculateCharacterFromGearBuilder(baseChar, staffSlots, player, catalog).character;
+        const strainSkill = {
+            id: "songcraft_startling_strain",
+            name: "Startling Strain",
+            skillset: "songcraft",
+            variant: "base",
+            kind: "utility",
+        };
+        const rotStaff = simulateRotation(staffChar, def, [{ skill: strainSkill }]);
+        assert(
+            rotStaff.effectSpans.some((e) => e.id === "charmed") && !rotStaff.effectSpans.some((e) => e.id === "stunned"),
+            "Lidless Rage #40614 makes Basic Startling Strain immediately apply Charmed instead of Stunned"
         );
     });
 

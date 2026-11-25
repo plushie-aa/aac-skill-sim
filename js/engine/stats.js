@@ -1909,6 +1909,9 @@ export function applyModifiers(character, modifierIds = []) {
         if (id === "hollow_deadeye" && stacks >= 100) {
             activeBuffFlags.hollowDeadeye100 = true;
         }
+        if (id === "stalkers_mark") {
+            activeBuffFlags.stalkersMark = true;
+        }
         if (mod.category === "enlightenment") {
             const enlKey = id.replace(/^enlightenment_/, "");
             activeBuffFlags.enlightenment = enlKey;

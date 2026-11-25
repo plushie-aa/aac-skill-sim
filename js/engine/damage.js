@@ -4,6 +4,7 @@
  * Shield-Pen-Proc, Expected (Average) damage, and a full mitigation breakdown.
  */
 
+import { getEquippedT7ObsidianEffects } from "../adapters/darugear_calc.js";
 import { mergeConstants } from "./constants.js";
 import { evaluateManualComboStatuses } from "./combos.js";
 import { getEquipmentSkillBonus } from "./gearswap.js";
@@ -298,8 +299,22 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
         comboMult *
         pveMult;
 
-    // 3. Defense & Penetration (+ optional Shield Defense Penetration proc)
-    const effectiveDefense = Math.max(0, def.defense - off.defPen);
+    // 3. Defense & Penetration (+ optional T7 Deathfletcher Stalker's Mark shred + Shield Defense Penetration proc)
+    let t7DefenseShred = 0;
+    let t7EffectNote = null;
+    if (
+        skill.damageType === "physical" &&
+        !context._deathfletcherRotationApplied &&
+        defender?._activeBuffFlags?.stalkersMark
+    ) {
+        const t7List = getEquippedT7ObsidianEffects(attacker);
+        const df = t7List.find((e) => Number(e.effect?.stalkersMarkDefShred) > 0);
+        if (df) {
+            t7DefenseShred = Number(df.effect.stalkersMarkDefShred);
+            t7EffectNote = `${df.name} (T7): Stalker's Mark -${t7DefenseShred} PDef`;
+        }
+    }
+    const effectiveDefense = Math.max(0, def.defense - t7DefenseShred - off.defPen);
     const defMultNormal = defenseMultiplier(effectiveDefense, constants.defenseK);
     const defMitPctNormal = defenseMitigationPct(effectiveDefense, constants.defenseK);
 
@@ -307,7 +322,7 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
         def.shieldPhysicalDefense > 0 && off.shieldDefPenRatePct > 0 && off.shieldDefPenPct > 0;
     const shieldPenProcChance = hasShieldPen ? clamp(off.shieldDefPenRatePct, 0, 100) / 100 : 0;
     const ignoredShieldDef = hasShieldPen ? def.shieldPhysicalDefense * (off.shieldDefPenPct / 100) : 0;
-    const effectiveDefenseShieldPen = Math.max(0, def.defense - off.defPen - ignoredShieldDef);
+    const effectiveDefenseShieldPen = Math.max(0, def.defense - t7DefenseShred - off.defPen - ignoredShieldDef);
     const defMultShieldPen = defenseMultiplier(effectiveDefenseShieldPen, constants.defenseK);
     const avgDefMult =
         (1 - shieldPenProcChance) * defMultNormal + shieldPenProcChance * defMultShieldPen;
@@ -395,6 +410,8 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
             skillGemBonusPct: skillGem.damagePct,
             skillGemSummary: skillGem.summary,
             lifeEnlightenmentNote,
+            t7DefenseShred,
+            t7EffectNote,
             comboBonusPct: totalComboBonusPct,
             comboLabels: manualCombo.matchedLabels,
             comboAutoCCLabel: manualCombo.autoCCLabel,

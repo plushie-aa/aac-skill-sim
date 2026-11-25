@@ -11,6 +11,7 @@
  *  - Window DPS / HPS and Time-to-Kill (TTK)
  */
 
+import { getEquippedT7ObsidianEffects } from "../adapters/darugear_calc.js";
 import { mergeConstants } from "./constants.js";
 import {
     SKILL_DEBUFF_GRANTS,
@@ -469,6 +470,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             offGcd: Boolean(step.offGcd),
             removeCastTime,
             castRemovedBy,
+            _deathfletcherRotationApplied: liveDebuffs.some((d) => d.id === "deathfletcher_mark"),
             ...(step.gcdOverrideSec != null && step.gcdOverrideSec !== ""
                 ? { gcdOverrideSec: Number(step.gcdOverrideSec) }
                 : comboGcdOverride != null
@@ -546,26 +548,40 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             }
         }
 
+        const actorT7Effects = getEquippedT7ObsidianEffects(stepActor);
+        const isBaseVariant = (skill.variant || "base") === "base";
+
         // Register any cast-time-removing combo buff granted by this skill (active from endSec)
         if (skill.comboEffect && Number(skill.comboEffect.durationSec) > 0) {
             const effId = skill.comboEffect.id || skill.id;
             const prevIdx = activeComboEffects.findIndex((e) => e.id === effId);
+            let comboDurationSec = Number(skill.comboEffect.durationSec);
+            let comboLabel = skill.comboEffect.label || skill.comboEffect.summary || skill.name;
+            if (isBaseVariant && skill.id === "shadowplay_drop_back") {
+                const ip = actorT7Effects.find((e) => Number(e.effect?.dropBackExtraDurationSec) > 0);
+                if (ip) {
+                    comboDurationSec += Number(ip.effect.dropBackExtraDurationSec);
+                    comboLabel = `${comboLabel} (+${ip.effect.dropBackExtraDurationSec}s ${ip.name})`;
+                }
+            }
             const nextEff = {
                 ...skill.comboEffect,
                 id: effId,
+                label: comboLabel,
+                durationSec: comboDurationSec,
                 sourceSkillId: skill.id,
                 startedAtSec: endSec,
-                expiresAtSec: endSec + Number(skill.comboEffect.durationSec),
+                expiresAtSec: endSec + comboDurationSec,
             };
             if (prevIdx >= 0) activeComboEffects[prevIdx] = nextEff;
             else activeComboEffects.push(nextEff);
             recordEffectSpan({
                 id: effId,
-                label: skill.comboEffect.label || skill.comboEffect.summary || skill.name,
+                label: comboLabel,
                 kind: "combo_buff",
                 startSec: endSec,
                 endSec: nextEff.expiresAtSec,
-                durationSec: Number(skill.comboEffect.durationSec),
+                durationSec: comboDurationSec,
             });
         }
 
@@ -573,7 +589,21 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         const grantedStatuses = [];
         const appliedExtraEffects = [];
         if (autoCombosEnabled) {
-            const grants = SKILL_STATUS_GRANTS[skill.id] || [];
+            let grants = SKILL_STATUS_GRANTS[skill.id] || [];
+            if (isBaseVariant && skill.id === "songcraft_startling_strain") {
+                const lr = actorT7Effects.find((e) => Boolean(e.effect?.startlingStrainImmediateCharm));
+                if (lr) {
+                    grants = [
+                        ...grants.filter((g) => g.status !== "stunned"),
+                        {
+                            status: "charmed",
+                            label: `Charmed (${lr.name})`,
+                            durationSec: 12.0,
+                            isCC: false,
+                        },
+                    ];
+                }
+            }
             const liveStatusSet = new Set(
                 activeStatuses
                     .filter(
@@ -589,11 +619,26 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     continue;
                 }
                 const prevIdx = activeStatuses.findIndex((st) => st.status === g.status);
+                let grantDurationSec = Number(g.durationSec || 0);
+                if (
+                    isBaseVariant &&
+                    skill.id === "vitalism_resurgence" &&
+                    g.status === "resurgence" &&
+                    prevIdx >= 0 &&
+                    activeStatuses[prevIdx].expiresAtSec > impactSec
+                ) {
+                    const nd = actorT7Effects.find((e) => Number(e.effect?.resurgenceStackMaxSec) > 0);
+                    if (nd) {
+                        const remaining = Math.max(0, activeStatuses[prevIdx].expiresAtSec - impactSec);
+                        grantDurationSec = Math.min(Number(nd.effect.resurgenceStackMaxSec), remaining + grantDurationSec);
+                    }
+                }
                 const nextSt = {
                     ...g,
+                    durationSec: grantDurationSec,
                     sourceSkillId: skill.id,
                     startedAtSec: impactSec,
-                    expiresAtSec: impactSec + Number(g.durationSec || 0),
+                    expiresAtSec: impactSec + grantDurationSec,
                 };
                 if (prevIdx >= 0) activeStatuses[prevIdx] = nextSt;
                 else activeStatuses.push(nextSt);
@@ -604,13 +649,17 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     isCC: Boolean(g.isCC),
                     startSec: impactSec,
                     endSec: nextSt.expiresAtSec,
-                    durationSec: Number(g.durationSec || 0),
+                    durationSec: grantDurationSec,
                 });
                 grantedStatuses.push(g.label);
             }
 
             const debGrant = SKILL_DEBUFF_GRANTS[skill.id];
-            if (debGrant) {
+            const skipDissonanceDebuff =
+                isBaseVariant &&
+                skill.id === "songcraft_dissonance" &&
+                actorT7Effects.some((e) => Boolean(e.effect?.dissonanceNoDebuff));
+            if (debGrant && !skipDissonanceDebuff) {
                 const prevIdx = activeDebuffs.findIndex((d) => d.id === debGrant.id);
                 const nextDeb = {
                     ...debGrant,
@@ -629,6 +678,35 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     durationSec: Number(debGrant.durationSec || 0),
                 });
                 grantedStatuses.push(debGrant.label);
+            }
+
+            // T7 Deathfletcher (40618 / 40620): Basic Stalker's Mark decreases target's Physical Defense -390
+            if (isBaseVariant && skill.id === "shadowplay_stalkers_mark") {
+                const df = actorT7Effects.find((e) => Number(e.effect?.stalkersMarkDefShred) > 0);
+                if (df) {
+                    const shred = Number(df.effect.stalkersMarkDefShred);
+                    const dfDeb = {
+                        id: "deathfletcher_mark",
+                        label: `${df.name} (-${shred} PDef)`,
+                        durationSec: Number(debGrant?.durationSec || 12.0),
+                        addDefense: { physicalDefense: -shred },
+                        sourceSkillId: skill.id,
+                        startedAtSec: impactSec,
+                        expiresAtSec: impactSec + Number(debGrant?.durationSec || 12.0),
+                    };
+                    const prevDfIdx = activeDebuffs.findIndex((d) => d.id === dfDeb.id);
+                    if (prevDfIdx >= 0) activeDebuffs[prevDfIdx] = dfDeb;
+                    else activeDebuffs.push(dfDeb);
+                    recordEffectSpan({
+                        id: dfDeb.id,
+                        label: dfDeb.label,
+                        kind: "debuff",
+                        startSec: impactSec,
+                        endSec: dfDeb.expiresAtSec,
+                        durationSec: dfDeb.durationSec,
+                    });
+                    grantedStatuses.push(dfDeb.label);
+                }
             }
 
             // Optional user-enabled random/proc debuffs applied on this step (e.g. Delirium -> Bleeding, Puncture)

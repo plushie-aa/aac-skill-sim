@@ -537,8 +537,371 @@ export function resolveCostumeCharmInfo(lunafrost, allSlots = null, activeModifi
 }
 
 /**
- * Compute all active Equipment Set, Erenor Lunafrost Set (3/4/6pc), and active Costume Charm
- * Enlightenment (2-Set) bonuses across all equipped slots for the Active Gear Buffs summary list.
+ * Canonical AA Classic 1.3.6 (3.5) T7 Obsidian Weapon, Bow & Instrument Special Effects
+ * (sourced verbatim from aa-classic.com item proc_data for item IDs 40572–40625).
+ * T7 Shields (40626–40627) and T7 Armor (40628–40687) have no hidden proc_data; their
+ * passive equip bonuses are already stored in `equipeffects`.
+ */
+export const T7_OBSIDIAN_SPECIAL_EFFECTS = Object.freeze({
+    40572: {
+        text: "Basic Toxic Shot decreases target's Attack Speed -87 and Cast Time -8%.",
+        shortText: "Toxic Shot: -87 Atk Spd & -8% Cast",
+        engineFactored: false,
+    },
+    40573: {
+        text: "Basic Toxic Shot decreases target's Attack Speed -87 and Cast Time -8%.",
+        shortText: "Toxic Shot: -87 Atk Spd & -8% Cast",
+        engineFactored: false,
+    },
+    40574: {
+        text: "Using Basic Drop Back increases duration +0.5 sec.",
+        shortText: "Basic Drop Back +0.5s duration",
+        engineFactored: true,
+        dropBackExtraDurationSec: 0.5,
+    },
+    40575: {
+        text: "Using Basic Drop Back increases duration +0.5 sec.",
+        shortText: "Basic Drop Back +0.5s duration",
+        engineFactored: true,
+        dropBackExtraDurationSec: 0.5,
+    },
+    40576: {
+        text: "Grants melee attacks that hit a chance to generate Delirium.",
+        shortText: "Proc: Generate Delirium",
+        engineFactored: false,
+    },
+    40577: {
+        text: "Grants melee attacks that hit a chance to generate Bloodthirst.",
+        shortText: "Proc: Generate Bloodthirst",
+        engineFactored: false,
+    },
+    40578: {
+        text: "Grants melee attacks that hit a chance to generate Delirium.",
+        shortText: "Proc: Generate Delirium",
+        engineFactored: false,
+    },
+    40579: {
+        text: "Grants melee attacks that hit a chance to generate Bloodthirst.",
+        shortText: "Proc: Generate Bloodthirst",
+        engineFactored: false,
+    },
+    40580: {
+        text: "Using Basic Overwhelm increases range +2m.",
+        shortText: "Basic Overwhelm +2m range",
+        engineFactored: false,
+    },
+    40581: {
+        text: "Using Basic Charge increases range +2m.",
+        shortText: "Basic Charge +2m range",
+        engineFactored: false,
+    },
+    40582: {
+        text: "Decreases the duration of Fear on the wielder -15%.",
+        shortText: "Fear Duration -15%",
+        engineFactored: false,
+    },
+    40583: {
+        text: "Damages a target when Basic Dissonance is cast, but does not grant the Dissonance effect.",
+        shortText: "Basic Dissonance: Dmg only (no debuff)",
+        engineFactored: true,
+        dissonanceNoDebuff: true,
+    },
+    40584: {
+        text: "Decreases the duration of Fear on the wielder -15%.",
+        shortText: "Fear Duration -15%",
+        engineFactored: false,
+    },
+    40585: {
+        text: "Damages a target when Basic Dissonance is cast, but does not grant the Dissonance effect.",
+        shortText: "Basic Dissonance: Dmg only (no debuff)",
+        engineFactored: true,
+        dissonanceNoDebuff: true,
+    },
+    40586: {
+        text: "Grants melee attacks that hit a chance to generate Bloodthirst.",
+        shortText: "Proc: Generate Bloodthirst",
+        engineFactored: false,
+    },
+    40587: {
+        text: "Using Basic Piercing Shot Staggers the target.",
+        shortText: "Basic Piercing Shot Staggers",
+        engineFactored: false,
+    },
+    40588: {
+        text: "Grants melee attacks that hit a chance to generate Bloodthirst.",
+        shortText: "Proc: Generate Bloodthirst",
+        engineFactored: false,
+    },
+    40589: {
+        text: "Using Basic Piercing Shot Staggers the target.",
+        shortText: "Basic Piercing Shot Staggers",
+        engineFactored: false,
+    },
+    40590: {
+        text: "Casting Basic Imprison grants the Tenacity buff for 9 sec, increasing the damage dealt to all enemies within a 10m radius.",
+        shortText: "Basic Imprison: 9s Tenacity (10m)",
+        engineFactored: false,
+    },
+    40591: {
+        text: "Casting Basic Imprison grants the Tenacity buff for 9 sec, increasing the damage dealt to all enemies within a 10m radius.",
+        shortText: "Basic Imprison: 9s Tenacity (10m)",
+        engineFactored: false,
+    },
+    40592: {
+        text: "Using Basic Behind Enemy Lines increases range and damage radius +2m respectively.",
+        shortText: "Basic Behind Enemy Lines +2m range/radius",
+        engineFactored: false,
+    },
+    40593: {
+        text: "Using Basic Behind Enemy Lines increases range and damage radius +2m respectively.",
+        shortText: "Basic Behind Enemy Lines +2m range/radius",
+        engineFactored: false,
+    },
+    40594: {
+        text: "Casting Basic Resurgence on the same target multiple times increases the duration up to 35 seconds.",
+        shortText: "Basic Resurgence stacks up to 35s",
+        engineFactored: true,
+        resurgenceStackMaxSec: 35,
+    },
+    40595: {
+        text: "Casting Basic Resurgence on the same target multiple times increases the duration up to 35 seconds.",
+        shortText: "Basic Resurgence stacks up to 35s",
+        engineFactored: true,
+        resurgenceStackMaxSec: 35,
+    },
+    40596: {
+        text: "Casting Basic Resurgence on the same target multiple times increases the duration up to 35 seconds.",
+        shortText: "Basic Resurgence stacks up to 35s",
+        engineFactored: true,
+        resurgenceStackMaxSec: 35,
+    },
+    40597: {
+        text: "Casting Basic Resurgence on the same target multiple times increases the duration up to 35 seconds.",
+        shortText: "Basic Resurgence stacks up to 35s",
+        engineFactored: true,
+        resurgenceStackMaxSec: 35,
+    },
+    40598: {
+        text: "Casting Basic Infuse grants 1,746–1,786 Health to the target whose Mana was restored.",
+        shortText: "Basic Infuse heals 1,746–1,786 HP",
+        engineFactored: false,
+    },
+    40599: {
+        text: "Casting Basic Infuse grants 1,746–1,786 Health to the target whose Mana was restored.",
+        shortText: "Basic Infuse heals 1,746–1,786 HP",
+        engineFactored: false,
+    },
+    40600: {
+        text: "Casting Basic Infuse grants 1,746–1,786 Health to the target whose Mana was restored.",
+        shortText: "Basic Infuse heals 1,746–1,786 HP",
+        engineFactored: false,
+    },
+    40601: {
+        text: "Casting Basic Infuse grants 1,746–1,786 Health to the target whose Mana was restored.",
+        shortText: "Basic Infuse heals 1,746–1,786 HP",
+        engineFactored: false,
+    },
+    40602: {
+        text: "Grants ranged attacks that hit a chance to inflict the Feral Mark effect.",
+        shortText: "Proc: Inflict Feral Mark",
+        engineFactored: false,
+    },
+    40603: {
+        text: "Grants ranged attacks that hit a chance to inflict the Feral Mark effect.",
+        shortText: "Proc: Inflict Feral Mark",
+        engineFactored: false,
+    },
+    40604: {
+        text: "Using Basic Thwart grants a 50% chance to give 1 extra stack of Inspired.",
+        shortText: "Basic Thwart: 50% +1 Inspired",
+        engineFactored: false,
+    },
+    40605: {
+        text: "Using Basic Thwart grants a 50% chance to give 1 extra stack of Inspired.",
+        shortText: "Basic Thwart: 50% +1 Inspired",
+        engineFactored: false,
+    },
+    40606: {
+        text: "Grants ranged attacks that hit a chance to inflict the Feral Mark effect.",
+        shortText: "Proc: Inflict Feral Mark",
+        engineFactored: false,
+    },
+    40607: {
+        text: "Using Basic Thwart grants a 50% chance to give 1 extra stack of Inspired.",
+        shortText: "Basic Thwart: 50% +1 Inspired",
+        engineFactored: false,
+    },
+    40608: {
+        text: "Grants ranged attacks that hit a chance to inflict the Feral Mark effect.",
+        shortText: "Proc: Inflict Feral Mark",
+        engineFactored: false,
+    },
+    40609: {
+        text: "Using Basic Thwart grants a 50% chance to give 1 extra stack of Inspired.",
+        shortText: "Basic Thwart: 50% +1 Inspired",
+        engineFactored: false,
+    },
+    40610: {
+        text: "Using Basic Gods' Whip increases damage +8%.",
+        shortText: "Basic Gods' Whip +8% Dmg",
+        engineFactored: true,
+        skillBonus: Object.freeze({
+            skillId: "sorcery_gods_whip",
+            variant: "base",
+            kind: "damagePct",
+            value: 8,
+        }),
+    },
+    40611: {
+        text: "Grants magic attacks that hit a chance to generate Mana Fountain.",
+        shortText: "Proc: Generate Mana Fountain",
+        engineFactored: false,
+    },
+    40612: {
+        text: "Using Basic Spell Shield increases duration +2 sec.",
+        shortText: "Basic Spell Shield +2s duration",
+        engineFactored: false,
+    },
+    40613: {
+        text: "Using Basic Spell Shield increases duration +2 sec.",
+        shortText: "Basic Spell Shield +2s duration",
+        engineFactored: false,
+    },
+    40614: {
+        text: "Casting Basic Startling Strain Charms the target immediately, but does not Stun them.",
+        shortText: "Basic Startling Strain: Instant Charm",
+        engineFactored: true,
+        startlingStrainImmediateCharm: true,
+    },
+    40615: {
+        text: "Using Basic Frigid Tracks inflicts Glaciation damage on all enemies within a 4m radius.",
+        shortText: "Basic Frigid Tracks: 4m AoE Glaciation",
+        engineFactored: false,
+    },
+    40616: {
+        text: "Casting Basic Startling Strain Charms the target immediately, but does not Stun them.",
+        shortText: "Basic Startling Strain: Instant Charm",
+        engineFactored: true,
+        startlingStrainImmediateCharm: true,
+    },
+    40617: {
+        text: "Using Basic Frigid Tracks inflicts Glaciation damage on all enemies within a 4m radius.",
+        shortText: "Basic Frigid Tracks: 4m AoE Glaciation",
+        engineFactored: false,
+    },
+    40618: {
+        text: "Basic Stalker's Mark decreases target's defense -390.",
+        shortText: "Basic Stalker's Mark: -390 PDef",
+        engineFactored: true,
+        stalkersMarkDefShred: 390,
+    },
+    40619: {
+        text: "Fires additional arrows at all enemies within 5m of the target when using Basic Charged Bolt (Archery).",
+        shortText: "Basic Charged Bolt: 5m AoE arrows",
+        engineFactored: false,
+    },
+    40620: {
+        text: "Basic Stalker's Mark decreases target's defense -390.",
+        shortText: "Basic Stalker's Mark: -390 PDef",
+        engineFactored: true,
+        stalkersMarkDefShred: 390,
+    },
+    40621: {
+        text: "Fires additional arrows at all enemies within 5m of the target when using Basic Charged Bolt (Archery).",
+        shortText: "Basic Charged Bolt: 5m AoE arrows",
+        engineFactored: false,
+    },
+    40622: {
+        text: "Using Basic Stillness decreases Move Speed -10% for all enemies within range.",
+        shortText: "Basic Stillness: -10% Move Spd",
+        engineFactored: false,
+    },
+    40623: {
+        text: "Using Basic Stillness decreases Move Speed -10% for all enemies within range.",
+        shortText: "Basic Stillness: -10% Move Spd",
+        engineFactored: false,
+    },
+    40624: {
+        text: "Decreases the mana cost of performance skills (Songcraft) -8%.",
+        shortText: "Songcraft Performances -8% Mana",
+        engineFactored: false,
+    },
+    40625: {
+        text: "Decreases the mana cost of performance skills (Songcraft) -8%.",
+        shortText: "Songcraft Performances -8% Mana",
+        engineFactored: false,
+    },
+});
+
+/**
+ * Resolve the T7 Obsidian special effect metadata for an item ID, catalog item,
+ * DaruGear slot, or equipment summary entry. Returns null for non-T7 items.
+ */
+export function getT7ObsidianSpecialEffect(itemOrId) {
+    if (itemOrId == null) return null;
+    let rawId = itemOrId;
+    if (typeof itemOrId === "object") {
+        rawId =
+            itemOrId.item?.equipment?.id ??
+            itemOrId.equipment?.id ??
+            itemOrId.itemId ??
+            itemOrId.id;
+    }
+    const id = Number(rawId);
+    if (!Number.isFinite(id) || id <= 0) return null;
+    return T7_OBSIDIAN_SPECIAL_EFFECTS[id] || null;
+}
+
+/**
+ * Collect all equipped T7 Obsidian special effects from either a character object
+ * (`character.equipment` + `character.rawDaruGear.slots`) or a raw `slots` array.
+ */
+export function getEquippedT7ObsidianEffects(characterOrSlots) {
+    const out = [];
+    const seenIds = new Set();
+    const pushIfT7 = (rawId, slotId, slotName, name) => {
+        const id = Number(rawId);
+        if (!Number.isFinite(id) || id <= 0 || seenIds.has(id)) return;
+        const effect = T7_OBSIDIAN_SPECIAL_EFFECTS[id];
+        if (!effect) return;
+        seenIds.add(id);
+        out.push({
+            itemId: id,
+            slotId: slotId != null ? Number(slotId) : null,
+            slotName: String(slotName || "Weapon").trim(),
+            name: String(name || "T7 Obsidian").trim(),
+            effect,
+        });
+    };
+
+    if (Array.isArray(characterOrSlots)) {
+        for (const s of characterOrSlots) {
+            const eq = s?.item?.equipment;
+            if (eq) pushIfT7(eq.id, s.id, s.name, eq.name);
+        }
+        return out;
+    }
+
+    if (characterOrSlots && typeof characterOrSlots === "object") {
+        if (Array.isArray(characterOrSlots.equipment)) {
+            for (const eq of characterOrSlots.equipment) {
+                if (eq) pushIfT7(eq.itemId ?? eq.id, eq.slotId, eq.slotName, eq.name);
+            }
+        }
+        if (Array.isArray(characterOrSlots.rawDaruGear?.slots)) {
+            for (const s of characterOrSlots.rawDaruGear.slots) {
+                const eq = s?.item?.equipment;
+                if (eq) pushIfT7(eq.id, s.id, s.name, eq.name);
+            }
+        }
+    }
+    return out;
+}
+
+/**
+ * Compute all active Equipment Set, Erenor Lunafrost Set (3/4/6pc), Costume Charm
+ * Enlightenment (2-Set), and T7 Obsidian weapon special effects across all equipped slots
+ * for the Active Gear Buffs summary list.
  */
 export function computeActiveSetEffectSummaries(slots, activeModifiers = null) {
     if (!Array.isArray(slots) || slots.length === 0) return [];
@@ -549,6 +912,19 @@ export function computeActiveSetEffectSummaries(slots, activeModifiers = null) {
         const item = s?.item;
         const eq = item?.equipment;
         if (!eq) continue;
+
+        const t7Effect = getT7ObsidianSpecialEffect(eq.id);
+        if (t7Effect && !seenSetIds.has(`t7:${eq.id}`)) {
+            seenSetIds.add(`t7:${eq.id}`);
+            summaries.push({
+                id: `t7_${eq.id}`,
+                name: `${String(eq.name || "T7 Obsidian").trim()} (T7 Effect)`,
+                category: "t7",
+                engineFactored: Boolean(t7Effect.engineFactored),
+                stats: [t7Effect.text],
+                summary: t7Effect.text,
+            });
+        }
 
         if (Array.isArray(eq.seteffects) && eq.seteffects.length > 0) {
             const sid = eq.seteffects[0]?.equip_item_set_id;
@@ -719,7 +1095,18 @@ export function computeGearItemGrantedStats(
     const bonuses = summarizeAttrMap(oAll, { excludeIds: CORE_ATTR_AND_MAIN_IDS });
 
     const setEffects = [];
+    const equipNotes = [];
     const enchantNotes = [];
+    const t7Effect = getT7ObsidianSpecialEffect(eq.id);
+    if (t7Effect) {
+        equipNotes.push({
+            name: "T7 Obsidian Effect",
+            text: t7Effect.text,
+            shortText: t7Effect.shortText,
+            kind: "t7",
+            engineFactored: Boolean(t7Effect.engineFactored),
+        });
+    }
     if (Array.isArray(eq.seteffects) && eq.seteffects.length > 0) {
         const grp = buildSetEffectGroup(eq.seteffects, inferEquipmentSetName(eq.name), "equipment", allSlots);
         if (grp) setEffects.push(grp);
@@ -778,11 +1165,13 @@ export function computeGearItemGrantedStats(
         },
         attributes,
         equipEffects,
+        equipNotes,
         enchantBonuses,
         enchantNotes,
         bonuses,
         setEffects,
         charmInfo,
+        t7Effect,
     };
 }
 

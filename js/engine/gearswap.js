@@ -4,6 +4,7 @@
  * applies exact reversible stat deltas so Build A vs Build B quick comparisons stay 100% synced.
  */
 
+import { getEquippedT7ObsidianEffects } from "../adapters/darugear_calc.js";
 import { applyAttributeDelta } from "./stats.js";
 
 export const LUNAGEM_SWAP_PRESETS = Object.freeze([
@@ -1702,8 +1703,9 @@ export function parseSkillSpecificBonusLine(text) {
 }
 
 /**
- * Inspect `character.equipment` (lunagems, lunafrost, synthStats) and sum any skill-specific
- * bonuses that apply to `skill` (e.g. Afraiid's 4x "Increases Arc Lightning damage +4%." = +16%).
+ * Inspect `character.equipment` (lunagems, lunafrost, synthStats) and equipped T7 Obsidian
+ * special effects, summing any skill-specific bonuses that apply to `skill`
+ * (e.g. 4x "Increases Arc Lightning damage +4%." = +16%, or Jade Despair #40610 +8% Basic Gods' Whip).
  */
 export function getEquipmentSkillBonus(character, skill) {
     const empty = {
@@ -1715,8 +1717,9 @@ export function getEquipmentSkillBonus(character, skill) {
         summary: "",
         sources: [],
     };
-    const eqList = character?.equipment;
-    if (!Array.isArray(eqList) || eqList.length === 0 || !skill?.name) return empty;
+    const eqList = Array.isArray(character?.equipment) ? character.equipment : [];
+    const t7Effects = getEquippedT7ObsidianEffects(character);
+    if ((eqList.length === 0 && t7Effects.length === 0) || !skill?.name) return empty;
 
     const targetKey = normalizeSkillMatchKey(skill.name);
     if (!targetKey) return empty;
@@ -1727,25 +1730,29 @@ export function getEquipmentSkillBonus(character, skill) {
     let critBonusPct = 0;
     const grouped = new Map();
 
+    const addBonus = (slotName, kind, value) => {
+        if (kind === "damagePct" && skill.kind !== "heal") {
+            damagePct += value;
+        } else if (kind === "healingPct" && skill.kind === "heal") {
+            healingPct += value;
+        } else if (kind === "critRatePct") {
+            critRatePct += value;
+        } else if (kind === "critBonusPct") {
+            critBonusPct += value;
+        } else {
+            return;
+        }
+        const gKey = `${slotName}|${kind}|${value}`;
+        const prev = grouped.get(gKey) || { slotName, kind, value, count: 0 };
+        prev.count += 1;
+        grouped.set(gKey, prev);
+    };
+
     const considerLine = (slotName, lineText) => {
         const parsed = parseSkillSpecificBonusLine(lineText);
         if (!parsed) return;
         if (parsed.skillKey !== targetKey) return;
-        if (parsed.kind === "damagePct" && skill.kind !== "heal") {
-            damagePct += parsed.value;
-        } else if (parsed.kind === "healingPct" && skill.kind === "heal") {
-            healingPct += parsed.value;
-        } else if (parsed.kind === "critRatePct") {
-            critRatePct += parsed.value;
-        } else if (parsed.kind === "critBonusPct") {
-            critBonusPct += parsed.value;
-        } else {
-            return;
-        }
-        const gKey = `${slotName}|${parsed.kind}|${parsed.value}`;
-        const prev = grouped.get(gKey) || { slotName, kind: parsed.kind, value: parsed.value, count: 0 };
-        prev.count += 1;
-        grouped.set(gKey, prev);
+        addBonus(slotName, parsed.kind, parsed.value);
     };
 
     for (const item of eqList) {
@@ -1764,6 +1771,15 @@ export function getEquipmentSkillBonus(character, skill) {
                 considerLine(slotName, line);
             }
         }
+    }
+
+    const skillVariant = skill.variant || "base";
+    for (const t7 of t7Effects) {
+        const sb = t7.effect?.skillBonus;
+        if (!sb) continue;
+        if (sb.skillId && skill.id !== sb.skillId) continue;
+        if (sb.variant && skillVariant !== sb.variant) continue;
+        addBonus(`${t7.name} (T7)`, sb.kind, Number(sb.value) || 0);
     }
 
     const sources = Array.from(grouped.values());
