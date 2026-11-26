@@ -9,6 +9,7 @@ import {
     ROTATION_EXTRA_EFFECTS,
     STAGED_WEAVE_SKILL_IDS,
     compareRotations,
+    getGearCatalog,
     getRotationExtraEffect,
     getSkillStages,
 } from "../engine/index.js";
@@ -67,25 +68,77 @@ function getUtilityRoleBadge(skill) {
     return { cls: "stag-util", label: "UTILITY", roleText: "Combo Buff" };
 }
 
-function isEquipSkillActiveOnChar(skill, char) {
-    if (!skill || skill.skillset !== "equipment") return false;
-    const slots = char?.rawDaruGear?.slots;
-    if (!Array.isArray(slots) || slots.length === 0) return false;
-    const matchItems = Array.isArray(skill.equipMatchItemIds) ? skill.equipMatchItemIds : [];
-    const matchSets = Array.isArray(skill.equipMatchSetIds) ? skill.equipMatchSetIds : [];
+const EQUIP_SET_NAME_FALLBACKS = Object.freeze({
+    111: ["corrupted kyrios", "anthalon"],
+    174: ["corrupted kyrios", "anthalon"],
+    9000113: ["primal kyrios", "primal anthalon"],
+    159: ["grimghast"],
+});
+
+export function isEquipSkillActiveOnChar(skill, char) {
+    if (!skill || skill.skillset !== "equipment" || !char) return false;
+    const matchItems = Array.isArray(skill.equipMatchItemIds) ? skill.equipMatchItemIds.map(Number) : [];
+    const matchSets = Array.isArray(skill.equipMatchSetIds) ? skill.equipMatchSetIds.map(Number) : [];
+    if (matchItems.length === 0 && matchSets.length === 0) return false;
+
+    const catalog = getGearCatalog();
+    const rawSlots = Array.isArray(char.rawDaruGear?.slots) ? char.rawDaruGear.slots : [];
+    const summaryEq = Array.isArray(char.equipment) ? char.equipment : [];
+
+    // Normalize equipped items from rawDaruGear.slots (when hydrated) and/or char.equipment (always present on saved builds)
+    const equippedBySlot = new Map();
+    const pushEntry = (slotKey, itemId, name, eisetId, setEffects) => {
+        const key = slotKey != null ? `slot:${slotKey}` : `id:${itemId || name}`;
+        if (!itemId && !name) return;
+        const prev = equippedBySlot.get(key);
+        if (!prev || (!prev.setEffects?.length && setEffects?.length) || (!prev.eisetId && eisetId)) {
+            equippedBySlot.set(key, {
+                itemId: Number.isFinite(Number(itemId)) && Number(itemId) > 0 ? Number(itemId) : null,
+                name: String(name || "").trim(),
+                eisetId: Number.isFinite(Number(eisetId)) && Number(eisetId) > 0 ? Number(eisetId) : null,
+                setEffects: Array.isArray(setEffects) ? setEffects : [],
+            });
+        }
+    };
+
+    for (const eq of summaryEq) {
+        if (!eq) continue;
+        const iid = Number(eq.itemId ?? eq.id);
+        const catItem = Number.isFinite(iid) && catalog?.itemById ? catalog.itemById.get(iid) : null;
+        pushEntry(eq.slotId ?? eq.slotName, iid, eq.name || catItem?.name, eq.eiset_id ?? catItem?.eiset_id, eq.set_effects);
+    }
+    for (const sl of rawSlots) {
+        const eq = sl?.item?.equipment;
+        if (!eq) continue;
+        const iid = Number(eq.id);
+        const catItem = Number.isFinite(iid) && catalog?.itemById ? catalog.itemById.get(iid) : null;
+        pushEntry(sl.id ?? sl.name, iid, eq.name || catItem?.name, eq.eiset_id ?? catItem?.eiset_id, eq.set_effects);
+    }
+
+    if (equippedBySlot.size === 0) return false;
+
     if (matchItems.length > 0) {
-        for (const sl of slots) {
-            const iid = Number(sl?.item?.id);
-            if (Number.isFinite(iid) && matchItems.includes(iid)) return true;
+        for (const entry of equippedBySlot.values()) {
+            if (entry.itemId && matchItems.includes(entry.itemId)) return true;
         }
     }
+
     if (matchSets.length > 0) {
         const minPcs = Math.max(1, Number(skill.equipMatchMinPieces) || 1);
+        const fallbackNeedles = matchSets.flatMap((sid) => EQUIP_SET_NAME_FALLBACKS[sid] || []);
         let count = 0;
-        for (const sl of slots) {
-            const seList = sl?.item?.set_effects;
-            if (!Array.isArray(seList)) continue;
-            if (seList.some((se) => matchSets.includes(Number(se?.equip_item_set_id)))) {
+        for (const entry of equippedBySlot.values()) {
+            const matchedBySetArr =
+                entry.setEffects.length > 0 &&
+                entry.setEffects.some((se) => matchSets.includes(Number(se?.equip_item_set_id)));
+            const matchedBySetId = entry.eisetId != null && matchSets.includes(entry.eisetId);
+            const lowName = entry.name.toLowerCase();
+            const matchedByName =
+                !matchedBySetArr &&
+                !matchedBySetId &&
+                fallbackNeedles.length > 0 &&
+                fallbackNeedles.some((needle) => lowName.includes(needle));
+            if (matchedBySetArr || matchedBySetId || matchedByName) {
                 count++;
             }
         }

@@ -10,14 +10,15 @@
  */
 
 import {
-    APP_VERSION,
     ARMOR_TYPES,
     BUILD_CATEGORIES,
     COMBAT_MODIFIERS,
     DEFAULT_CONSTANTS,
+    getAppVersion,
     initSkillBuilderData,
     registerCustomModifiers,
     reloadGearCatalog,
+    setAppVersion,
     syncSkillBreakdownAncestralsFromBuilder,
 } from "../engine/index.js";
 import {
@@ -34,12 +35,16 @@ import {
     loadBuffLoadoutsFromDisk,
     loadDeletedBuffIdsFromLocalStorage,
     loadDeletedBuildIdsFromLocalStorage,
+    loadGearTemplatesFromDisk,
+    loadSkillBuildsFromDisk,
     normalizeSimSettings,
     persistActiveCustomBuffsToLocalStorage,
     persistDeletedBuffIdsToLocalStorage,
     persistDeletedBuildIdsToLocalStorage,
     persistSavedBuildsToLocalStorage,
     saveCustomBuffLoadouts,
+    saveCustomGearTemplates,
+    saveCustomSkillBuilds,
     saveSimSettings,
     setSlotChar,
     showToast,
@@ -368,6 +373,8 @@ function renderBackupMeta() {
     const buildsCnt = state.savedBuilds.length;
     const loadoutsCnt = (state.customBuffLoadouts || []).length;
     const combosCnt = (state.customRotations || []).length;
+    const gearTplCnt = (state.customGearTemplates || []).length;
+    const skillBuildsCnt = (state.customSkillBuilds || []).length;
     const customBuffsCnt = Object.values(COMBAT_MODIFIERS).filter((m) => m.isCustom).length;
     const econOvCnt =
         Object.keys(state.economyPriceBook?.itemOverrides || {}).length +
@@ -376,7 +383,7 @@ function renderBackupMeta() {
     const storageModeTxt = state.diskApiAvailable
         ? "Local disk + browser localStorage backup"
         : "Browser localStorage only (static / GitHub Pages)";
-    el.innerHTML = `<div>Includes <strong>${buildsCnt}</strong> build${buildsCnt === 1 ? "" : "s"} &middot; <strong>${loadoutsCnt}</strong> buff preset${loadoutsCnt === 1 ? "" : "s"} &middot; <strong>${combosCnt}</strong> saved combo${combosCnt === 1 ? "" : "s"} &middot; <strong>${customBuffsCnt}</strong> custom buff${customBuffsCnt === 1 ? "" : "s"} &middot; Economy Price Book (${econOvCnt} override${econOvCnt === 1 ? "" : "s"}) + all settings</div><div class="settings-ts">Storage: <strong>${storageModeTxt}</strong></div>`;
+    el.innerHTML = `<div>Includes <strong>${buildsCnt}</strong> build${buildsCnt === 1 ? "" : "s"} &middot; <strong>${loadoutsCnt}</strong> buff preset${loadoutsCnt === 1 ? "" : "s"} &middot; <strong>${combosCnt}</strong> saved combo${combosCnt === 1 ? "" : "s"} &middot; <strong>${gearTplCnt}</strong> gear template${gearTplCnt === 1 ? "" : "s"} &middot; <strong>${skillBuildsCnt}</strong> skill build${skillBuildsCnt === 1 ? "" : "s"} &middot; <strong>${customBuffsCnt}</strong> custom buff${customBuffsCnt === 1 ? "" : "s"} &middot; Economy Price Book (${econOvCnt} override${econOvCnt === 1 ? "" : "s"}) + all settings</div><div class="settings-ts">Storage: <strong>${storageModeTxt}</strong></div>`;
 }
 
 function handleFormulaInputChange() {
@@ -411,18 +418,22 @@ export function buildWorkspaceBackupPayload() {
             delete copy.isCustom;
             return copy;
         });
+    const appVersion = getAppVersion();
     return {
         schemaVersion: 1,
-        appVersion: APP_VERSION,
+        ...(appVersion ? { appVersion } : {}),
         type: "aac-sim-workspace-backup",
         exportedAt: new Date().toISOString(),
         settings: normalizeSimSettings(state.settings),
         builds: Array.isArray(state.savedBuilds) ? state.savedBuilds : [],
         buffLoadouts: Array.isArray(state.customBuffLoadouts) ? state.customBuffLoadouts : [],
+        gearTemplates: Array.isArray(state.customGearTemplates) ? state.customGearTemplates : [],
+        skillBuilds: Array.isArray(state.customSkillBuilds) ? state.customSkillBuilds : [],
         customBuffs,
         rotations: {
             activeId: state.activeRotationId || null,
             combos: Array.isArray(state.customRotations) ? state.customRotations : [],
+            initialEffects: Array.isArray(state.rotationInitialEffects) ? state.rotationInitialEffects.slice() : [],
             steps: Array.isArray(state.rotationSteps) ? state.rotationSteps : [],
             updatedAt: state.rotationsUpdatedAt || Date.now(),
         },
@@ -465,12 +476,23 @@ async function handleImportWorkspaceBackupFile(file) {
     }
     const buildsIn = Array.isArray(parsed.builds) ? parsed.builds : [];
     const loadoutsIn = Array.isArray(parsed.buffLoadouts) ? parsed.buffLoadouts : null;
+    const gearTemplatesIn = Array.isArray(parsed.gearTemplates) ? parsed.gearTemplates : null;
+    const skillBuildsIn = Array.isArray(parsed.skillBuilds) ? parsed.skillBuilds : null;
     const customBuffsIn = Array.isArray(parsed.customBuffs) ? parsed.customBuffs : [];
     const rotationsIn = parsed.rotations && typeof parsed.rotations === "object" ? parsed.rotations : null;
     const settingsIn = parsed.settings && typeof parsed.settings === "object" ? parsed.settings : null;
     const economyIn = parsed.economyPriceBook && typeof parsed.economyPriceBook === "object" ? parsed.economyPriceBook : null;
 
-    if (!buildsIn.length && !loadoutsIn && !customBuffsIn.length && !rotationsIn && !settingsIn && !economyIn) {
+    if (
+        !buildsIn.length &&
+        !loadoutsIn &&
+        !gearTemplatesIn &&
+        !skillBuildsIn &&
+        !customBuffsIn.length &&
+        !rotationsIn &&
+        !settingsIn &&
+        !economyIn
+    ) {
         showToast("No recognizable backup sections found in this JSON file", "err");
         return;
     }
@@ -541,12 +563,35 @@ async function handleImportWorkspaceBackupFile(file) {
                 : combos[0]?.steps
                   ? combos[0].steps.map((s) => ({ ...s }))
                   : [];
+            state.rotationInitialEffects = Array.isArray(rotationsIn.initialEffects)
+                ? rotationsIn.initialEffects.map(String)
+                : Array.isArray(combos[0]?.initialEffects)
+                  ? combos[0].initialEffects.map(String)
+                  : [];
             state.rotationsUpdatedAt = Date.now();
             await syncRotationsToDisk();
             if (state.diskApiAvailable) {
                 await loadRotationsFromDisk().catch(() => {});
             }
             appendSyncLog(`Restored ${combos.length} saved combo(s).`, "ok");
+        }
+
+        // 4b. Gear Templates & Skill Build Presets
+        if (gearTemplatesIn) {
+            state.customGearTemplates = gearTemplatesIn;
+            await saveCustomGearTemplates(gearTemplatesIn);
+            if (state.diskApiAvailable) {
+                await loadGearTemplatesFromDisk().catch(() => {});
+            }
+            appendSyncLog(`Restored ${gearTemplatesIn.length} gear template(s).`, "ok");
+        }
+        if (skillBuildsIn) {
+            state.customSkillBuilds = skillBuildsIn;
+            await saveCustomSkillBuilds(skillBuildsIn);
+            if (state.diskApiAvailable) {
+                await loadSkillBuildsFromDisk().catch(() => {});
+            }
+            appendSyncLog(`Restored ${skillBuildsIn.length} saved skill build(s).`, "ok");
         }
 
         // 5. Saved builds
@@ -1064,8 +1109,26 @@ export function bindSettingsModalEvents() {
         });
     });
 
-    const creditsVerEl = document.getElementById("creditsVersionPill");
-    if (creditsVerEl) creditsVerEl.textContent = `v${APP_VERSION}`;
+    const syncCreditsVersionPill = () => {
+        const el = document.getElementById("creditsVersionPill");
+        if (!el) return;
+        const ver = getAppVersion();
+        if (ver) {
+            el.textContent = `v${ver}`;
+            el.classList.remove("hidden");
+        } else {
+            el.classList.add("hidden");
+        }
+    };
+    syncCreditsVersionPill();
+    if (window.location.protocol !== "file:") {
+        fetch("VERSION", { cache: "no-store" })
+            .then((r) => (r.ok ? r.text() : ""))
+            .then((txt) => {
+                if (setAppVersion(txt)) syncCreditsVersionPill();
+            })
+            .catch(() => {});
+    }
 
     // Display & Rounding
     document.getElementById("settingsAdvancedModeChk")?.addEventListener("change", (e) => {

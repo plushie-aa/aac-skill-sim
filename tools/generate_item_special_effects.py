@@ -205,6 +205,8 @@ def clean_text(raw):
     s = re.sub(r"for\s+#\{buff_duration\}", "", s)
     s = re.sub(r"\+#\{buff_ua_melee_speed_mul\}", "(Attack Speed boost)", s)
     s = PLACEHOLDER_RE.sub("", s)
+    s = re.sub(r"--(\d+%)", r"-\1", s)
+    s = s.replace("duraction", "duration").replace("continuous continuous", "continuous")
     s = re.sub(r"\b(\d+)\s*-\s*(\d+)\b", r"\1–\2", s)
     s = re.sub(r"\s*([.,;:])", r"\1", s)
     s = re.sub(r"\.(?=[A-Z])", ". ", s)

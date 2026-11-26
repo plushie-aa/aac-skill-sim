@@ -710,9 +710,6 @@ export const SKILL_COMBO_BONUSES = Object.freeze({
     defense_bull_rush: [
         { requires: "stunned", comboBonusPct: 24, label: "Stunned +24%" },
     ],
-    defense_boastful_roar: [
-        { requires: "shaken", comboBonusPct: 25, label: "Shaken +25%" },
-    ],
     occultism_mana_stars: [
         { requires: "distressed", comboBonusPct: 15, label: "Distressed +15%" },
     ],

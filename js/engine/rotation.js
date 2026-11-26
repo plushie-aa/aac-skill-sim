@@ -22,7 +22,7 @@ import {
 import { simulateSkillDamage } from "./damage.js";
 import { simulateSkillHeal } from "./healing.js";
 import { STAGED_WEAVE_SKILL_IDS, buildStageSkillView, getSkillStages } from "./skills.js";
-import { COMBAT_MODIFIERS, applyModifiers, resolveSkillTiming } from "./stats.js";
+import { COMBAT_MODIFIERS, applyModifiers, clamp, resolveSkillTiming } from "./stats.js";
 
 const PMF_BIN_SIZE = 25;
 
@@ -135,12 +135,14 @@ function getHitOutcomes(hit, isHeal) {
  */
 export function simulateRotation(actor, target, steps = [], context = {}, customConstants = {}) {
     const constants = mergeConstants(customConstants);
-    const effActor = context.attackerModifiers
-        ? applyModifiers(actor, context.attackerModifiers)
-        : actor;
-    const effTarget = context.defenderModifiers
-        ? applyModifiers(target, context.defenderModifiers)
-        : target;
+    const effActor =
+        context.attackerModifiers || (actor?.skillBuild && !actor?._skillBuildApplied)
+            ? applyModifiers(actor, context.attackerModifiers || [])
+            : actor;
+    const effTarget =
+        context.defenderModifiers || (target?.skillBuild && !target?._skillBuildApplied)
+            ? applyModifiers(target, context.defenderModifiers || [])
+            : target;
     const targetMaxHp = Math.max(1, Number(effTarget.maxHealth) || 1);
     const targetAbsorbShield = Math.max(0, Number(context.targetAbsorbShield) || 0);
     const effectiveKillHp = targetMaxHp + targetAbsorbShield;
@@ -395,9 +397,10 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         // and target defense debuffs at hit time (cast end + travel time) so delayed debuffs like
         // Charmed Bulwark Ballad apply when a cast-time spell lands.
         const comboEvalSec = startSec + travelTimeSec;
+        const clampedCastPct = clamp(Number(stepActor?.offense?.castTimePct ?? 100), 40, 200);
         const estCastSec = removeCastTime
             ? 0
-            : Math.max(0, (Number(skill.castTimeSec) || 0) * ((Number(stepActor?.offense?.castTimePct ?? 100)) / 100));
+            : Math.max(0, (Number(skill.castTimeSec) || 0) * (clampedCastPct / 100));
         const debuffEvalSec = startSec + estCastSec + travelTimeSec;
 
         // 2. Detect active damage/heal combo multipliers, next-skill crit procs, and auto-CC bypass
@@ -422,9 +425,11 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
               )
             : [];
 
-        // Snapshot every live status/debuff on target and active combo buff with exact remaining duration
+        // Snapshot every live status/debuff on target and active self/combo buff with exact remaining duration
+        const liveTargetStatuses = liveStatusesAtStep.filter((st) => st.targetSide !== "self");
+        const liveSelfStatuses = liveStatusesAtStep.filter((st) => st.targetSide === "self");
         const activeTargetEffects = [
-            ...liveStatusesAtStep.map((st) => {
+            ...liveTargetStatuses.map((st) => {
                 const isPermanent = !Number.isFinite(st.expiresAtSec);
                 return {
                     id: st.status,
@@ -443,20 +448,31 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                     label: d.label,
                     kind: "debuff",
                     isCC: false,
-                    remainingSec: isPermanent ? null : Math.max(0, d.expiresAtSec - comboEvalSec),
+                    remainingSec: isPermanent ? null : Math.max(0, d.expiresAtSec - debuffEvalSec),
                     durationSec: Number(d.durationSec) || 0,
                     isPermanent,
                 };
             }),
         ];
-        const activeComboBuffs = activeComboEffects
-            .filter((eff) => eff.expiresAtSec > startSec + 1e-6)
-            .map((eff) => ({
-                id: eff.id,
-                label: eff.label || eff.summary || eff.id,
-                remainingSec: Math.max(0, eff.expiresAtSec - startSec),
-                durationSec: Number(eff.durationSec) || 0,
-            }));
+        const activeComboBuffs = [
+            ...activeComboEffects
+                .filter((eff) => eff.expiresAtSec > startSec + 1e-6)
+                .map((eff) => ({
+                    id: eff.id,
+                    label: eff.label || eff.summary || eff.id,
+                    remainingSec: Math.max(0, eff.expiresAtSec - startSec),
+                    durationSec: Number(eff.durationSec) || 0,
+                })),
+            ...liveSelfStatuses.map((st) => {
+                const isPermanent = !Number.isFinite(st.expiresAtSec);
+                return {
+                    id: st.status,
+                    label: st.label,
+                    remainingSec: isPermanent ? null : Math.max(0, st.expiresAtSec - comboEvalSec),
+                    durationSec: Number(st.durationSec) || 0,
+                };
+            }),
+        ];
         let stepTarget = effTarget;
         if (liveDebuffs.length > 0 && !isUtility) {
             const nextDef = { ...(effTarget.defense || {}) };
@@ -552,12 +568,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         const castEndSec = startSec + castSec;
         const endSec = startSec + execSec;
         const launchSec = castSec > 0 ? castEndSec : startSec;
-        const impactSec =
-            travelTimeSec > 0
-                ? launchSec + travelTimeSec
-                : castSec > 0
-                  ? castEndSec
-                  : endSec;
+        const impactSec = launchSec + travelTimeSec;
         elapsedSec = endSec;
         if (impactSec > maxImpactSec) maxImpactSec = impactSec;
 
@@ -797,6 +808,20 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
                 totalDamageExpected += res.expected;
                 for (const h of res.perHit || []) {
                     damagePmf = convolvePmf(damagePmf, getHitOutcomes(h, false));
+                }
+                if (res.secondary && Number(res.secondary.expected) > 0) {
+                    const secNorm = Math.max(0, Number(res.secondary.normal) || 0);
+                    const secCrit = Math.max(secNorm, Number(res.secondary.crit) || secNorm);
+                    const secExp = Math.max(secNorm, Number(res.secondary.expected) || secNorm);
+                    if (res.secondary.canCrit && secCrit > secNorm + 1e-6) {
+                        const pSecCrit = clamp((secExp - secNorm) / (secCrit - secNorm), 0, 1);
+                        damagePmf = convolvePmf(damagePmf, [
+                            { val: secNorm, p: 1 - pSecCrit },
+                            { val: secCrit, p: pSecCrit },
+                        ]);
+                    } else {
+                        damagePmf = convolvePmf(damagePmf, [{ val: secExp, p: 1 }]);
+                    }
                 }
                 if (killStepIndex < 0 && totalDamageExpected >= effectiveKillHp) {
                     killStepIndex = stepResults.length;

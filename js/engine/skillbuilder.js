@@ -12,7 +12,7 @@
  *  - Direct DaruGear `player.playerclass` import parser
  */
 
-import { DEFAULT_CONSTANTS } from "./constants.js";
+import { mergeConstants } from "./constants.js";
 import { applyAttributeDelta, applyOverrides, clamp, registerSkillBuildApplier } from "./stats.js";
 
 export const MAX_SKILL_POINTS = 28;
@@ -704,7 +704,7 @@ export function applySkillBuildPassives(character, activeModifierIds = []) {
     out.offense.meleeAccuracyPct = clamp(Number(out.offense.meleeAccuracyPct ?? 100), 0, 100);
     out.offense.rangedAccuracyPct = clamp(Number(out.offense.rangedAccuracyPct ?? 100), 0, 100);
     out.offense.magicAccuracyPct = clamp(Number(out.offense.magicAccuracyPct ?? 100), 0, 100);
-    const maxCb = DEFAULT_CONSTANTS.maxCritBonusPct;
+    const maxCb = mergeConstants().maxCritBonusPct;
     out.offense.meleeCritBonusPct = Math.min(maxCb, Math.max(0, Number(out.offense.meleeCritBonusPct) || 0));
     out.offense.rangedCritBonusPct = Math.min(maxCb, Math.max(0, Number(out.offense.rangedCritBonusPct) || 0));
     out.offense.magicCritBonusPct = Math.min(maxCb, Math.max(0, Number(out.offense.magicCritBonusPct) || 0));

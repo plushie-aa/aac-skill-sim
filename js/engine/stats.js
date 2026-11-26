@@ -2014,8 +2014,8 @@ export function applyModifiers(character, modifierIds = []) {
         out.defense[k] = (Number(out.defense[k]) || 0) * Math.max(0, 1 + deltaSum);
     }
 
-    // Enforce AA Classic 3.5 Critical Damage Bonus 300% cap on the buffed sheet (applied before Resilience)
-    const maxCb = DEFAULT_CONSTANTS.maxCritBonusPct;
+    // Enforce AA Classic 3.5 Critical Damage Bonus cap (respecting runtime Formula Overrides, applied before Resilience)
+    const maxCb = mergeConstants().maxCritBonusPct;
     out.offense.meleeCritBonusPct = Math.min(maxCb, Number(out.offense.meleeCritBonusPct) || 0);
     out.offense.rangedCritBonusPct = Math.min(maxCb, Number(out.offense.rangedCritBonusPct) || 0);
     out.offense.magicCritBonusPct = Math.min(maxCb, Number(out.offense.magicCritBonusPct) || 0);

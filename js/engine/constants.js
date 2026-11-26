@@ -3,7 +3,19 @@
  * Matches js/data/constants.json and live client unitInfo observations.
  */
 
-export const APP_VERSION = "0.2.0";
+let _appVersion = "";
+
+export function getAppVersion() {
+    return _appVersion;
+}
+
+export function setAppVersion(rawVersion) {
+    const clean = String(rawVersion || "").trim().replace(/^v/i, "");
+    if (/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(clean)) {
+        _appVersion = clean;
+    }
+    return _appVersion;
+}
 
 export const DEFAULT_CONSTANTS = Object.freeze({
     gameVersion: "ArcheAge Classic 1.3.6 (3.5)",

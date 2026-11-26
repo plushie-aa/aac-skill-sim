@@ -192,7 +192,7 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
     def end_headers(self):
         path_lower = urlparse(self.path).path.lower()
         if not path_lower.startswith("/api/") and (
-            path_lower == "/"
+            path_lower in ("/", "/version")
             or path_lower.endswith((".html", ".js", ".mjs", ".css", ".json"))
         ):
             self.send_header("Cache-Control", "no-store, max-age=0")

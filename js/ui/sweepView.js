@@ -169,7 +169,9 @@ export function renderSweepView(out) {
     const beText =
         breakEvens.length > 0
             ? breakEvens.map((b) => fmtInt(b.statValue)).join(" / ")
-            : `None (${points[0]?.winner === "A" ? state.buildA.name : state.buildB.name} wins across entire range)`;
+            : points[0]?.winner === "tie"
+              ? "None (Tie across entire range)"
+              : `None (${points[0]?.winner === "A" ? state.buildA.name : state.buildB.name} wins across entire range)`;
 
     const midPt = points[Math.floor(points.length / 2)] || points[0];
     const pctDiff = (a, b) => (b > 0 ? ((a - b) / b) * 100 : 0);

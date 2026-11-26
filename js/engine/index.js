@@ -16,10 +16,11 @@ export {
     resolveCostumeCharmInfo,
 } from "../adapters/darugear_calc.js";
 export {
-    APP_VERSION,
     DEFAULT_CONSTANTS,
+    getAppVersion,
     getRuntimeConstantsOverrides,
     mergeConstants,
+    setAppVersion,
     setRuntimeConstantsOverrides,
 } from "./constants.js";
 export {

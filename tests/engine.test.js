@@ -4,11 +4,13 @@ import {
     CONSUMABLE_SLOTS,
     COSTUME_CHARM_DEFS,
     DEFAULT_CONSTANTS,
+    SKILL_COMBO_BONUSES,
     T7_OBSIDIAN_SPECIAL_EFFECTS,
     applyGearTemplateToSlots,
     applyLunafrostToEligibleSlots,
     applyModifiers,
     applyOverrides,
+    applySkillBuildPassives,
     applySkillBuildPresetToCharacter,
     applyStatMigrationTransfer,
     attackSpeedGcdPct,
@@ -5094,6 +5096,110 @@ export async function runAllTests() {
                 baseSnipe.steps[0].result.breakdown.avoidance.connectPct,
             "Archery Snare reduces target Evasion/Block/Parry avoidance"
         );
+    });
+
+    await test("62. Bugfix regressions: Max Crit Override, instant impactSec, delayed debuff remainingSec, self-buff chips, secondary PMF, skillBuild passives in rotation, & clean data", async () => {
+        // 1. Runtime maxCritBonusPct override (> 300%) flows through applyModifiers & applySkillBuildPassives
+        try {
+            setRuntimeConstantsOverrides({ maxCritBonusPct: 350 });
+            const critChar = createDefaultCharacter({
+                offense: {
+                    meleeAttack: 1000,
+                    meleeCritBonusPct: 330,
+                    magicCritBonusPct: 340,
+                },
+            });
+            const modChar = applyModifiers(critChar, []);
+            assertApprox(modChar.offense.meleeCritBonusPct, 330, 0.01, "applyModifiers honors runtime maxCritBonusPct=350 (330% not clamped to 300%)");
+            assertApprox(modChar.offense.magicCritBonusPct, 340, 0.01, "applyModifiers honors runtime maxCritBonusPct=350 for magic crit bonus");
+            const sbRes = applySkillBuildPassives(critChar, { trees: ["battlerage", "shadowplay", "auramancy"], activeSkills: [], passives: [] });
+            assertApprox(sbRes.character.offense.meleeCritBonusPct, 330, 0.01, "applySkillBuildPassives honors runtime maxCritBonusPct=350");
+        } finally {
+            setRuntimeConstantsOverrides({});
+        }
+
+        // 2. Instant-skill impactSec is monotonic with travelTimeSec & unaffected by post-step delaySec
+        const idx = await (await fetch("../js/data/skills/index.json", { cache: "no-store" })).json();
+        const skillMap = new Map();
+        for (const m of idx.skillsets) {
+            const d = await (await fetch(`../js/data/skills/${m.file}`, { cache: "no-store" })).json();
+            for (const s of d.skills || []) skillMap.set(s.id, s);
+        }
+        const startling = skillMap.get("songcraft_startling_strain");
+        const bulwark = skillMap.get("songcraft_bulwark_ballad");
+        const arcLightning = skillMap.get("sorcery_arc_lightning");
+        const ayanadEar = skillMap.get("equip_ayanad_earring_crit");
+        const precision = skillMap.get("battlerage_precision_strike");
+        const stalkersMark = skillMap.get("shadowplay_stalkers_mark");
+
+        const att = createDefaultCharacter({
+            offense: { meleeAttack: 1000, rangedAttack: 1000, magicAttack: 1000, meleeCritRatePct: 25, magicCritRatePct: 25, castTimePct: 100 },
+        });
+        const def = createDefaultCharacter({
+            maxHealth: 40000,
+            defense: { physicalDefense: 5000, magicDefense: 5000, toughness: 1000, resilience: 1500 },
+        });
+
+        const rotInst0 = simulateRotation(att, def, [{ skill: startling, delaySec: 1.5, travelTimeSec: 0 }]);
+        const rotInst1 = simulateRotation(att, def, [{ skill: startling, delaySec: 1.5, travelTimeSec: 0.25 }]);
+        assertApprox(rotInst0.steps[0].impactSec, 0.0, 0.001, "Instant skill with 0 travel lands at startSec (0.0s), unaffected by +1.5s post-delay");
+        assertApprox(rotInst1.steps[0].impactSec, 0.25, 0.001, "Instant skill with 0.25s travel lands at 0.25s (monotonic > 0.0s)");
+
+        // 3. Delayed debuff remainingSec never exceeds durationSec
+        const rotCharm = simulateRotation(att, def, [
+            { skill: startling },
+            { skill: bulwark },
+            { skill: arcLightning },
+        ]);
+        const ungChip = rotCharm.steps[2].activeTargetEffects.find((e) => e.id === "charm_unguarded");
+        assert(
+            ungChip && ungChip.remainingSec <= ungChip.durationSec + 1e-6,
+            `Delayed Charm: Unguarded remainingSec (${ungChip?.remainingSec?.toFixed(2)}s) <= durationSec (${ungChip?.durationSec}s)`
+        );
+
+        // 4. Self-targeted rotation status (Great Ayanad Earring) appears in activeComboBuffs, not activeTargetEffects
+        const rotAyanad = simulateRotation(att, def, [{ skill: ayanadEar }, { skill: precision }]);
+        assert(
+            rotAyanad.steps[1].activeComboBuffs.some((b) => b.id === "ayanad_crit_buff") &&
+                !rotAyanad.steps[1].activeTargetEffects.some((e) => e.id === "ayanad_crit_buff"),
+            "Great Ayanad Earring self crit buff appears in activeComboBuffs and NOT activeTargetEffects"
+        );
+
+        // 5. simulateRotation applies skillBuild passives even when attackerModifiers/defenderModifiers are omitted
+        const sbDefender = createDefaultCharacter({
+            maxHealth: 30000,
+            skillBuild: {
+                trees: ["defense", "auramancy", "occultism"],
+                activeSkills: ["defense_shield_slam", "defense_bull_rush"],
+                passives: ["Supplemental Block"],
+                bakedPassives: [],
+            },
+        });
+        const rotWithSb = simulateRotation(att, sbDefender, [{ skill: precision }]);
+        const rotNoSb = simulateRotation(att, { ...sbDefender, skillBuild: null }, [{ skill: precision }]);
+        assert(
+            rotWithSb.steps[0].result.expected <= rotNoSb.steps[0].result.expected,
+            "simulateRotation applies defender skillBuild passives without explicit defenderModifiers"
+        );
+
+        // 6. Rotation PMF includes secondary DoT/Finisher damage when includeSecondaryEffects is true
+        const rotNoSec = simulateRotation(att, def, [{ skill: stalkersMark }], { includeSecondaryEffects: false });
+        const rotWithSec = simulateRotation(att, def, [{ skill: stalkersMark }], { includeSecondaryEffects: true });
+        assert(
+            rotWithSec.totalDamageExpected > rotNoSec.totalDamageExpected &&
+                rotWithSec.quantiles.median > rotNoSec.quantiles.median,
+            `Secondary effects included in rotation PMF quantiles (median ${rotNoSec.quantiles.median} -> ${rotWithSec.quantiles.median})`
+        );
+
+        // 7. Data cleanliness: zero tooltip typos in item_special_effects.json & zero dead keys in SKILL_COMBO_BONUSES
+        const sp = await (await fetch("../js/data/gear_catalog/item_special_effects.json", { cache: "no-store" })).json();
+        for (const [iid, info] of Object.entries(sp)) {
+            const t = String(info?.text || "");
+            assert(!/--\d+%/.test(t) && !t.includes("duraction") && !t.includes("continuous continuous"), `Clean special effect text for item #${iid}`);
+        }
+        for (const skillId of Object.keys(SKILL_COMBO_BONUSES)) {
+            assert(skillMap.has(skillId), `SKILL_COMBO_BONUSES key ${skillId} exists in skills catalog`);
+        }
     });
 
     return results;

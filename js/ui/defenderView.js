@@ -447,6 +447,27 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
             const sB = cB.steps[idx];
             const skIcon = skillIconUrl(sA.skill);
             if (sA.isUtility) {
+                const isEq = sA.skill.skillset === "equipment";
+                const uCls = isEq
+                    ? "stag-equip"
+                    : sA.skill.utilityRole === "cc"
+                      ? "stag-cc"
+                      : sA.skill.utilityRole === "debuff"
+                        ? "stag-debuff-role"
+                        : "stag-util";
+                const uLbl = isEq
+                    ? sA.skill.utilityRole === "cc"
+                        ? "EQUIP CC"
+                        : "EQUIP"
+                    : sA.skill.utilityRole === "cc"
+                      ? "CC"
+                      : sA.skill.utilityRole === "debuff"
+                        ? "DEBUFF"
+                        : "UTILITY";
+                const uSummary =
+                    sA.grantedStatuses?.length > 0
+                        ? `Applies ${sA.grantedStatuses.join(", ")}`
+                        : sA.grantedComboEffect?.summary || sA.skill.utilitySummary || "Applies combo setup / status";
                 return `
                 <tr class="def-combo-util-row">
                     <td>${idx + 1}</td>
@@ -454,12 +475,12 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
                         <div class="table-skill-cell">
                             ${skIcon ? `<img class="table-skill-icon" src="${escHtml(skIcon)}" alt="" loading="lazy" />` : ""}
                             <div>
-                                <div class="skill-name">${escHtml(sA.skill.name)} <span class="stag stag-util">UTILITY</span></div>
+                                <div class="skill-name">${escHtml(sA.skill.name)} <span class="stag ${uCls}">${uLbl}</span></div>
                                 <div class="skill-meta">@ ${fmtDec(sA.startSec, 2)}s &rarr; ${fmtDec(sA.endSec, 2)}s</div>
                             </div>
                         </div>
                     </td>
-                    <td colspan="3" class="skill-meta">${escHtml(sA.grantedComboEffect?.summary || "Applies combo setup / status")}</td>
+                    <td colspan="3" class="skill-meta">${escHtml(uSummary)}</td>
                 </tr>`;
             }
             const expA = sA.result.expected;
