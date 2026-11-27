@@ -112,6 +112,7 @@ local TARGET_SKILLS = {
     ["intensity"] = "Archery",
     ["snipe"] = "Archery",
     ["hunting pack"] = "Archery",
+    ["fang bolt"] = "Archery",
 
     -- 7: Sorcery
     ["flamebolt"] = "Sorcery",
@@ -723,65 +724,91 @@ local SKILLSET_CONFIG = {
         label = "Battlerage",
         sampleId = 12026,
         sampleName = "Precision Strike",
-        ids = { 10644, 11918, 12026, 13282, 13315, 18131, 18132, 23587, 32040, 32049, 34120, 36401, 36402, 36403, 36404, 36405, 36406, 36446, 36447, 36448, 36449 },
+        ids = { 10644, 11918, 12026, 13282, 13315, 18131, 18132, 23587, 32040, 32049, 34120, 34124, 36401, 36402, 36403, 36404, 36405, 36406, 36446, 36447, 36448, 36449 },
+        buffIds = { 18325, 18402 },
     },
     witchcraft = {
         label = "Witchcraft",
         sampleId = 14376,
         sampleName = "Earthen Grip",
-        ids = { 10159, 11353, 11443, 14376, 36450 },
+        ids = { 10159, 11353, 11443, 14376, 34125, 34147, 36450, 36451, 36452, 36453, 36454, 36455, 9011353 },
     },
     defense = {
         label = "Defense",
         sampleId = 10399,
         sampleName = "Shield Slam",
         needsTwoPoint = true,
-        ids = { 10399, 10501, 12046, 18757, 36456, 36457 },
+        ids = { 10399, 10501, 12046, 12048, 18757, 34089, 34148, 36456, 36457, 36458, 36459, 36460, 36461, 9018757 },
+        buffIds = { 18491, 18492 },
     },
     auramancy = {
         label = "Auramancy",
         sampleId = 18222,
         sampleName = "Vicious Implosion",
-        ids = { 10710, 18222, 34090 },
+        ids = { 10710, 11869, 18222, 34090, 34165, 36462, 36463, 36464, 36465, 36466, 36467, 9010710 },
+        buffIds = { 18493, 18494 },
     },
     occultism = {
         label = "Occultism",
         sampleId = 14810,
         sampleName = "Mana Stars",
-        ids = { 10135, 10201, 10434, 11395, 11441, 12759, 14810, 23591, 36586, 36587, 36620, 36623, 36627 },
+        ids = { 10135, 10201, 10434, 11395, 11441, 12759, 14810, 23591, 34091, 34171, 36586, 36587, 36620, 36623, 36626, 36627, 9011395 },
+        buffIds = { 18341 },
     },
     archery = {
         label = "Archery",
         sampleId = 16210,
         sampleName = "Endless Arrows",
-        ids = { 11933, 13281, 13564, 14760, 14835, 16210, 23592, 34288, 36468, 36469, 36470, 36471, 36472, 36473, 39663 },
+        ids = { 11933, 13281, 13564, 14760, 14835, 16210, 23592, 34092, 34285, 34288, 36468, 36469, 36470, 36471, 36472, 36473, 39663, 9013564 },
     },
     sorcery = {
         label = "Sorcery",
         sampleId = 10670,
         sampleName = "Arc Lightning",
-        ids = { 10151, 10664, 10667, 10670, 10752, 11939, 11967, 14774, 23593, 23646, 23647, 23648, 23649, 24894, 24895, 34291, 36474, 36475, 36476, 36477, 36478, 36479 },
+        ids = { 10151, 10664, 10667, 10670, 10752, 11314, 11939, 11967, 14774, 23593, 23646, 23647, 23648, 23649, 24894, 24895, 34093, 34291, 36474, 36475, 36476, 36477, 36478, 36479, 9011939 },
     },
     shadowplay = {
         label = "Shadowplay",
         sampleId = 10648,
         sampleName = "Stalker's Mark",
-        ids = { 10481, 10496, 10648, 12029, 12139, 13344, 18125, 23594, 36588 },
+        ids = { 10481, 10496, 10648, 12029, 12049, 12139, 13344, 18125, 23594, 34094, 34300, 36588, 36589, 36590, 36591, 36593, 36594, 9023594 },
+        buffIds = { 20313, 18489, 18490 },
     },
     songcraft = {
         label = "Songcraft",
         sampleId = 11973,
         sampleName = "Critical Discord",
         needsTwoPoint = true,
-        ids = { 10724, 11943, 11948, 11973, 17413 },
+        ids = { 10724, 11943, 11948, 11973, 17413, 34095, 34314, 36595, 36596, 36597, 36598, 36628, 36629, 9011973 },
     },
     vitalism = {
         label = "Vitalism",
         sampleId = 10534,
         sampleName = "Antithesis",
         needsTwoPoint = true,
-        ids = { 10534, 10547, 10720, 13286, 14929, 14930, 14931, 14932, 14933, 33345, 36630, 36631, 36632, 36635, 36637, 36638, 36639 },
+        ids = { 10534, 10547, 10720, 13286, 14929, 14930, 14931, 14932, 14933, 33345, 34087, 34096, 36630, 36631, 36632, 36635, 36636, 36637, 36638, 36639, 9003166 },
     },
+}
+
+local HIGH_ID_HOLLOW_SKILLS = {
+    { id = 9003166, skillset = "Vitalism" },
+    { id = 9010710, skillset = "Auramancy" },
+    { id = 9011353, skillset = "Witchcraft" },
+    { id = 9011395, skillset = "Occultism" },
+    { id = 9011939, skillset = "Sorcery" },
+    { id = 9011973, skillset = "Songcraft" },
+    { id = 9013564, skillset = "Archery" },
+    { id = 9018757, skillset = "Defense" },
+    { id = 9023594, skillset = "Shadowplay" },
+}
+
+local EXTRA_DOT_BUFF_IDS = {
+    18325, 18402, -- Soulbound Blades R1 & R2 DoT
+    18341,        -- Cursed Thorns (Cursed Seeds)
+    20313,        -- Venom Blades (Deadly Poison DoT)
+    18489, 18490, -- Venom Blades radius tooltips
+    18491, 18492, -- Shield Throw bounce tooltips
+    18493, 18494, -- Crushing Grasp radius tooltips
 }
 
 -- Canonical combat & healing skill IDs across all 10 skillsets (base, multi-hit, abyssal, ancestral)
@@ -801,6 +828,10 @@ local scanState = {
     matchedSkills = {},
     sampleTooltipKeys = nil,
     directSkillFields = nil,
+    skipIds = nil,
+    skipSource = nil,
+    forceIncludeIds = nil,
+    extraBuffs = nil,
 }
 
 local function setButtonsEnabled(enabled)
@@ -823,8 +854,13 @@ local function finishSkillScan()
     safeCall("finishSkillScan", function()
         scanState.active = false
 
+        local skippedCount = 0
+        if type(scanState.skipIds) == "table" then
+            for _ in pairs(scanState.skipIds) do skippedCount = skippedCount + 1 end
+        end
+
         local meta = {
-            schemaVersion = 3,
+            schemaVersion = 4,
             dumpLabel = scanState.label,
             maxSkillIdScanned = MAX_SKILL_ID,
             skillCallMode = activeSkillCallMode,
@@ -832,6 +868,9 @@ local function finishSkillScan()
             probeResults = lastProbeResults,
             totalValidTooltipsSeen = scanState.totalValidTooltips,
             matchedCount = #scanState.matchedSkills,
+            skippedAlreadyDumpedCount = skippedCount,
+            skipSource = scanState.skipSource,
+            extraBuffCount = scanState.extraBuffs and #scanState.extraBuffs or 0,
             sampleTooltipKeys = scanState.sampleTooltipKeys,
             apiTopKeys = inspectObject(api),
             apiSkillInfo = inspectObject(api and api.Skill or nil),
@@ -855,6 +894,9 @@ local function finishSkillScan()
             chunkCount = #chunks,
             skillChunks = chunks,
         }
+        if scanState.extraBuffs and #scanState.extraBuffs > 0 then
+            filePayload.buffsJson = jsonEncode(scanState.extraBuffs)
+        end
 
         local ok, err = pcall(function()
             api.File:Write(scanState.outputFile, filePayload)
@@ -890,19 +932,24 @@ local function onUpdate(dt)
         local endId = math.min(startId + IDS_PER_FRAME - 1, MAX_SKILL_ID)
 
         for id = startId, endId do
-            local tooltip = safeGetSkillTooltip(id)
-            if tooltip ~= nil then
-                scanState.totalValidTooltips = scanState.totalValidTooltips + 1
-                if not scanState.sampleTooltipKeys then
-                    scanState.sampleTooltipKeys = (type(tooltip) == "table") and inspectObject(tooltip).keys or type(tooltip)
-                end
-                local tree = matchTargetSkill(tooltip)
-                if tree then
-                    scanState.matchedSkills[#scanState.matchedSkills + 1] = {
-                        skillId = id,
-                        skillset = tree,
-                        tooltip = tooltip,
-                    }
+            if not (scanState.skipIds and scanState.skipIds[id]) then
+                local tooltip = safeGetSkillTooltip(id)
+                if tooltip ~= nil then
+                    scanState.totalValidTooltips = scanState.totalValidTooltips + 1
+                    if not scanState.sampleTooltipKeys then
+                        scanState.sampleTooltipKeys = (type(tooltip) == "table") and inspectObject(tooltip).keys or type(tooltip)
+                    end
+                    local tree = matchTargetSkill(tooltip)
+                    if not tree and scanState.forceIncludeIds and scanState.forceIncludeIds[id] then
+                        tree = scanState.forceIncludeIds[id]
+                    end
+                    if tree then
+                        scanState.matchedSkills[#scanState.matchedSkills + 1] = {
+                            skillId = id,
+                            skillset = tree,
+                            tooltip = tooltip,
+                        }
+                    end
                 end
             end
         end
@@ -936,6 +983,10 @@ local function startSkillScan(outputFile, label)
         scanState.totalValidTooltips = 0
         scanState.matchedSkills = {}
         scanState.sampleTooltipKeys = nil
+        scanState.skipIds = nil
+        scanState.skipSource = nil
+        scanState.forceIncludeIds = nil
+        scanState.extraBuffs = {}
 
         setButtonsEnabled(false)
         setStatus("Probing skill API...")
@@ -949,9 +1000,31 @@ local function startSkillScan(outputFile, label)
             return
         end
 
+        -- Include high-ID Hollow skills (> MAX_SKILL_ID) and Abyssal DoT/sub-effect buffs
+        for _, spec in ipairs(HIGH_ID_HOLLOW_SKILLS) do
+            local tip = safeGetSkillTooltip(spec.id)
+            if tip ~= nil then
+                scanState.totalValidTooltips = scanState.totalValidTooltips + 1
+                scanState.matchedSkills[#scanState.matchedSkills + 1] = {
+                    skillId = spec.id,
+                    skillset = spec.skillset,
+                    tooltip = tip,
+                }
+            end
+        end
+        for _, bid in ipairs(EXTRA_DOT_BUFF_IDS) do
+            local btip = safeGetBuffTooltip(bid)
+            if btip then
+                scanState.extraBuffs[#scanState.extraBuffs + 1] = {
+                    buffId = bid,
+                    tooltip = btip,
+                }
+            end
+        end
+
         scanState.active = true
-        setStatus("Scanning 1.." .. tostring(MAX_SKILL_ID) .. " via " .. activeSkillCallMode)
-        logInfo("Starting scan 1.." .. tostring(MAX_SKILL_ID) .. " via " .. activeSkillCallMode)
+        setStatus("Scanning 1.." .. tostring(MAX_SKILL_ID) .. " + Hollow via " .. activeSkillCallMode)
+        logInfo("Starting scan 1.." .. tostring(MAX_SKILL_ID) .. " + Hollow via " .. activeSkillCallMode)
     end)
 end
 
@@ -1604,12 +1677,30 @@ local function dumpSingleSkillset(treeKey)
             end
         end
 
+        local extraBuffs = {}
+        if type(cfg.buffIds) == "table" then
+            for _, bid in ipairs(cfg.buffIds) do
+                local btip = safeGetBuffTooltip(bid)
+                if btip then
+                    extraBuffs[#extraBuffs + 1] = {
+                        buffId = bid,
+                        tooltip = btip,
+                    }
+                end
+            end
+        end
+
+        local payload = {
+            metaJson = jsonEncode(meta),
+            chunkCount = #chunks,
+            skillChunks = chunks,
+        }
+        if #extraBuffs > 0 then
+            payload.buffsJson = jsonEncode(extraBuffs)
+        end
+
         local ok, err = pcall(function()
-            api.File:Write(outFile, {
-                metaJson = jsonEncode(meta),
-                chunkCount = #chunks,
-                skillChunks = chunks,
-            })
+            api.File:Write(outFile, payload)
         end)
 
         if not ok then

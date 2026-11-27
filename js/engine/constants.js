@@ -1,6 +1,6 @@
 /**
  * ArcheAge Classic 1.3.6 (3.5) verified combat & healing constants.
- * Matches js/data/constants.json and live client unitInfo observations.
+ * Verified against live client unitInfo observations and DaruGear 1.3.6 formulas.
  */
 
 let _appVersion = "";

@@ -5,7 +5,7 @@
   "dumpSource": "item_special_effects + set_bonus_procs",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 31,
+  "skillCount": 34,
   "skills": [
     {
       "id": "equip_corrupted_kyrios_pull",
@@ -666,6 +666,87 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_item_spear_2h_0043.png",
       "description": "Use: Releases powerful light to Blind all enemies within 6m for 6.0s (-25% Melee Accuracy)."
+    },
+    {
+      "id": "equip_flawless_dream_ring_shred",
+      "skillset": "equipment",
+      "name": "Flawless Dream Ring (5x Shred)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "5x Proc: -875 PDef & MDef (5s)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "abilityLevel": 55,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "gcdSec": 0,
+      "flags": {
+        "noGcd": true
+      },
+      "equipMatchItemIds": [
+        28802,
+        9001915
+      ],
+      "equipSource": "Flawless Dream Ring",
+      "icon": "https://darugear.com/assets/icons/icon_item_1388.png",
+      "description": "Flawless Dream Ring Proc: Decreases target Physical Defense and Magic Defense (-175/stack, up to 5 stacks = -875) for 5s on successful attacks."
+    },
+    {
+      "id": "equip_dream_ring_shred",
+      "skillset": "equipment",
+      "name": "Dream Ring (4x Shred)",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "4x Proc: -700 PDef & MDef (5s)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "abilityLevel": 55,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "gcdSec": 0,
+      "flags": {
+        "noGcd": true
+      },
+      "equipMatchItemIds": [
+        39146,
+        9001916
+      ],
+      "equipSource": "Dream Ring",
+      "icon": "https://darugear.com/assets/icons/icon_item_1388.png",
+      "description": "Dream Ring Proc: Decreases target Physical Defense and Magic Defense -175 per stack (up to 4 stacks = -700) for 5s on successful attacks."
+    },
+    {
+      "id": "equip_red_dragon_wrath",
+      "skillset": "equipment",
+      "name": "Red Dragon: Dragon's Wrath",
+      "variant": "base",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Use: +50 STR / AGI / INT (10s, 3m CD)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "abilityLevel": 55,
+      "cooldownSec": 180.0,
+      "castTimeSec": 0.0,
+      "gcdSec": 0,
+      "flags": {
+        "noGcd": true
+      },
+      "equipMatchItemIds": [
+        28861,
+        29861,
+        29862,
+        29863,
+        29864,
+        29866,
+        29868,
+        29872
+      ],
+      "equipSource": "Enraged Red Dragon Weapon",
+      "icon": "https://darugear.com/assets/icons/icon_item_3532.png",
+      "description": "Enraged Red Dragon Use: Increases Strength, Agility, and Intelligence +50 for 10 seconds (3m cooldown)."
     }
   ]
 }

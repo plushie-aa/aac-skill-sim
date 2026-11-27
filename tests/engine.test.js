@@ -4,6 +4,7 @@ import {
     CONSUMABLE_SLOTS,
     COSTUME_CHARM_DEFS,
     DEFAULT_CONSTANTS,
+    ECONOMY_TIERS,
     SKILL_COMBO_BONUSES,
     T7_OBSIDIAN_SPECIAL_EFFECTS,
     applyGearTemplateToSlots,
@@ -54,7 +55,6 @@ import {
     getAvailableSynthPool,
     getEquipmentSkillBonus,
     getEquippedSpecialEffects,
-    getEquippedT7ObsidianEffects,
     getItemSpecialEffect,
     getPlayerStatMigration,
     getSkillComboOptions,
@@ -72,6 +72,7 @@ import {
     normalizeSavedSkillPreset,
     normalizeSkillBuild,
     parseGearStatLine,
+    parseModifierToken,
     parseSkillSpecificBonusLine,
     recalculateCharacterFromGearBuilder,
     recomputeGearBuffs,
@@ -82,6 +83,7 @@ import {
     resilienceCritRateReductionPct,
     resolveClassName,
     resolveGearIconUrl,
+    resolveSkillTiming,
     setAncestralVariant,
     setPlayerStatMigration,
     setRuntimeConstantsOverrides,
@@ -146,7 +148,63 @@ export async function runAllTests() {
         }
     }
 
-    const sampleChar = await loadJson("../js/data/sample_character.json");
+    const sampleChar = {
+        name: "Dumped Live Character (AA Classic 1.3.6)",
+        source: "ingame_addon",
+        level: 55,
+        gearScore: 6163,
+        maxHealth: 21597,
+        maxMana: 11405,
+        attributes: { str: 3, agi: 13, sta: 523, int: 211, spi: 1631 },
+        offense: {
+            meleeAttack: 794.075,
+            rangedAttack: 363.051,
+            magicAttack: 52.2,
+            healingPower: 1444.49,
+            meleeAccuracyPct: 100,
+            rangedAccuracyPct: 100,
+            magicAccuracyPct: 100,
+            meleeCritRatePct: 3.55614,
+            rangedCritRatePct: 6.2684,
+            magicCritRatePct: 8.98067,
+            healCritRatePct: 56.4839,
+            meleeCritBonusPct: 50,
+            rangedCritBonusPct: 50,
+            magicCritBonusPct: 50,
+            healCritBonusPct: 134.6,
+            meleeSkillDamagePct: 10.3,
+            rangedSkillDamagePct: 7.3,
+            magicSkillDamagePct: 10.3,
+            healingPct: 15.7,
+            backstabMeleeDamagePct: 0,
+            backstabRangedDamagePct: 0,
+            backstabMagicDamagePct: 0,
+            defensePenetration: 150,
+            magicDefensePenetration: 150,
+            shieldDefPenRatePct: 50,
+            shieldDefPenPct: 50,
+            focus: 0,
+            castTimePct: 74.2,
+        },
+        defense: {
+            physicalDefense: 3975,
+            magicDefense: 11612,
+            shieldPhysicalDefense: 0,
+            toughness: 3099,
+            resilience: 3887,
+            evasionPct: 2.45474,
+            parryPct: 3.24239,
+            rangedParryPct: 0,
+            blockPct: 0,
+            receivedMeleeDrPct: 15,
+            receivedRangedDrPct: 9,
+            receivedMagicDrPct: 15,
+            fixedMeleeDr: 29,
+            fixedRangedDr: 29,
+            fixedMagicDr: 55,
+            receivedHealingPct: 6.6,
+        },
+    };
     const battlerage = await loadJson("../js/data/skills/battlerage.json");
     const archery = await loadJson("../js/data/skills/archery.json");
     const auramancy = await loadJson("../js/data/skills/auramancy.json");
@@ -251,7 +309,7 @@ export async function runAllTests() {
     await test("Toughness & Resilience mitigate PvP damage and are skipped in PvE", () => {
         const skill = findSkill(vitalism, "vitalism_holy_bolt");
         const attacker = createDefaultCharacter({
-            offense: { healingPower: 1000, magicCritRatePct: 50, magicCritBonusPct: 100 },
+            offense: { healingPower: 1000, healCritRatePct: 50, healCritBonusPct: 100 },
         });
         const defender = createDefaultCharacter({
             defense: { magicDefense: 0, toughness: 8000, resilience: 18000, fixedMagicDr: 0 },
@@ -461,8 +519,12 @@ export async function runAllTests() {
         assert(href.startsWith("javascript:"), "Bookmarklet href starts with javascript:");
         const decodedBookmarklet = decodeURIComponent(href.slice("javascript:".length));
         assert(decodedBookmarklet.includes("https://darugear.com/"), "Bookmarklet URL string is not stripped by minification");
-        // Compile-check the generated bookmarklet JS so syntax errors are caught immediately
-        new Function(decodedBookmarklet);
+        // Verify bookmarklet JS structure without eval/new Function (which is blocked by hardened CSP)
+        assert(
+            /^void\(\(async function\s*\(\)\s*\{[\s\S]*\}\)\(\)\);?$/.test(decodedBookmarklet.trim()),
+            "Bookmarklet wraps cleanly in a self-invoking async IIFE"
+        );
+        assert(!decodedBookmarklet.includes("\n"), "Bookmarklet is minified onto a single line");
     });
 
     // 11. Skill Rank Resolution (single rank, multi-rank, max default, per-skill map)
@@ -5096,6 +5158,18 @@ export async function runAllTests() {
                 baseSnipe.steps[0].result.breakdown.avoidance.connectPct,
             "Archery Snare reduces target Evasion/Block/Parry avoidance"
         );
+
+        // 7. Hollow Renewal (Vitalism Hollow debuff, skill 9003166) tracks 30s enemy curse span
+        const hollowRenewal = skillMap.get("vitalism_renewal_hollow");
+        assert(
+            hollowRenewal && hollowRenewal.variant === "hollow" && hollowRenewal.kind === "utility" && hollowRenewal.skillId === 9003166,
+            "Hollow Renewal exists as Hollow Vitalism utility debuff (skill 9003166)"
+        );
+        const rotHollowRen = simulateRotation(attacker, defender, [{ skill: hollowRenewal }]);
+        assert(
+            rotHollowRen.effectSpans.some((sp) => sp.id === "hollow_renewal" && Math.abs(sp.durationSec - 30.0) < 0.01),
+            "Hollow Renewal records 30s enemy curse span on timeline"
+        );
     });
 
     await test("62. Bugfix regressions: Max Crit Override, instant impactSec, delayed debuff remainingSec, self-buff chips, secondary PMF, skillBuild passives in rotation, & clean data", async () => {
@@ -5199,6 +5273,446 @@ export async function runAllTests() {
         }
         for (const skillId of Object.keys(SKILL_COMBO_BONUSES)) {
             assert(skillMap.has(skillId), `SKILL_COMBO_BONUSES key ${skillId} exists in skills catalog`);
+        }
+    });
+
+    // 63. Boastful Roar + 13 Ancestral Variants + 10 Abyssal Utility/CC/Buff Skills
+    await test("New skills: Boastful Roar Mettle scaling, 13 Ancestrals, 10 Abyssals & rotation combos", async () => {
+        const idx = await (await fetch("../js/data/skills/index.json", { cache: "no-store" })).json();
+        const skillMap = new Map();
+        for (const m of idx.skillsets) {
+            const d = await (await fetch(`../js/data/skills/${m.file}`, { cache: "no-store" })).json();
+            assert(d.skillCount === d.skills.length && m.skillCount === d.skills.length, `${m.skillset} skillCount matches index (${d.skills.length})`);
+            for (const s of d.skills || []) skillMap.set(s.id, s);
+        }
+
+        const expectedNewIds = [
+            "defense_boastful_roar",
+            "defense_imprison_wave",
+            "defense_imprison_mist",
+            "defense_cruel_binding",
+            "shadowplay_overwhelm_lightning",
+            "shadowplay_drop_back_mist",
+            "shadowplay_shadowsmite_mist",
+            "shadowplay_shadowsmite_lightning",
+            "shadowplay_assassination",
+            "witchcraft_earthen_grip_wave",
+            "witchcraft_bubble_trap_gale",
+            "witchcraft_devour_hope",
+            "witchcraft_stonesight",
+            "occultism_summon_wraith_wave",
+            "occultism_shadow_circle",
+            "auramancy_thwart_mist",
+            "auramancy_spell_shield_mist",
+            "auramancy_spell_shield_flame",
+            "songcraft_healing_hymn_stone",
+            "songcraft_abyssal_echoes",
+            "songcraft_polymorphic_resonance",
+            "vitalism_abyssal_petrification",
+            "vitalism_defy_death",
+            "sorcery_void_leap",
+            "defense_shield_throw",
+            "auramancy_crushing_grasp",
+            "occultism_cursed_thorns",
+            "shadowplay_venom_blades",
+            "battlerage_soulbound_blades",
+            "vitalism_skewer_life",
+        ];
+        for (const sid of expectedNewIds) {
+            const sk = skillMap.get(sid);
+            assert(sk && sk.name && sk.icon, `Loaded new skill ${sid}`);
+        }
+
+        const att = createDefaultCharacter({
+            offense: {
+                meleeAttack: 1000,
+                magicAttack: 1000,
+                healingPower: 1000,
+                meleeCritRatePct: 0,
+                magicCritRatePct: 0,
+                castTimePct: 100,
+            },
+        });
+        const zeroDef = createDefaultCharacter({
+            maxHealth: 40000,
+            defense: { physicalDefense: 0, magicDefense: 0, toughness: 0, resilience: 0, evasionPct: 0, parryPct: 0, blockPct: 0 },
+        });
+
+        // 1. Boastful Roar scales with 60% Mettle & grants Distressed (+18% Precision Strike combo)
+        const roar = skillMap.get("defense_boastful_roar");
+        const ps = skillMap.get("battlerage_precision_strike");
+        const roar3k = simulateSkillDamage(att, zeroDef, roar, { mettleStacks: 3000 });
+        assertApprox(roar3k.normal, 1800, 0.5, "Boastful Roar with 3,000 Mettle deals 60% = 1,800 Magic Damage vs 0 MDef");
+        const psSolo = simulateRotation(att, zeroDef, [{ skill: ps }]);
+        const roarPsRot = simulateRotation(att, zeroDef, [{ skill: roar }, { skill: ps }], { mettleStacks: 3000 });
+        assertApprox(roarPsRot.steps[1].result.normal / psSolo.steps[0].result.normal, 1.18, 0.002, "Boastful Roar Distressed triggers Precision Strike +18% combo");
+
+        // 2. Shadowplay Ancestrals & Assassination (+12% Shadowplay only)
+        const ovLt = skillMap.get("shadowplay_overwhelm_lightning");
+        const dbMist = skillMap.get("shadowplay_drop_back_mist");
+        const egWave = skillMap.get("witchcraft_earthen_grip_wave");
+        const ssMist = skillMap.get("shadowplay_shadowsmite_mist");
+        const ssLt = skillMap.get("shadowplay_shadowsmite_lightning");
+        const assass = skillMap.get("shadowplay_assassination");
+
+        assertApprox(simulateSkillDamage(att, zeroDef, ovLt).normal, 2566, 0.5, "Overwhelm (Lightning) deals 566 + 200% of 1000 = 2,566");
+        assertApprox(simulateSkillDamage(att, zeroDef, ssMist, { bloodthirstStacks: 10, isBackstab: true }).normal, 6770, 0.5, "Shadowsmite (Mist) backstab w/ 10 BT = 2,770 + 4,000 = 6,770");
+        assertApprox(simulateSkillDamage(att, zeroDef, ssLt, { bloodthirstStacks: 10, isBackstab: true }).normal, 6770, 0.5, "Shadowsmite (Lightning) backstab w/ 10 BT = 6,770");
+
+        const dbRot = simulateRotation(att, zeroDef, [{ skill: dbMist }, { skill: egWave }]);
+        assert(dbRot.steps[1].castTimeRemoved, "Drop Back (Mist) removes cast time on Earthen Grip (Wave)");
+
+        const assassRot = simulateRotation(att, zeroDef, [{ skill: assass }, { skill: ovLt }, { skill: ps }]);
+        assertApprox(assassRot.steps[1].result.normal / 2566, 1.12, 0.002, "Assassination grants +12% damage to Shadowplay Overwhelm (Lightning)");
+        assertApprox(assassRot.steps[2].result.normal / psSolo.steps[0].result.normal, 1.0, 0.002, "Assassination does NOT boost non-Shadowplay Precision Strike");
+
+        // 3. Auramancy Thwart (Mist) Greater Inspire +52% Vicious Implosion & Spell Shield (Mist/Flame) off-GCD Instant Antithesis
+        const thwartMist = skillMap.get("auramancy_thwart_mist");
+        const implosion = skillMap.get("auramancy_vicious_implosion");
+        const impSolo = simulateRotation(att, zeroDef, [{ skill: implosion }]);
+        const impRot = simulateRotation(att, zeroDef, [{ skill: thwartMist }, { skill: implosion }]);
+        assertApprox(impRot.steps[1].result.normal / impSolo.steps[0].result.normal, 1.52, 0.002, "Thwart (Mist) Greater Inspire boosts Vicious Implosion +52%");
+
+        const ssAuraMist = skillMap.get("auramancy_spell_shield_mist");
+        const ssAuraFlame = skillMap.get("auramancy_spell_shield_flame");
+        const antiHeal = skillMap.get("vitalism_antithesis_heal");
+        const rotMistAnti = simulateRotation(att, zeroDef, [{ skill: ssAuraMist }, { skill: antiHeal }]);
+        const rotFlameAnti = simulateRotation(att, zeroDef, [{ skill: ssAuraFlame }, { skill: antiHeal }]);
+        assert(rotMistAnti.steps[1].castTimeRemoved && rotFlameAnti.steps[1].castTimeRemoved, "Spell Shield (Mist & Flame) remove Antithesis cast time");
+
+        // 4. Songcraft Healing Hymn (Stone) Charm enables Bulwark Ballad Unguarded (-50% PDef/MDef)
+        const hymnStone = skillMap.get("songcraft_healing_hymn_stone");
+        const bulwark = skillMap.get("songcraft_bulwark_ballad");
+        const wraithWave = skillMap.get("occultism_summon_wraith_wave");
+        const armoredDef = createDefaultCharacter({
+            maxHealth: 40000,
+            defense: { physicalDefense: 6000, magicDefense: 6000, toughness: 0, resilience: 0, evasionPct: 0, parryPct: 0, blockPct: 0 },
+        });
+        const hymnRot = simulateRotation(att, armoredDef, [{ skill: hymnStone }, { skill: bulwark }, { skill: wraithWave }]);
+        assert(
+            hymnRot.steps[2].activeTargetEffects.some((e) => e.id === "charm_unguarded"),
+            "Healing Hymn (Stone) Charm enables Bulwark Ballad Unguarded (-50% Def)"
+        );
+        assertApprox(simulateSkillDamage(att, zeroDef, wraithWave).normal, 1411, 0.5, "Summon Wraith (Wave) deals 211 + 120% of 1000 = 1,411/s");
+
+        // 5. Live-dumped Abyssal damage skills: Shield Throw (100% crit), Crushing Grasp, Cursed Thorns, Venom Blades (+Deadly Poison ignoring MDef)
+        const shieldThrow = skillMap.get("defense_shield_throw");
+        const crushingGrasp = skillMap.get("auramancy_crushing_grasp");
+        const cursedThorns = skillMap.get("occultism_cursed_thorns");
+        const venomBlades = skillMap.get("shadowplay_venom_blades");
+
+        const stRes = simulateSkillDamage(att, armoredDef, shieldThrow, { targetIsCCd: true });
+        assertApprox(stRes.breakdown.effectiveCritRatePct, 100, 0.01, "Shield Throw always has 100% guaranteed crit rate even at 0% base crit");
+        assertApprox(simulateSkillDamage(att, zeroDef, shieldThrow, { targetIsCCd: true }).normal, 1180, 0.5, "Shield Throw normal = 180 + 100% of 1000 = 1,180");
+        assertApprox(simulateSkillDamage(att, zeroDef, crushingGrasp).normal, 1186, 0.5, "Crushing Grasp = 86 + 110% of 1000 = 1,186");
+        assertApprox(simulateSkillDamage(att, zeroDef, cursedThorns).normal, 1515, 0.5, "Cursed Thorns = 115 + 140% of 1000 = 1,515");
+        assertApprox(simulateSkillDamage(att, zeroDef, venomBlades, { targetIsCCd: true }).normal, 1901, 0.5, "Venom Blades initial = 101 + 180% of 1000 = 1,901");
+
+        const vbZero = simulateSkillDamage(att, zeroDef, venomBlades, { targetIsCCd: true, includeSecondaryEffects: true });
+        const vbHighMdef = simulateSkillDamage(att, armoredDef, venomBlades, { targetIsCCd: true, includeSecondaryEffects: true });
+        assertApprox(vbZero.secondary.expected, 1852, 0.5, "Venom Blades Deadly Poison DoT = 102 + 175% of 1000 Magic Atk = 1,852 vs 0 MDef");
+        assertApprox(vbHighMdef.secondary.expected, 1852, 0.5, "Venom Blades Deadly Poison DoT ignores 6,000 MDef (= 1,852)");
+
+        const vbOvRot = simulateRotation(att, zeroDef, [{ skill: venomBlades }, { skill: ovLt }]);
+        assertApprox(vbOvRot.steps[1].result.normal / 2566, 1.16, 0.002, "Venom Blades Deadly Poison triggers Overwhelm (Lightning) +16% combo");
+
+        // 6. Two-point solved Soulbound Blades (49 + 100% Melee + -500 PDef R2) & Skewer (Life) (806 + 130% Healing Power + Impale)
+        const sb = skillMap.get("battlerage_soulbound_blades");
+        const skLife = skillMap.get("vitalism_skewer_life");
+        assertApprox(simulateSkillDamage(att, zeroDef, sb, { targetIsCCd: true }).normal, 1049, 0.5, "Soulbound Blades = 49 + 100% of 1000 Melee Atk = 1,049");
+        const sbRot = simulateRotation(att, armoredDef, [{ skill: sb }, { skill: ps }]);
+        assert(sbRot.steps[1].activeTargetEffects.some((e) => e.id === "soulbound_blades_shred"), "Soulbound Blades applies -500 PDef debuff in rotation");
+        assertApprox(simulateSkillHeal(att, zeroDef, skLife).normal, 2106, 0.5, "Skewer (Life) heals 806 + 130% of 1000 Healing Power = 2,106");
+    });
+
+    // 64. Audit Hardening, Verified Bug Fixes & Complete AA Classic Data Coverage
+    await test("Audit Hardening, Verified Bug Fixes & Complete AA Classic Data Coverage", async () => {
+        // 1. Security: Prototype property rejection in parseModifierToken + CSS gradeColor & icon URL sanitization
+        assert(parseModifierToken("toString").mod === null, "parseModifierToken rejects Object.prototype keys like toString");
+        assert(parseModifierToken("constructor").mod === null, "parseModifierToken rejects constructor");
+        const maliciousImport = parseImportPayload(
+            JSON.stringify({
+                name: "XSS Probe",
+                offense: { meleeAttack: 500 },
+                defense: { physicalDefense: 1000 },
+                equipment: [
+                    {
+                        slot: "Mainhand",
+                        name: "Bad Sword",
+                        gradeColor: "red;background:url(javascript:alert(1))",
+                        icon: "javascript:alert(1)",
+                    },
+                ],
+            })
+        );
+        assert(maliciousImport.ok && maliciousImport.character?.equipment?.length === 1, "Malicious payload parses safely into character");
+        assert(
+            /^#[0-9a-f]{6}$/i.test(maliciousImport.character.equipment[0].gradeColor),
+            `Invalid gradeColor sanitized to safe hex color (got ${maliciousImport.character.equipment[0].gradeColor})`
+        );
+        assert(
+            !maliciousImport.character.equipment[0].icon,
+            `javascript: icon URL rejected (got ${maliciousImport.character.equipment[0].icon})`
+        );
+        const bmHref = getDaruGearBookmarkletHref();
+        assert(
+            !bmHref.includes(".includes('darugear.com')") && bmHref.includes("endsWith('.darugear.com')"),
+            "Bookmarklet uses exact/subdomain darugear.com host validation"
+        );
+
+        // 2. Economy Bug #1 + Missing Tiers: Obsidian T7 Lv64 from catalog.allItems + Erenor/Boss Armor tiers
+        const cat = await loadGearCatalog("../js/data/gear_catalog");
+        const t7Lv64 = cat.allItems.find((it) => it.level === 64 && /Dagger|Sword|Bow|Staff|Scepter|Shortspear|Katana|Nodachi|Greatsword/i.test(String(it.type || "")));
+        assert(Boolean(t7Lv64), "Gear catalog contains Lv64 Obsidian T7 weapon");
+        const estT7 = estimateBuildCost(
+            createDefaultCharacter({
+                equipment: [{ slot: "Right Hand Weapon", slotId: 15, itemId: t7Lv64.id, name: t7Lv64.name, grade: "Legendary", gradeId: 10 }],
+            }),
+            createDefaultEconomyPriceBook(),
+            cat
+        );
+        assert(
+            estT7.slotBreakdown[0].tierId === "obsidian_t7_weapon",
+            `Lv64 Obsidian T7 weapon classified via catalog.allItems as obsidian_t7_weapon (got ${estT7.slotBreakdown[0].tierId})`
+        );
+        assert(
+            ECONOMY_TIERS.some((t) => t.id === "erenor_weapon") &&
+                ECONOMY_TIERS.some((t) => t.id === "erenor_armor") &&
+                ECONOMY_TIERS.some((t) => t.id === "boss_armor"),
+            "Economy includes erenor_weapon, erenor_armor, and boss_armor tiers"
+        );
+        assert(
+            classifyGearItemTier({ slot: "Right Hand Weapon", slotId: 15, name: "Erenor Sword", level: 70 }) === "erenor_weapon",
+            "Erenor weapon classified as erenor_weapon"
+        );
+        assert(
+            classifyGearItemTier({ slot: "Chest", slotId: 3, name: "Erenor Cloth Jerkin", level: 70 }) === "erenor_armor",
+            "Erenor armor classified as erenor_armor"
+        );
+        assert(
+            classifyGearItemTier({ slot: "Chest", slotId: 3, name: "Leviathan's Cuirass", level: 60 }) === "boss_armor",
+            "World Boss armor classified as boss_armor"
+        );
+
+        // 3. Bug #4 & #10: Weapon Maneuvers applies in skill2/skill3 + highest-tier set effect wins
+        const multiSetFx = [
+            { equip_item_set_id: 9901, num_pieces: 4, unit_attribute_id: 8, value: 400 },
+            { equip_item_set_id: 9901, num_pieces: 7, unit_attribute_id: 8, value: 1200 },
+        ];
+        const sevenSetSlots = [1, 2, 3, 4, 5, 7, 8].map((sid) => ({
+            id: sid,
+            item: {
+                grade: { id: 1 },
+                equipment: { id: 999000 + sid, name: `Set Piece ${sid}`, seteffects: multiSetFx },
+            },
+        }));
+        const baseCalcNoPassive = calculateDaruGearStats(
+            {
+                playerclass: {
+                    skill1: { id: 4, Passive: [] },
+                    skill2: { id: 1, Passive: [] },
+                    skill3: { id: 8, Passive: [] },
+                },
+            },
+            sevenSetSlots
+        );
+        const treeSlot2Calc = calculateDaruGearStats(
+            {
+                playerclass: {
+                    skill1: { id: 4, Passive: [] },
+                    skill2: {
+                        id: 1,
+                        Passive: [
+                            {
+                                id: 1,
+                                name: "Weapon Maneuvers",
+                                selected: true,
+                                buff_data: [{ unit_attribute_id: 96, value: 8 }],
+                            },
+                        ],
+                    },
+                    skill3: { id: 8, Passive: [] },
+                },
+            },
+            sevenSetSlots
+        );
+        assertApprox(
+            treeSlot2Calc.atk / baseCalcNoPassive.atk,
+            1.08,
+            0.002,
+            "Weapon Maneuvers in skill2 remaps attr 96 to +8% Melee Attack"
+        );
+        assert(
+            treeSlot2Calc.pdef >= 1200 && treeSlot2Calc.pdef < 1500,
+            `7-piece set effect (+1200 PDef) beats 4-piece (+400) regardless of array order (got ${treeSlot2Calc.pdef})`
+        );
+
+        // 4. Bug #9: PvE per-type damage bonus wired into simulateSkillDamage
+        const pveAtt = createDefaultCharacter({
+            offense: { meleeAttack: 1000, meleeCritRatePct: 0 },
+            pveMeleeDamageBonusPct: 10,
+        });
+        const zeroTarget = createDefaultCharacter({
+            defense: { physicalDefense: 0, magicDefense: 0, toughness: 0, resilience: 0, evasionPct: 0, parryPct: 0, blockPct: 0 },
+        });
+        const testStrike = { id: "t_strike", skillset: "battlerage", name: "Strike", kind: "damage", damageType: "physical", scalingStat: "meleeAttack", base: 0, scalingPct: 100 };
+        const pvpHit = simulateSkillDamage(pveAtt, zeroTarget, testStrike, { isPvE: false });
+        const pveHit = simulateSkillDamage(pveAtt, zeroTarget, testStrike, { isPvE: true });
+        assertApprox(pveHit.normal / pvpHit.normal, 1.1, 0.002, "pveMeleeDamageBonusPct (+10%) boosts melee damage in PvE mode only");
+
+        // 5. Bug #11: Freerunner grants +64 Attack Speed on all ranks
+        const baseDummy = createDefaultCharacter();
+        for (let r = 1; r <= 4; r++) {
+            const fr = applyModifiers(baseDummy, [`freerunner:${r}`]);
+            assertApprox(fr.offense.attackSpeed - baseDummy.offense.attackSpeed, 64, 0.01, `Freerunner Rank ${r} grants +64 Attack Speed`);
+        }
+
+        // 6. Bug #14: Mixed damage + heal rotation keeps totalNormal/totalCrit clean (damage only)
+        const testHeal = { id: "t_heal", skillset: "vitalism", name: "Heal", kind: "heal", damageType: "heal", scalingStat: "healingPower", base: 2000, scalingPct: 100 };
+        const mixedRot = simulateRotation(
+            createDefaultCharacter({ offense: { meleeAttack: 1000, healingPower: 1000, meleeCritRatePct: 0, healCritRatePct: 0 } }),
+            zeroTarget,
+            [{ skill: testStrike }, { skill: testHeal }]
+        );
+        assertApprox(mixedRot.totalNormal, 1000, 0.5, "Mixed rotation totalNormal excludes heal steps");
+        assertApprox(mixedRot.totalHealNormal, 3000, 0.5, "Mixed rotation tracks totalHealNormal separately");
+
+        // 7. Bug #6: Skill Builder passives apply in EHP sweeps even when modifier list is empty
+        const sbRes = await fetch("../js/data/skill_builder_data.json", { cache: "no-store" });
+        const sbData = await sbRes.json();
+        initSkillBuilderData(sbData);
+        const defWithSb = createDefaultCharacter({
+            maxHealth: 25000,
+            defense: { physicalDefense: 5000 },
+            skillBuild: { trees: ["defense", "auramancy", "witchcraft"], activeSkills: [], passives: ["Shield of Steel", "Bear's Vigor"], bakedPassives: [] },
+        });
+        const defNoSb = createDefaultCharacter({ maxHealth: 25000, defense: { physicalDefense: 5000 } });
+        const swBoth = sweepDefenderEhp(
+            defWithSb,
+            defNoSb,
+            baseDummy,
+            { stat: "aggressorDefPen", ehpKind: "melee", start: 0, end: 0, step: 1000 },
+            {}
+        );
+        assert(
+            swBoth.points[0].expectedA > swBoth.points[0].expectedB,
+            "sweepDefenderEhp applies Skill Builder passives even with empty modifier list"
+        );
+
+        // 8. Missing Data: New Ancestrals, Equipment Skills, Combat Passives (Illusion's Favor, Archery Expertise) & Modifiers
+        const idxRes = await fetch("../js/data/skills/index.json", { cache: "no-store" });
+        const idx = await idxRes.json();
+        assert(idx.skillsets.some((s) => s.skillset === "equipment"), "skills/index.json preserves equipment.json");
+        const allSkills = [];
+        for (const s of idx.skillsets) {
+            const r = await fetch(`../js/data/skills/${s.file}`, { cache: "no-store" });
+            allSkills.push(...((await r.json()).skills || []));
+        }
+        const byId = new Map(allSkills.map((sk) => [sk.id, sk]));
+        for (const reqId of [
+            "defense_redoubt_gale",
+            "defense_redoubt_life",
+            "auramancy_protective_wings_mist",
+            "auramancy_protective_wings_flame",
+            "songcraft_healing_hymn_wave",
+            "songcraft_startling_strain_life",
+            "songcraft_alarm_call_life",
+            "equip_flawless_dream_ring_shred",
+            "equip_dream_ring_shred",
+            "equip_red_dragon_wrath",
+        ]) {
+            assert(byId.has(reqId), `Loaded newly added skill ${reqId}`);
+        }
+        for (const modId of [
+            "reckless_charge",
+            "supplemental_block",
+            "inspiration_cloak",
+            "consecutive_evasion",
+            "spellbook_brick_wall",
+            "hummingbird_ditty",
+            "startling_strain_life",
+            "redoubt_gale",
+            "redoubt_life",
+            "flawless_dream_ring",
+            "dragons_wrath",
+        ]) {
+            assert(Boolean(COMBAT_MODIFIERS[modId]), `COMBAT_MODIFIERS includes ${modId}`);
+        }
+        // Illusion's Favor (-0.5s cast on Earthen Grip) & Archery Expertise (-10% CD on Snipe)
+        const sbPassiveChar = applyModifiers(
+            createDefaultCharacter({
+                offense: { castTimePct: 100 },
+                skillBuild: {
+                    trees: ["witchcraft", "archery", "shadowplay"],
+                    activeSkills: [],
+                    passives: ["Illusion's Favor", "Archery Expertise", "Bloodthirst Intensified"],
+                    bakedPassives: [],
+                },
+            }),
+            []
+        );
+        const gripTiming = resolveSkillTiming(byId.get("witchcraft_earthen_grip"), sbPassiveChar, 0);
+        assertApprox(gripTiming.rawCastTimeSec, 0.5, 0.01, "Illusion's Favor reduces Earthen Grip cast time from 1.0s to 0.5s");
+        const snipeTiming = resolveSkillTiming(byId.get("archery_snipe"), sbPassiveChar, 0);
+        assertApprox(snipeTiming.cooldownSec, 24.3, 0.05, "Archery Expertise reduces Snipe cooldown -10% (27s -> 24.3s)");
+
+        // Flawless Dream Ring 5x shred in rotation & Startling Strain (Life) -20% cast time combo
+        const fdrRot = simulateRotation(
+            createDefaultCharacter({ offense: { magicAttack: 1000, castTimePct: 100 } }),
+            createDefaultCharacter({ defense: { physicalDefense: 4000, magicDefense: 4000 } }),
+            [
+                { skill: byId.get("equip_flawless_dream_ring_shred") },
+                { skill: byId.get("songcraft_startling_strain_life") },
+                { skill: byId.get("witchcraft_earthen_grip") },
+            ]
+        );
+        assert(
+            fdrRot.steps[2].activeTargetEffects.some((e) => e.id === "flawless_dream_ring"),
+            "Flawless Dream Ring applies -875 PDef/MDef shred in rotation"
+        );
+        assertApprox(
+            fdrRot.steps[2].result.dps.effectiveCastTimeSec,
+            0.8,
+            0.02,
+            "Startling Strain (Life) reduces next skill cast time -20% (1.0s -> 0.8s)"
+        );
+
+        // Catalog includes recovered Erenor/special weapons (2070+ weapon items in itemsBySlot / allItems)
+        const weaponItems = cat.allItems.filter((it) => Array.isArray(it.slotid) && (it.slotid.includes(15) || it.slotid.includes(16) || it.slotid.includes(17) || it.slotid.includes(18)));
+        assert(weaponItems.length >= 2070, `Gear catalog recovered missing weapons (${weaponItems.length})`);
+
+        // 9. Vitalism Damage Crits & Multipliers: Holy Bolt / Antithesis / Base Skewer use Heal Crit & Healing %;
+        //    Skewer (Flame) specifically uses Magic Crit & Magic Skill Damage % (live AA Classic quirk)
+        const vitAtt = createDefaultCharacter({
+            offense: {
+                healingPower: 1000,
+                healingPct: 20,
+                healCritRatePct: 40,
+                healCritBonusPct: 150,
+                magicSkillDamagePct: 50,
+                magicCritRatePct: 10,
+                magicCritBonusPct: 80,
+            },
+        });
+        const hbSkill = byId.get("vitalism_holy_bolt");
+        const flameSkewer = byId.get("vitalism_skewer_multi");
+        const hbRes = simulateSkillDamage(vitAtt, zeroTarget, hbSkill);
+        const fsRes = simulateSkillDamage(vitAtt, zeroTarget, flameSkewer);
+        assertApprox(hbRes.breakdown.effectiveCritRatePct, 40, 0.01, "Holy Bolt uses Heal Crit Rate (40%)");
+        assertApprox(hbRes.breakdown.effectiveCritBonusPct, 150, 0.01, "Holy Bolt uses Heal Crit Bonus (150%)");
+        assertApprox(hbRes.breakdown.skillDamagePct, 20, 0.01, "Holy Bolt uses Healing % (20%)");
+        assertApprox(fsRes.breakdown.effectiveCritRatePct, 10, 0.01, "Skewer (Flame) uses Magic Crit Rate (10%)");
+        assertApprox(fsRes.breakdown.effectiveCritBonusPct, 80, 0.01, "Skewer (Flame) uses Magic Crit Damage (80%)");
+        assertApprox(fsRes.breakdown.skillDamagePct, 50, 0.01, "Skewer (Flame) uses Magic Skill Damage % (50%)");
+
+        // Stat Weights align with damage.js for BOTH normal Vitalism damage & Skewer (Flame)
+        const hbWeights = computeStatWeights(vitAtt, zeroTarget, { mode: "offense", skill: hbSkill });
+        const fsWeights = computeStatWeights(vitAtt, zeroTarget, { mode: "offense", skill: flameSkewer });
+        for (const wId of ["synth_cr", "synth_cb", "synth_dmg"]) {
+            const hbItem = hbWeights.items.find((i) => i.id === wId);
+            const fsItem = fsWeights.items.find((i) => i.id === wId);
+            assert(hbItem && hbItem.gainPct > 0.1, `Holy Bolt stat weight ${wId} (${hbItem?.label}) is positive (${hbItem?.gainPct})`);
+            assert(fsItem && fsItem.gainPct > 0.1, `Skewer (Flame) stat weight ${wId} (${fsItem?.label}) is positive (${fsItem?.gainPct})`);
         }
     });
 

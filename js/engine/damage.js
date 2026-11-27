@@ -4,7 +4,7 @@
  * Shield-Pen-Proc, Expected (Average) damage, and a full mitigation breakdown.
  */
 
-import { getEquippedT7ObsidianEffects } from "../adapters/darugear_calc.js";
+import { getEquippedSpecialEffects } from "../adapters/darugear_calc.js";
 import { mergeConstants } from "./constants.js";
 import { evaluateManualComboStatuses } from "./combos.js";
 import { getEquipmentSkillBonus } from "./gearswap.js";
@@ -26,10 +26,12 @@ function resolveOffenseProfile(attacker, skill, constants) {
     const off = attacker.offense || {};
     const scalingStat = skill.scalingStat || "meleeAttack";
     const damageType = skill.damageType || "physical";
+    const useMagicCritAndMul = Boolean(skill.flags?.useMagicCritAndMul);
 
     const attackPower = Number(off[scalingStat]) || 0;
 
-    // Multiplier stat: confirmed live that Vitalism damage skills scale with healingPct (heal_mul)
+    // Multiplier stat: Vitalism damage skills scale with healingPct (heal_mul),
+    // EXCEPT Skewer (Flame) which is bugged in live AA Classic to use Magic Skill Damage % & Magic Crit.
     let skillDamagePct = 0;
     if (scalingStat === "meleeAttack") {
         skillDamagePct = Number(off.meleeSkillDamagePct) || 0;
@@ -38,19 +40,26 @@ function resolveOffenseProfile(attacker, skill, constants) {
     } else if (scalingStat === "magicAttack") {
         skillDamagePct = Number(off.magicSkillDamagePct) || 0;
     } else if (scalingStat === "healingPower") {
-        skillDamagePct = constants.vitalismDamageUsesHealMul
-            ? Number(off.healingPct) || 0
-            : Number(off.magicSkillDamagePct) || 0;
+        skillDamagePct =
+            !useMagicCritAndMul && constants.vitalismDamageUsesHealMul
+                ? Number(off.healingPct) || 0
+                : Number(off.magicSkillDamagePct) || 0;
     }
 
     // Skillset-specific passive bonus (e.g. Weapon Mastery +15%, Aranzeb's Infusion +15%, Feral Claws +15%)
     // Applied multiplicatively with Skill Damage % (same bucket behavior as skill-specific lunagems)
     const treeBonusPct = Number(attacker.skillsetDamageBonusPct?.[skill.skillset]) || 0;
 
-    // Accuracy, Crit Rate, Crit Bonus, Backstab Damage follow combat attack category
-    // (Vitalism magic damage skills roll Magic Accuracy & Magic Crit, not Heal Crit)
+    // Accuracy, Crit Rate, Crit Bonus, Backstab Damage follow combat attack category.
+    // Vitalism damage skills roll Heal Crit Rate & Heal Crit Bonus in live AA Classic,
+    // except Skewer (Flame) (`useMagicCritAndMul: true`) which uses Magic Crit Rate & Magic Crit Damage.
     let accuracyPct, critRatePct, critBonusPct, backstabDamagePct;
-    if (damageType === "magic") {
+    if (scalingStat === "healingPower" && !useMagicCritAndMul) {
+        accuracyPct = Number(off.magicAccuracyPct ?? 100);
+        critRatePct = Number(off.healCritRatePct) || 0;
+        critBonusPct = Number(off.healCritBonusPct ?? constants.baseCritBonusPct);
+        backstabDamagePct = Number(off.backstabMagicDamagePct) || 0;
+    } else if (damageType === "magic") {
         accuracyPct = Number(off.magicAccuracyPct ?? 100);
         critRatePct = Number(off.magicCritRatePct) || 0;
         critBonusPct = Number(off.magicCritBonusPct ?? constants.baseCritBonusPct);
@@ -267,6 +276,10 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
             : 0;
     }
 
+    if (flags.mettleScalePct && Number(context.mettleStacks) > 0) {
+        rawBase += Math.max(0, Number(context.mettleStacks)) * (Number(flags.mettleScalePct) / 100);
+    }
+
     const rawBeforeMultipliers = rawBase + off.attackPower * (rawScalingPct / 100);
 
     // 2. Attacker multipliers (Skill Damage %, Skill-Specific Lunagems, Range penalty, Backstab %, Combo %, PvE %)
@@ -286,7 +299,14 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
             : 1;
     const backstabMult = effectiveContext.isBackstab ? 1 + off.backstabDamagePct / 100 : 1;
     const comboMult = 1 + totalComboBonusPct / 100;
-    const pveSkillBonus = (flags.pveBonusPct || 0) + (Number(attacker.pveDamageBonusPct) || 0);
+    const typePveBonus =
+        skill.scalingStat === "meleeAttack"
+            ? Number(attacker.pveMeleeDamageBonusPct) || 0
+            : skill.scalingStat === "rangedAttack"
+              ? Number(attacker.pveRangedDamageBonusPct) || 0
+              : Number(attacker.pveMagicDamageBonusPct) || 0;
+    const gearPveBonus = typePveBonus || Number(attacker.pveDamageBonusPct) || 0;
+    const pveSkillBonus = (flags.pveBonusPct || 0) + gearPveBonus;
     const pveMult = effectiveContext.isPvE && pveSkillBonus ? 1 + pveSkillBonus / 100 : 1;
 
     const preMitigation =
@@ -307,7 +327,7 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
         !context._deathfletcherRotationApplied &&
         defender?._activeBuffFlags?.stalkersMark
     ) {
-        const t7List = getEquippedT7ObsidianEffects(attacker);
+        const t7List = getEquippedSpecialEffects(attacker);
         const df = t7List.find((e) => Number(e.effect?.stalkersMarkDefShred) > 0);
         if (df) {
             t7DefenseShred = Number(df.effect.stalkersMarkDefShred);
@@ -362,7 +382,9 @@ function simulateSingleHit(attacker, defender, skill, hitSpec, context, constant
         skillGem.critBonusPct +
         lifeEnlightenmentBonusCritDmg;
 
-    const effectiveCritRatePct = clamp(off.critRatePct + bonusCritRate - resCritRateRed, 0, 100);
+    const effectiveCritRatePct = flags.guaranteedCrit
+        ? 100
+        : clamp(off.critRatePct + bonusCritRate - resCritRateRed, 0, 100);
     const cappedCritBonus = Math.min(constants.maxCritBonusPct, off.critBonusPct + bonusCritDmg);
     const effectiveCritBonusPct = Math.max(constants.minEffectiveCritBonusPct, cappedCritBonus - resCritBonusRed);
     const critMult = 1 + effectiveCritBonusPct / 100;
@@ -505,6 +527,16 @@ const SECONDARY_SKILL_EFFECTS = Object.freeze({
         defaultHits: 5,
         canCrit: false,
     },
+    shadowplay_venom_blades: {
+        kind: "dot",
+        label: "Deadly Poison DoT (11s, 102 + 175% Magic, ignores MDef)",
+        damageType: "magic",
+        scalingStat: "magicAttack",
+        flatBase: 102,
+        scalingPct: 175, // two-point live dump verified: 175 avg @ 41.6 MgA -> 213.5 avg @ 52.2 MgA (+10.3% sMul)
+        ignoresDefense: true,
+        canCrit: false,
+    },
 });
 
 function simulateSecondaryEffect(attacker, defender, skill, context, constants) {
@@ -522,9 +554,10 @@ function simulateSecondaryEffect(attacker, defender, skill, context, constants) 
     let rawBase = 0;
     let label = spec.label;
     if (spec.kind === "dot") {
-        rawBase = spec.flatBase;
+        rawBase = (spec.flatBase || 0) + off.attackPower * ((spec.scalingPct || 0) / 100);
     } else if (spec.kind === "bloodthirst_finisher") {
-        const stacks = Math.max(0, Number(context.bloodthirstStacks ?? 0)) + (spec.bonusStacks || 0);
+        const btMult = Math.max(1, Number(attacker?._activeBuffFlags?.bloodthirstMultiplier) || 1);
+        const stacks = Math.max(0, Number(context.bloodthirstStacks ?? 0)) + (spec.bonusStacks || 0) * btMult;
         rawBase = stacks * spec.perStack;
         label = `${spec.label} (${stacks}x BT)`;
     } else if (spec.kind === "mark_expiry") {
@@ -537,7 +570,7 @@ function simulateSecondaryEffect(attacker, defender, skill, context, constants) 
 
     const skillDmgMult = 1 + off.skillDamagePct / 100;
     const preMit = rawBase * skillDmgMult;
-    const effDef = Math.max(0, def.defense - off.defPen);
+    const effDef = spec.ignoresDefense ? 0 : Math.max(0, def.defense - off.defPen);
     const defMult = defenseMultiplier(effDef, constants.defenseK);
     const toughMult = context.isPvE ? 1 : toughnessMultiplier(def.toughness, constants.toughnessK);
     const totalRecvDr = def.receivedDrPct + (context.isPvE ? Number(defender.pveReceivedDrPct) || 0 : 0);

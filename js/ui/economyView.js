@@ -826,6 +826,10 @@ export function renderEconomyView(out) {
     const diffCls = cheaper === "A" ? "delta-pos" : cheaper === "B" ? "delta-neg" : "delta-tie";
 
     out.innerHTML = `
+        <div class="econ-disclaimer-banner" role="note">
+            <span class="econ-disclaimer-icon" aria-hidden="true">&#9888;</span>
+            <span><strong>Note:</strong> Most of these estimates are very inaccurate &mdash; make sure to replace them with your own prices below if you want an accurate gear cost!</span>
+        </div>
         <div class="kpi-row">
             <div class="kpi-card">
                 <div class="kpi-label">Build A Estimated Cost (${escHtml(state.buildA.name)})</div>

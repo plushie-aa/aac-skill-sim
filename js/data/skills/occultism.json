@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_occultism.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 16,
+  "skillCount": 19,
   "skills": [
     {
       "id": "occultism_mana_stars",
@@ -529,6 +529,91 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_death10.png",
       "description": "Suspends an enemy in the air for up to 10s. Prevents all target actions even while taking damage (ends if caster moves or acts)."
+    },
+    {
+      "id": "occultism_summon_wraith_wave",
+      "skillset": "occultism",
+      "name": "Summon Wraith (Wave · per sec)",
+      "variant": "ancestral",
+      "ancestralElement": "wave",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 9,
+        "perTickFormula": true
+      },
+      "skillId": 36626,
+      "base": 211,
+      "scalingPct": 120,
+      "parseSource": "detailed_tooltip",
+      "description": "Summons a wraith that deals 260 (211 + 120% Magic Attack) Magic Damage per second for up to 9 seconds to all enemies within 7m, inflicting a weaker Wraith Curse.\nAllows the caster to move while active; canceled if another skill is used.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36626,
+          "base": 211,
+          "scalingPct": 120,
+          "parseSource": "detailed_tooltip",
+          "description": "Movable Wraith dealing 211 + 120% Magic Attack Magic Damage per second for up to 9s within 7m + Wraith Curse."
+        }
+      ],
+      "abilityLevel": 50,
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_death34.png"
+    },
+    {
+      "id": "occultism_shadow_circle",
+      "skillset": "occultism",
+      "name": "Shadow Circle",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "20s teleport zone (Circle Step up to 30m)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 34091,
+      "abilityLevel": 55,
+      "cooldownSec": 20.0,
+      "castTimeSec": 1.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred16.png",
+      "description": "Summons a Shadow Circle for 20s, allowing the caster to teleport in front of any target within 30m inside the circle.\nAdditional Abyssal Charges increase teleport uses (unlimited at 6 Charges)."
+    },
+    {
+      "id": "occultism_cursed_thorns",
+      "skillset": "occultism",
+      "name": "Cursed Thorns",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 34171,
+      "base": 115,
+      "scalingPct": 140,
+      "parseSource": "detailed_tooltip",
+      "description": "Infects an enemy with cursed seeds for 9s. Causes deadly thorns to sprout in their footsteps after a 4 second delay, inflicting 173 (115 + 140% Magic Attack) Magic Damage on surrounding enemies as they burst from the ground.\nSlows enemies passing through the area and deals continuous Magic Damage. Seeds sprout early if stepped on.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34171,
+          "base": 115,
+          "scalingPct": 140,
+          "parseSource": "detailed_tooltip",
+          "description": "Infects an enemy with cursed seeds (9s). Sprouts deadly thorns after 4s dealing 173 (115 + 140% Magic Attack) Magic Damage + Slow and continuous Magic Damage."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 12.0,
+      "castTimeSec": 1.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred18.png"
     }
   ]
 }

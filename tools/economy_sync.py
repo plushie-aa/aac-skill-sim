@@ -70,13 +70,30 @@ def _atomic_write_json(path: Path, payload: object) -> None:
         raise
 
 
+from urllib.parse import urlparse
+from urllib.request import HTTPRedirectHandler, build_opener
+
+_ALLOWED_AH_HOSTS = {"api.sermeatball.com"}
+
+
+class _SafeAhRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        p = urlparse(newurl)
+        if p.scheme.lower() != "https" or (p.hostname or "").lower() not in _ALLOWED_AH_HOSTS:
+            raise RuntimeError(f"Blocked redirect to untrusted host: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_SAFE_AH_OPENER = build_opener(_SafeAhRedirectHandler())
+
+
 def _http_get_json(path: str, params: dict | None = None) -> object:
     url = SERMEATBALL_API_BASE + path
     if params:
         url += "?" + urlencode(params)
     req = Request(url, headers=HEADERS)
     try:
-        with urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
+        with _SAFE_AH_OPENER.open(req, timeout=REQUEST_TIMEOUT) as resp:
             raw = resp.read(MAX_REMOTE_BYTES + 1)
     except HTTPError as exc:
         raise RuntimeError(f"sermeatball.com returned HTTP {exc.code} for {path}") from exc

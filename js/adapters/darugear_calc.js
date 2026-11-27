@@ -194,7 +194,6 @@ const ITEM_BONUS_ATTR_META = Object.freeze({
     52: { label: "Ranged Skill Dmg", unit: "%" },
     53: { label: "Magic Skill Dmg", unit: "%" },
     54: { label: "Attack Speed", unit: "" },
-    55: { label: "Cast Speed", unit: "%" },
     56: { label: "Received Healing", unit: "%" },
     57: { label: "Defense Pen", unit: "" },
     58: { label: "Received Damage", unit: "%" },
@@ -202,7 +201,6 @@ const ITEM_BONUS_ATTR_META = Object.freeze({
     67: { label: "Health Regen", unit: "" },
     68: { label: "Mana Regen", unit: "" },
     71: { label: "Cast Time", unit: "%" },
-    74: { label: "Stealth Detection", unit: "%" },
     77: { label: "Melee Crit Rate", unit: "%" },
     78: { label: "Melee Accuracy", unit: "%" },
     81: { label: "Parry Rate", unit: "%" },
@@ -1041,13 +1039,6 @@ export function getEquippedSpecialEffects(characterOrSlots) {
 }
 
 /**
- * Backward-compatible alias for `getEquippedSpecialEffects`.
- */
-export function getEquippedT7ObsidianEffects(characterOrSlots) {
-    return getEquippedSpecialEffects(characterOrSlots);
-}
-
-/**
  * Compute all active Equipment Set, Erenor Lunafrost Set (3/4/6pc), Costume Charm
  * Enlightenment (2-Set), and special gear equip/proc/use effects across all equipped slots
  * for the Active Gear Buffs summary list.
@@ -1474,8 +1465,8 @@ export function calculateDaruGearStats(player, slots) {
             }
         };
         applyTreePassives(pc.skill1, true);
-        applyTreePassives(pc.skill2, false);
-        applyTreePassives(pc.skill3, false);
+        applyTreePassives(pc.skill2, true);
+        applyTreePassives(pc.skill3, true);
     }
 
     let hasMainhand = false;
@@ -1539,7 +1530,10 @@ export function calculateDaruGearStats(player, slots) {
         if (Array.isArray(eq.seteffects) && eq.seteffects.length > 0) {
             const setId = eq.seteffects[0].equip_item_set_id;
             const pieceCnt = getPieceCount(setId, slots);
-            for (const se of eq.seteffects) {
+            const sortedSetFx = [...eq.seteffects].sort(
+                (a, b) => (Number(b?.num_pieces) || 0) - (Number(a?.num_pieces) || 0)
+            );
+            for (const se of sortedSetFx) {
                 const { aid, rawVal } = normalizeSetEffectEntry(se);
                 if (
                     aid != null &&
@@ -1595,6 +1589,7 @@ export function calculateDaruGearStats(player, slots) {
 
         if (Array.isArray(item.sythisis_stat) && eq.synth_percentage >= 0 && eq.synth_percentage <= 100) {
             for (const st of item.sythisis_stat) {
+                if (!st) continue;
                 const rawV = Number(st.minvalue) + (Number(st.maxvalue) - Number(st.minvalue)) * (eq.synth_percentage / 100);
                 const div = SCALING_MAP[st.unit_attribute_id] || 1;
                 let y = (rawV / div).toFixed(1);
@@ -1685,6 +1680,13 @@ export function calculateDaruGearStats(player, slots) {
     n.rangedIncomingFixed = Number(Math.max(0, Math.round((n.pdef / (n.pdef + 9000)) * 100 - (o[144] || 0))).toFixed(0));
     n.magicIncomingFixed = Number(Math.max(0, Math.round((n.mdef / (n.mdef + 9000)) * 100 - (o[146] || 0))).toFixed(0));
     n.receivedHealing = Number((o[56] || 0).toFixed(1));
+    n.pveMeleeDamageBonusPct = Number((o[196] || 0).toFixed(1));
+    n.pveRangedDamageBonusPct = Number((o[197] || 0).toFixed(1));
+    n.pveMagicDamageBonusPct = Number((o[198] || 0).toFixed(1));
+    n.pveDamageBonusPct = Number(
+        Math.max(n.pveMeleeDamageBonusPct, n.pveRangedDamageBonusPct, n.pveMagicDamageBonusPct).toFixed(1)
+    );
+    n.pveReceivedDrPct = Number((-(o[199] || 0)).toFixed(1));
 
     n.atk += n.str * 0.2;
     n.ratk += n.dex * 0.2;
@@ -1795,7 +1797,9 @@ export function buildDaruGearExportFromApiPayload(apiPayload, shareCode = null) 
             icon: cleanIcon,
             gradeId,
             gradeName: String(gr.name || "").trim(),
-            gradeColor: CANONICAL_GRADE_COLORS[gradeId] || (gr.colour ? String(gr.colour).trim() : null),
+            gradeColor:
+                CANONICAL_GRADE_COLORS[gradeId] ||
+                (gr.colour && /^#[0-9a-f]{3,8}$/i.test(String(gr.colour).trim()) ? String(gr.colour).trim() : null),
         };
         if (Number(it.ptemper) > 100) eqEntry.ptemper = Number(it.ptemper);
         if (Number(it.mtemper) > 100) eqEntry.mtemper = Number(it.mtemper);
@@ -1907,6 +1911,11 @@ export function buildDaruGearExportFromApiPayload(apiPayload, shareCode = null) 
         gearScore: stats.gearscore,
         maxHealth: stats.health,
         maxMana: stats.mana,
+        ...(stats.pveDamageBonusPct ? { pveDamageBonusPct: stats.pveDamageBonusPct } : {}),
+        ...(stats.pveMeleeDamageBonusPct ? { pveMeleeDamageBonusPct: stats.pveMeleeDamageBonusPct } : {}),
+        ...(stats.pveRangedDamageBonusPct ? { pveRangedDamageBonusPct: stats.pveRangedDamageBonusPct } : {}),
+        ...(stats.pveMagicDamageBonusPct ? { pveMagicDamageBonusPct: stats.pveMagicDamageBonusPct } : {}),
+        ...(stats.pveReceivedDrPct ? { pveReceivedDrPct: stats.pveReceivedDrPct } : {}),
         baseAttributes: {
             str: Math.round(Number(player?.str ?? 158)),
             agi: Math.round(Number(player?.dex ?? 158)),

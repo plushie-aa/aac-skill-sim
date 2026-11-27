@@ -29,7 +29,11 @@ export const SKILL_STATUS_GRANTS = Object.freeze({
         { status: "tripped", label: "Tripped", durationSec: 2.5, isCC: true, requiresAny: ["stunned"] },
     ],
     defense_mocking_howl: [{ status: "distressed", label: "Distressed", durationSec: 6.0 }],
+    defense_boastful_roar: [{ status: "distressed", label: "Distressed (Boastful)", durationSec: 7.0 }],
     defense_imprison: [{ status: "imprisoned", label: "Imprisoned", durationSec: 14.0 }],
+    defense_imprison_wave: [{ status: "imprisoned", label: "Imprisoned (Wave)", durationSec: 8.0 }],
+    defense_imprison_mist: [{ status: "imprisoned", label: "Imprisoned (Mist Wall)", durationSec: 12.0 }],
+    defense_cruel_binding: [{ status: "tethered", label: "Cruel Binding (Tether)", durationSec: 4.0 }],
     defense_fortress: [{ status: "pushed", label: "Pushed (Fortress)", durationSec: 1.5 }],
 
     shadowplay_overwhelm: [{ status: "stunned", label: "Stunned", durationSec: 1.4, isCC: true }],
@@ -43,7 +47,24 @@ export const SKILL_STATUS_GRANTS = Object.freeze({
             consumesOnUse: true,
         },
     ],
+    shadowplay_overwhelm_lightning: [{ status: "stunned", label: "Stunned", durationSec: 1.3, isCC: true }],
+    shadowplay_shadowsmite_mist: [{ status: "shackled", label: "Shackled", durationSec: 3.0 }],
+    shadowplay_shadowsmite_lightning: [
+        { status: "shackled", label: "Shackled", durationSec: 3.0 },
+        { status: "tripped", label: "Tripped", durationSec: 2.5, isCC: true, requiresAny: ["stunned"] },
+    ],
+    shadowplay_assassination: [
+        {
+            status: "assassination_buff",
+            label: "Assassination (+12% Shadowplay)",
+            durationSec: 4.0,
+            targetSide: "self",
+            bonusDamagePct: 12,
+            bonusSkillset: "shadowplay",
+        },
+    ],
     shadowplay_toxic_shot: [{ status: "poisoned", label: "Poisoned", durationSec: 10.0 }],
+    shadowplay_venom_blades: [{ status: "poisoned", label: "Deadly Poison", durationSec: 11.0 }],
     shadowplay_pin_down: [{ status: "bleeding", label: "Bleeding", durationSec: 14.0, requiresBackstab: true }],
 
     archery_piercing_shot: [{ status: "bleeding", label: "Bleeding", durationSec: 14.0 }],
@@ -70,22 +91,34 @@ export const SKILL_STATUS_GRANTS = Object.freeze({
     occultism_hell_spear_flame: [{ status: "impaled", label: "Impaled", durationSec: 2.5, isCC: true }],
     occultism_stillness: [{ status: "silenced", label: "Silenced", durationSec: 3.5 }],
     occultism_telekinesis: [{ status: "telekinesis", label: "Telekinesis (CC)", durationSec: 10.0, isCC: true }],
+    occultism_cursed_thorns: [{ status: "slowed", label: "Slowed (Cursed Thorns)", delaySec: 4.0, durationSec: 5.0 }],
 
     vitalism_skewer: [{ status: "impaled", label: "Impaled", durationSec: 2.5, isCC: true }],
     vitalism_skewer_multi: [{ status: "impaled", label: "Impaled", durationSec: 2.5, isCC: true }],
+    vitalism_skewer_life: [{ status: "impaled", label: "Impaled", durationSec: 2.6, isCC: true }],
     vitalism_mirror_light: [{ status: "snared", label: "Snared", durationSec: 3.0 }],
     vitalism_whirlwind_blessing: [{ status: "slowed", label: "Slowed (Whirlwind)", durationSec: 30.0 }],
+    vitalism_renewal_hollow: [{ status: "hollow_renewal", label: "Hollow Renewal Curse (2% Eruption)", durationSec: 30.0 }],
+    vitalism_abyssal_petrification: [{ status: "petrified", label: "Petrified (Abyssal)", durationSec: 6.0, isCC: true }],
 
     auramancy_comets_boon_hollow: [{ status: "slowed", label: "Slowed", durationSec: 3.0 }],
+    auramancy_crushing_grasp: [{ status: "pulled", label: "Pulled (Crushing Grasp)", durationSec: 1.5, isCC: true }],
     auramancy_thwart: [{ status: "shaken", label: "Shaken", durationSec: 3.0 }],
+    auramancy_thwart_mist: [
+        { status: "greater_inspire", label: "Greater Inspire (+52% Implosion)", durationSec: 16.0, targetSide: "self" },
+    ],
     auramancy_leech: [{ status: "asleep", label: "Asleep (Leech)", durationSec: 4.5, isCC: true }],
 
     witchcraft_earthen_grip: [{ status: "snared", label: "Snared", durationSec: 6.0 }],
     witchcraft_earthen_grip_aoe: [{ status: "snared", label: "Snared", durationSec: 6.0 }],
+    witchcraft_earthen_grip_wave: [{ status: "snared", label: "Snared", durationSec: 6.0 }],
     witchcraft_focal_concussion: [{ status: "stunned", label: "Stunned", durationSec: 1.5, isCC: true }],
     witchcraft_focal_concussion_hollow: [{ status: "stunned", label: "Stunned", durationSec: 1.5, isCC: true }],
     witchcraft_bubble_trap: [{ status: "bubbled", label: "Bubbled (CC)", durationSec: 5.4, isCC: true }],
     witchcraft_bubble_trap_mist: [{ status: "bubbled", label: "Bubbled (Mist CC)", durationSec: 5.0, isCC: true }],
+    witchcraft_bubble_trap_gale: [{ status: "bubbled", label: "Bubbled (Gale CC)", durationSec: 4.4, isCC: true }],
+    witchcraft_devour_hope: [{ status: "hopelessness", label: "Hopelessness (+15s CDs)", durationSec: 5.0 }],
+    witchcraft_stonesight: [{ status: "petrified", label: "Petrified (Stonesight)", durationSec: 4.0, isCC: true }],
     witchcraft_insidious_whisper: [{ status: "feared", label: "Feared", durationSec: 2.8, isCC: true }],
     witchcraft_lassitude: [
         { status: "drowsy", label: "Lassitude (Drowsy)", durationSec: 2.0 },
@@ -111,6 +144,7 @@ export const SKILL_STATUS_GRANTS = Object.freeze({
         { status: "charmed", label: "Charmed", delaySec: 2.0, durationSec: 12.0 },
     ],
     songcraft_startling_strain_wave: [{ status: "charmed", label: "Charmed", durationSec: 24.0 }],
+    songcraft_healing_hymn_stone: [{ status: "charmed", label: "Charmed (Hymn)", durationSec: 8.0 }],
     songcraft_quickstep: [
         { status: "slowed", label: "Slowed (Charmed Quickstep)", durationSec: 15.0, requiresAny: ["charmed"], waitForStatus: "charmed" },
     ],
@@ -151,6 +185,9 @@ export const SKILL_STATUS_GRANTS = Object.freeze({
     equip_honor_withering_club: [{ status: "distressed", label: "Distressed (Honor Club)", durationSec: 7.0 }],
     equip_honor_binding_shield: [{ status: "slowed", label: "Slowed (Honor Shield)", durationSec: 4.0 }],
     equip_suns_glare_blind: [{ status: "blinded", label: "Blinded (-25% Melee Acc)", durationSec: 6.0 }],
+    equip_red_dragon_wrath: [
+        { status: "dragons_wrath", label: "Dragon's Wrath (+50 STR/AGI/INT)", durationSec: 10.0, targetSide: "self" },
+    ],
 });
 
 export const SKILL_DEBUFF_GRANTS = Object.freeze({
@@ -178,10 +215,22 @@ export const SKILL_DEBUFF_GRANTS = Object.freeze({
         durationSec: 5.0,
         addDefense: { physicalDefense: -480 },
     },
+    battlerage_soulbound_blades: {
+        id: "soulbound_blades_shred",
+        label: "Soulbound Blades (-500 PDef R2)",
+        durationSec: 10.0,
+        addDefense: { physicalDefense: -500 },
+    },
     defense_mocking_howl: {
         id: "distressed",
         label: "Distressed (-60% Heal)",
         durationSec: 6.0,
+        addDefense: { receivedHealingPct: -60 },
+    },
+    defense_boastful_roar: {
+        id: "distressed",
+        label: "Distressed (-60% Heal)",
+        durationSec: 7.0,
         addDefense: { receivedHealingPct: -60 },
     },
     archery_snare: {
@@ -251,6 +300,18 @@ export const SKILL_DEBUFF_GRANTS = Object.freeze({
     equip_ynys_ring_shred: {
         id: "ynys_ring_shred",
         label: "Ynys Ring 4x (-700 PDef/MDef)",
+        durationSec: 5.0,
+        addDefense: { physicalDefense: -700, magicDefense: -700 },
+    },
+    equip_flawless_dream_ring_shred: {
+        id: "flawless_dream_ring",
+        label: "Flawless Dream Ring 5x (-875 PDef/MDef)",
+        durationSec: 5.0,
+        addDefense: { physicalDefense: -875, magicDefense: -875 },
+    },
+    equip_dream_ring_shred: {
+        id: "dream_ring_shred",
+        label: "Dream Ring 4x (-700 PDef/MDef)",
         durationSec: 5.0,
         addDefense: { physicalDefense: -700, magicDefense: -700 },
     },
@@ -690,6 +751,14 @@ export const SKILL_COMBO_BONUSES = Object.freeze({
         { requires: "tripped", comboBonusPct: 30, label: "Tripped +30%" },
         { requires: "distressed", comboBonusPct: 24, label: "Distressed +24%" },
     ],
+    shadowplay_shadowsmite_mist: [
+        { requires: "tripped", comboBonusPct: 30, label: "Tripped +30%" },
+        { requires: "distressed", comboBonusPct: 24, label: "Distressed +24%" },
+    ],
+    shadowplay_shadowsmite_lightning: [
+        { requires: "tripped", comboBonusPct: 30, label: "Tripped +30%" },
+        { requires: "distressed", comboBonusPct: 24, label: "Distressed +24%" },
+    ],
     shadowplay_pin_down: [
         { requires: "bleeding", comboBonusPct: 24, label: "Bleeding +24%" },
         { requires: "stunned", comboBonusPct: 18, label: "Stunned +18%" },
@@ -698,6 +767,9 @@ export const SKILL_COMBO_BONUSES = Object.freeze({
         { requires: "poisoned", comboBonusPct: 16, label: "Poisoned +16%" },
     ],
     shadowplay_overwhelm_gale: [
+        { requires: "poisoned", comboBonusPct: 16, label: "Poisoned +16%" },
+    ],
+    shadowplay_overwhelm_lightning: [
         { requires: "poisoned", comboBonusPct: 16, label: "Poisoned +16%" },
     ],
     shadowplay_wallop: [
@@ -715,6 +787,12 @@ export const SKILL_COMBO_BONUSES = Object.freeze({
     ],
     occultism_summon_wraith: [
         { requires: "impaled", comboBonusPct: 20, label: "Impaled +20%" },
+    ],
+    occultism_summon_wraith_wave: [
+        { requires: "impaled", comboBonusPct: 20, label: "Impaled +20%" },
+    ],
+    auramancy_vicious_implosion: [
+        { requires: "greater_inspire", comboBonusPct: 52, label: "Greater Inspire +52%" },
     ],
 });
 
@@ -813,12 +891,20 @@ export function evaluateActiveSkillCombos(skill, activeStatuses, atSec) {
         consumedStatuses.push("gale_overwhelm_crit");
     }
 
-    // Duration-based self crit buffs (e.g. Great Ayanad Earring +70% Crit for 2s, Pioneer +35% for 2s)
+    // Duration-based self crit & skillset damage buffs (e.g. Great Ayanad +70% Crit, Assassination +12% Shadowplay)
     if (skill?.kind !== "utility") {
         for (const st of live) {
             if (Number(st.bonusCritRatePct) > 0 && st.status !== "gale_overwhelm_crit") {
                 bonusCritRatePct += Number(st.bonusCritRatePct);
                 matchedLabels.push(st.label || `+${st.bonusCritRatePct}% Crit`);
+                if (st.consumesOnUse) consumedStatuses.push(st.status);
+            }
+            if (
+                Number(st.bonusDamagePct) > 0 &&
+                (!st.bonusSkillset || st.bonusSkillset === skill?.skillset)
+            ) {
+                comboBonusPct += Number(st.bonusDamagePct);
+                matchedLabels.push(st.label || `+${st.bonusDamagePct}% Dmg`);
                 if (st.consumesOnUse) consumedStatuses.push(st.status);
             }
         }

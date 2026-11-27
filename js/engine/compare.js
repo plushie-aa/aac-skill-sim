@@ -7,6 +7,7 @@
  *   with exact break-even crossover points using real AA Classic skill formulas.
  */
 
+import { mergeConstants } from "./constants.js";
 import { simulateSkillDamage } from "./damage.js";
 import { computeEffectiveStats } from "./effective.js";
 import { simulateSkillHeal } from "./healing.js";
@@ -253,15 +254,9 @@ export function sweepDefenderEhp(
         stat === "aggressorCritRate" ? 5 : 1000
     );
 
-    const effDefA = Array.isArray(context.defenderAModifiers)
-        ? applyModifiers(defenderA, context.defenderAModifiers)
-        : defenderA;
-    const effDefB = Array.isArray(context.defenderBModifiers)
-        ? applyModifiers(defenderB, context.defenderBModifiers)
-        : defenderB;
-    const effAttBase = Array.isArray(context.attackerModifiers)
-        ? applyModifiers(baseAttacker, context.attackerModifiers)
-        : baseAttacker;
+    const effDefA = applyModifiers(defenderA, Array.isArray(context.defenderAModifiers) ? context.defenderAModifiers : []);
+    const effDefB = applyModifiers(defenderB, Array.isArray(context.defenderBModifiers) ? context.defenderBModifiers : []);
+    const effAttBase = applyModifiers(baseAttacker, Array.isArray(context.attackerModifiers) ? context.attackerModifiers : []);
 
     const ehpOpts = {
         isPvE: Boolean(context.isPvE),
@@ -353,7 +348,7 @@ export function computeMatchupMatrix(buildA, buildB, opponents = [], options = {
         const oppRaw = oppEntry.character || oppEntry;
         const oppMods = Array.isArray(oppEntry.modifiers) ? oppEntry.modifiers : [];
         const oppId = oppEntry.id || oppRaw.savedId || oppRaw.name;
-        const effOpp = oppMods.length > 0 ? applyModifiers(oppRaw, oppMods) : oppRaw;
+        const effOpp = applyModifiers(oppRaw, oppMods);
 
         if (matrixMode === "offense_rotation") {
             const cmp = compareRotations(
@@ -615,7 +610,7 @@ export function computeAllVsAllMatrix(entries = [], options = {}) {
     const prepared = (entries || []).map((entry) => {
         const raw = entry.character || entry;
         const mods = Array.isArray(entry.modifiers) ? entry.modifiers : [];
-        const eff = mods.length > 0 ? applyModifiers(raw, mods) : raw;
+        const eff = applyModifiers(raw, mods);
         const role = entry.role || detectPrimaryOffenseKind(eff);
         const ehpKind = role === "magic" || role === "healer" ? "magic" : role === "ranged" ? "ranged" : "melee";
         const benchSkill = createNormalizedBenchmarkSkill(role);
@@ -785,7 +780,11 @@ export function computeAllVsAllMatrix(entries = [], options = {}) {
                         outcome: "neutral",
                     };
                 }
-                const rot = simulateRotation(att.eff, def.eff, combo.steps, stepCtx, constants);
+                const comboCtx =
+                    Array.isArray(combo.initialEffects) && combo.initialEffects.length > 0
+                        ? { ...stepCtx, rotationInitialEffects: combo.initialEffects }
+                        : stepCtx;
+                const rot = simulateRotation(att.eff, def.eff, combo.steps, comboCtx, constants);
                 const dmg =
                     hitMode === "normal"
                         ? rot.totalNormal
@@ -898,8 +897,8 @@ export function computeStatWeights(build, opponent, options = {}) {
     const constants = options.constants || {};
     const disableAvoidance = Boolean(options.disableAvoidance);
 
-    const effBuild = buildMods.length > 0 ? applyModifiers(build, buildMods) : build;
-    const effOpp = oppMods.length > 0 ? applyModifiers(opponent, oppMods) : opponent;
+    const effBuild = applyModifiers(build, buildMods);
+    const effOpp = applyModifiers(opponent, oppMods);
     const cleanCtx = {
         ...baseCtx,
         disableAvoidance,
@@ -1013,11 +1012,30 @@ export function computeStatWeights(build, opponent, options = {}) {
         const isMagic = skill?.damageType === "magic" || sc === "magicAttack";
         const isRanged = sc === "rangedAttack";
         const isHealDmg = sc === "healingPower";
+        const useMagicCritAndMul = Boolean(skill?.flags?.useMagicCritAndMul);
+        const usesHealCritAndMul = isHealDmg && !useMagicCritAndMul;
         const atkKey = isHealDmg ? "healingPower" : isMagic ? "magicAttack" : isRanged ? "rangedAttack" : "meleeAttack";
         const atkLabel = isHealDmg ? "Healing Power" : isMagic ? "Magic Attack" : isRanged ? "Ranged Attack" : "Melee Attack";
-        const crKey = isHealDmg ? "healCritRatePct" : isMagic ? "magicCritRatePct" : isRanged ? "rangedCritRatePct" : "meleeCritRatePct";
-        const cbKey = isHealDmg ? "healCritBonusPct" : isMagic ? "magicCritBonusPct" : isRanged ? "rangedCritBonusPct" : "meleeCritBonusPct";
-        const dmgKey = isMagic ? "magicSkillDamagePct" : isRanged ? "rangedSkillDamagePct" : "meleeSkillDamagePct";
+        const crKey = usesHealCritAndMul ? "healCritRatePct" : isMagic ? "magicCritRatePct" : isRanged ? "rangedCritRatePct" : "meleeCritRatePct";
+        const cbKey = usesHealCritAndMul ? "healCritBonusPct" : isMagic ? "magicCritBonusPct" : isRanged ? "rangedCritBonusPct" : "meleeCritBonusPct";
+        const mergedConst = mergeConstants(constants);
+        const dmgKey = usesHealCritAndMul
+            ? mergedConst.vitalismDamageUsesHealMul
+                ? "healingPct"
+                : "magicSkillDamagePct"
+            : isMagic
+              ? "magicSkillDamagePct"
+              : isRanged
+                ? "rangedSkillDamagePct"
+                : "meleeSkillDamagePct";
+        const crLabel = usesHealCritAndMul ? "Crit Heal Rate" : isHealDmg ? "Magic Crit Rate" : "Crit Rate";
+        const cbLabel = usesHealCritAndMul ? "Crit Heal Bonus" : isHealDmg ? "Magic Crit Damage" : "Crit Damage";
+        const dmgLabel =
+            dmgKey === "healingPct"
+                ? "Healing %"
+                : isHealDmg
+                  ? "Magic Skill Dmg %"
+                  : "Skill Damage %";
         const penKey = isMagic ? "magicDefensePenetration" : "defensePenetration";
         const penLabel = isMagic ? "Magic Def Pen" : "Defense Pen";
         const attrKey = isHealDmg ? "spi" : isMagic ? "int" : isRanged ? "agi" : "str";
@@ -1026,14 +1044,14 @@ export function computeStatWeights(build, opponent, options = {}) {
 
         candidates.push(
             { id: "gem_pen", label: penLabel, deltaLabel: "+100", tier: "gem", mod: { addOffense: { [penKey]: 100 } } },
-            { id: "gem_cb", label: "Crit Damage", deltaLabel: "+6.0%", tier: "gem", mod: { addOffense: { [cbKey]: 6.0 } } },
+            { id: "gem_cb", label: cbLabel, deltaLabel: "+6.0%", tier: "gem", mod: { addOffense: { [cbKey]: 6.0 } } },
             { id: "gem_atk", label: atkLabel, deltaLabel: "+12", tier: "gem", mod: { addOffense: { [atkKey]: 12 } } },
-            { id: "gem_skill", label: "Skill Damage %", deltaLabel: "+3.0%", tier: "gem", mod: { addOffense: { [dmgKey]: 3.0 } } },
+            { id: "gem_skill", label: dmgLabel, deltaLabel: "+3.0%", tier: "gem", mod: { addOffense: { [dmgKey]: 3.0 } } },
             { id: "synth_atk", label: atkLabel, deltaLabel: "+65", tier: "synth", mod: { addOffense: { [atkKey]: 65 } } },
             { id: "synth_pen", label: penLabel, deltaLabel: "+500", tier: "synth", mod: { addOffense: { [penKey]: 500 } } },
-            { id: "synth_cr", label: "Crit Rate", deltaLabel: "+4.6%", tier: "synth", mod: { addOffense: { [crKey]: 4.6 } } },
-            { id: "synth_cb", label: "Crit Damage", deltaLabel: "+14.0%", tier: "synth", mod: { addOffense: { [cbKey]: 14.0 } } },
-            { id: "synth_dmg", label: "Skill Damage %", deltaLabel: "+3.2%", tier: "synth", mod: { addOffense: { [dmgKey]: 3.2 } } },
+            { id: "synth_cr", label: crLabel, deltaLabel: "+4.6%", tier: "synth", mod: { addOffense: { [crKey]: 4.6 } } },
+            { id: "synth_cb", label: cbLabel, deltaLabel: "+14.0%", tier: "synth", mod: { addOffense: { [cbKey]: 14.0 } } },
+            { id: "synth_dmg", label: dmgLabel, deltaLabel: "+3.2%", tier: "synth", mod: { addOffense: { [dmgKey]: 3.2 } } },
             { id: "attr_main", label: attrName, deltaLabel: `+50 ${attrShort}`, tier: "attr", mod: { addAttributes: { [attrKey]: 50 } } }
         );
         if (!isMagic && !disableAvoidance) {

@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_auramancy.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 8,
+  "skillCount": 14,
   "skills": [
     {
       "id": "auramancy_comets_boon",
@@ -225,7 +225,8 @@
       "cooldownSec": 12.0,
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_will24.png",
-      "description": "Increases received damage +20 on enemies in a 6m radius for 5s and grants 1 stack of Inspired."
+      "description": "Increases received damage +20 on enemies in a 6m radius for 5s and grants 1 stack of Inspired.",
+      "skillId": 36463
     },
     {
       "id": "auramancy_leech",
@@ -242,6 +243,189 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_will07.png",
       "description": "Interrupts casting, inflicts Sleep (4.5s PvP / 9s PvE), and steals 1 beneficial buff from the target. Direct damage wakes the target."
+    },
+    {
+      "id": "auramancy_thwart_mist",
+      "skillset": "auramancy",
+      "name": "Thwart (Mist)",
+      "variant": "ancestral",
+      "ancestralElement": "mist",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "AoE 6m Greater Inspire (+65 Atk Spd, +52% Implosion, 16s)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 36462,
+      "abilityLevel": 1,
+      "cooldownSec": 15.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will30.png",
+      "description": "Grants Greater Inspire for 16s to all allies in a 6m radius: +65 Attack Speed, +52% Vicious Implosion damage, and reduced Antithesis (-0.6s), Mend (-2.1s), and Fervent Healing (-1.2s) cooldowns."
+    },
+    {
+      "id": "auramancy_spell_shield_mist",
+      "skillset": "auramancy",
+      "name": "Spell Shield (Mist)",
+      "variant": "ancestral",
+      "ancestralElement": "mist",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Self/Ally -32% Recv Magic Dmg & Heal (8s) + Instant Antithesis",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0,
+      "gcdNote": "No GCD (off-GCD instant buff; castable on allies, removes Antithesis cast time for 8s)",
+      "flags": {
+        "noGcd": true
+      },
+      "comboEffect": {
+        "id": "spell_shield",
+        "label": "Spell Shield (Mist)",
+        "summary": "Instant Antithesis (8s)",
+        "durationSec": 8.0,
+        "removesCastTimeFor": [
+          "vitalism_antithesis_heal",
+          "vitalism_antithesis_damage",
+          "vitalism_antithesis_mist_heal",
+          "vitalism_antithesis_wave_heal",
+          "vitalism_antithesis_wave_damage"
+        ]
+      },
+      "skillId": 36464,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Creates an energy shield for you or an ally for 8s. Decreases Received Magic Damage and Received Healing by -32% (+2,840 Magic Defense for 20s). Does not trigger a global cooldown.\nCombo: Removes the cast time of Antithesis while active.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36464,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Self or ally energy shield for 8s (-32% Received Magic Damage & Received Healing, +2,840 Magic Defense 20s, off-GCD, Instant Antithesis)."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 50.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will32.png"
+    },
+    {
+      "id": "auramancy_spell_shield_flame",
+      "skillset": "auramancy",
+      "name": "Spell Shield (Flame)",
+      "variant": "ancestral",
+      "ancestralElement": "flame",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Reflect 32% Magic Dmg & -32% Heal (5s) + Instant Antithesis",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "gcdSec": 0,
+      "gcdNote": "No GCD (off-GCD instant buff; reflects 32% Magic Dmg & removes Antithesis cast time for 5s)",
+      "flags": {
+        "noGcd": true
+      },
+      "comboEffect": {
+        "id": "spell_shield",
+        "label": "Spell Shield (Flame)",
+        "summary": "Instant Antithesis (5s)",
+        "durationSec": 5.0,
+        "removesCastTimeFor": [
+          "vitalism_antithesis_heal",
+          "vitalism_antithesis_damage",
+          "vitalism_antithesis_mist_heal",
+          "vitalism_antithesis_wave_heal",
+          "vitalism_antithesis_wave_damage"
+        ]
+      },
+      "skillId": 36465,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Creates an energy shield for 5s. Reflects 32% of incoming Magic Damage and decreases Received Healing -32% (+2,840 Magic Defense for 20s). Does not trigger a global cooldown.\nCombo: Removes the cast time of Antithesis while active.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36465,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Energy shield for 5s: reflects 32% incoming Magic Damage, -32% Received Healing, +2,840 Magic Defense 20s, off-GCD, Instant Antithesis."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will33.png"
+    },
+    {
+      "id": "auramancy_crushing_grasp",
+      "skillset": "auramancy",
+      "name": "Crushing Grasp",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 34165,
+      "base": 86,
+      "scalingPct": 110,
+      "parseSource": "detailed_tooltip",
+      "description": "Creates a powerful gravity vortex around a chosen target after a short delay. Deals 131 (86 + 110% Magic Attack) Magic Damage to all enemies in a 10m radius (15m at Rank 2), pulling them to the target's location, but leaves the initial target unharmed.\nPulled enemies are Staggered, briefly stopping movement and canceling all Cast Time and Channeled skills.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34165,
+          "base": 86,
+          "scalingPct": 110,
+          "parseSource": "detailed_tooltip",
+          "description": "Creates a gravity vortex around a target dealing 131 (86 + 110% Magic Attack) Magic Damage in a 10m–15m radius, pulling and Staggering surrounding enemies."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred14.png"
+    },
+    {
+      "id": "auramancy_protective_wings_mist",
+      "skillset": "auramancy",
+      "name": "Protective Wings (Mist)",
+      "variant": "ancestral",
+      "ancestralElement": "mist",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Ground-targeted 5m Magic Damage immunity zone",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 36466,
+      "abilityLevel": 50,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will34.png",
+      "description": "Generates Protective Wings at the target location, granting immunity to Magic Damage for all allies in a 5m radius."
+    },
+    {
+      "id": "auramancy_protective_wings_flame",
+      "skillset": "auramancy",
+      "name": "Protective Wings (Flame)",
+      "variant": "ancestral",
+      "ancestralElement": "flame",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Phoenix Feather (-29% Magic Dmg & 70% Magic Reflect, 20m)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 36467,
+      "abilityLevel": 50,
+      "cooldownSec": 45.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_will35.png",
+      "description": "Grants the Phoenix Feather buff to a random ally in a 20m radius every 0.5s. Reduces incoming Magic Damage by -29% and reflects 70% back to the attacker."
     }
   ]
 }

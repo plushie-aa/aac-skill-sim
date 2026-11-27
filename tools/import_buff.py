@@ -24,6 +24,7 @@ import re
 import sys
 import tempfile
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -78,9 +79,27 @@ def clean_aa_text(text: str, duration_text: str | None = None) -> str:
     return s
 
 
+ALLOWED_REMOTE_HOSTS = {"aa-classic.com", "www.aa-classic.com", "darugear.com", "www.darugear.com"}
+RESERVED_BUFF_IDS = {"loadouts"}
+
+
+class _SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        p = urllib.parse.urlparse(newurl)
+        if p.scheme.lower() != "https" or (p.hostname or "").lower() not in ALLOWED_REMOTE_HOSTS:
+            raise ValueError(f"Blocked redirect to untrusted target: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_SAFE_OPENER = urllib.request.build_opener(_SafeRedirectHandler())
+
+
 def _http_get_bytes(url: str, timeout: float = 15.0, max_bytes: int = MAX_REMOTE_BYTES) -> bytes:
+    p = urllib.parse.urlparse(url)
+    if p.scheme.lower() != "https" or (p.hostname or "").lower() not in ALLOWED_REMOTE_HOSTS:
+        raise ValueError(f"Blocked request to untrusted host: {url}")
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
+    with _SAFE_OPENER.open(req, timeout=timeout) as resp:
         data = resp.read(max_bytes + 1)
     if len(data) > max_bytes:
         raise ValueError(f"Remote response exceeded {max_bytes} byte safety limit: {url}")
@@ -584,8 +603,8 @@ def rebuild_buffs_index() -> list[str]:
 
 def save_custom_buff(mod: dict[str, Any]) -> dict[str, Any]:
     mod_id = slugify_buff_id(str(mod.get("id") or mod.get("name") or ""), None)
-    if not VALID_ID_RE.match(mod_id):
-        raise ValueError(f"Invalid buff ID slug: {mod_id!r}")
+    if not VALID_ID_RE.match(mod_id) or mod_id in RESERVED_BUFF_IDS:
+        raise ValueError(f"Invalid or reserved buff ID slug: {mod_id!r}")
 
     BUFFS_DIR.mkdir(parents=True, exist_ok=True)
     out_path = (BUFFS_DIR / f"{mod_id}.json").resolve()
@@ -603,8 +622,8 @@ def save_custom_buff(mod: dict[str, Any]) -> dict[str, Any]:
 
 
 def delete_custom_buff(mod_id: str) -> bool:
-    if not VALID_ID_RE.match(mod_id):
-        raise ValueError("Invalid buff ID")
+    if not VALID_ID_RE.match(mod_id) or mod_id in RESERVED_BUFF_IDS:
+        raise ValueError("Invalid or reserved buff ID")
     target = (BUFFS_DIR / f"{mod_id}.json").resolve()
     if target.parent != BUFFS_DIR.resolve():
         raise ValueError("Invalid buff path")

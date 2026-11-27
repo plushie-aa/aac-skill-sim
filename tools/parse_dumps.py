@@ -159,7 +159,7 @@ def parse_skill_dump(path: Path) -> tuple[dict[str, Any], dict[int, dict[str, An
         raise ValueError(f"Could not locate metaJson in {path}")
     meta = json.loads(unescape_lua_string(meta_match.group(1)))
 
-    chunks_match = re.search(r"skillChunks\s*=\s*\{([\s\S]*)\}\s*,?\s*\}", raw)
+    chunks_match = re.search(r"skillChunks\s*=\s*\{([\s\S]*?)\n\s*\},?", raw)
     if not chunks_match:
         raise ValueError(f"Could not locate skillChunks in {path}")
 
@@ -829,6 +829,26 @@ def rebuild_index(game_version: str, has_rank_dump: bool) -> None:
             entry["isMaxLevel"] = data["isMaxLevel"]
         index_entries.append(entry)
 
+    # Preserve non-class equipment active/proc skills file if present
+    equip_file = SKILLS_OUT_DIR / "equipment.json"
+    if equip_file.exists():
+        eq_data = json.loads(equip_file.read_text(encoding="utf-8"))
+        eq_skills = eq_data.get("skills", [])
+        for s in eq_skills:
+            rc = int(s.get("rankCount", 1))
+            if rc > 1:
+                multi_rank_count += 1
+            total_rank_entries += rc
+        index_entries.append({
+            "skillset": "equipment",
+            "label": eq_data.get("label", "Equip Effects"),
+            "file": "equipment.json",
+            "skillCount": len(eq_skills),
+            "dumpSource": eq_data.get("dumpSource", "item_special_effects + set_bonus_procs"),
+            "skillsetLevel": eq_data.get("skillsetLevel", 55),
+            "isMaxLevel": True,
+        })
+
     (SKILLS_OUT_DIR / "index.json").write_text(
         json.dumps(
             {
@@ -1003,57 +1023,6 @@ def main() -> None:
         print(f"  -> Saved {len(skills)} skills | {summarize_skill_value(sample_skill)}")
 
     rebuild_index(catalog["gameVersion"], rank_map is not None)
-
-    # Update constants, passives, and sample_character only during full legacy rebuilds
-    if args.legacy or (not per_tree_files and not args.trees.strip()):
-        m1, _, _, _ = ensure_legacy()
-        u1 = m1["player"]["unitInfo"]
-        constants = {
-            "gameVersion": catalog["gameVersion"],
-            "level": 55,
-            "defenseK": 7900,
-            "toughnessK": 8000,
-            "resilienceCritRateK": 32000,
-            "resilienceCritBonusK": 18000,
-            "focusNegationPctPerPoint": 0.0027,
-            "baseCritBonusPct": 50,
-            "maxCritBonusPct": 300,
-            "shieldBlockDamageMultiplier": 0.0,
-            "vitalismDamageUsesHealMul": True,
-            "verifiedAgainstLiveStats": {
-                "armor": u1["armor"],
-                "armorPctLive": u1["armor_percentage"],
-                "armorPctFormula": round(u1["armor"] / (u1["armor"] + 7900) * 100, 4),
-                "magicResist": u1["magic_resist"],
-                "magicResistPctLive": u1["magic_resist_percentage"],
-                "magicResistPctFormula": round(u1["magic_resist"] / (u1["magic_resist"] + 7900) * 100, 4),
-            },
-        }
-        (OUT_DIR / "constants.json").write_text(json.dumps(constants, indent=2) + "\n", encoding="utf-8")
-
-        buff_path = ADDON_DIR / "buff_dump.txt"
-        if buff_path.exists():
-            buffs = parse_buff_dump(buff_path)
-            passives_out = [
-                {
-                    "buffId": b["buffId"],
-                    "name": b.get("tooltip", {}).get("name", ""),
-                    "icon": b.get("tooltip", {}).get("path", ""),
-                    "description": clean_desc(b.get("tooltip", {}).get("description", "")),
-                }
-                for b in buffs
-            ]
-            (OUT_DIR / "passives.json").write_text(
-                json.dumps({"gameVersion": catalog["gameVersion"], "count": len(passives_out), "passives": passives_out}, indent=2)
-                + "\n",
-                encoding="utf-8",
-            )
-
-        (OUT_DIR / "sample_character.json").write_text(
-            json.dumps(build_sample_character(m1), indent=2) + "\n",
-            encoding="utf-8",
-        )
-
     print(f"\nDone! Updated {len(updated_trees)} skillset(s): {', '.join(updated_trees)}")
 
 

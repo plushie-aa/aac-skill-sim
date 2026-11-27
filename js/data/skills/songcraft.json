@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_songcraft.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 13,
+  "skillCount": 19,
   "skills": [
     {
       "id": "songcraft_critical_discord",
@@ -342,7 +342,8 @@
         "summary": "Immediate Charm (24s) & -20% Cast Time (5s)",
         "durationSec": 5.0,
         "castTimeDeltaPct": -20
-      }
+      },
+      "skillId": 36598
     },
     {
       "id": "songcraft_bulwark_ballad",
@@ -407,7 +408,121 @@
       "cooldownSec": 30.0,
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_romance25.png",
-      "description": "Plays an entrancing song, inflicting Sleep on all enemies within 9m for up to 9s while channeled."
+      "description": "Plays an entrancing song, inflicting Sleep on all enemies within 9m for up to 9s while channeled.",
+      "skillId": 36628
+    },
+    {
+      "id": "songcraft_healing_hymn_stone",
+      "skillset": "songcraft",
+      "name": "Healing Hymn (Stone)",
+      "variant": "ancestral",
+      "ancestralElement": "stone",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "Multi-bounce Charmed (8s, up to 3 bounces; +50% if Dissonance)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 36595,
+      "abilityLevel": 20,
+      "cooldownSec": 23.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance33.png",
+      "description": "Plays a beguiling song that Charms an enemy for 8s, bouncing to 2 additional enemies within 10m up to 3 times.\nCharm duration increased +50% on targets under Dissonance. Does not stop ongoing Perform skills."
+    },
+    {
+      "id": "songcraft_abyssal_echoes",
+      "skillset": "songcraft",
+      "name": "Abyssal Echoes",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "10s self-echoes of active Perform songs (not canceled by skills)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 34095,
+      "abilityLevel": 10,
+      "cooldownSec": 16.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred29.png",
+      "description": "Ends all ongoing Perform skills, creating self-only echoes of those abilities for up to 10s (undiminished at Rank 2) that are not canceled by casting non-perform skills."
+    },
+    {
+      "id": "songcraft_polymorphic_resonance",
+      "skillset": "songcraft",
+      "name": "Polymorphic Resonance",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "15m raid immortality / cheat-death channel (3s–25s)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "skillId": 34314,
+      "abilityLevel": 55,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred30.png",
+      "description": "Grants temporary immortality to allies within 15m for up to 25s (3s base + 3s/charge, or 5s + 5s/charge at 6 Charges). Allies subjected to fatal damage instead transform into animals, recover Health, and gain temporary debuff immunity."
+    },
+    {
+      "id": "songcraft_healing_hymn_wave",
+      "skillset": "songcraft",
+      "name": "Healing Hymn (Wave)",
+      "variant": "ancestral",
+      "ancestralElement": "wave",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Multi-bounce +278 Mana restore (up to 3 bounces)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "skillId": 36596,
+      "abilityLevel": 20,
+      "cooldownSec": 15.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance34.png",
+      "description": "Plays a revitalizing song that instantly restores a party member's Mana +278, bouncing to 2 party members within 10m up to 3 times. Does not stop ongoing Perform skills."
+    },
+    {
+      "id": "songcraft_startling_strain_life",
+      "skillset": "songcraft",
+      "name": "Startling Strain (Life)",
+      "variant": "ancestral",
+      "ancestralElement": "life",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "+30% Perform Effects (28s) & -20% Cast Time (5s)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 36597,
+      "abilityLevel": 3,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance35.png",
+      "description": "Magically improves the beneficial effects received from Perform skills +30% for 28s (self or ally) and decreases Cast Time -20% for 5s. Does not stop ongoing Perform skills.",
+      "comboEffect": {
+        "id": "startling_strain_cast",
+        "label": "Startling Strain (Life · -20% Cast)",
+        "summary": "+30% Perform Effects (28s) & -20% Cast Time (5s)",
+        "durationSec": 5.0,
+        "castTimeDeltaPct": -20
+      }
+    },
+    {
+      "id": "songcraft_alarm_call_life",
+      "skillset": "songcraft",
+      "name": "Alarm Call (Life)",
+      "variant": "ancestral",
+      "ancestralElement": "life",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "AoE 9m party cleanse (1 debuff / 3s for 15s)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "skillId": 36629,
+      "abilityLevel": 45,
+      "cooldownSec": 30.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_romance38.png",
+      "description": "Removes 1 harmful effect from every party member within 9m every 3 seconds for 15s. Counts as an ongoing spell, canceled if another skill is used."
     }
   ]
 }

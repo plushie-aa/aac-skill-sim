@@ -247,12 +247,26 @@ function cleanSynthStatText(raw) {
 function normalizeIconPath(raw) {
     if (!raw || typeof raw !== "string") return null;
     let s = raw.trim().replace(/\\/g, "/");
+    if (!s || s.includes("..")) return null;
     if (s.startsWith("/assets/icons/")) s = s.slice(1);
     else if (s.startsWith("https://darugear.com/assets/icons/")) {
         s = "assets/icons/" + s.slice("https://darugear.com/assets/icons/".length);
     } else if (s.startsWith("https://aa-classic.com/game/icons/")) {
         s = "assets/icons/" + s.slice("https://aa-classic.com/game/icons/".length);
-    } else if (!s.startsWith("assets/icons/") && !s.startsWith("http")) {
+    } else if (/^https?:\/\//i.test(s)) {
+        try {
+            const u = new URL(s);
+            const h = u.hostname.toLowerCase();
+            if (u.protocol !== "https:" || (h !== "darugear.com" && h !== "www.darugear.com" && h !== "aa-classic.com" && h !== "www.aa-classic.com")) {
+                return null;
+            }
+            return u.href;
+        } catch {
+            return null;
+        }
+    } else if (/^[a-z][a-z0-9+.-]*:/i.test(s)) {
+        return null;
+    } else if (!s.startsWith("assets/icons/")) {
         s = "assets/icons/" + s.replace(/^\/+/, "");
     }
     return s;
@@ -265,10 +279,10 @@ export function normalizeEquipmentList(rawList) {
         if (!item || typeof item !== "object" || !item.name) continue;
         const slotId = Number.isFinite(Number(item.slotId)) ? Number(item.slotId) : out.length;
         const gradeId = Number.isFinite(Number(item.gradeId)) ? Number(item.gradeId) : 0;
+        const rawColor = typeof item.gradeColor === "string" ? item.gradeColor.trim() : "";
         const gradeColor =
             ARCHEAGE_GRADE_COLORS[gradeId] ||
-            (typeof item.gradeColor === "string" && item.gradeColor.trim()) ||
-            "#94a3b8";
+            (/^#[0-9a-f]{3,8}$/i.test(rawColor) ? rawColor : "#94a3b8");
 
         const lunafrost =
             typeof item.lunafrost === "string" && item.lunafrost.trim()
@@ -408,6 +422,11 @@ export function fromDaruGearExport(data) {
         gearScore: metadata.gearScore,
         maxHealth: num(data.maxHealth, 20000),
         maxMana: num(data.maxMana, 10000),
+        ...(num(data.pveDamageBonusPct, 0) ? { pveDamageBonusPct: num(data.pveDamageBonusPct, 0) } : {}),
+        ...(num(data.pveMeleeDamageBonusPct, 0) ? { pveMeleeDamageBonusPct: num(data.pveMeleeDamageBonusPct, 0) } : {}),
+        ...(num(data.pveRangedDamageBonusPct, 0) ? { pveRangedDamageBonusPct: num(data.pveRangedDamageBonusPct, 0) } : {}),
+        ...(num(data.pveMagicDamageBonusPct, 0) ? { pveMagicDamageBonusPct: num(data.pveMagicDamageBonusPct, 0) } : {}),
+        ...(num(data.pveReceivedDrPct, 0) ? { pveReceivedDrPct: num(data.pveReceivedDrPct, 0) } : {}),
         attributes: {
             str: num(attr.str, 158),
             agi: num(attr.agi, 158),
@@ -724,7 +743,7 @@ export function parseImportPayload(rawInput) {
  */
 export function getDaruGearBookmarkletSource() {
     return `void((async function(){
-  if(!location.hostname.includes('darugear.com')){
+  if(!(location.hostname === 'darugear.com' || location.hostname.endsWith('.darugear.com'))){
     alert('Run this bookmarklet on https://darugear.com/');
     return;
   }
@@ -960,6 +979,7 @@ export function getDaruGearBookmarkletSource() {
         const eqEntry = {
           slotId: Number(s.id),
           slotName: String(s.name || ('Slot ' + s.id)).trim(),
+          ...(Number(eq.id) > 0 ? { itemId: Number(eq.id) } : {}),
           name: String(eq.name || '').trim(),
           type: String(eq.type || '').trim(),
           icon: cleanIcon,

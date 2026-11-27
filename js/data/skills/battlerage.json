@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_battlerage.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 16,
+  "skillCount": 17,
   "skills": [
     {
       "id": "battlerage_triple_slash",
@@ -773,6 +773,41 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_fight26.png",
       "description": "Weakens all enemies within 6m for 6s, extending Stun, Trip, Shackle, Snare, and Slow debuff durations. Also Toughens the caster."
+    },
+    {
+      "id": "battlerage_soulbound_blades",
+      "skillset": "battlerage",
+      "name": "Soulbound Blades (10s total)",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "isDot": true,
+        "durationSec": 10
+      },
+      "skillId": 34124,
+      "base": 49,
+      "scalingPct": 100,
+      "parseSource": "linear_two_point",
+      "description": "Throws otherworldly blades that surround the target, dealing 49 + 100% Melee Attack Physical Damage to the target and all enemies in a 6m radius over 10s (solved via naked/geared two-point dump: 59–60 naked, 886–973 geared).\nAt Rank 2, decreases enemy Physical Defense -50 on every successful hit (up to -500).",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34124,
+          "base": 49,
+          "scalingPct": 100,
+          "parseSource": "linear_two_point",
+          "description": "Surrounds the target with blades dealing 49 + 100% Melee Attack Physical Damage in a 6m radius over 10s. Rank 2 reduces Physical Defense -50 per hit."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 4.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred05.png"
     }
   ]
 }

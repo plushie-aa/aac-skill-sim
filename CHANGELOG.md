@@ -1,3 +1,27 @@
+## [0.3.3] - 2026-11-26
+
+### Added
+- disclaimer added to economy tab
+- added a bunch of missing ancestrals
+- added some missing armors and weapons
+- updated the skill dumper to grab hollow skills, radiant skills, etc.
+
+### Fixed
+- Various vitalism damage skills changed to use healing %, crit rate, etc.:
+    - Holy bolt
+    - Antithesis (quake and regular)
+    - Base Skewer
+- t7 obsidian no longer counts as t6 for economy
+- various other skill-related fixes
+
+## [0.3.2] - 2026-11-26
+
+- Changelog now displays in credits!
+
+### Fixed
+- Removed a bunch of unused code
+- Removed unused features
+
 ## [0.3.1] - 2026-11-26
 
 ### Fixed

@@ -105,14 +105,14 @@ export function isEquipSkillActiveOnChar(skill, char) {
         if (!eq) continue;
         const iid = Number(eq.itemId ?? eq.id);
         const catItem = Number.isFinite(iid) && catalog?.itemById ? catalog.itemById.get(iid) : null;
-        pushEntry(eq.slotId ?? eq.slotName, iid, eq.name || catItem?.name, eq.eiset_id ?? catItem?.eiset_id, eq.set_effects);
+        pushEntry(eq.slotId ?? eq.slotName, iid, eq.name || catItem?.name, eq.eiset_id ?? catItem?.eiset_id, eq.seteffects ?? eq.set_effects);
     }
     for (const sl of rawSlots) {
         const eq = sl?.item?.equipment;
         if (!eq) continue;
         const iid = Number(eq.id);
         const catItem = Number.isFinite(iid) && catalog?.itemById ? catalog.itemById.get(iid) : null;
-        pushEntry(sl.id ?? sl.name, iid, eq.name || catItem?.name, eq.eiset_id ?? catItem?.eiset_id, eq.set_effects);
+        pushEntry(sl.id ?? sl.name, iid, eq.name || catItem?.name, eq.eiset_id ?? catItem?.eiset_id, eq.seteffects ?? eq.set_effects);
     }
 
     if (equippedBySlot.size === 0) return false;

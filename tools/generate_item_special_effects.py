@@ -4,13 +4,16 @@ item database dump (`aac_gear_audit.json`), attaching structured combat engine h
 for all stat/damage/healing/cast-time/buff-rank/rotation-affecting items.
 """
 import json
+import os
 import re
+import sys
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
 AUDIT_PATH = Path(
-    r"C:\Users\abcde\.gemini\antigravity\brain\3989cf34-b93d-470a-bb19-1b5242a95a15\scratch\aac_gear_audit.json"
+    sys.argv[1] if len(sys.argv) > 1 else os.environ.get("AAC_GEAR_AUDIT_PATH", str(REPO_ROOT / "tools" / "aac_gear_audit.json"))
 )
-OUT_PATH = Path("js/data/gear_catalog/item_special_effects.json")
+OUT_PATH = REPO_ROOT / "js" / "data" / "gear_catalog" / "item_special_effects.json"
 
 COLOR_RE = re.compile(r"\|c[0-9a-fA-F]{8}|\|[a-zA-Z0-9#_-]+;|\|r")
 PLACEHOLDER_RE = re.compile(r"#\{[^}]+\}")

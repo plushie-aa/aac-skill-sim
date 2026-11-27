@@ -9,7 +9,6 @@ export {
     computeActiveSetEffectSummaries,
     computeGearItemGrantedStats,
     getEquippedSpecialEffects,
-    getEquippedT7ObsidianEffects,
     getItemSpecialEffect,
     getT7ObsidianSpecialEffect,
     registerItemSpecialEffects,

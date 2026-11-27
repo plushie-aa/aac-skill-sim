@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://darugear.com https://aa-classic.com; connect-src 'self' https://154smechk6.execute-api.ap-southeast-2.amazonaws.com; object-src 'none'; base-uri 'self'"
+    />
     <title>ArcheAge Classic Skill Simulator</title>
-    <link rel="stylesheet" href="css/styles.css?v=55" />
+    <link rel="stylesheet" href="css/styles.css?v=57" />
 </head>
 <body>
     <div class="app-shell">
@@ -310,27 +315,6 @@
         </div>
     </div>
 
-    <!-- Quick Compare: 1-to-1 Gear, Lunagems & Costume Swapper Modal -->
-    <div class="modal-backdrop" id="gearSwapModal">
-        <div class="modal modal-gear-swap">
-            <div class="modal-header-row">
-                <h3>Quick Compare &mdash; 1-to-1 Gear, Lunagems &amp; Costume Swapper</h3>
-                <div class="gs-top-actions">
-                    <div class="seg-group" id="gsTargetSlotPills">
-                        <button type="button" class="seg-btn" data-gs-slot="A">Edit Build A</button>
-                        <button type="button" class="seg-btn active" data-gs-slot="B">Edit Build B</button>
-                    </div>
-                    <button type="button" class="sm" id="gsCloneAtoBBtn" title="Clone Build A (stats, gear &amp; buffs) into Build B as a clean baseline">Clone A &rarr; B</button>
-                </div>
-            </div>
-            <div class="gs-body" id="gearSwapBody"></div>
-            <div class="gs-preview-bar" id="gearSwapPreview"></div>
-            <div class="modal-actions">
-                <button type="button" class="primary" id="gsDoneBtn">Done</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Settings & DaruGear Sync Modal -->
     <div class="modal-backdrop" id="settingsModal">
         <div class="modal modal-settings">
@@ -586,6 +570,17 @@
                         </div>
                     </div>
 
+                    <div class="settings-section-lbl" style="margin-top:14px">Changelog</div>
+                    <div class="settings-sync-card credits-card">
+                        <div class="settings-sync-head">
+                            <strong>Release History</strong>
+                            <a class="credits-inline-link" href="https://github.com/plushie-aa/aac-skill-sim/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">View CHANGELOG.md &#8599;</a>
+                        </div>
+                        <div id="creditsChangelogBody" class="credits-changelog-body">
+                            <span class="hint-inline">Loading changelog&hellip;</span>
+                        </div>
+                    </div>
+
                     <div class="settings-section-lbl" style="margin-top:14px">Data Sources &amp; Community Credits</div>
                     <div class="settings-sync-card credits-card">
                         <ul class="credits-list">
@@ -650,6 +645,6 @@ SOFTWARE.</pre>
 
     <div id="toastBar" class="toast-bar hidden" role="status" aria-live="polite"></div>
 
-    <script type="module" src="js/ui/app.js?v=89"></script>
+    <script type="module" src="js/ui/app.js?v=97"></script>
 </body>
 </html>

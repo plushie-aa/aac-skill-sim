@@ -1109,6 +1109,78 @@ export function bindSettingsModalEvents() {
         });
     });
 
+    const formatInlineChangelogMd = (raw) => {
+        let html = escHtml(raw);
+        html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+        html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+        return html;
+    };
+
+    const renderChangelogMarkdown = (mdText) => {
+        const lines = String(mdText || "").replace(/\r\n/g, "\n").split("\n");
+        const parts = [];
+        let inRelease = false;
+        let inList = false;
+
+        const closeList = () => {
+            if (inList) {
+                parts.push("</ul>");
+                inList = false;
+            }
+        };
+        const closeRelease = () => {
+            closeList();
+            if (inRelease) {
+                parts.push("</div>");
+                inRelease = false;
+            }
+        };
+
+        for (const rawLine of lines) {
+            const line = rawLine.trim();
+            if (!line) {
+                closeList();
+                continue;
+            }
+            if (line.startsWith("# ") && !inRelease) continue;
+
+            const h2 = line.match(/^##\s+\[?([^\]\s]+)\]?(?:\s*[-–—]\s*(.+))?$/);
+            if (h2) {
+                closeRelease();
+                const verRaw = h2[1].trim();
+                const verLabel = /^v?\d+\.\d+/.test(verRaw) ? `v${verRaw.replace(/^v/i, "")}` : verRaw;
+                const dateStr = (h2[2] || "").trim();
+                parts.push(`<div class="cl-release"><div class="cl-head"><span class="cl-ver-pill">${escHtml(verLabel)}</span>${dateStr ? `<span class="cl-date">${escHtml(dateStr)}</span>` : ""}</div>`);
+                inRelease = true;
+                continue;
+            }
+
+            const h3 = line.match(/^###\s+(.+)$/);
+            if (h3) {
+                closeList();
+                const secName = h3[1].trim();
+                const secCls = secName.toLowerCase().replace(/[^a-z]/g, "");
+                parts.push(`<div class="cl-section-lbl cl-sec-${escHtml(secCls)}">${escHtml(secName)}</div>`);
+                continue;
+            }
+
+            const li = line.match(/^[-*]\s+(.+)$/);
+            if (li) {
+                if (!inList) {
+                    parts.push('<ul class="cl-list">');
+                    inList = true;
+                }
+                parts.push(`<li>${formatInlineChangelogMd(li[1])}</li>`);
+                continue;
+            }
+
+            closeList();
+            parts.push(`<p class="cl-para">${formatInlineChangelogMd(line)}</p>`);
+        }
+        closeRelease();
+        return parts.join("") || '<span class="hint-inline">No release notes found in CHANGELOG.md.</span>';
+    };
+
     const syncCreditsVersionPill = () => {
         const el = document.getElementById("creditsVersionPill");
         if (!el) return;
@@ -1128,6 +1200,20 @@ export function bindSettingsModalEvents() {
                 if (setAppVersion(txt)) syncCreditsVersionPill();
             })
             .catch(() => {});
+
+        const clEl = document.getElementById("creditsChangelogBody");
+        if (clEl) {
+            fetch("CHANGELOG.md", { cache: "no-store" })
+                .then((r) => (r.ok ? r.text() : ""))
+                .then((md) => {
+                    clEl.innerHTML = md.trim()
+                        ? renderChangelogMarkdown(md)
+                        : '<span class="hint-inline">CHANGELOG.md unavailable.</span>';
+                })
+                .catch(() => {
+                    clEl.innerHTML = '<span class="hint-inline">Could not load CHANGELOG.md.</span>';
+                });
+        }
     }
 
     // Display & Rounding

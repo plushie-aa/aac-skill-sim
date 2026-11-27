@@ -8,12 +8,14 @@ import csv
 import json
 import os
 import re
+import tempfile
 from collections import defaultdict
 from pathlib import Path
 
-DL_DIR = Path(os.environ.get("DARUGEAR_CSV_DIR", "tools/darugear_cache/v35"))
-OUT_DIR = Path("js/data/gear_catalog")
-ICONS_DIR = Path("assets/icons")
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DL_DIR = Path(os.environ.get("DARUGEAR_CSV_DIR", str(REPO_ROOT / "tools" / "darugear_cache" / "v35")))
+OUT_DIR = REPO_ROOT / "js" / "data" / "gear_catalog"
+ICONS_DIR = REPO_ROOT / "assets" / "icons"
 
 SLOTS = [
     {"id": 0, "name": "Costume", "group": "left"},
@@ -137,14 +139,14 @@ HOLDABLE_TYPE = {
     18: "Scepter", 19: "Bow", 20: "special", 21: "Lute", 22: "Drum-special", 23: "Flute",
     24: "Shield", 25: "Obsidian Katana", 26: "Obsidian Shortspear",
     27: "Offhand Magic Dagger", 28: "Offhand Healing Scepter", 29: "Magic Shield",
-    30: "Offhand Dagger", 9000003: "Warclub", 9000007: "Scythe",
+    30: "Offhand Dagger", 9000001: "Bow", 9000003: "Warclub", 9000007: "Scythe",
 }
 
 WEAPON_SLOTS = {
-    "Sword": [15, 16], "Dagger": [15, 16], "Greatsword": [15], "Katana": [15, 16],
+    "Sword": [15, 16], "Dagger": [15, 16], "Dagger-special": [15, 16], "Greatsword": [15], "Katana": [15, 16],
     "Nodachi": [15], "Axe": [15, 16], "GreatAxe": [15], "Club": [15], "Greatclub": [15],
     "Scepter": [15], "Shortspear": [15], "Longspear": [15], "Staff": [15], "Bow": [17],
-    "Lute": [18], "Flute": [18], "Shield": [16], "Obsidian Katana": [15],
+    "Lute": [18], "Flute": [18], "Drum-special": [18], "Shield": [16], "Obsidian Katana": [15],
     "Obsidian Shortspear": [15], "Offhand Healing Scepter": [16], "Offhand Magic Dagger": [16],
     "Magic Shield": [16], "Offhand Dagger": [16], "Warclub": [15], "Scythe": [15],
 }
@@ -174,16 +176,16 @@ def da_limit_name(g):
     return []
 
 def da_limit_type(g):
-    oneh = ["Club", "Dagger", "Sword", "Katana", "Axe", "Scepter", "Shortspear", "Obsidian Katana", "Obsidian Shortspear", "Offhand Magic Dagger", "Offhand Healing Scepter", "Offhand Dagger"]
+    oneh = ["Club", "Dagger", "Dagger-special", "Sword", "Katana", "Axe", "Scepter", "Shortspear", "Obsidian Katana", "Obsidian Shortspear", "Offhand Magic Dagger", "Offhand Healing Scepter", "Offhand Dagger"]
     twoh = ["Greatclub", "Staff", "Longspear", "Nodachi", "Greatsword", "GreatAxe", "Warclub", "Scythe"]
     shields = ["Shield", "Magic Shield"]
     offhands = ["Offhand Magic Dagger", "Offhand Healing Scepter", "Offhand Dagger"]
     if g == 1: return oneh
     if g in (2, 13): return twoh
     if g in (4, 20): return shields
-    if g == 11: return oneh + ["Bow", "Flute", "Lute"]
+    if g == 11: return oneh + ["Bow", "Flute", "Lute", "Drum-special"]
     if g == 12: return oneh
-    if g == 14: return ["Bow", "Flute", "Lute", "Synthesis Gear"]
+    if g == 14: return ["Bow", "Flute", "Lute", "Drum-special", "Synthesis Gear"]
     if g == 25: return shields + oneh
     if g == 35: return shields + offhands + twoh
     return []
@@ -214,6 +216,8 @@ def clean_icon(fn):
     if not fn:
         return ""
     png = str(fn).replace("\\", "/").replace(".dds", ".png").lstrip("/")
+    if not png or ".." in png.split("/") or not re.match(r"^[A-Za-z0-9_./-]+\.png$", png):
+        return ""
     if (ICONS_DIR / png).exists():
         return "assets/icons/" + png
     return png  # UI resolves local or https://darugear.com/assets/icons/<png>
@@ -610,9 +614,17 @@ def compile_gear_catalog(dl_dir=None, out_dir=None, icons_dir=None):
 
     def dump_compact(path, obj):
         raw = json.dumps(obj, separators=(",", ":"), ensure_ascii=False)
-        tmp = path.with_suffix(".json.tmp")
-        tmp.write_text(raw, encoding="utf-8")
-        tmp.replace(path)
+        fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.stem}.", suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                fh.write(raw)
+            os.replace(tmp_name, path)
+        except Exception:
+            try:
+                os.unlink(tmp_name)
+            except OSError:
+                pass
+            raise
         print(f"Wrote {path} ({len(raw):,} bytes)")
 
     dump_compact(OUT_DIR / "meta.json", meta)

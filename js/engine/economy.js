@@ -31,6 +31,12 @@ const LOWER_GRADE_MULT = Object.freeze({
 
 export const ECONOMY_TIERS = Object.freeze([
     {
+        id: "erenor_weapon",
+        label: "Erenor Weapon / Shield / Bow",
+        hint: "Crafted Erenor weapons, shields & bows",
+        defaults: { Celestial: 90000, Divine: 180000, Epic: 420000, Legendary: 950000, Mythic: 1900000 },
+    },
+    {
         id: "obsidian_t7_weapon",
         label: "Obsidian T7 Weapon / Shield / Bow",
         hint: "Lv 64 Obsidian T7 (e.g. Razor Visage, Kingsbane, Deathfletcher, Widowshroud)",
@@ -53,6 +59,18 @@ export const ECONOMY_TIERS = Object.freeze([
         label: "World Boss Weapon / Shield / Bow",
         hint: "Red Dragon, Kraken, Leviathan, Searing Oath & world boss drops",
         defaults: { Celestial: 65000, Divine: 120000, Epic: 260000, Legendary: 650000, Mythic: 1400000 },
+    },
+    {
+        id: "erenor_armor",
+        label: "Erenor Armor Piece",
+        hint: "Crafted Erenor Plate / Leather / Cloth armor pieces",
+        defaults: { Celestial: 35000, Divine: 75000, Epic: 180000, Legendary: 420000, Mythic: 850000 },
+    },
+    {
+        id: "boss_armor",
+        label: "World Boss Armor Piece",
+        hint: "Anthalon, Red Dragon, Kraken, Leviathan & world boss armor pieces",
+        defaults: { Celestial: 18000, Divine: 40000, Epic: 95000, Legendary: 240000, Mythic: 520000 },
     },
     {
         id: "obsidian_t7_armor",
@@ -287,8 +305,12 @@ const WORLD_BOSS_RE =
 function buildCatalogLevelMap(catalog) {
     const map = new Map();
     if (!catalog || typeof catalog !== "object") return map;
+    const sources = [];
+    if (Array.isArray(catalog.allItems)) sources.push(catalog.allItems);
     for (const key of ["weapons", "armors", "accessories"]) {
-        const list = Array.isArray(catalog[key]) ? catalog[key] : [];
+        if (Array.isArray(catalog[key])) sources.push(catalog[key]);
+    }
+    for (const list of sources) {
         for (const it of list) {
             if (!it?.name || !it.level) continue;
             const k = String(it.name).trim().toLowerCase();
@@ -322,6 +344,7 @@ export function classifyGearItemTier(item, catalogLevelMap = null) {
     }
 
     if (WEAPON_SLOT_IDS.has(slotId)) {
+        if (lower.includes("erenor")) return "erenor_weapon";
         if (WORLD_BOSS_RE.test(lower)) return "boss_weapon";
         if (lower.includes("ayanad")) return "ayanad_weapon";
         if (lower.includes("delphinad") || lower.includes("epherium")) return "delphinad_gear";
@@ -332,6 +355,8 @@ export function classifyGearItemTier(item, catalogLevelMap = null) {
     }
 
     if (ARMOR_SLOT_IDS.has(slotId)) {
+        if (lower.includes("erenor")) return "erenor_armor";
+        if (WORLD_BOSS_RE.test(lower)) return "boss_armor";
         if (lower.includes("ayanad")) return "ayanad_armor";
         if (lower.includes("delphinad") || lower.includes("epherium")) return "delphinad_gear";
         if (lv >= 63) return "obsidian_t7_armor";
@@ -808,24 +833,24 @@ const ADVISOR_UPGRADE_CANDIDATES = Object.freeze([
         kind: "gem",
         name: "Lucid Gale Lunagem: Pierce",
         groupId: "offense_t3",
-        effectLabel: "+150 Defense Penetration",
-        apply: (ch) => applyOverrides(ch, { offense: { defensePenetration: (Number(ch.offense?.defensePenetration) || 0) + 150 } }),
+        effectLabel: "+60 Defense Penetration",
+        apply: (ch) => applyOverrides(ch, { offense: { defensePenetration: (Number(ch.offense?.defensePenetration) || 0) + 60 } }),
     },
     {
         id: "gem_mdefpen",
         kind: "gem",
         name: "Lucid Gale Lunagem: Breakthrough",
         groupId: "offense_t3",
-        effectLabel: "+150 Magic Defense Penetration",
-        apply: (ch) => applyOverrides(ch, { offense: { magicDefensePenetration: (Number(ch.offense?.magicDefensePenetration) || 0) + 150 } }),
+        effectLabel: "+60 Magic Defense Penetration",
+        apply: (ch) => applyOverrides(ch, { offense: { magicDefensePenetration: (Number(ch.offense?.magicDefensePenetration) || 0) + 60 } }),
     },
     {
         id: "gem_focus",
         kind: "gem",
-        name: "Lucid Gale Lunagem: Focus",
+        name: "Lucid Gale Lunagem: Fidelity",
         groupId: "offense_t3",
-        effectLabel: "+480 Focus",
-        apply: (ch) => applyOverrides(ch, { offense: { focus: (Number(ch.offense?.focus) || 0) + 480 } }),
+        effectLabel: "+280 Focus",
+        apply: (ch) => applyOverrides(ch, { offense: { focus: (Number(ch.offense?.focus) || 0) + 280 } }),
     },
     {
         id: "gem_melee_atk",
@@ -844,41 +869,49 @@ const ADVISOR_UPGRADE_CANDIDATES = Object.freeze([
         apply: (ch) => applyOverrides(ch, { offense: { rangedAttack: (Number(ch.offense?.rangedAttack) || 0) + 6 } }),
     },
     {
+        id: "gem_magic_atk",
+        kind: "gem",
+        name: "Lucid Fire Lunagem: Extreme",
+        groupId: "offense_t3",
+        effectLabel: "+6 Magic Attack",
+        apply: (ch) => applyOverrides(ch, { offense: { magicAttack: (Number(ch.offense?.magicAttack) || 0) + 6 } }),
+    },
+    {
         id: "gem_melee_cd",
         kind: "gem",
-        name: "Lucid Gale Lunagem: Harbinger",
+        name: "Lucid Gale Lunagem: Wrath",
         groupId: "offense_t3",
-        effectLabel: "+2.4% Melee Crit Damage",
-        apply: (ch) => applyOverrides(ch, { offense: { meleeCritBonusPct: (Number(ch.offense?.meleeCritBonusPct) || 0) + 2.4 } }),
+        effectLabel: "+5.0% Melee Crit Damage",
+        apply: (ch) => applyOverrides(ch, { offense: { meleeCritBonusPct: (Number(ch.offense?.meleeCritBonusPct) || 0) + 5 } }),
     },
     {
         id: "gem_ranged_cd",
         kind: "gem",
-        name: "Lucid Gale Lunagem: Torrent",
+        name: "Lucid Gale Lunagem: Constance",
         groupId: "offense_t3",
-        effectLabel: "+2.4% Ranged Crit Damage",
-        apply: (ch) => applyOverrides(ch, { offense: { rangedCritBonusPct: (Number(ch.offense?.rangedCritBonusPct) || 0) + 2.4 } }),
+        effectLabel: "+5.0% Ranged Crit Damage",
+        apply: (ch) => applyOverrides(ch, { offense: { rangedCritBonusPct: (Number(ch.offense?.rangedCritBonusPct) || 0) + 5 } }),
     },
     {
         id: "gem_magic_cd",
         kind: "gem",
-        name: "Lucid Gale Lunagem: Destruction",
+        name: "Lucid Gale Lunagem: Harbinger",
         groupId: "offense_t3",
-        effectLabel: "+2.4% Magic Crit Damage",
-        apply: (ch) => applyOverrides(ch, { offense: { magicCritBonusPct: (Number(ch.offense?.magicCritBonusPct) || 0) + 2.4 } }),
+        effectLabel: "+5.0% Magic Crit Damage",
+        apply: (ch) => applyOverrides(ch, { offense: { magicCritBonusPct: (Number(ch.offense?.magicCritBonusPct) || 0) + 5 } }),
     },
     {
         id: "gem_heal_cd",
         kind: "gem",
-        name: "Lucid Gale Lunagem: Mercy",
+        name: "Lucid Gale Lunagem: Benevolence",
         groupId: "offense_t3",
-        effectLabel: "+2.4% Heal Crit Damage",
-        apply: (ch) => applyOverrides(ch, { offense: { healCritBonusPct: (Number(ch.offense?.healCritBonusPct) || 0) + 2.4 } }),
+        effectLabel: "+5.0% Crit Heal Bonus",
+        apply: (ch) => applyOverrides(ch, { offense: { healCritBonusPct: (Number(ch.offense?.healCritBonusPct) || 0) + 5 } }),
     },
     {
         id: "gem_heal_pwr",
         kind: "gem",
-        name: "Lucid Gale Lunagem: Benevolence",
+        name: "Lucid Fire Lunagem: Aid",
         groupId: "offense_t3",
         effectLabel: "+6 Healing Power",
         apply: (ch) => applyOverrides(ch, { offense: { healingPower: (Number(ch.offense?.healingPower) || 0) + 6 } }),
@@ -920,18 +953,38 @@ const ADVISOR_UPGRADE_CANDIDATES = Object.freeze([
     {
         id: "frost_melee_cd",
         kind: "frost",
-        name: "Flawless Assassin's Lunafrost",
+        name: "Honorbold Precision Lunafrost",
+        uniqueSlotId: 5,
         groupId: "flawless_distorted_frost",
-        effectLabel: "+2.0% Melee Crit Damage",
-        apply: (ch) => applyOverrides(ch, { offense: { meleeCritBonusPct: (Number(ch.offense?.meleeCritBonusPct) || 0) + 2 } }),
+        effectLabel: "+12.0% Melee Crit Damage (Hands)",
+        apply: (ch) => applyOverrides(ch, { offense: { meleeCritBonusPct: (Number(ch.offense?.meleeCritBonusPct) || 0) + 12 } }),
+    },
+    {
+        id: "frost_ranged_cd",
+        kind: "frost",
+        name: "Honorbold Agility Lunafrost",
+        uniqueSlotId: 5,
+        groupId: "flawless_distorted_frost",
+        effectLabel: "+12.0% Ranged Crit Damage (Hands)",
+        apply: (ch) => applyOverrides(ch, { offense: { rangedCritBonusPct: (Number(ch.offense?.rangedCritBonusPct) || 0) + 12 } }),
     },
     {
         id: "frost_magic_cd",
         kind: "frost",
-        name: "Flawless Wave Lunafrost",
+        name: "Honorbold Calm Lunafrost",
+        uniqueSlotId: 5,
         groupId: "flawless_distorted_frost",
-        effectLabel: "+2.0% Magic Crit Damage",
-        apply: (ch) => applyOverrides(ch, { offense: { magicCritBonusPct: (Number(ch.offense?.magicCritBonusPct) || 0) + 2 } }),
+        effectLabel: "+8.0% Magic Crit Damage (Hands)",
+        apply: (ch) => applyOverrides(ch, { offense: { magicCritBonusPct: (Number(ch.offense?.magicCritBonusPct) || 0) + 8 } }),
+    },
+    {
+        id: "frost_heal_cd",
+        kind: "frost",
+        name: "Honorbold Benevolence Lunafrost",
+        uniqueSlotId: 5,
+        groupId: "flawless_distorted_frost",
+        effectLabel: "+8.0% Crit Heal Bonus (Hands)",
+        apply: (ch) => applyOverrides(ch, { offense: { healCritBonusPct: (Number(ch.offense?.healCritBonusPct) || 0) + 8 } }),
     },
 ]);
 
@@ -961,8 +1014,8 @@ export function computeGoldEfficiencyUpgrades(
     const ahIndex = buildAhLookupIndex(ahPrices);
     const useAh = priceBook.useAhPrices !== false && ahIndex !== null;
 
-    const effChar = charMods.length > 0 ? applyModifiers(character, charMods) : character;
-    const effOpp = opponent ? (oppMods.length > 0 ? applyModifiers(opponent, oppMods) : opponent) : effChar;
+    const effChar = applyModifiers(character, charMods);
+    const effOpp = opponent ? applyModifiers(opponent, oppMods) : effChar;
     const cleanCtx = {
         ...baseCtx,
         disableAvoidance,

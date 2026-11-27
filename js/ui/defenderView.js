@@ -352,6 +352,14 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
 
     const rawComboSteps =
         selectedComboId === "__active__" ? activeRotSteps : selectedComboObj?.steps || [];
+    const selectedInitialEffects =
+        selectedComboId === "__active__"
+            ? Array.isArray(state.rotationInitialEffects)
+                ? state.rotationInitialEffects
+                : []
+            : Array.isArray(selectedComboObj?.initialEffects)
+              ? selectedComboObj.initialEffects
+              : [];
     const resolvedComboSteps = rawComboSteps
         .map((st, idx) => {
             const sk = skillById.get(st.skillId);
@@ -364,6 +372,7 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
         ...baseCtx,
         disableAvoidance: manualDisableAvoid,
         targetAbsorbShield: defComboShield,
+        rotationInitialEffects: selectedInitialEffects,
         attackerModifiers: getSlotModifiers("defender"),
         defenderModifiers: getSlotModifiers("A"),
     };
@@ -371,6 +380,7 @@ function renderDefenderComboSection({ effAttacker, baseCtx, manualDisableAvoid, 
         ...baseCtx,
         disableAvoidance: manualDisableAvoid,
         targetAbsorbShield: defComboShield,
+        rotationInitialEffects: selectedInitialEffects,
         attackerModifiers: getSlotModifiers("defender"),
         defenderModifiers: getSlotModifiers("B"),
     };
@@ -768,6 +778,7 @@ export function renderDefenderComparison(out) {
             if (chosen) {
                 state.activeRotationId = chosen.id;
                 state.rotationSteps = (chosen.steps || []).map((s) => ({ ...s }));
+                state.rotationInitialEffects = Array.isArray(chosen.initialEffects) ? [...chosen.initialEffects] : [];
             }
         }
         switchAppMode("rotation", { renderCards: true });

@@ -116,7 +116,12 @@ function resolveComboStepsForMatrix(combo, skillById) {
         })
         .filter(Boolean);
     if (steps.length === 0) return null;
-    return { id: combo.id || "combo", label: combo.label || combo.id || "Combo", steps };
+    return {
+        id: combo.id || "combo",
+        label: combo.label || combo.id || "Combo",
+        steps,
+        initialEffects: Array.isArray(combo.initialEffects) ? [...combo.initialEffects] : [],
+    };
 }
 
 function findBestSavedComboForRole(role, savedCombos, skillById) {
@@ -678,7 +683,7 @@ export function renderMatrixView(out) {
                           ? `Defender (Row) EHP against Attacker (Column)'s primary damage type (Magic vs Mages/Healers, Ranged vs Archers, Melee vs Melees/Tanks) &bull; Avg = Row build's average EHP across all attackers`
                           : allMetric === "healing_output"
                             ? `Healer (Row) ${escHtml(selectedHealSkill.name)} output onto Ally Target (Column) &mdash; includes caster Healing Power, Heal Crit, Outgoing Healing % &amp; Ally Received Healing %${isPerSecHeal ? " (hover any cell for full 15s song total)" : ""}`
-                            : `Selected Skill (${skill?.name || "None"}) as % of Defender Max HP`;
+                            : `Selected Skill (${escHtml(skill?.name || "None")}) as % of Defender Max HP`;
 
             const roleBadgeTxt = (e) => {
                 const rMap = { magic: "Mage", ranged: "Archer", melee: "Melee", healer: "Healer", tank: "Tank" };

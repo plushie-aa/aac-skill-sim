@@ -167,9 +167,6 @@ export const ui = {
     renderSimulation: () => {},
     renderSkillBrowser: () => {},
     updateBuffedStatsPanel: () => {},
-    openGearSwapModal: () => {},
-    closeGearSwapModal: () => {},
-    renderGearSwapModal: () => {},
     openImportModal: () => {},
     closeImportModal: () => {},
     openBuffPullModal: () => {},
@@ -825,10 +822,10 @@ export function sanitizeSafeIconUrl(rawUrl) {
     const s = rawUrl.replace(/\\/g, "/").trim();
     if (!s || s.includes("..")) return "";
     if (s.startsWith("assets/")) return s;
-    if (/^https?:\/\//i.test(s)) {
+    if (/^https:\/\//i.test(s)) {
         try {
             const u = new URL(s);
-            if ((u.protocol === "https:" || u.protocol === "http:") && TRUSTED_EXTERNAL_ICON_HOSTS.has(u.hostname.toLowerCase())) {
+            if (u.protocol === "https:" && TRUSTED_EXTERNAL_ICON_HOSTS.has(u.hostname.toLowerCase())) {
                 return u.href;
             }
         } catch {
@@ -1044,9 +1041,6 @@ export function cloneBuildSlot(fromSlot, toSlot) {
     state.loadedSavedId[toSlot] = null;
     ui.renderCharacterCards();
     ui.renderSimulation();
-    if (document.getElementById("gearSwapModal")?.classList.contains("open")) {
-        ui.renderGearSwapModal();
-    }
     showToast(`Cloned ${srcChar.name} → ${cloned.name}`, "ok");
 }
 
@@ -1074,9 +1068,6 @@ export function swapBuildSlots(slot1, slot2) {
 
     ui.renderCharacterCards();
     ui.renderSimulation();
-    if (document.getElementById("gearSwapModal")?.classList.contains("open")) {
-        ui.renderGearSwapModal();
-    }
     const labelOf = (s) => (s === "defender" ? "Target / Def" : `Build ${s}`);
     showToast(`Swapped ${labelOf(slot1)} (${c2.name}) ↔ ${labelOf(slot2)} (${c1.name})`, "ok");
 }
@@ -1211,8 +1202,12 @@ export function getEffectiveSkill(rawSkill) {
 export function skillIconUrl(skill) {
     if (!skill?.icon) return "";
     const clean = String(skill.icon).replace(/\\/g, "/").trim();
-    if (/^https?:\/\//i.test(clean)) return clean;
-    return clean.startsWith("assets/") ? clean : `assets/icons/${clean}`;
+    if (!clean || clean.includes("..")) return "";
+    if (/^https?:\/\//i.test(clean) || clean.startsWith("assets/")) {
+        return sanitizeSafeIconUrl(clean);
+    }
+    if (/^[a-z][a-z0-9+.-]*:/i.test(clean)) return "";
+    return `assets/icons/${clean.replace(/^\/+/, "")}`;
 }
 
 export function formatRankTag(res) {

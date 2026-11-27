@@ -22,7 +22,7 @@ from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 TOOLS_DIR = Path(__file__).resolve().parent
 if str(TOOLS_DIR) not in sys.path:
@@ -47,6 +47,32 @@ MAX_ICON_CACHE_BATCH = 60
 VALID_ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,79}$")
 ALLOWED_LOCAL_HOSTS = {"127.0.0.1", "localhost", "::1"}
 BLOCKED_STATIC_TOP_DIRS = {"tools", ".git"}
+ALLOWED_REMOTE_API_HOSTS = {"154smechk6.execute-api.ap-southeast-2.amazonaws.com"}
+TRUSTED_ICON_HOSTS = {"darugear.com", "www.darugear.com", "aa-classic.com", "www.aa-classic.com"}
+
+
+class _SafeHttpsRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        parsed = urlparse(newurl)
+        if parsed.scheme.lower() != "https" or (parsed.hostname or "").lower() not in ALLOWED_REMOTE_API_HOSTS:
+            raise ValueError(f"Blocked redirect to untrusted target: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_SAFE_OPENER = build_opener(_SafeHttpsRedirectHandler())
+
+
+def _sanitize_icon_url(raw: str) -> str | None:
+    s = str(raw or "").replace("\\", "/").strip()
+    if not s or ".." in s.split("/"):
+        return None
+    if s.startswith("assets/"):
+        return s
+    if s.lower().startswith("https://"):
+        parsed = urlparse(s)
+        if parsed.scheme.lower() == "https" and (parsed.hostname or "").lower() in TRUSTED_ICON_HOSTS:
+            return s
+    return None
 
 
 def slugify_build_id(raw: str) -> str:
@@ -145,21 +171,36 @@ def _extract_host_and_port(host_header: str) -> tuple[str, int | None]:
     return raw, None
 
 
-def _is_blocked_static_path(url_path: str) -> bool:
+def _is_blocked_static_path(url_path: str, resolved_path: Path | None = None) -> bool:
     clean = unquote(url_path or "").replace("\\", "/")
     parts = [p for p in clean.split("/") if p]
-    if not parts:
-        return False
-    if parts[0].lower() in BLOCKED_STATIC_TOP_DIRS:
-        return True
-    return any(p.startswith(".") for p in parts)
+    if parts:
+        # Strip trailing dots/spaces (Windows NTFS silently strips them on open)
+        first = parts[0].rstrip(". ").lower()
+        if first in BLOCKED_STATIC_TOP_DIRS:
+            return True
+        if any(p.startswith(".") or p.rstrip(". ").lower() in BLOCKED_STATIC_TOP_DIRS for p in parts):
+            return True
+    if resolved_path is not None:
+        try:
+            rp = resolved_path.resolve()
+            root = REPO_ROOT.resolve()
+            if root not in rp.parents and rp != root:
+                return True
+            for blocked_dir in BLOCKED_STATIC_TOP_DIRS:
+                bd = (root / blocked_dir).resolve()
+                if rp == bd or bd in rp.parents:
+                    return True
+        except OSError:
+            return True
+    return False
 
 
 APP_CSP_POLICY = (
     "default-src 'self'; "
     "script-src 'self'; "
     "style-src 'self' 'unsafe-inline'; "
-    "img-src 'self' data: https://darugear.com https://aa-classic.com; "
+    "img-src 'self' https://darugear.com https://aa-classic.com; "
     "connect-src 'self' https://154smechk6.execute-api.ap-southeast-2.amazonaws.com; "
     "object-src 'none'; "
     "base-uri 'self'; "
@@ -167,7 +208,7 @@ APP_CSP_POLICY = (
 )
 TEST_RUNNER_CSP_POLICY = (
     "default-src 'self'; "
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
+    "script-src 'self' 'unsafe-inline'; "
     "style-src 'self' 'unsafe-inline'; "
     "object-src 'none'; "
     "base-uri 'self'; "
@@ -193,7 +234,7 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
         path_lower = urlparse(self.path).path.lower()
         if not path_lower.startswith("/api/") and (
             path_lower in ("/", "/version")
-            or path_lower.endswith((".html", ".js", ".mjs", ".css", ".json"))
+            or path_lower.endswith((".html", ".js", ".mjs", ".css", ".json", ".md"))
         ):
             self.send_header("Cache-Control", "no-store, max-age=0")
         self.send_header("X-Content-Type-Options", "nosniff")
@@ -281,7 +322,7 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
         if not self._check_host_allowed():
             return
         parsed = urlparse(self.path)
-        if parsed.path.startswith("/api/") or _is_blocked_static_path(parsed.path):
+        if parsed.path.startswith("/api/") or _is_blocked_static_path(parsed.path, Path(self.translate_path(self.path))):
             self.send_error(HTTPStatus.FORBIDDEN, "Access denied")
             return
         super().do_HEAD()
@@ -477,7 +518,7 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
             api_url = f"https://154smechk6.execute-api.ap-southeast-2.amazonaws.com/default/gear/{raw_code}"
             try:
                 req = Request(api_url, headers={"User-Agent": "AAC-DamageSim/1.0", "Accept": "application/json"})
-                with urlopen(req, timeout=12) as resp:
+                with _SAFE_OPENER.open(req, timeout=12) as resp:
                     raw_bytes = resp.read(MAX_REMOTE_JSON_BYTES + 1)
                 if len(raw_bytes) > MAX_REMOTE_JSON_BYTES:
                     raise ValueError("Remote DaruGear response exceeded size limit")
@@ -513,7 +554,7 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
                 },
             )
             return
-        if _is_blocked_static_path(parsed.path):
+        if _is_blocked_static_path(parsed.path, Path(self.translate_path(self.path))):
             self.send_error(HTTPStatus.FORBIDDEN, "Access denied")
             return
         super().do_GET()
@@ -574,6 +615,7 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
                 "activeId": payload.get("activeId"),
                 "combos": combos_list,
                 "steps": payload.get("steps") if isinstance(payload.get("steps"), list) else [],
+                "initialEffects": payload.get("initialEffects") if isinstance(payload.get("initialEffects"), list) else [],
                 "updatedAt": payload.get("updatedAt") or int(datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000),
             }
             try:
@@ -700,9 +742,14 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
                         local_icon = import_buff.download_aac_icon(str(raw_icon))
                         if local_icon:
                             mod["icon"] = local_icon
-                    elif isinstance(mod.get("icon"), str) and mod["icon"].startswith("assets/icons/"):
-                        rel = mod["icon"][len("assets/icons/"):]
-                        import_buff.download_aac_icon(rel)
+                    elif isinstance(mod.get("icon"), str):
+                        safe_ic = _sanitize_icon_url(mod["icon"])
+                        if safe_ic:
+                            mod["icon"] = safe_ic
+                            if safe_ic.startswith("assets/icons/"):
+                                import_buff.download_aac_icon(safe_ic[len("assets/icons/"):])
+                        else:
+                            mod.pop("icon", None)
                     mod.pop("remoteIcon", None)
                     saved = import_buff.save_custom_buff(mod)
                 elif payload.get("buffId") is not None:
@@ -832,8 +879,8 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
 
         raw_id = payload.get("savedId") or payload.get("name") or ""
         build_id = slugify_build_id(str(raw_id))
-        if not VALID_ID_RE.match(build_id):
-            self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Invalid build ID"})
+        if not VALID_ID_RE.match(build_id) or f"{build_id}.json" in NON_CHARACTER_BUILD_FILES:
+            self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Invalid or reserved build ID"})
             return
 
         BUILDS_DIR.mkdir(parents=True, exist_ok=True)
@@ -897,8 +944,8 @@ class SimRequestHandler(SimpleHTTPRequestHandler):
             return
 
         build_id = unquote(parsed.path[len(prefix):]).strip()
-        if not VALID_ID_RE.match(build_id):
-            self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Invalid build ID"})
+        if not VALID_ID_RE.match(build_id) or f"{build_id}.json" in NON_CHARACTER_BUILD_FILES:
+            self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Invalid or reserved build ID"})
             return
 
         target = (BUILDS_DIR / f"{build_id}.json").resolve()

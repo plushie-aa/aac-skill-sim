@@ -70,9 +70,29 @@ TREE_ID_TO_SLUG = {
 }
 
 
+from urllib.parse import urlparse
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+_ALLOWED_DG_HOSTS = {"darugear.com", "www.darugear.com"}
+
+
+class _SafeDgRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        p = urlparse(newurl)
+        if p.scheme.lower() != "https" or (p.hostname or "").lower() not in _ALLOWED_DG_HOSTS:
+            raise RuntimeError(f"Blocked redirect to untrusted host: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_SAFE_DG_OPENER = build_opener(_SafeDgRedirectHandler())
+
+
 def _http_get_bytes(url: str, timeout: int = 20, max_bytes: int = MAX_CSV_BYTES) -> bytes:
+    p = urlparse(url)
+    if p.scheme.lower() != "https" or (p.hostname or "").lower() not in _ALLOWED_DG_HOSTS:
+        raise RuntimeError(f"Blocked request to untrusted host: {url}")
     req = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
-    with urlopen(req, timeout=timeout) as resp:
+    with _SAFE_DG_OPENER.open(req, timeout=timeout) as resp:
         data = resp.read(max_bytes + 1)
     if len(data) > max_bytes:
         raise RuntimeError(f"Remote response exceeded {max_bytes} byte safety limit: {url}")
@@ -94,6 +114,8 @@ def _resolve_icon(raw_fn: str) -> str:
     if not raw_fn:
         return ""
     png = str(raw_fn).replace("\\", "/").replace(".dds", ".png").lstrip("/")
+    if not png or ".." in png.split("/") or not re.match(r"^[A-Za-z0-9_./-]+\.png$", png):
+        return ""
     if (ICONS_DIR / png).exists():
         return "assets/icons/" + png
     return f"https://darugear.com/assets/icons/{png}"

@@ -15,6 +15,7 @@ import {
     persistActiveCustomBuffsToLocalStorage,
     persistCustomBuffsToLocalStorage,
     persistDeletedBuffIdsToLocalStorage,
+    sanitizeSafeIconUrl,
     showToast,
     state,
     ui,
@@ -232,7 +233,7 @@ export function renderBuffPullPreview() {
     previewArea.classList.remove("hidden");
 
     const iconEl = document.getElementById("buffPreviewIcon");
-    const iconUrl = mod.remoteIcon || mod.icon || "";
+    const iconUrl = sanitizeSafeIconUrl(mod.remoteIcon || mod.icon || "");
     if (iconUrl) {
         iconEl.src = iconUrl;
         iconEl.classList.remove("hidden");

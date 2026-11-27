@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_sorcery.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 18,
+  "skillCount": 19,
   "skills": [
     {
       "id": "sorcery_flamebolt",
@@ -736,6 +736,23 @@
       "cooldownSec": 45.0,
       "castTimeSec": 0.0,
       "icon": "icon_skill_magic06.png"
+    },
+    {
+      "id": "sorcery_void_leap",
+      "skillset": "sorcery",
+      "name": "Void Leap",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "0s CD random teleport (5m–15m, costs Abyssal Charges)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 34093,
+      "abilityLevel": 10,
+      "cooldownSec": 0.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred24.png",
+      "description": "Teleports to a random location 5m–10m away (5m–15m at Rank 2). No cooldown; spend Abyssal Charges to cast repeatedly. Can't be used while Snared."
     }
   ]
 }

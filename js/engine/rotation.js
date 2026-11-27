@@ -11,7 +11,7 @@
  *  - Window DPS / HPS and Time-to-Kill (TTK)
  */
 
-import { getEquippedT7ObsidianEffects } from "../adapters/darugear_calc.js";
+import { getEquippedSpecialEffects } from "../adapters/darugear_calc.js";
 import { mergeConstants } from "./constants.js";
 import {
     SKILL_DEBUFF_GRANTS,
@@ -162,8 +162,10 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
 
     let elapsedSec = 0;
     let maxImpactSec = 0;
-    let totalNormal = 0;
-    let totalCrit = 0;
+    let totalDamageNormal = 0;
+    let totalDamageCrit = 0;
+    let totalHealNormal = 0;
+    let totalHealCrit = 0;
     let totalExpected = 0;
     let totalDamageExpected = 0;
     let totalHealExpected = 0;
@@ -592,7 +594,7 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
             }
         }
 
-        const actorT7Effects = getEquippedT7ObsidianEffects(stepActor);
+        const actorT7Effects = getEquippedSpecialEffects(stepActor);
         const isBaseVariant = (skill.variant || "base") === "base";
 
         // Register any cast-time-removing combo buff granted by this skill (active from endSec)
@@ -793,18 +795,20 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         }
 
         if (!isUtility) {
-            totalNormal += res.normal;
-            totalCrit += res.crit;
             totalExpected += res.expected;
 
             if (isHeal) {
                 healStepCount++;
+                totalHealNormal += res.normal;
+                totalHealCrit += res.crit;
                 totalHealExpected += res.expected;
                 for (const h of res.perHit || []) {
                     healPmf = convolvePmf(healPmf, getHitOutcomes(h, true));
                 }
             } else {
                 damageStepCount++;
+                totalDamageNormal += res.normal;
+                totalDamageCrit += res.crit;
                 totalDamageExpected += res.expected;
                 for (const h of res.perHit || []) {
                     damagePmf = convolvePmf(damagePmf, getHitOutcomes(h, false));
@@ -876,6 +880,8 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         .sort((a, b) => a.startSec - b.startSec);
 
     const mode = healStepCount > 0 && damageStepCount === 0 ? "heal" : "damage";
+    const primaryNormal = mode === "heal" ? totalHealNormal : totalDamageNormal;
+    const primaryCrit = mode === "heal" ? totalHealCrit : totalDamageCrit;
     const primaryExpected = mode === "heal" ? totalHealExpected : totalDamageExpected;
     const primaryPmf = mode === "heal" ? healPmf : damagePmf;
     const distThreshold = mode === "damage" ? effectiveKillHp : targetMaxHp;
@@ -898,9 +904,13 @@ export function simulateRotation(actor, target, steps = [], context = {}, custom
         totalCastTimeSec,
         totalCastTimeSavedSec,
         triggeredCombos,
-        totalNormal,
-        totalCrit,
+        totalNormal: primaryNormal,
+        totalCrit: primaryCrit,
         totalExpected: primaryExpected,
+        totalDamageNormal,
+        totalDamageCrit,
+        totalHealNormal,
+        totalHealCrit,
         totalDamageExpected,
         totalHealExpected,
         windowRate, // Window DPS (damage) or Window HPS (heal)

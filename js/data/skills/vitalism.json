@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_vitalism.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 15,
+  "skillCount": 19,
   "skills": [
     {
       "id": "vitalism_holy_bolt",
@@ -228,6 +228,9 @@
       "damageType": "magic",
       "scalingStat": "healingPower",
       "multiplierStat": "heal_mul",
+      "flags": {
+        "pveBonusPct": 35
+      },
       "skillId": 36631,
       "base": 864,
       "scalingPct": 160,
@@ -398,7 +401,11 @@
       "kind": "damage",
       "damageType": "magic",
       "scalingStat": "healingPower",
-      "multiplierStat": "heal_mul",
+      "multiplierStat": "magic_mul",
+      "flags": {
+        "pveBonusPct": 35,
+        "useMagicCritAndMul": true
+      },
       "hits": [
         {
           "skillId": 36637,
@@ -425,7 +432,7 @@
           "description": "Summons Skewers in a 5m radius at the target location.Can be used up to 3 times in a row without casting delay, but the damage is reduced on consecutive casts.\nSkewers deal 1313 (1181 + 130% Healing Power) Magic Damage and Impale their targets for 2.6s, preventing all actions."
         }
       ],
-      "description": "Summons Skewers in a 5m radius at the target location.Can be used up to 3 times in a row without casting delay, but the damage is reduced on consecutive casts.\nSkewers deal 1958 (1677 + 276% Healing Power) Magic Damage and Impale their targets for 2.6s, preventing all actions.\nDeals +35% extra damage to monsters.",
+      "description": "Summons Skewers in a 5m radius at the target location.Can be used up to 3 times in a row without casting delay, but the damage is reduced on consecutive casts.\nSkewers deal 1958 (1677 + 276% Healing Power) Magic Damage and Impale their targets for 2.6s, preventing all actions.\nDeals +35% extra damage to monsters.\n[AA Classic: scales off Healing Power, but uses Magic Crit Rate, Magic Crit Damage, and Magic Skill Damage %.]",
       "rankCount": 1,
       "ranks": [
         {
@@ -682,6 +689,89 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_love29.png",
       "description": "Increases ally Attack Speed +250 and Move Speed +20% within 30m, and decreases enemy Attack Speed -175 and Move Speed -15% for 30s."
+    },
+    {
+      "id": "vitalism_renewal_hollow",
+      "skillset": "vitalism",
+      "name": "Hollow Renewal",
+      "variant": "hollow",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "30s Enemy Curse (2% on dmg taken → 4m AoE Gradual Recovery 5.5s)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "skillId": 9003166,
+      "abilityLevel": 40,
+      "cooldownSec": 0.0,
+      "castTimeSec": 1.0,
+      "icon": "icon_hollow_renewal.png",
+      "description": "Enlightened Hollow Vitalism Mark (skill 9003166, buff 9001191): Calls forth energy from the land to curse an enemy for 30s. When receiving damage, the cursed enemy has a 2% chance to trigger Hollow Eruption (10s CD), releasing a 4m AoE healing wave that applies Gradual Recovery (5.5s HoT, scales with Healing Power / healing bonuses) to all allies of the caster."
+    },
+    {
+      "id": "vitalism_abyssal_petrification",
+      "skillset": "vitalism",
+      "name": "Abyssal Petrification",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Cleanse + Damage/Debuff Immunity & Petrify (2s–6s)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "skillId": 34096,
+      "abilityLevel": 10,
+      "cooldownSec": 24.0,
+      "castTimeSec": 2.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred39.png",
+      "description": "Removes all debuffs and aggro from a selected target and protects them against all damage and harmful effects for 2s–6s, preventing movement or actions. Recasting on a petrified target reverses the effect."
+    },
+    {
+      "id": "vitalism_defy_death",
+      "skillset": "vitalism",
+      "name": "Defy Death",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "Combat AoE Revive (up to 6 allies, 6m–20m)",
+      "damageType": "utility",
+      "scalingStat": "healingPower",
+      "skillId": 34087,
+      "abilityLevel": 55,
+      "cooldownSec": 30.0,
+      "castTimeSec": 3.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred33.png",
+      "description": "Revives up to 6 allies within 6m (20m when consuming 6 Abyssal Charges). Additional Abyssal Charges increase revived Health and Mana. Can be used in combat."
+    },
+    {
+      "id": "vitalism_skewer_life",
+      "skillset": "vitalism",
+      "name": "Skewer (Life · Heal)",
+      "variant": "ancestral",
+      "ancestralElement": "life",
+      "kind": "heal",
+      "damageType": "heal",
+      "scalingStat": "healingPower",
+      "multiplierStat": "heal_mul",
+      "skillId": 36636,
+      "base": 806,
+      "scalingPct": 130,
+      "parseSource": "linear_two_point",
+      "description": "Summons four skewers within a 20m circle at the target location, Impaling enemies for 2.6s and restoring 806 + 130% Healing Power Health to allies (solved via naked/geared two-point dump: 938 naked, 3,065 geared). Skewers heal twice as much where they overlap.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36636,
+          "base": 806,
+          "scalingPct": 130,
+          "parseSource": "linear_two_point",
+          "description": "Summons four skewers in a 20m circle, Impaling enemies for 2.6s and restoring 806 + 130% Healing Power Health to allies (2x where skewers overlap)."
+        }
+      ],
+      "abilityLevel": 25,
+      "cooldownSec": 28.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_love37.png"
     }
   ]
 }

@@ -65,11 +65,6 @@ import {
     renderRotSkillPickerQueue,
 } from "./rotationView.js";
 import {
-    closeGearSwapModal,
-    openGearSwapModal,
-    renderGearSwapModal,
-} from "./gearSwapModal.js";
-import {
     closeBuffPullModal,
     closeImportModal,
     handleFetchBuffById,
@@ -166,6 +161,7 @@ function updateCombatControlsVisibility() {
         (activeSkill?.parseSource === "shadowsmite" ||
             Boolean(activeSkill?.flags?.bloodthirstBasePerStack) ||
             String(activeSkill?.id || "").includes("throw_dagger") ||
+            String(activeSkill?.id || "") === "shadowplay_wallop" ||
             (isAllScope && (state.selectedTree === "all" || state.selectedTree === "shadowplay")));
 
     const usesMettle =
@@ -224,9 +220,6 @@ function registerUiBridge() {
     ui.renderSimulation = renderSimulation;
     ui.renderSkillBrowser = renderSkillBrowser;
     ui.updateBuffedStatsPanel = updateBuffedStatsPanel;
-    ui.openGearSwapModal = openGearSwapModal;
-    ui.closeGearSwapModal = closeGearSwapModal;
-    ui.renderGearSwapModal = renderGearSwapModal;
     ui.openImportModal = openImportModal;
     ui.closeImportModal = closeImportModal;
     ui.openBuffPullModal = openBuffPullModal;
@@ -633,23 +626,6 @@ function bindAuxiliaryModalEvents() {
         renderRotSkillPickerQueue();
     });
 
-    // Gear Swap Modal
-    document.getElementById("gsDoneBtn").addEventListener("click", closeGearSwapModal);
-    document.getElementById("gearSwapModal").addEventListener("click", (e) => {
-        if (e.target.id === "gearSwapModal") closeGearSwapModal();
-    });
-    document.getElementById("gsCloneAtoBBtn").addEventListener("click", () => {
-        state.gearSwapTierId = null;
-        cloneBuildSlot("A", "B");
-    });
-    document.querySelectorAll("#gsTargetSlotPills .seg-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            state.gearSwapTargetSlot = btn.dataset.gsSlot;
-            state.gearSwapTierId = null;
-            renderGearSwapModal();
-        });
-    });
-
     // Topbar share link, compact toggle & Settings Modal
     document.getElementById("copyShareLinkBtn")?.addEventListener("click", async () => {
         const url = buildComparisonPermalink();
@@ -697,7 +673,6 @@ function bindAuxiliaryModalEvents() {
             if (document.getElementById("importModal")?.classList.contains("open")) closeImportModal();
             if (document.getElementById("buffImportModal")?.classList.contains("open")) closeBuffPullModal();
             if (document.getElementById("rotSkillPickerModal")?.classList.contains("open")) closeRotSkillPickerModal();
-            if (document.getElementById("gearSwapModal")?.classList.contains("open")) closeGearSwapModal();
             if (document.getElementById("settingsModal")?.classList.contains("open")) closeSettingsModal();
             return;
         }

@@ -7,9 +7,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-  actions: read
 
 concurrency:
   group: "pages"
@@ -27,7 +24,7 @@ jobs:
           mkdir -p _site
           cp index.html LICENSE README.md VERSION _site/
           if [ -f CHANGELOG.md ]; then cp CHANGELOG.md _site/; fi
-          cp -r css js assets example-builds buffs combos tests _site/
+          cp -r css js assets example-builds buffs combos _site/
           if [ -d economy ]; then cp -r economy _site/; fi
           touch _site/.nojekyll
 
@@ -41,6 +38,10 @@ jobs:
 
   deploy:
     needs: build
+    permissions:
+      pages: write
+      id-token: write
+      actions: read
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

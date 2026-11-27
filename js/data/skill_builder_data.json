@@ -81,7 +81,8 @@
           "level": 20,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_fight19.png",
-          "desc": "Pulls a distant enemy to your position. This ability also Taunts the target, forcing affected monsters to attack you for 4 seconds."
+          "desc": "Pulls a distant enemy to your position. This ability also Taunts the target, forcing affected monsters to attack you for 4 seconds.",
+          "simSkillId": "battlerage_lasso"
         },
         {
           "key": "battlerage_terrifying_roar",
@@ -89,7 +90,8 @@
           "level": 25,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_fight26.png",
-          "desc": "Weakens all enemies within m for . \nAlso Toughens the caster for the same amount of time, reducing the duration of those debuffs."
+          "desc": "Weakens all enemies within m for . \nAlso Toughens the caster for the same amount of time, reducing the duration of those debuffs.",
+          "simSkillId": "battlerage_terrifying_roar"
         },
         {
           "key": "battlerage_bondbreaker",
@@ -249,7 +251,7 @@
           "cooldownReduction": {
             "battlerage": 10
           },
-          "linkedBuffId": "delirium",
+          "linkedBuffId": "delirium_5",
           "buffData": []
         },
         {
@@ -326,7 +328,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred05.png",
-          "desc": "Throws otherworldly blades that surround the target, dealing damage to the target (if cast on an enemy) and all nearby enemies."
+          "desc": "Throws otherworldly blades that surround the target, dealing damage to the target (if cast on an enemy) and all nearby enemies.",
+          "simSkillId": "battlerage_soulbound_blades"
         },
         {
           "key": "battlerage_rising_hatred",
@@ -342,7 +345,8 @@
           "level": 55,
           "points": 0,
           "icon": "assets/icons/icon_skill_hatred04.png",
-          "desc": "Call down swords from the sky to Impale enemies in front of you, dealing up to Physical Damage. Use this skill again to stop channeling early. The longer you channel, the more damage will be dealt. \nIf cast while at 6 Abyssal Charges, additional swords are summoned, inflicting more damage the closer an enemy is to the center of the effect."
+          "desc": "Call down swords from the sky to Impale enemies in front of you, dealing up to Physical Damage. Use this skill again to stop channeling early. The longer you channel, the more damage will be dealt. \nIf cast while at 6 Abyssal Charges, additional swords are summoned, inflicting more damage the closer an enemy is to the center of the effect.",
+          "simSkillId": "battlerage_swordfall"
         }
       ],
       "hatredPassives": [
@@ -387,7 +391,8 @@
               "short": "Wv",
               "skillId": 36451,
               "icon": "assets/icons/icon_skill_illusion28.png",
-              "desc": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for 12s.\nDeals 177 (86 + 220% Magic Attack) Magic Damage upon expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nSnare duration reduced -50% in PvP.\nThis skill has a reduced Cast Time compared to regular Earthen Grip, but also has a shorter range."
+              "desc": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for 12s.\nDeals 177 (86 + 220% Magic Attack) Magic Damage upon expiration.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nSnare duration reduced -50% in PvP.\nThis skill has a reduced Cast Time compared to regular Earthen Grip, but also has a shorter range.",
+              "simSkillId": "witchcraft_earthen_grip_wave"
             }
           ]
         },
@@ -414,7 +419,8 @@
               "short": "Gl",
               "skillId": 36452,
               "icon": "assets/icons/icon_skill_illusion29.png",
-              "desc": "Traps an enemy inside a bubble for 10.8s and slowly lifts it into the air. Enemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP.\nThis skill has a reduced Cooldown compared to regular Bubble Trap, but also has a shorter range."
+              "desc": "Traps an enemy inside a bubble for 10.8s and slowly lifts it into the air. Enemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP.\nThis skill has a reduced Cooldown compared to regular Bubble Trap, but also has a shorter range.",
+              "simSkillId": "witchcraft_bubble_trap_gale"
             },
             {
               "id": "mist",
@@ -422,9 +428,11 @@
               "short": "Mi",
               "skillId": 36453,
               "icon": "assets/icons/icon_skill_illusion30.png",
-              "desc": "Summons a mist at the target location that lasts for 15 seconds, affecting all enemies within a 4m radius.\nEach time an enemy enters the mist it becomes trapped in a bubble, rising into the air for 5.4s.\nEnemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP."
+              "desc": "Summons a mist at the target location that lasts for 15 seconds, affecting all enemies within a 4m radius.\nEach time an enemy enters the mist it becomes trapped in a bubble, rising into the air for 5.4s.\nEnemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP.",
+              "simSkillId": "witchcraft_bubble_trap_mist"
             }
-          ]
+          ],
+          "simSkillId": "witchcraft_bubble_trap"
         },
         {
           "key": "witchcraft_insidious_whisper",
@@ -432,7 +440,8 @@
           "level": 15,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_illusion05.png",
-          "desc": "Inflicts Fear on an enemy and causes it to flee from the caster for .\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect."
+          "desc": "Inflicts Fear on an enemy and causes it to flee from the caster for .\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect.",
+          "simSkillId": "witchcraft_insidious_whisper"
         },
         {
           "key": "witchcraft_purge",
@@ -440,7 +449,8 @@
           "level": 20,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_illusion14.png",
-          "desc": "Allies: Removes 1 negative effect. \nEnemies: Removes 1 buff."
+          "desc": "Allies: Removes 1 negative effect. \nEnemies: Removes 1 buff.",
+          "simSkillId": "witchcraft_purge"
         },
         {
           "key": "witchcraft_play_dead",
@@ -464,7 +474,8 @@
           "level": 35,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_illusion01.png",
-          "desc": "Magically fatigues the target, causing them to fall asleep for after a delay. Enemies will wake upon taking damage. Sleep duration reduced -50% in PvP."
+          "desc": "Magically fatigues the target, causing them to fall asleep for after a delay. Enemies will wake upon taking damage. Sleep duration reduced -50% in PvP.",
+          "simSkillId": "witchcraft_lassitude"
         },
         {
           "key": "witchcraft_banshee_wail",
@@ -480,7 +491,8 @@
               "short": "St",
               "skillId": 36454,
               "icon": "assets/icons/icon_skill_illusion31.png",
-              "desc": "Causes Fear in all nearby enemies for 2.8s, forcing them to flee. \nThis skill reduces affected enemies' Move Speed -40% for the duration, but does not stun them afterwards like regular Banshee Wail.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect."
+              "desc": "Causes Fear in all nearby enemies for 2.8s, forcing them to flee. \nThis skill reduces affected enemies' Move Speed -40% for the duration, but does not stun them afterwards like regular Banshee Wail.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect.",
+              "simSkillId": "witchcraft_banshee_wail_stone"
             },
             {
               "id": "mist",
@@ -488,9 +500,11 @@
               "short": "Mi",
               "skillId": 36455,
               "icon": "assets/icons/icon_skill_illusion32.png",
-              "desc": "Summons a Phantasm at the target location for 6 seconds, which inflicts Fear on all enemies within a 5m radius every second. Feared enemies flee for up to 2.8s, then are Stunned for 2 seconds afterward.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect. \nThe duration of this skill's Fear effect is not affected by the caster's Passive skills.\nCannot be used in conjunction with Mist Summon Wraith (Occultism)."
+              "desc": "Summons a Phantasm at the target location for 6 seconds, which inflicts Fear on all enemies within a 5m radius every second. Feared enemies flee for up to 2.8s, then are Stunned for 2 seconds afterward.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect. \nThe duration of this skill's Fear effect is not affected by the caster's Passive skills.\nCannot be used in conjunction with Mist Summon Wraith (Occultism).",
+              "simSkillId": "witchcraft_banshee_wail_mist"
             }
-          ]
+          ],
+          "simSkillId": "witchcraft_banshee_wail"
         },
         {
           "key": "witchcraft_focal_concussion",
@@ -550,14 +564,20 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_illusion25.png",
           "desc": "Increases Health Regen +7 every 1 second.\nDecreases Cast Time for Earthen Grip and Insidious Whisper -0.5 seconds.",
-          "effectKind": "utility",
+          "effectKind": "combat",
           "shortEffect": "+7 HP Regen, -0.5s Grip/Whisper",
           "buffData": [
             {
               "unit_attribute_id": 67,
               "value": 35
             }
-          ]
+          ],
+          "skillCastTimeDeltaSec": {
+            "witchcraft_earthen_grip": -0.5,
+            "witchcraft_earthen_grip_aoe": -0.5,
+            "witchcraft_earthen_grip_wave": -0.5,
+            "witchcraft_insidious_whisper": -0.5
+          }
         },
         {
           "id": 27,
@@ -591,7 +611,8 @@
           "desc": "Decreases received Melee damage -30% for 3 seconds after receiving a Melee Critical Hit.\nThis ability has a 20sec cooldown once triggered.",
           "effectKind": "proc",
           "shortEffect": "Proc: -30% Recv Melee (3s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "mitigation"
         },
         {
           "id": 28,
@@ -643,7 +664,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred07.png",
-          "desc": "Inflicts a crippling despair on your chosen victim for . \nCan only be used in PvP."
+          "desc": "Inflicts a crippling despair on your chosen victim for . \nCan only be used in PvP.",
+          "simSkillId": "witchcraft_devour_hope"
         },
         {
           "key": "witchcraft_rising_hatred",
@@ -659,7 +681,8 @@
           "level": 55,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred08.png",
-          "desc": "Unleashes the gaze of the terrifying Gorgon, petrifying all enemies facing the caster within a 15m cone. Enemies remain petrified until the caster stops channeling.\nAny additional Abyssal Charges are consumed on casting, increasing the range of the skill."
+          "desc": "Unleashes the gaze of the terrifying Gorgon, petrifying all enemies facing the caster within a 15m cone. Enemies remain petrified until the caster stops channeling.\nAny additional Abyssal Charges are consumed on casting, increasing the range of the skill.",
+          "simSkillId": "witchcraft_stonesight"
         }
       ],
       "hatredPassives": [
@@ -732,7 +755,8 @@
           "level": 15,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_adamant27.png",
-          "desc": "Inflicts Distressed for , reducing the enemy's Move Speed -45%, Skill Damage -20%, Attack Speed -250, and healing effectiveness -60%.\nInflicts additional damage equal to 60% of your stacked Mettle, consuming all stacks of Mettle when cast.\nThis ability also Provokes the target, forcing affected players to target you and affected monsters to attack you."
+          "desc": "Inflicts Distressed for , reducing the enemy's Move Speed -45%, Skill Damage -20%, Attack Speed -250, and healing effectiveness -60%.\nInflicts additional damage equal to 60% of your stacked Mettle, consuming all stacks of Mettle when cast.\nThis ability also Provokes the target, forcing affected players to target you and affected monsters to attack you.",
+          "simSkillId": "defense_boastful_roar"
         },
         {
           "key": "defense_toughen",
@@ -765,7 +789,8 @@
               "short": "Gl",
               "skillId": 36458,
               "icon": "assets/icons/icon_skill_adamant35.png",
-              "desc": "Raises a shield around the caster for 6s. Increases Block Rate +38% and decreases Move Speed -10%.\nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped.\nCan only be used while a shield is equipped."
+              "desc": "Raises a shield around the caster for 6s. Increases Block Rate +38% and decreases Move Speed -10%.\nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped.\nCan only be used while a shield is equipped.",
+              "simSkillId": "defense_redoubt_gale"
             },
             {
               "id": "life",
@@ -773,7 +798,8 @@
               "short": "Li",
               "skillId": 36459,
               "icon": "assets/icons/icon_skill_adamant36.png",
-              "desc": "Strengthens the caster's defenses for 20s. Increases Physical Defense +40% and decreases Move Speed -10%.\nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped."
+              "desc": "Strengthens the caster's defenses for 20s. Increases Physical Defense +40% and decreases Move Speed -10%.\nInstantly grants Mettle in proportion to the skill's level.\nPrevents being Pushed or Tripped.",
+              "simSkillId": "defense_redoubt_life"
             }
           ]
         },
@@ -792,7 +818,8 @@
           "level": 40,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_adamant07.png",
-          "desc": "Inflicts Shaken on all enemies within a m radius, decreasing their Move Speed -27%, Skill Damage -8%, and Attack Speed -75. This ability also Taunts enemies, forcing affected monsters to attack you.\nBuilds additional Aggro equal to 100% of your stacked Mettle, consuming all stacks of Mettle when cast."
+          "desc": "Inflicts Shaken on all enemies within a m radius, decreasing their Move Speed -27%, Skill Damage -8%, and Attack Speed -75. This ability also Taunts enemies, forcing affected monsters to attack you.\nBuilds additional Aggro equal to 100% of your stacked Mettle, consuming all stacks of Mettle when cast.",
+          "simSkillId": "defense_mocking_howl"
         },
         {
           "key": "defense_imprison",
@@ -808,7 +835,8 @@
               "short": "Wv",
               "skillId": 36460,
               "icon": "assets/icons/icon_skill_adamant37.png",
-              "desc": "Summons a magical circle for 8 seconds that allows anyone to enter but prevents them from escaping. \nEnemies can break out if they use enough force.\nOnly applies in PvP."
+              "desc": "Summons a magical circle for 8 seconds that allows anyone to enter but prevents them from escaping. \nEnemies can break out if they use enough force.\nOnly applies in PvP.",
+              "simSkillId": "defense_imprison_wave"
             },
             {
               "id": "mist",
@@ -816,9 +844,11 @@
               "short": "Mi",
               "skillId": 36461,
               "icon": "assets/icons/icon_skill_adamant38.png",
-              "desc": "Summons a 20m wide wall of mist directly in front of you. The wall remains in place for 12 seconds. \nEnemies can break through if they use enough force."
+              "desc": "Summons a 20m wide wall of mist directly in front of you. The wall remains in place for 12 seconds. \nEnemies can break through if they use enough force.",
+              "simSkillId": "defense_imprison_mist"
             }
-          ]
+          ],
+          "simSkillId": "defense_imprison"
         },
         {
           "key": "defense_invincibility",
@@ -834,7 +864,8 @@
           "level": 55,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_adamant29.png",
-          "desc": "Shoves away up to 5 enemies within 10m and pulls 5 raid members closer. Decreases pulled raid members' received damage -50% and increases your Mettle +1,500. Effective regardless of a target's status."
+          "desc": "Shoves away up to 5 enemies within 10m and pulls 5 raid members closer. Decreases pulled raid members' received damage -50% and increases your Mettle +1,500. Effective regardless of a target's status.",
+          "simSkillId": "defense_fortress"
         }
       ],
       "passives": [
@@ -849,7 +880,8 @@
           "desc": "Increases Block Rate +15% for 5 seconds after a successful Block.",
           "effectKind": "proc",
           "shortEffect": "Proc: +15% Block on Block (5s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "supplemental_block"
         },
         {
           "id": 11,
@@ -959,7 +991,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred10.png",
-          "desc": "Hurls your shield at the target, dealing Physical Damage.\nHas a 100% chance to Critical Strike. Temporarily removes all benefits of your shield while the projectile is in the air. Inflicts Disarm on targets that Parry the attack, removing all benefits of their weapon for ."
+          "desc": "Hurls your shield at the target, dealing Physical Damage.\nHas a 100% chance to Critical Strike. Temporarily removes all benefits of your shield while the projectile is in the air. Inflicts Disarm on targets that Parry the attack, removing all benefits of their weapon for .",
+          "simSkillId": "defense_shield_throw"
         },
         {
           "key": "defense_rising_hatred",
@@ -975,7 +1008,8 @@
           "level": 55,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred11.png",
-          "desc": "Tethers an enemy's soul to a location for , pulling them back to that spot every time they attempt to move further than 10m away.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+          "desc": "Tethers an enemy's soul to a location for , pulling them back to that spot every time they attempt to move further than 10m away.\nAny additional Abyssal Charges are consumed on casting, increasing the duration.",
+          "simSkillId": "defense_cruel_binding"
         }
       ],
       "hatredPassives": [
@@ -1010,7 +1044,8 @@
               "short": "Mi",
               "skillId": 36462,
               "icon": "assets/icons/icon_skill_will30.png",
-              "desc": "Grants Greater Inspire to all allies in a 6m radius.\n\nGreater Inspire:\n- Increases Attack Speed +65.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- This effect does not stack."
+              "desc": "Grants Greater Inspire to all allies in a 6m radius.\n\nGreater Inspire:\n- Increases Attack Speed +65.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- This effect does not stack.",
+              "simSkillId": "auramancy_thwart_mist"
             },
             {
               "id": "stone",
@@ -1018,9 +1053,11 @@
               "short": "St",
               "skillId": 36463,
               "icon": "assets/icons/icon_skill_will31.png",
-              "desc": "Increases received damage +20 on enemies in a 6m radius for 5 seconds.\nGrants the caster 1 stack of Inspired.\n\nInspired:\n- Increases Attack Speed +53.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- Stacks up to 3 times."
+              "desc": "Increases received damage +20 on enemies in a 6m radius for 5 seconds.\nGrants the caster 1 stack of Inspired.\n\nInspired:\n- Increases Attack Speed +53.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- Stacks up to 3 times.",
+              "simSkillId": "auramancy_thwart_stone"
             }
-          ]
+          ],
+          "simSkillId": "auramancy_thwart"
         },
         {
           "key": "auramancy_comet_s_boon",
@@ -1046,7 +1083,8 @@
               "short": "Mi",
               "skillId": 36464,
               "icon": "assets/icons/icon_skill_will32.png",
-              "desc": "Creates an energy shield for you or an ally for 8s. Decreases Received Magic Damage and Received Healing by -32.0%.\nDoes not trigger a global cooldown."
+              "desc": "Creates an energy shield for you or an ally for 8s. Decreases Received Magic Damage and Received Healing by -32.0%.\nDoes not trigger a global cooldown.",
+              "simSkillId": "auramancy_spell_shield_mist"
             },
             {
               "id": "flame",
@@ -1054,7 +1092,8 @@
               "short": "Fl",
               "skillId": 36465,
               "icon": "assets/icons/icon_skill_will33.png",
-              "desc": "Creates an energy shield for 5s. Reflects 32% of incoming Magic Damage and decreases Received Healing -32%.\nDoes not trigger a global cooldown."
+              "desc": "Creates an energy shield for 5s. Reflects 32% of incoming Magic Damage and decreases Received Healing -32%.\nDoes not trigger a global cooldown.",
+              "simSkillId": "auramancy_spell_shield_flame"
             }
           ]
         },
@@ -1113,7 +1152,8 @@
           "level": 45,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_will07.png",
-          "desc": "Interrupts a target's casting and inflicts Sleep for . Steals one buff from the target.\nTargets will wake upon taking damage.\nSleep duration reduced -50% in PvP."
+          "desc": "Interrupts a target's casting and inflicts Sleep for . Steals one buff from the target.\nTargets will wake upon taking damage.\nSleep duration reduced -50% in PvP.",
+          "simSkillId": "auramancy_leech"
         },
         {
           "key": "auramancy_protective_wings",
@@ -1129,7 +1169,8 @@
               "short": "Mi",
               "skillId": 36466,
               "icon": "assets/icons/icon_skill_will34.png",
-              "desc": "Generates Protective Wings at the target location, granting immunity to Magic Damage for all allies in a 5m radius."
+              "desc": "Generates Protective Wings at the target location, granting immunity to Magic Damage for all allies in a 5m radius.",
+              "simSkillId": "auramancy_protective_wings_mist"
             },
             {
               "id": "flame",
@@ -1137,7 +1178,8 @@
               "short": "Fl",
               "skillId": 36467,
               "icon": "assets/icons/icon_skill_will35.png",
-              "desc": "Grants the Phoenix Feather buff to a random ally in a 20m radius every 0.5 seconds. Reduces incoming Magic Damage by -29% and reflects 70% back to the attacker."
+              "desc": "Grants the Phoenix Feather buff to a random ally in a 20m radius every 0.5 seconds. Reduces incoming Magic Damage by -29% and reflects 70% back to the attacker.",
+              "simSkillId": "auramancy_protective_wings_flame"
             }
           ]
         },
@@ -1190,7 +1232,8 @@
           "desc": "Decreases all received damage -100 for 3 seconds after receiving critical damage.\nThis ability has a 20 sec cooldown once triggered.",
           "effectKind": "proc",
           "shortEffect": "Proc: -100 Fixed Dmg (3s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "inspiration_cloak"
         },
         {
           "id": 21,
@@ -1293,7 +1336,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred14.png",
-          "desc": "Creates a powerful gravity vortex around a chosen target after a short delay. Deals Magic damage to all enemies in a radius, pulling them to the target's location, but leaves the initial target unharmed."
+          "desc": "Creates a powerful gravity vortex around a chosen target after a short delay. Deals Magic damage to all enemies in a radius, pulling them to the target's location, but leaves the initial target unharmed.",
+          "simSkillId": "auramancy_crushing_grasp"
         },
         {
           "key": "auramancy_rising_hatred",
@@ -1309,7 +1353,8 @@
           "level": 55,
           "points": 0,
           "icon": "assets/icons/icon_skill_hatred13.png",
-          "desc": "Shoots a wave of force up to 20m in front of you. Inflicts Magic Damage and knocks back all enemies it touches.\nAny additional Abyssal Charges are consumed on casting, increasing the number of waves. Being struck by multiple waves in a row dramatically decreases enemies' Move Speed."
+          "desc": "Shoots a wave of force up to 20m in front of you. Inflicts Magic Damage and knocks back all enemies it touches.\nAny additional Abyssal Charges are consumed on casting, increasing the number of waves. Being struck by multiple waves in a row dramatically decreases enemies' Move Speed.",
+          "simSkillId": "auramancy_abyssal_wave"
         }
       ],
       "hatredPassives": [
@@ -1430,7 +1475,8 @@
           "level": 30,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_death10.png",
-          "desc": "Suspends an enemy in the air for up to . Prevents the target from taking any actions, even when taking damage.\nThis spell ends if the caster moves or takes any other action."
+          "desc": "Suspends an enemy in the air for up to . Prevents the target from taking any actions, even when taking damage.\nThis spell ends if the caster moves or takes any other action.",
+          "simSkillId": "occultism_telekinesis"
         },
         {
           "key": "occultism_retribution",
@@ -1446,7 +1492,8 @@
           "level": 40,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_death07.png",
-          "desc": "Interrupts all enemy casting within 5 meters and inflicts Silence for . Removes all Fear effects from caster."
+          "desc": "Interrupts all enemy casting within 5 meters and inflicts Silence for . Removes all Fear effects from caster.",
+          "simSkillId": "occultism_stillness"
         },
         {
           "key": "occultism_urgency",
@@ -1470,7 +1517,8 @@
               "short": "Wv",
               "skillId": 36626,
               "icon": "assets/icons/icon_skill_death34.png",
-              "desc": "Summons a wraith that deals 260  (211 + 120% Magic Attack) magic damage per second for up to 9 seconds to all enemies within 7m. It also inflicts Wraith Curse in the area, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nThis skill allowed the caster to move while the spell is in effect, but has a weaker Wraith Curse effect than regular Summon Wraith.\nCounts as an ongoing spell, but is canceled if another skill is used."
+              "desc": "Summons a wraith that deals 260  (211 + 120% Magic Attack) magic damage per second for up to 9 seconds to all enemies within 7m. It also inflicts Wraith Curse in the area, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nThis skill allowed the caster to move while the spell is in effect, but has a weaker Wraith Curse effect than regular Summon Wraith.\nCounts as an ongoing spell, but is canceled if another skill is used.",
+              "simSkillId": "occultism_summon_wraith_wave"
             },
             {
               "id": "mist",
@@ -1481,7 +1529,8 @@
               "desc": "Summons a corporeal Wraith at the target location, dealing a single burst of 627 (528 + 240% Magic Attack) Magic Damage to all enemies in a 7m radius. It then inflicts Wraith Curse in the area for up to 9 seconds, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nCannot be used in conjunction with Mist Banshee Wail (Witchcraft)",
               "simSkillId": "occultism_summon_wraith_burst"
             }
-          ]
+          ],
+          "simSkillId": "occultism_summon_wraith"
         },
         {
           "key": "occultism_death_s_vengeance",
@@ -1523,7 +1572,8 @@
           "desc": "Increases Melee, Ranged, and Magic Critical Rates +20% for 9 seconds after receiving Critical Damage.\nThis ability has a 12 sec cooldown once triggered.",
           "effectKind": "proc",
           "shortEffect": "Proc: +20% Crit on Crit Taken",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "reprisal"
         },
         {
           "id": 100,
@@ -1608,7 +1658,8 @@
           "desc": "Increases all Skill Damage +15% for up to 6 seconds after receiving damage.\nMovement cancels the effect.\nDoes not apply to healing skills.",
           "effectKind": "proc",
           "shortEffect": "Proc: +15% Skill Dmg (6s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "overpowered_spell_locus"
         },
         {
           "id": 40,
@@ -1621,7 +1672,8 @@
           "desc": "Increases Melee, Ranged, and Magic Critical Damage +25% for 6 seconds after receiving Critical Damage.\nThis ability has a 12 sec cooldown once triggered.",
           "effectKind": "proc",
           "shortEffect": "Proc: +25% Crit Dmg (6s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "intensified_harm"
         },
         {
           "id": 254,
@@ -1647,7 +1699,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred18.png",
-          "desc": "Infects an enemy with cursed seeds for . Causes deadly thorns to sprout in their footsteps after a 4 second delay, inflicting Magic damage on surrounding enemies as they burst from the ground. Slows any enemies that pass through the area, and deals continuous magic damage. Seeds sprout early if enemies step on them."
+          "desc": "Infects an enemy with cursed seeds for . Causes deadly thorns to sprout in their footsteps after a 4 second delay, inflicting Magic damage on surrounding enemies as they burst from the ground. Slows any enemies that pass through the area, and deals continuous magic damage. Seeds sprout early if enemies step on them.",
+          "simSkillId": "occultism_cursed_thorns"
         },
         {
           "key": "occultism_rising_hatred",
@@ -1663,7 +1716,8 @@
           "level": 55,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred16.png",
-          "desc": "Summons a Shadow Circle for , allowing the caster to teleport in front of any target within the circle. Any additional Abyssal Charges are consumed on casting, increasing the number of times the caster can teleport. If cast while at 6 Abyssal Charges, the caster may teleport an unlimited number of times for the duration of the spell."
+          "desc": "Summons a Shadow Circle for , allowing the caster to teleport in front of any target within the circle. Any additional Abyssal Charges are consumed on casting, increasing the number of times the caster can teleport. If cast while at 6 Abyssal Charges, the caster may teleport an unlimited number of times for the duration of the spell.",
+          "simSkillId": "occultism_shadow_circle"
         }
       ],
       "hatredPassives": [
@@ -1764,7 +1818,8 @@
           "level": 25,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_wild14.png",
-          "desc": "Removes all Shackle effects from the caster and inflics Snare on enemies in a 5m area for .\nReduces targets' Evasion, Block, and Parry rates.\nDuration of Snare decreases -50% in PvP."
+          "desc": "Removes all Shackle effects from the caster and inflics Snare on enemies in a 5m area for .\nReduces targets' Evasion, Block, and Parry rates.\nDuration of Snare decreases -50% in PvP.",
+          "simSkillId": "archery_snare"
         },
         {
           "key": "archery_float",
@@ -1913,9 +1968,21 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_wild16.png",
           "desc": "Decreases cooldown for Piercing Shot, Charged Bolt, Stalker's Mark, Missile Rain, Toxic Shot, and Snipe skills -10%.",
-          "effectKind": "utility",
-          "shortEffect": "-1s Archery CDs",
-          "buffData": []
+          "effectKind": "combat",
+          "shortEffect": "-10% Key Archery CDs",
+          "buffData": [],
+          "skillCooldownReductionPct": {
+            "archery_piercing_shot": 10,
+            "archery_charged_bolt": 10,
+            "archery_charged_bolt_short": 10,
+            "archery_charged_bolt_fast": 10,
+            "shadowplay_stalkers_mark": 10,
+            "archery_missile_rain": 10,
+            "archery_missile_rain_flame": 10,
+            "archery_missile_rain_gale": 10,
+            "shadowplay_toxic_shot": 10,
+            "archery_snipe": 10
+          }
         },
         {
           "id": 1,
@@ -2010,7 +2077,8 @@
           "level": 10,
           "points": 0,
           "icon": "assets/icons/icon_skill_hatred20.png",
-          "desc": "Enhance your archery with Abyssal magic, transforming your attacks and gaining unparalleled range. Increases the base range of all Bow skills to at least 50m for , but prevents movement.\nReplaces the Endless Arrows skill with Fang Bolt for the duration.\nDuration is reset for every Ranged Attack that hits, but all effects end if the caster receives damage."
+          "desc": "Enhance your archery with Abyssal magic, transforming your attacks and gaining unparalleled range. Increases the base range of all Bow skills to at least 50m for , but prevents movement.\nReplaces the Endless Arrows skill with Fang Bolt for the duration.\nDuration is reset for every Ranged Attack that hits, but all effects end if the caster receives damage.",
+          "simSkillId": "archery_serpents_sight"
         },
         {
           "key": "archery_rising_hatred",
@@ -2026,7 +2094,8 @@
           "level": 55,
           "points": 0,
           "icon": "assets/icons/icon_skill_hatred22.png",
-          "desc": "Summons Snowlion Spectres to charge through enemies in front of you, inflicting Physical damage and knocking them into the air. Any additional Abyssal Charges are consumed on casting, increasing the damage and number of Snowlions.\nIf cast while at 6 Abyssal Charges, affected enemies are temporarily prevented from using skills."
+          "desc": "Summons Snowlion Spectres to charge through enemies in front of you, inflicting Physical damage and knocking them into the air. Any additional Abyssal Charges are consumed on casting, increasing the damage and number of Snowlions.\nIf cast while at 6 Abyssal Charges, affected enemies are temporarily prevented from using skills.",
+          "simSkillId": "archery_hunting_pack"
         }
       ],
       "hatredPassives": [
@@ -2340,7 +2409,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred24.png",
-          "desc": "Teleport to a random location away.\nNo cooldown. Spend Abyssal Charges to cast repeatedly.\nCan't be used while Snared."
+          "desc": "Teleport to a random location away.\nNo cooldown. Spend Abyssal Charges to cast repeatedly.\nCan't be used while Snared.",
+          "simSkillId": "sorcery_void_leap"
         },
         {
           "key": "sorcery_rising_hatred",
@@ -2356,7 +2426,8 @@
           "level": 55,
           "points": 0,
           "icon": "assets/icons/icon_skill_hatred25.png",
-          "desc": "Summons a magical serpent that burrows underground, erupting beneath the target to inflict up to Magic Damage.\nCan use anywhere from 1-6 Abyssal Charges once channeling begins, increasing the damage dealt with each additional charge used.\nUse this skill again during channeling to stop channeling early."
+          "desc": "Summons a magical serpent that burrows underground, erupting beneath the target to inflict up to Magic Damage.\nCan use anywhere from 1-6 Abyssal Charges once channeling begins, increasing the damage dealt with each additional charge used.\nUse this skill again during channeling to stop channeling early.",
+          "simSkillId": "sorcery_serpent_strike"
         }
       ],
       "hatredPassives": [
@@ -2410,7 +2481,8 @@
               "short": "Lt",
               "skillId": 36589,
               "icon": "assets/icons/icon_skill_vocation32.png",
-              "desc": "Triggers a leap directly over an enemy's head, dealing 586 (566 + 200% Melee Attack) Physical Damage as you pass and then continuing on to land 10m past them. \nStuns the enemy for 2.4s and grants 1 stack of Bloodthirst.\nCan't be used while Snared."
+              "desc": "Triggers a leap directly over an enemy's head, dealing 586 (566 + 200% Melee Attack) Physical Damage as you pass and then continuing on to land 10m past them. \nStuns the enemy for 2.4s and grants 1 stack of Bloodthirst.\nCan't be used while Snared.",
+              "simSkillId": "shadowplay_overwhelm_lightning"
             }
           ]
         },
@@ -2429,7 +2501,8 @@
               "short": "Mi",
               "skillId": 36590,
               "icon": "assets/icons/icon_skill_vocation33.png",
-              "desc": "Triggers a leap forward to escape a dangerous area or close the distance between you and an enemy.\nGrants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s. \nCan't be used while Snared."
+              "desc": "Triggers a leap forward to escape a dangerous area or close the distance between you and an enemy.\nGrants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s. \nCan't be used while Snared.",
+              "simSkillId": "shadowplay_drop_back_mist"
             },
             {
               "id": "wave",
@@ -2501,7 +2574,8 @@
               "short": "Mi",
               "skillId": 36593,
               "icon": "assets/icons/icon_skill_vocation35.png",
-              "desc": "Launches a surprise attack, dealing Melee damage equal to 277 times your stacked Bloodthirst and Shackling your target for 5.8s.\nBackstabbing adds Physical Damage equal to 400% of Melee Attack.\nThis skill Trips targets that are under the effects of Provoke, but does not have a combo with Stun."
+              "desc": "Launches a surprise attack, dealing Melee damage equal to 277 times your stacked Bloodthirst and Shackling your target for 5.8s.\nBackstabbing adds Physical Damage equal to 400% of Melee Attack.\nThis skill Trips targets that are under the effects of Provoke, but does not have a combo with Stun.",
+              "simSkillId": "shadowplay_shadowsmite_mist"
             },
             {
               "id": "lightning",
@@ -2509,7 +2583,8 @@
               "short": "Lt",
               "skillId": 36594,
               "icon": "assets/icons/icon_skill_vocation36.png",
-              "desc": "Teleport behind an enemy within 6m and attempts to backstab them, dealing Melee Physical damage equal to 277 times your stacked Bloodthirst.\nBackstabbing increases Physical Damage by 400% times your Melee Attack."
+              "desc": "Teleport behind an enemy within 6m and attempts to backstab them, dealing Melee Physical damage equal to 277 times your stacked Bloodthirst.\nBackstabbing increases Physical Damage by 400% times your Melee Attack.",
+              "simSkillId": "shadowplay_shadowsmite_lightning"
             }
           ]
         },
@@ -2564,7 +2639,8 @@
           "desc": "Increases Melee Evasion +18% for 7 seconds after a successful Evasion against melee attacks.",
           "effectKind": "proc",
           "shortEffect": "Proc: +18% Melee Evade (7s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "consecutive_evasion"
         },
         {
           "id": 33,
@@ -2595,7 +2671,8 @@
           "desc": "Decreases received Ranged Damage -30% for 3 seconds after receiving a Ranged Critical Hit.\nThis ability has a 20 sec cooldown once triggered.",
           "effectKind": "proc",
           "shortEffect": "Proc: -30% Recv Rng (3s)",
-          "buffData": []
+          "buffData": [],
+          "linkedBuffId": "loophole"
         },
         {
           "id": 6,
@@ -2620,9 +2697,10 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_buff66.png",
           "desc": "Increases accumulated Bloodthirst +2 times.",
-          "effectKind": "utility",
-          "shortEffect": "+1 Bloodthirst per Stack",
-          "buffData": []
+          "effectKind": "combat",
+          "shortEffect": "2x Bloodthirst Accumulation",
+          "buffData": [],
+          "bloodthirstMultiplier": 2
         },
         {
           "id": 260,
@@ -2648,7 +2726,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred27.png",
-          "desc": "Throws venomous knives at all enemies within a radius, dealing an initial Physical Damage and inficting the Deadly Poison debuff."
+          "desc": "Throws venomous knives at all enemies within a radius, dealing an initial Physical Damage and inficting the Deadly Poison debuff.",
+          "simSkillId": "shadowplay_venom_blades"
         },
         {
           "key": "shadowplay_rising_hatred",
@@ -2664,7 +2743,8 @@
           "level": 55,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred38.png",
-          "desc": "Increases Shadowplay Skill Damage by +12% for 4sec, and causes the caster to become impossible to target during that time.\nCan only be used when the caster is invisible. \nAdditional Abyssal Charges are consumed on casting, extending the duration to a maximum of 8sec."
+          "desc": "Increases Shadowplay Skill Damage by +12% for 4sec, and causes the caster to become impossible to target during that time.\nCan only be used when the caster is invisible. \nAdditional Abyssal Charges are consumed on casting, extending the duration to a maximum of 8sec.",
+          "simSkillId": "shadowplay_assassination"
         }
       ],
       "hatredPassives": [
@@ -2708,7 +2788,8 @@
               "short": "Li",
               "skillId": 36597,
               "icon": "assets/icons/icon_skill_romance35.png",
-              "desc": "Magically improves the beneficial effects received from Perform skills +30% for 28s.\nCan be applied to the caster or a chosen ally.\nDecreases Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills."
+              "desc": "Magically improves the beneficial effects received from Perform skills +30% for 28s.\nCan be applied to the caster or a chosen ally.\nDecreases Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills.",
+              "simSkillId": "songcraft_startling_strain_life"
             },
             {
               "id": "wave",
@@ -2716,9 +2797,11 @@
               "short": "Wv",
               "skillId": 36598,
               "icon": "assets/icons/icon_skill_romance36.png",
-              "desc": "Charms an enemy for 24s, making them more susceptible to other Songcraft skill effects.\nDecreases your Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills."
+              "desc": "Charms an enemy for 24s, making them more susceptible to other Songcraft skill effects.\nDecreases your Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills.",
+              "simSkillId": "songcraft_startling_strain_wave"
             }
-          ]
+          ],
+          "simSkillId": "songcraft_startling_strain"
         },
         {
           "key": "songcraft_perform_quickstep",
@@ -2726,7 +2809,8 @@
           "level": 10,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_romance02.png",
-          "desc": "Plays a lighthearted song for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance."
+          "desc": "Plays a lighthearted song for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance.",
+          "simSkillId": "songcraft_quickstep"
         },
         {
           "key": "songcraft_dissonance",
@@ -2752,7 +2836,8 @@
               "short": "St",
               "skillId": 36595,
               "icon": "assets/icons/icon_skill_romance33.png",
-              "desc": "Plays a beguiling song that Charms an enemy for 8s, making them more susceptible to other Songcraft skill effects.\nThis effect can travel to another 2 enemies within 10m, excluding pets. Can continue to be transferred up to 3 times.\nCharm duration increased by +50% on targets under the effects of Dissonance.\nThis skill does not stop ongoing Perform skills."
+              "desc": "Plays a beguiling song that Charms an enemy for 8s, making them more susceptible to other Songcraft skill effects.\nThis effect can travel to another 2 enemies within 10m, excluding pets. Can continue to be transferred up to 3 times.\nCharm duration increased by +50% on targets under the effects of Dissonance.\nThis skill does not stop ongoing Perform skills.",
+              "simSkillId": "songcraft_healing_hymn_stone"
             },
             {
               "id": "wave",
@@ -2760,7 +2845,8 @@
               "short": "Wv",
               "skillId": 36596,
               "icon": "assets/icons/icon_skill_romance34.png",
-              "desc": "Plays a revitalizing song that instantly restores a party member's Mana +120.\nThis effect can travel to another 2 party members within 10m, excluding you and pets. Can continue to be transferred up to 3 times.\nThis skill does not stop ongoing Perform skills."
+              "desc": "Plays a revitalizing song that instantly restores a party member's Mana +120.\nThis effect can travel to another 2 party members within 10m, excluding you and pets. Can continue to be transferred up to 3 times.\nThis skill does not stop ongoing Perform skills.",
+              "simSkillId": "songcraft_healing_hymn_wave"
             }
           ]
         },
@@ -2778,7 +2864,8 @@
           "level": 30,
           "points": 1,
           "icon": "assets/icons/icon_skill_romance05.png",
-          "desc": "Plays a healing song for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -20% during the performance."
+          "desc": "Plays a healing song for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -20% during the performance.",
+          "simSkillId": "songcraft_ode_to_recovery"
         },
         {
           "key": "songcraft_rhythmic_renewal",
@@ -2786,7 +2873,8 @@
           "level": 35,
           "points": 1,
           "icon": "assets/icons/icon_skill_romance26.png",
-          "desc": "Summons a healing spring that restores + health to caster and all nearby allies every second for 60 seconds."
+          "desc": "Summons a healing spring that restores + health to caster and all nearby allies every second for 60 seconds.",
+          "simSkillId": "songcraft_rhythmic_renewal"
         },
         {
           "key": "songcraft_perform_bulwark_ballad",
@@ -2794,7 +2882,8 @@
           "level": 40,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_romance19.png",
-          "desc": "Plays a song of the earth for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance."
+          "desc": "Plays a song of the earth for . \nEffect increases the longer you play.\nCan only stack with other Perform skills and shares a cooldown with them.\nDecreases Aggro -10% during the performance.",
+          "simSkillId": "songcraft_bulwark_ballad"
         },
         {
           "key": "songcraft_perform_bloody_chantey",
@@ -2802,7 +2891,8 @@
           "level": 45,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_romance08.png",
-          "desc": "Plays a lively song for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills.\nDecreases Aggro -10% during the performance."
+          "desc": "Plays a lively song for you and your allies for . \nEffect increases the longer you play.\nCan only stack with other Perform skills.\nDecreases Aggro -10% during the performance.",
+          "simSkillId": "songcraft_bloody_chantey"
         },
         {
           "key": "songcraft_alarm_call",
@@ -2818,7 +2908,8 @@
               "short": "St",
               "skillId": 36628,
               "icon": "assets/icons/icon_skill_romance37.png",
-              "desc": "Play an entrancing song, inflicting Sleep on all enemies within a 9m radius for up to 9s.\nSpell ends early if channeling is canceled or the caster moves, instantly awakening its targets."
+              "desc": "Play an entrancing song, inflicting Sleep on all enemies within a 9m radius for up to 9s.\nSpell ends early if channeling is canceled or the caster moves, instantly awakening its targets.",
+              "simSkillId": "songcraft_alarm_call_stone"
             },
             {
               "id": "life",
@@ -2826,7 +2917,8 @@
               "short": "Li",
               "skillId": 36629,
               "icon": "assets/icons/icon_skill_romance38.png",
-              "desc": "Removes 1 harmful effect from every party member within a 9m radius every 3 seconds for 15s.\nCounts as an ongoing spell, but is canceled if another skill is used."
+              "desc": "Removes 1 harmful effect from every party member within a 9m radius every 3 seconds for 15s.\nCounts as an ongoing spell, but is canceled if another skill is used.",
+              "simSkillId": "songcraft_alarm_call_life"
             }
           ]
         },
@@ -2903,7 +2995,7 @@
           "desc": "Decreases Received Magic Damage -30% for 3 seconds when Magic Critical Damage is received.\nThis ability has a 20 sec cooldown once triggered.\nPerformance skills also grant the Rhythm buff every 3 seconds.\n\nRhythm:\n- Increases Healing Power and Magic Attack +7 per stack.\n- Decreases Songcraft Cooldowns -0.4 seconds per stack.\n- Lasts 9 seconds.\n- Stacks up to 15 times.\n- Resets the cooldown of Startling Strain whenever a target you have Charmed is killed.",
           "effectKind": "proc",
           "shortEffect": "Rhythm Stacks, -30% Recv Magic",
-          "linkedBuffId": "rhythm_stacks",
+          "linkedBuffId": "disciplined_performance",
           "buffData": []
         },
         {
@@ -2954,7 +3046,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred29.png",
-          "desc": "Ends all currently active Perform skills, but creates diminished echoes of those abilities for up to 10 seconds. These echoes only affect the caster, and are not interrupted by casting non-perform skills. Using additional Perform skills during this time will end the echoes early.\nAs this skill levels up, the effects of the echoes improve."
+          "desc": "Ends all currently active Perform skills, but creates diminished echoes of those abilities for up to 10 seconds. These echoes only affect the caster, and are not interrupted by casting non-perform skills. Using additional Perform skills during this time will end the echoes early.\nAs this skill levels up, the effects of the echoes improve.",
+          "simSkillId": "songcraft_abyssal_echoes"
         },
         {
           "key": "songcraft_rising_hatred",
@@ -2970,7 +3063,8 @@
           "level": 55,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred30.png",
-          "desc": "For up to 25 seconds, grants temporary immortality to allies within a 15m radius. When subjected to fatal damage, affected allies instead transform into animals and recover a small amount of Health, becoming temporarily immune to all debuffs.\nThis spell has an initial duration of 3 seconds, and consumes any additional Abyssal Charges over time to extend the duration 3 seconds per charge. If cast while at 6 Abyssal Charges, it has an initial duration of 5 seconds and each extra charge extends the duration 5 seconds instead.\nEffect ends when no charges remain or another ability is used."
+          "desc": "For up to 25 seconds, grants temporary immortality to allies within a 15m radius. When subjected to fatal damage, affected allies instead transform into animals and recover a small amount of Health, becoming temporarily immune to all debuffs.\nThis spell has an initial duration of 3 seconds, and consumes any additional Abyssal Charges over time to extend the duration 3 seconds per charge. If cast while at 6 Abyssal Charges, it has an initial duration of 5 seconds and each extra charge extends the duration 5 seconds instead.\nEffect ends when no charges remain or another ability is used.",
+          "simSkillId": "songcraft_polymorphic_resonance"
         }
       ],
       "hatredPassives": [
@@ -3006,7 +3100,8 @@
           "level": 3,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_love02.png",
-          "desc": "Caster/allies: Cures one debuff and increases received healing +15% for .\nEnemies: Inflicts Snare for . Increases received damage +12% and decreases healing effectiveness -30% for . Snare duration reduced -50% in PvP."
+          "desc": "Caster/allies: Cures one debuff and increases received healing +15% for .\nEnemies: Inflicts Snare for . Increases received damage +12% and decreases healing effectiveness -30% for . Snare duration reduced -50% in PvP.",
+          "simSkillId": "vitalism_mirror_light"
         },
         {
           "key": "vitalism_antithesis",
@@ -3038,7 +3133,8 @@
                 "vitalism_antithesis_wave_damage"
               ]
             }
-          ]
+          ],
+          "simSkillId": "vitalism_antithesis_heal"
         },
         {
           "key": "vitalism_resurgence",
@@ -3046,7 +3142,8 @@
           "level": 15,
           "points": 1,
           "icon": "assets/icons/icon_skill_love03.png",
-          "desc": "Regenerates Health over for you or an ally.\nHold ALT to use the skill on yourself."
+          "desc": "Regenerates Health over for you or an ally.\nHold ALT to use the skill on yourself.",
+          "simSkillId": "vitalism_resurgence"
         },
         {
           "key": "vitalism_revive",
@@ -3071,7 +3168,8 @@
               "short": "Li",
               "skillId": 36636,
               "icon": "assets/icons/icon_skill_love37.png",
-              "desc": "Summons four skewers within a 20m circle at the target location, Impaling enemies for 2.6s and restoring 938 Health to allies. Skewers heal twice as much where they overlap."
+              "desc": "Summons four skewers within a 20m circle at the target location, Impaling enemies for 2.6s and restoring 938 Health to allies. Skewers heal twice as much where they overlap.",
+              "simSkillId": "vitalism_skewer_life"
             },
             {
               "id": "flame",
@@ -3152,7 +3250,8 @@
           "level": 55,
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_love29.png",
-          "desc": "Increases Attack Speed +250 and Move Speed +20% for allies within 30m, and decreases Attack Speed -175 and Move Speed -15% for enemies for 30 seconds."
+          "desc": "Increases Attack Speed +250 and Move Speed +20% for allies within 30m, and decreases Attack Speed -175 and Move Speed -15% for enemies for 30 seconds.",
+          "simSkillId": "vitalism_whirlwind_blessing"
         }
       ],
       "passives": [
@@ -3290,7 +3389,8 @@
           "level": 10,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred39.png",
-          "desc": "Removes all debuffs and aggro from a selected target and protects them against all damage for , but prevents them from moving or taking actions for the duration. \nUsing this skill on a petrified target reverses the effects."
+          "desc": "Removes all debuffs and aggro from a selected target and protects them against all damage for , but prevents them from moving or taking actions for the duration. \nUsing this skill on a petrified target reverses the effects.",
+          "simSkillId": "vitalism_abyssal_petrification"
         },
         {
           "key": "vitalism_rising_hatred",
@@ -3306,7 +3406,8 @@
           "level": 55,
           "points": 0,
           "icon": "https://darugear.com/assets/icons/icon_skill_hatred33.png",
-          "desc": "Revives up to 6 allies within 6m of the caster. All targets beyond the first must be in the same party or raid as the caster to be revived. Any additional charges are consumed on casting, increasing the health and mana of revived targets. \nConsuming 6 Abyssal Charges increases the affected range to 20m. \nCan be used in combat."
+          "desc": "Revives up to 6 allies within 6m of the caster. All targets beyond the first must be in the same party or raid as the caster to be revived. Any additional charges are consumed on casting, increasing the health and mana of revived targets. \nConsuming 6 Abyssal Charges increases the affected range to 20m. \nCan be used in combat.",
+          "simSkillId": "vitalism_defy_death"
         }
       ],
       "hatredPassives": [

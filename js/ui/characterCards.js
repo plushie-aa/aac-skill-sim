@@ -46,6 +46,7 @@ import {
     resolveGearGradeInfo,
     sanitizeHexColor,
     sanitizeSafeDaruGearUrl,
+    sanitizeSafeIconUrl,
     saveCustomBuffLoadouts,
     setSlotModifiersFromTokens,
     showToast,
@@ -68,7 +69,6 @@ import {
     serializeSlotBuild,
 } from "./buildStore.js";
 import { loadEconomyPriceBookFromStorage } from "./economyView.js";
-import { openGearSwapModal } from "./gearSwapModal.js";
 import {
     deleteCustomBuffById,
     handleFetchBuffById,
@@ -491,7 +491,8 @@ function buildSummaryActiveBuffsHtml(slotKey) {
         } else if (m.category === "weapon_proc" && m.shortEffect) {
             extra = ` ${m.shortEffect}`;
         }
-        const ic = m.icon ? `<img class="chip-icon" src="${escHtml(m.icon)}" alt="" loading="lazy" />` : "";
+        const safeIc = sanitizeSafeIconUrl(m.icon);
+        const ic = safeIc ? `<img class="chip-icon" src="${escHtml(safeIc)}" alt="" loading="lazy" />` : "";
         const pillCls = m.isDebuff ? "is-debuff" : m.category === "weapon_proc" ? "is-proc" : "";
         pills.push(
             `<span class="summary-buff-pill ${pillCls}" title="${escHtml(m.description || m.name)}">${ic}<span>${escHtml(shortLabel)}${escHtml(extra)}</span><button type="button" class="summary-buff-rm" data-sum-rm-mod="${escHtml(m.id)}" title="Remove ${escHtml(shortLabel)}">&times;</button></span>`
@@ -502,7 +503,8 @@ function buildSummaryActiveBuffsHtml(slotKey) {
         if (!cid) continue;
         const m = COMBAT_MODIFIERS[cid];
         if (!m) continue;
-        const ic = m.icon ? `<img class="chip-icon" src="${escHtml(m.icon)}" alt="" loading="lazy" />` : "";
+        const safeIc = sanitizeSafeIconUrl(m.icon);
+        const ic = safeIc ? `<img class="chip-icon" src="${escHtml(safeIc)}" alt="" loading="lazy" />` : "";
         pills.push(
             `<span class="summary-buff-pill is-cons" title="${escHtml(m.description || m.name)}">${ic}<span>${escHtml(m.name)}</span><button type="button" class="summary-buff-rm" data-sum-rm-cons="${escHtml(consSlot)}" title="Remove ${escHtml(m.name)}">&times;</button></span>`
         );
@@ -519,17 +521,11 @@ function buildSummaryActiveBuffsHtml(slotKey) {
         })
         .join("");
 
-    const swapBtnHtml =
-        slotKey === "A" || slotKey === "B"
-            ? `<button type="button" class="sm" data-sum-quickswap="${slotKey}" title="Open 1-to-1 Armor, Grade, Lunagem &amp; Costume Swapper for Build ${slotKey}">&#9889; Swap</button>`
-            : "";
-
     return `
         ${pills.length > 0 ? pills.join("") : `<span class="hint-inline">No buffs active</span>`}
         <span class="summary-quick-actions">
             ${quickProcBtnsHtml}
             <button type="button" class="sm" data-goto-tab="buffs">+ Buffs</button>
-            ${swapBtnHtml}
         </span>
     `;
 }
@@ -569,9 +565,6 @@ function bindSummaryBuffQuickActions(card, slotKey) {
     });
     card.querySelectorAll("[data-goto-tab]").forEach((btn) => {
         btn.addEventListener("click", () => setCardTab(card, slotKey, btn.dataset.gotoTab));
-    });
-    card.querySelectorAll("[data-sum-quickswap]").forEach((btn) => {
-        btn.addEventListener("click", () => openGearSwapModal(btn.dataset.sumQuickswap));
     });
 }
 
@@ -687,9 +680,11 @@ function renderGearSectionHtml(slotKey, ch, otherSlotGearById) {
             const shortFallback = (it.slotName || "EQ").slice(0, 2);
             const frameId = Math.max(0, Math.min(12, Number(it.gradeId) || 0));
 
+            const safeColor = sanitizeHexColor(it.gradeColor, "#94a3b8");
+            const safeIcon = sanitizeSafeIconUrl(it.icon);
             return `
-            <button type="button" class="gear-tile ${selectedItem && selectedItem.slotId === it.slotId ? "selected" : ""}" style="--grade-color:${escHtml(it.gradeColor)}" data-gear-slot="${it.slotId}" title="${escHtml(tipParts.join(" • "))}">
-                ${it.icon ? `<img class="gear-item-img" src="${escHtml(it.icon)}" alt="${escHtml(it.name)}" loading="lazy" />` : `<span class="gear-tile-fallback">${escHtml(shortFallback)}</span>`}
+            <button type="button" class="gear-tile ${selectedItem && selectedItem.slotId === it.slotId ? "selected" : ""}" style="--grade-color:${escHtml(safeColor)}" data-gear-slot="${it.slotId}" title="${escHtml(tipParts.join(" • "))}">
+                ${safeIcon ? `<img class="gear-item-img" src="${escHtml(safeIcon)}" alt="${escHtml(it.name)}" loading="lazy" />` : `<span class="gear-tile-fallback">${escHtml(shortFallback)}</span>`}
                 <img class="gear-grade-frame" src="assets/grade/grade${frameId}.png" alt="" loading="lazy" />
                 ${differs ? `<span class="gear-diff-dot" title="Differs from other build">&Delta;</span>` : ""}
                 ${gemCount > 0 ? `<span class="gear-gem-badge">${gemCount}</span>` : ""}
@@ -724,7 +719,7 @@ function renderGearSectionHtml(slotKey, ch, otherSlotGearById) {
               )
             : "";
         inspectorHtml = `
-        <div class="gear-inspector" style="--grade-color:${escHtml(selectedItem.gradeColor)}">
+        <div class="gear-inspector" style="--grade-color:${escHtml(sanitizeHexColor(selectedItem.gradeColor, "#94a3b8"))}">
             <div class="gear-insp-head">
                 ${
                     selectedItem.icon
@@ -887,7 +882,8 @@ function renderModChipHtml(m, slotKey, modSet, equippedProcIds = null) {
     const isEnl = m.category === "enlightenment";
     const isEquippedProc = isProc && Boolean(equippedProcIds && equippedProcIds.has(m.id));
     const shortLabel = m.name.split(" (")[0];
-    const iconHtml = m.icon ? `<img class="chip-icon" src="${escHtml(m.icon)}" alt="" loading="lazy" />` : "";
+    const safeIcon = sanitizeSafeIconUrl(m.icon);
+    const iconHtml = safeIcon ? `<img class="chip-icon" src="${escHtml(safeIcon)}" alt="" loading="lazy" />` : "";
 
     let ctrlHtml = "";
     let tooltip = isEquippedProc ? `${m.description} [Matches equipped weapon]` : m.description;
@@ -963,8 +959,9 @@ function renderCardBuffsPaneHtml(slotKey, ch, modSet, consMap, activeConsList, u
         activeConsList.length > 0
             ? `<div class="cons-summary">${activeConsList
                   .map((m) => {
-                      const icHtml = m.icon
-                          ? `<img class="cons-summary-icon" src="${escHtml(m.icon)}" alt="" loading="lazy" />`
+                      const safeIc = sanitizeSafeIconUrl(m.icon);
+                      const icHtml = safeIc
+                          ? `<img class="cons-summary-icon" src="${escHtml(safeIc)}" alt="" loading="lazy" />`
                           : "";
                       return `<div class="cons-summary-row">${icHtml}<span><strong>${escHtml(m.name)}</strong>: ${escHtml(m.shortStats || m.description)}</span></div>`;
                   })
@@ -1053,7 +1050,7 @@ function renderCardBuffsPaneHtml(slotKey, ch, modSet, consMap, activeConsList, u
                     const opts = modCatalog.consumablesBySlot[cs.id] || [];
                     const curMod = curVal ? COMBAT_MODIFIERS[curVal] : null;
                     const wideCls = cs.id === "spellbook" ? "cons-slot-wide" : "";
-                    const slotIcon = curMod?.icon || cs.icon || "";
+                    const slotIcon = sanitizeSafeIconUrl(curMod?.icon || cs.icon || "");
                     return `
                     <div class="cons-slot ${wideCls}">
                         <label>${escHtml(cs.label)}</label>
@@ -1312,12 +1309,7 @@ function renderCharacterCardHtml(slot, modCatalog) {
         </div>
 
         <div class="card-tab-pane ${activeCardTab !== "gear" ? "hidden" : ""}" data-card-pane="gear">
-            ${
-                slot.key === "A" || slot.key === "B"
-                    ? `<div style="display:flex;justify-content:flex-end"><button type="button" class="sm primary" data-sum-quickswap="${slot.key}">&#9889; Open 1-to-1 Gear / Gem Swapper</button></div>`
-                    : ""
-            }
-            ${gearHtml || `<div class="hint-inline">No equipment imported yet. Use <strong>Import</strong> from DaruGear to inspect gear, lunagems, and 1-to-1 swaps.</div>`}
+            ${gearHtml || `<div class="hint-inline">No equipment imported yet. Use <strong>Import</strong> from DaruGear or the <strong>Gear Builder</strong> tab to edit gear and lunagems.</div>`}
             ${dgBuffsBarHtml}
         </div>
     </div>`;
@@ -2093,7 +2085,6 @@ export function renderBuildDiffStrip() {
                     <button type="button" class="sm" id="swapAandBQuickBtn" title="Swap Build A and Build B (stats, gear &amp; active buffs)">Swap A &harr; B</button>
                     <button type="button" class="sm" id="swapAandTargetQuickBtn" title="Swap Build A and the 3rd card (Target / Aggressor)">Swap A &harr; Target</button>
                     <button type="button" class="sm" id="cloneAtoBQuickBtn" title="Copy Build A stats, equipment, and buffs into Build B as a baseline">Clone A &rarr; B</button>
-                    <button type="button" class="sm primary" id="openGearSwapBtn" title="Quickly swap Armor, Weapon Setup, Grades, Lunagems, or Costume synthesis stats to compare A vs B">&#9889; Quick Swap</button>
                 </span>
             </summary>
             ${
@@ -2171,10 +2162,5 @@ export function renderBuildDiffStrip() {
         e.preventDefault();
         e.stopPropagation();
         cloneBuildSlot("A", "B");
-    });
-    document.getElementById("openGearSwapBtn")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        openGearSwapModal("B");
     });
 }

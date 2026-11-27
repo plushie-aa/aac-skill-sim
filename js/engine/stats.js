@@ -375,12 +375,12 @@ export const COMBAT_MODIFIERS = {
         name: "Freerunner (Shadowplay)",
         side: "both",
         icon: "assets/icons/icon_skill_buff70.png",
-        description: "Increases Agility, Move Speed, and Attack Speed for 30s (Ranks 1-4)",
+        description: "Increases Agility, Move Speed, and Attack Speed (+64) for 30s (Ranks 1-4)",
         ranks: [
-            { rank: 1, summary: "+160 AGI (+32 Rng, +4.4% M.Crit / +2.2% R.Crit)", addAttributes: { agi: 160 } },
-            { rank: 2, summary: "+180 AGI (+36 Rng, +5.0% M.Crit / +2.5% R.Crit)", addAttributes: { agi: 180 } },
-            { rank: 3, summary: "+200 AGI (+40 Rng, +5.5% M.Crit / +2.8% R.Crit)", addAttributes: { agi: 200 } },
-            { rank: 4, summary: "+220 AGI (+44 Rng, +6.1% M.Crit / +3.0% R.Crit)", addAttributes: { agi: 220 } },
+            { rank: 1, summary: "+160 AGI, +64 Atk Spd", addAttributes: { agi: 160 }, addOffense: { attackSpeed: 64 } },
+            { rank: 2, summary: "+180 AGI, +64 Atk Spd", addAttributes: { agi: 180 }, addOffense: { attackSpeed: 64 } },
+            { rank: 3, summary: "+200 AGI, +64 Atk Spd", addAttributes: { agi: 200 }, addOffense: { attackSpeed: 64 } },
+            { rank: 4, summary: "+220 AGI, +64 Atk Spd", addAttributes: { agi: 220 }, addOffense: { attackSpeed: 64 } },
         ],
     },
     intensity: {
@@ -668,6 +668,37 @@ export const COMBAT_MODIFIERS = {
         description: "+25 All Attributes (STR/AGI/STA/INT/SPI) (AA Classic buff 6605)",
         addAttributes: { str: 25, agi: 25, sta: 25, int: 25, spi: 25 },
     },
+    hummingbird_ditty: {
+        id: "hummingbird_ditty",
+        name: "Hummingbird Ditty (Songcraft)",
+        side: "attacker",
+        icon: "assets/icons/icon_skill_romance01.png",
+        description: "Reduces Cast Time for 30m (Ranks 1-6; AA Classic buff 13782 at Rank 6)",
+        ranks: [
+            { rank: 1, summary: "-6% Cast Time", addOffense: { castTimePct: -6 } },
+            { rank: 2, summary: "-7% Cast Time", addOffense: { castTimePct: -7 } },
+            { rank: 3, summary: "-8% Cast Time", addOffense: { castTimePct: -8 } },
+            { rank: 4, summary: "-9% Cast Time", addOffense: { castTimePct: -9 } },
+            { rank: 5, summary: "-10% Cast Time", addOffense: { castTimePct: -10 } },
+            { rank: 6, summary: "-11% Cast Time", addOffense: { castTimePct: -11 } },
+        ],
+    },
+    startling_strain_life: {
+        id: "startling_strain_life",
+        name: "Startling Strain (Life · Songcraft)",
+        side: "attacker",
+        icon: "assets/icons/icon_skill_romance35.png",
+        description: "-20% Cast Time (5s) and +30% Perform Effects received (28s)",
+        addOffense: { castTimePct: -20 },
+    },
+    dragons_wrath: {
+        id: "dragons_wrath",
+        name: "Dragon's Wrath (Red Dragon Use)",
+        side: "both",
+        icon: "assets/icons/icon_skill_buff09.png",
+        description: "Enraged Red Dragon Weapon Use: +50 STR, AGI, and INT for 10s (3m CD)",
+        addAttributes: { str: 50, agi: 50, int: 50 },
+    },
 
     // --- Attacker & Shared Debuffs ---
     shaken: {
@@ -852,6 +883,17 @@ export const COMBAT_MODIFIERS = {
             receivedHealingPct: -30,
         },
     },
+    flawless_dream_ring: {
+        id: "flawless_dream_ring",
+        name: "Flawless Dream Ring Shred (1–5x)",
+        side: "defender",
+        isDebuff: true,
+        icon: "assets/icons/icon_item_ring_0037.png",
+        description: "Flawless Dream Ring on-hit shred: -175 Physical & Magic Defense per stack (up to 5x = -875; Dream/Ynys Ring caps at 4x = -700)",
+        maxStacks: 5,
+        defaultStacks: 5,
+        perStackDefense: { physicalDefense: -175, magicDefense: -175 },
+    },
     mirror_light_ally: {
         id: "mirror_light_ally",
         name: "Mirror Light - Ally (Vitalism)",
@@ -934,6 +976,7 @@ export const COMBAT_MODIFIERS = {
         id: "redoubt",
         name: "Redoubt (Defense)",
         side: "defender",
+        exclusiveGroup: "redoubt",
         icon: "assets/icons/icon_skill_buff29.png",
         description: "Increases Shield Block Rate (Ranks 1-5; AA Classic buffs 328-13617)",
         ranks: [
@@ -943,6 +986,24 @@ export const COMBAT_MODIFIERS = {
             { rank: 4, summary: "+46% Block", addDefense: { blockPct: 46 } },
             { rank: 5, summary: "+55% Block", addDefense: { blockPct: 55 } },
         ],
+    },
+    redoubt_gale: {
+        id: "redoubt_gale",
+        name: "Redoubt (Gale · Defense)",
+        side: "defender",
+        exclusiveGroup: "redoubt",
+        icon: "assets/icons/icon_skill_adamant35.png",
+        description: "+38% Shield Block Rate, Push/Knockback immunity, no Move Speed penalty (20s; requires Shield)",
+        addDefense: { blockPct: 38 },
+    },
+    redoubt_life: {
+        id: "redoubt_life",
+        name: "Redoubt (Life · Defense)",
+        side: "defender",
+        exclusiveGroup: "redoubt",
+        icon: "assets/icons/icon_skill_adamant36.png",
+        description: "+40% Physical Defense, immune to Push/Trip (20s; works without Shield)",
+        mulDefense: { physicalDefense: 1.4 },
     },
     bulwark_ballad: {
         id: "bulwark_ballad",
@@ -1002,6 +1063,38 @@ export const COMBAT_MODIFIERS = {
         icon: "assets/icons/icon_skill_romance31.png",
         description: "-30% Received Magic Damage for 3s on Magic Crit (AA Classic buff 7575)",
         addDefense: { receivedMagicDrPct: 30 },
+    },
+    reckless_charge: {
+        id: "reckless_charge",
+        name: "Reckless Charge (Battlerage)",
+        side: "defender",
+        icon: "assets/icons/icon_skill_fight04.png",
+        description: "-15% Received Melee & Ranged Damage (+40% Move Speed) for 3s after Charge, Behind Enemy Lines, or Tiger Strike",
+        addDefense: { receivedMeleeDrPct: 15, receivedRangedDrPct: 15 },
+    },
+    supplemental_block: {
+        id: "supplemental_block",
+        name: "Supplemental Block (Defense)",
+        side: "defender",
+        icon: "assets/icons/icon_skill_adamant14.png",
+        description: "+15% Shield Block Rate for 5s after blocking an attack",
+        addDefense: { blockPct: 15 },
+    },
+    inspiration_cloak: {
+        id: "inspiration_cloak",
+        name: "Inspiration Cloak (Auramancy)",
+        side: "defender",
+        icon: "assets/icons/icon_skill_will26.png",
+        description: "-100 Received Melee, Ranged, and Magic Damage (Fixed DR) for 4s after taking a hit",
+        addDefense: { fixedMeleeDr: 100, fixedRangedDr: 100, fixedMagicDr: 100 },
+    },
+    consecutive_evasion: {
+        id: "consecutive_evasion",
+        name: "Consecutive Evasion (Shadowplay)",
+        side: "defender",
+        icon: "assets/icons/icon_skill_vocation15.png",
+        description: "+18% Evasion for 7s after successfully evading an attack",
+        addDefense: { evasionPct: 18 },
     },
 
     // =========================================================================
@@ -1591,6 +1684,22 @@ export const COMBAT_MODIFIERS = {
         },
         mulOffense: { magicAttack: 1.15, healingPower: 1.15 },
     },
+    spellbook_brick_wall: {
+        id: "spellbook_brick_wall",
+        name: "Spellbook: Brick Wall",
+        optionLabel: "Brick Wall (-15% Received Dmg)",
+        shortStats: "-15% Received Dmg",
+        side: "both",
+        category: "consumable",
+        slot: "spellbook",
+        icon: "assets/icons/aac/icon_item_bulwark.png",
+        description: "Spellbook: Brick Wall: -15% Received Melee, Ranged, and Magic Damage (30m)",
+        addDefense: {
+            receivedMeleeDrPct: 15,
+            receivedRangedDrPct: 15,
+            receivedMagicDrPct: 15,
+        },
+    },
 
     // --- Combat Manual (1 active at a time) ---
     combat_manual_flame: {
@@ -1688,9 +1797,28 @@ export function registerCustomModifiers(modList = []) {
         ) {
             continue;
         }
+        const safeIcon = (() => {
+            if (!raw.icon || typeof raw.icon !== "string") return undefined;
+            const s = raw.icon.replace(/\\/g, "/").trim();
+            if (!s || s.includes("..")) return undefined;
+            if (s.startsWith("assets/")) return s;
+            if (/^https:\/\//i.test(s)) {
+                try {
+                    const u = new URL(s);
+                    const h = u.hostname.toLowerCase();
+                    if (h === "darugear.com" || h === "www.darugear.com" || h === "aa-classic.com" || h === "www.aa-classic.com") {
+                        return u.href;
+                    }
+                } catch {
+                    return undefined;
+                }
+            }
+            return undefined;
+        })();
         COMBAT_MODIFIERS[id] = {
             ...raw,
             id,
+            ...(safeIcon ? { icon: safeIcon } : { icon: undefined }),
             isCustom: true,
         };
         registered.push(COMBAT_MODIFIERS[id]);
@@ -1729,7 +1857,7 @@ export function parseModifierToken(token) {
     const raw = String(token || "");
     const colonIdx = raw.indexOf(":");
     const id = colonIdx >= 0 ? raw.slice(0, colonIdx) : raw;
-    const mod = COMBAT_MODIFIERS[id];
+    const mod = Object.prototype.hasOwnProperty.call(COMBAT_MODIFIERS, id) ? COMBAT_MODIFIERS[id] : null;
     if (!mod) return { id, stacks: 1, rank: null, rankEntry: null, mod: null, effective: null };
 
     const paramVal = colonIdx >= 0 ? parseInt(raw.slice(colonIdx + 1), 10) : NaN;
@@ -1894,6 +2022,8 @@ export function applyModifiers(character, modifierIds = []) {
     const out = applyOverrides(baseChar, {});
     const skillsetBonuses = { ...(baseChar.skillsetDamageBonusPct || {}) };
     const skillsetCdr = { ...(baseChar.skillsetCooldownReductionPct || {}) };
+    const skillCdr = { ...(baseChar.skillCooldownReductionPct || {}) };
+    const skillCastDelta = { ...(baseChar.skillCastTimeDeltaSec || {}) };
     let pveDamageBonusPct = Number(baseChar.pveDamageBonusPct) || 0;
     let pveReceivedDrPct = Number(baseChar.pveReceivedDrPct) || 0;
     const pendingMulOffense = [];
@@ -2036,6 +2166,8 @@ export function applyModifiers(character, modifierIds = []) {
 
     out.skillsetDamageBonusPct = skillsetBonuses;
     out.skillsetCooldownReductionPct = skillsetCdr;
+    out.skillCooldownReductionPct = skillCdr;
+    out.skillCastTimeDeltaSec = skillCastDelta;
     out.pveDamageBonusPct = pveDamageBonusPct;
     out.pveReceivedDrPct = pveReceivedDrPct;
     out._activeBuffFlags = activeBuffFlags;
@@ -2366,6 +2498,9 @@ export function resolveSkillTiming(skill, actor, totalExpected, constants = DEFA
     const effectiveFireIntervalSec =
         fireIntervalBaseSec > 0 ? effectiveGcdSec(attackSpeed, fireIntervalBaseSec, scale) : 0;
     let rawCastTimeSec = Math.max(0, Number(skill?.castTimeSec) || 0);
+    if (rawCastTimeSec > 0 && skill?.id && actor?.skillCastTimeDeltaSec?.[skill.id]) {
+        rawCastTimeSec = Math.max(0, rawCastTimeSec + Number(actor.skillCastTimeDeltaSec[skill.id]));
+    }
     let gearCastTimePctDelta = 0;
     let gearInstantBy = null;
     if (rawCastTimeSec > 0 && skill?.id) {
@@ -2419,7 +2554,11 @@ export function resolveSkillTiming(skill, actor, totalExpected, constants = DEFA
     const rawCooldownSec = Math.max(0, Number(skill?.cooldownSec) || 0);
     const cdrPct = Math.max(
         0,
-        Math.min(50, Number(actor?.skillsetCooldownReductionPct?.[skill?.skillset]) || 0)
+        Math.min(
+            50,
+            (Number(actor?.skillsetCooldownReductionPct?.[skill?.skillset]) || 0) +
+                (Number(actor?.skillCooldownReductionPct?.[skill?.id]) || 0)
+        )
     );
     const cooldownSec = rawCooldownSec > 0 ? rawCooldownSec * (1 - cdrPct / 100) : 0;
 

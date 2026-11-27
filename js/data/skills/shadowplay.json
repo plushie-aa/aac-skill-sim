@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_shadowplay.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 13,
+  "skillCount": 19,
   "skills": [
     {
       "id": "shadowplay_rapid_strike",
@@ -342,7 +342,8 @@
           "sorcery_flamebolt_flame",
           "battlerage_sunder_earth",
           "witchcraft_earthen_grip",
-          "witchcraft_earthen_grip_aoe"
+          "witchcraft_earthen_grip_aoe",
+          "witchcraft_earthen_grip_wave"
         ],
         "overrideGcdSecBySkill": {
           "sorcery_flamebolt_flame": 0.6
@@ -467,6 +468,215 @@
       "cooldownSec": 35.0,
       "castTimeSec": 0.0,
       "icon": "icon_hollow_throw_dagger.png"
+    },
+    {
+      "id": "shadowplay_overwhelm_lightning",
+      "skillset": "shadowplay",
+      "name": "Overwhelm (Lightning)",
+      "variant": "ancestral",
+      "ancestralElement": "lightning",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 36589,
+      "base": 566,
+      "scalingPct": 200,
+      "parseSource": "detailed_tooltip",
+      "description": "Triggers a leap directly over an enemy's head, dealing 586 (566 + 200% Melee Attack) Physical Damage as you pass and then continuing on to land 10m past them.\nStuns the enemy for 2.4s (1.3s PvP) and grants 1 stack of Bloodthirst.\nCan't be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36589,
+          "base": 566,
+          "scalingPct": 200,
+          "parseSource": "detailed_tooltip",
+          "description": "Triggers a leap directly over an enemy's head, dealing 586 (566 + 200% Melee Attack) Physical Damage as you pass and landing 10m past them. Stuns for 2.4s (1.3s PvP) and grants 1 Bloodthirst."
+        }
+      ],
+      "abilityLevel": 3,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation32.png"
+    },
+    {
+      "id": "shadowplay_drop_back_mist",
+      "skillset": "shadowplay",
+      "name": "Drop Back (Mist)",
+      "variant": "ancestral",
+      "ancestralElement": "mist",
+      "kind": "utility",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "gcdSec": 0.5,
+      "gcdNote": "Reduced GCD (0.50s base; forward leap removing cast time on Flamebolt, Earthen Grip & Sunder Earth for 2.5s)",
+      "flags": {},
+      "comboEffect": {
+        "id": "drop_back",
+        "label": "Mist Drop Back",
+        "summary": "Instant Flamebolt / Earthen Grip / Sunder (2.5s)",
+        "durationSec": 2.5,
+        "removesCastTimeFor": [
+          "sorcery_flamebolt",
+          "sorcery_flamebolt_flame",
+          "battlerage_sunder_earth",
+          "witchcraft_earthen_grip",
+          "witchcraft_earthen_grip_aoe",
+          "witchcraft_earthen_grip_wave"
+        ],
+        "overrideGcdSecBySkill": {
+          "sorcery_flamebolt_flame": 0.6
+        }
+      },
+      "skillId": 36590,
+      "base": 0,
+      "scalingPct": 0,
+      "description": "Triggers a leap forward to escape a dangerous area or close the distance between you and an enemy.\nGrants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s.\nCan't be used while Snared.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36590,
+          "base": 0,
+          "scalingPct": 0,
+          "description": "Triggers a forward leap. Grants the Drop Back buff, eliminating the Cast Time for Flamebolt, Earthen Grip, and Sunder Earth for 2.5s."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 12.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation33.png"
+    },
+    {
+      "id": "shadowplay_shadowsmite_mist",
+      "skillset": "shadowplay",
+      "name": "Shadowsmite (Mist)",
+      "variant": "ancestral",
+      "ancestralElement": "mist",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "bloodthirstBasePerStack": 277,
+        "backstabMeleeAttackPct": 400
+      },
+      "skillId": 36593,
+      "base": 0,
+      "scalingPct": 0,
+      "parseSource": "shadowsmite",
+      "description": "Launches a surprise attack, dealing Melee damage equal to 277 times your stacked Bloodthirst and Shackling your target for 5.8s (3s PvP).\nBackstabbing adds Physical Damage equal to 400% of Melee Attack.\nThis skill Trips targets that are under the effects of Provoke, but does not have a combo with Stun.",
+      "bloodthirstPerStack": 277,
+      "backstabScalingPct": 400,
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36593,
+          "base": 0,
+          "scalingPct": 0,
+          "bloodthirstPerStack": 277,
+          "backstabScalingPct": 400,
+          "parseSource": "shadowsmite",
+          "description": "Deals Melee damage equal to 277 times your stacked Bloodthirst and Shackles for 5.8s (3s PvP). Backstabbing adds 400% Melee Attack Physical Damage. Trips Provoked targets (no Stun combo)."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation35.png"
+    },
+    {
+      "id": "shadowplay_shadowsmite_lightning",
+      "skillset": "shadowplay",
+      "name": "Shadowsmite (Lightning)",
+      "variant": "ancestral",
+      "ancestralElement": "lightning",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "bloodthirstBasePerStack": 277,
+        "backstabMeleeAttackPct": 400
+      },
+      "skillId": 36594,
+      "base": 0,
+      "scalingPct": 0,
+      "parseSource": "shadowsmite",
+      "description": "Teleport behind an enemy within 6m and attempts to backstab them, dealing Melee Physical damage equal to 277 times your stacked Bloodthirst and Shackling for 3s.\nBackstabbing increases Physical Damage by 400% of Melee Attack.",
+      "bloodthirstPerStack": 277,
+      "backstabScalingPct": 400,
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36594,
+          "base": 0,
+          "scalingPct": 0,
+          "bloodthirstPerStack": 277,
+          "backstabScalingPct": 400,
+          "parseSource": "shadowsmite",
+          "description": "Teleports behind an enemy within 6m and backstabs for 277 times stacked Bloodthirst (+400% Melee Attack on backstab) + Shackle (3s)."
+        }
+      ],
+      "abilityLevel": 40,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_vocation36.png"
+    },
+    {
+      "id": "shadowplay_assassination",
+      "skillset": "shadowplay",
+      "name": "Assassination",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "+12% Shadowplay Dmg & Untargetable (4–8s, requires stealth)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "skillId": 34300,
+      "abilityLevel": 55,
+      "cooldownSec": 10.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred38.png",
+      "description": "Increases Shadowplay Skill Damage by +12% for 4s, and causes the caster to become impossible to target during that time.\nCan only be used when the caster is invisible. Additional Abyssal Charges are consumed on casting, extending the duration up to 8s."
+    },
+    {
+      "id": "shadowplay_venom_blades",
+      "skillset": "shadowplay",
+      "name": "Venom Blades",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "skillId": 34094,
+      "base": 101,
+      "scalingPct": 180,
+      "parseSource": "detailed_tooltip",
+      "description": "Throws venomous knives at all enemies within a 5m radius (10m at Rank 2), dealing an initial 119 (101 + 180% Melee Attack) Physical Damage and inflicting Deadly Poison (102 + 175% Magic Attack over 11s, ignoring Magic Defense).",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34094,
+          "base": 101,
+          "scalingPct": 180,
+          "parseSource": "detailed_tooltip",
+          "description": "Throws venomous knives at all enemies within a 5m radius (10m at Rank 2), dealing an initial 119 (101 + 180% Melee Attack) Physical Damage and inflicting Deadly Poison (102 + 175% Magic Attack over 11s, ignoring Magic Defense)."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 14.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred27.png"
     }
   ]
 }

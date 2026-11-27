@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_defense.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 10,
+  "skillCount": 17,
   "skills": [
     {
       "id": "defense_shield_slam",
@@ -282,6 +282,163 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_adamant29.png",
       "description": "Shoves away up to 5 enemies within 10m regardless of status, pulls 5 raid members closer (-50% received damage), and grants +1,500 Mettle."
+    },
+    {
+      "id": "defense_boastful_roar",
+      "skillset": "defense",
+      "name": "Boastful Roar",
+      "variant": "base",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "flags": {
+        "mettleScalePct": 60
+      },
+      "skillId": 12048,
+      "base": 0,
+      "scalingPct": 0,
+      "parseSource": "aaclassic_db",
+      "description": "Inflicts Distressed for 7s, reducing the enemy's Move Speed -45%, Skill Damage -20%, Attack Speed -250, and healing effectiveness -60%.\nInflicts additional Magic Damage equal to 60% of your stacked Mettle, consuming all stacks of Mettle when cast.\nAlso Provokes the target for 4s.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 12048,
+          "base": 0,
+          "scalingPct": 0,
+          "parseSource": "aaclassic_db",
+          "description": "Inflicts Distressed for 7s (-60% Received Healing, -20% Skill Damage, -250 Attack Speed, -45% Move Speed) and deals Magic Damage equal to 60% of your stacked Mettle, consuming all Mettle."
+        }
+      ],
+      "abilityLevel": 15,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_adamant27.png"
+    },
+    {
+      "id": "defense_imprison_wave",
+      "skillset": "defense",
+      "name": "Imprison (Wave)",
+      "variant": "ancestral",
+      "ancestralElement": "wave",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "8s escape-proof PvP circle (anyone can enter)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "skillId": 36460,
+      "abilityLevel": 45,
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant37.png",
+      "description": "Summons a magical circle for 8 seconds that allows anyone to enter but prevents them from escaping.\nEnemies can break out if they use enough force. Only applies in PvP."
+    },
+    {
+      "id": "defense_imprison_mist",
+      "skillset": "defense",
+      "name": "Imprison (Mist)",
+      "variant": "ancestral",
+      "ancestralElement": "mist",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "12s 20m-wide mist wall barrier",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "skillId": 36461,
+      "abilityLevel": 45,
+      "cooldownSec": 120.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant38.png",
+      "description": "Summons a 20m wide wall of mist directly in front of you. The wall remains in place for 12 seconds.\nEnemies can break through if they use enough force."
+    },
+    {
+      "id": "defense_cruel_binding",
+      "skillset": "defense",
+      "name": "Cruel Binding",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "4s+ soul tether CC (pulls target back >10m)",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "skillId": 34148,
+      "abilityLevel": 55,
+      "cooldownSec": 24.0,
+      "castTimeSec": 0.2,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred11.png",
+      "description": "Tethers an enemy's soul to a location for 4s, pulling them back to that spot every time they attempt to move further than 10m away.\nAny additional Abyssal Charges are consumed on casting, increasing the duration."
+    },
+    {
+      "id": "defense_shield_throw",
+      "skillset": "defense",
+      "name": "Shield Throw",
+      "variant": "abyssal",
+      "kind": "damage",
+      "damageType": "physical",
+      "scalingStat": "meleeAttack",
+      "multiplierStat": "melee_damage_mul",
+      "flags": {
+        "guaranteedCrit": true
+      },
+      "skillId": 34089,
+      "base": 180,
+      "scalingPct": 100,
+      "parseSource": "detailed_tooltip",
+      "description": "Hurls your shield at the target, dealing 189 (180 + 100% Melee Attack) Physical Damage.\nHas a 100% chance to Critical Strike. Temporarily removes all benefits of your shield while the projectile is in the air. Inflicts Disarm on targets that Parry the attack, removing all benefits of their weapon for 6s.\nAt Rank 2, bounces on impact, striking up to 3 additional nearby targets.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 34089,
+          "base": 180,
+          "scalingPct": 100,
+          "parseSource": "detailed_tooltip",
+          "description": "Hurls your shield at the target, dealing 189 (180 + 100% Melee Attack) Physical Damage with a 100% chance to Critical Strike. Disarms targets that Parry for 6s."
+        }
+      ],
+      "abilityLevel": 10,
+      "cooldownSec": 22.0,
+      "castTimeSec": 0.5,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred10.png"
+    },
+    {
+      "id": "defense_redoubt_gale",
+      "skillset": "defense",
+      "name": "Redoubt (Gale)",
+      "variant": "ancestral",
+      "ancestralElement": "gale",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "+38% Block Rate (6s), Push/Trip immunity & Mettle",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "skillId": 36458,
+      "abilityLevel": 35,
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant35.png",
+      "description": "Raises a shield around the caster for 6s. Increases Block Rate +38% and decreases Move Speed -10%. Instantly grants Mettle and prevents being Pushed or Tripped. Requires a shield."
+    },
+    {
+      "id": "defense_redoubt_life",
+      "skillset": "defense",
+      "name": "Redoubt (Life)",
+      "variant": "ancestral",
+      "ancestralElement": "life",
+      "kind": "utility",
+      "utilityRole": "buff",
+      "utilitySummary": "+40% Physical Defense (20s), Push/Trip immunity & Mettle",
+      "damageType": "utility",
+      "scalingStat": "meleeAttack",
+      "skillId": 36459,
+      "abilityLevel": 35,
+      "cooldownSec": 60.0,
+      "castTimeSec": 0.0,
+      "icon": "icon_skill_adamant36.png",
+      "description": "Strengthens the caster's defenses for 20s. Increases Physical Defense +40% and decreases Move Speed -10%. Instantly grants Mettle and prevents being Pushed or Tripped."
     }
   ]
 }

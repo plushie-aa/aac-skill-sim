@@ -655,6 +655,8 @@ export function applySkillBuildPassives(character, activeModifierIds = []) {
     // Always-on combat passives (never baked by DaruGear)
     const skillsetBonuses = { ...(out.skillsetDamageBonusPct || {}) };
     const skillsetCdr = { ...(out.skillsetCooldownReductionPct || {}) };
+    const skillCdr = { ...(out.skillCooldownReductionPct || {}) };
+    const skillCastDelta = { ...(out.skillCastTimeDeltaSec || {}) };
     const activeFlags = { ...(out._activeBuffFlags || {}) };
 
     let hasDwProfSelected = false;
@@ -680,6 +682,25 @@ export function applySkillBuildPassives(character, activeModifierIds = []) {
             for (const [tree, pct] of Object.entries(m.cooldownReduction)) {
                 skillsetCdr[tree] = Math.min(50, (skillsetCdr[tree] || 0) + Number(pct));
             }
+            combatPassives.push(m);
+        }
+        if (m.skillCooldownReductionPct) {
+            for (const [skId, pct] of Object.entries(m.skillCooldownReductionPct)) {
+                skillCdr[skId] = Math.min(50, (skillCdr[skId] || 0) + Number(pct));
+            }
+            combatPassives.push(m);
+        }
+        if (m.skillCastTimeDeltaSec) {
+            for (const [skId, delta] of Object.entries(m.skillCastTimeDeltaSec)) {
+                skillCastDelta[skId] = (skillCastDelta[skId] || 0) + Number(delta);
+            }
+            combatPassives.push(m);
+        }
+        if (m.bloodthirstMultiplier) {
+            activeFlags.bloodthirstMultiplier = Math.max(
+                Number(activeFlags.bloodthirstMultiplier) || 1,
+                Number(m.bloodthirstMultiplier) || 1
+            );
             combatPassives.push(m);
         }
         if (m.absorbDamagePct) {
@@ -716,6 +737,8 @@ export function applySkillBuildPassives(character, activeModifierIds = []) {
 
     out.skillsetDamageBonusPct = skillsetBonuses;
     out.skillsetCooldownReductionPct = skillsetCdr;
+    out.skillCooldownReductionPct = skillCdr;
+    out.skillCastTimeDeltaSec = skillCastDelta;
     out._activeBuffFlags = activeFlags;
     out._skillBuildApplied = true;
 

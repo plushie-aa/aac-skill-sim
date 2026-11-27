@@ -2,12 +2,12 @@
   "gameVersion": "ArcheAge Classic 1.3.6 (3.5)",
   "hasRankDump": false,
   "multiRankSkillCount": 11,
-  "totalRankEntries": 129,
+  "totalRankEntries": 228,
   "skillsets": [
     {
       "skillset": "battlerage",
       "file": "battlerage.json",
-      "skillCount": 16,
+      "skillCount": 17,
       "dumpSource": "per_skillset_naked (skill_dump_battlerage.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -15,7 +15,7 @@
     {
       "skillset": "witchcraft",
       "file": "witchcraft.json",
-      "skillCount": 14,
+      "skillCount": 18,
       "dumpSource": "per_skillset_naked (skill_dump_witchcraft.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -23,7 +23,7 @@
     {
       "skillset": "defense",
       "file": "defense.json",
-      "skillCount": 10,
+      "skillCount": 17,
       "dumpSource": "per_skillset_naked (skill_dump_defense.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -31,7 +31,7 @@
     {
       "skillset": "auramancy",
       "file": "auramancy.json",
-      "skillCount": 8,
+      "skillCount": 14,
       "dumpSource": "per_skillset_naked (skill_dump_auramancy.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -39,7 +39,7 @@
     {
       "skillset": "occultism",
       "file": "occultism.json",
-      "skillCount": 16,
+      "skillCount": 19,
       "dumpSource": "per_skillset_naked (skill_dump_occultism.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -55,7 +55,7 @@
     {
       "skillset": "sorcery",
       "file": "sorcery.json",
-      "skillCount": 18,
+      "skillCount": 19,
       "dumpSource": "per_skillset_naked (skill_dump_sorcery.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -63,7 +63,7 @@
     {
       "skillset": "shadowplay",
       "file": "shadowplay.json",
-      "skillCount": 13,
+      "skillCount": 19,
       "dumpSource": "per_skillset_naked (skill_dump_shadowplay.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -71,7 +71,7 @@
     {
       "skillset": "songcraft",
       "file": "songcraft.json",
-      "skillCount": 13,
+      "skillCount": 19,
       "dumpSource": "per_skillset_naked (skill_dump_songcraft.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -79,7 +79,7 @@
     {
       "skillset": "vitalism",
       "file": "vitalism.json",
-      "skillCount": 15,
+      "skillCount": 19,
       "dumpSource": "per_skillset_naked (skill_dump_vitalism.txt)",
       "skillsetLevel": 55,
       "isMaxLevel": true
@@ -88,7 +88,7 @@
       "skillset": "equipment",
       "label": "Equip Effects",
       "file": "equipment.json",
-      "skillCount": 31,
+      "skillCount": 34,
       "dumpSource": "item_special_effects + set_bonus_procs",
       "skillsetLevel": 55,
       "isMaxLevel": true

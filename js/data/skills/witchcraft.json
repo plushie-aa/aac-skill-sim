@@ -4,7 +4,7 @@
   "dumpSource": "per_skillset_naked (skill_dump_witchcraft.txt)",
   "skillsetLevel": 55,
   "isMaxLevel": true,
-  "skillCount": 14,
+  "skillCount": 18,
   "skills": [
     {
       "id": "witchcraft_earthen_grip",
@@ -236,7 +236,8 @@
       "cooldownSec": 39.0,
       "castTimeSec": 1.5,
       "icon": "https://darugear.com/assets/icons/icon_skill_illusion04.png",
-      "description": "Summons a mist at the target location for 15s, trapping enemies entering the 4m radius inside a bubble for 5.0s."
+      "description": "Summons a mist at the target location for 15s, trapping enemies entering the 4m radius inside a bubble for 5.0s.",
+      "skillId": 36453
     },
     {
       "id": "witchcraft_insidious_whisper",
@@ -301,7 +302,8 @@
       "cooldownSec": 30.0,
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_illusion18.png",
-      "description": "Inflicts AoE Fear (2.8s) and reduces Move Speed -40% on nearby enemies (does not Stun afterwards)."
+      "description": "Inflicts AoE Fear (2.8s) and reduces Move Speed -40% on nearby enemies (does not Stun afterwards).",
+      "skillId": 36454
     },
     {
       "id": "witchcraft_banshee_wail_mist",
@@ -318,7 +320,8 @@
       "cooldownSec": 30.0,
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_illusion18.png",
-      "description": "Summons a Phantasm at the target location for 6s that pulses AoE Fear (2.8s) → Stun (2.0s) within 5m."
+      "description": "Summons a Phantasm at the target location for 6s that pulses AoE Fear (2.8s) → Stun (2.0s) within 5m.",
+      "skillId": 36455
     },
     {
       "id": "witchcraft_purge",
@@ -335,6 +338,90 @@
       "castTimeSec": 0.0,
       "icon": "https://darugear.com/assets/icons/icon_skill_illusion14.png",
       "description": "Enemies: Removes 1 beneficial buff. Allies: Removes 1 negative debuff."
+    },
+    {
+      "id": "witchcraft_earthen_grip_wave",
+      "skillset": "witchcraft",
+      "name": "Earthen Grip (Wave)",
+      "variant": "ancestral",
+      "ancestralElement": "wave",
+      "kind": "damage",
+      "damageType": "magic",
+      "scalingStat": "magicAttack",
+      "multiplierStat": "spell_damage_mul",
+      "skillId": 36451,
+      "base": 86,
+      "scalingPct": 220,
+      "parseSource": "detailed_tooltip",
+      "description": "Calls forth a hand from the ground to hold an enemy, inflicting Snare for 12s (6s PvP).\nDeals 177 (86 + 220% Magic Attack) Magic Damage upon expiration.\nReduced cast time (0.5s) and shorter range compared to regular Earthen Grip.",
+      "rankCount": 1,
+      "ranks": [
+        {
+          "rank": 1,
+          "label": "Rank 1",
+          "skillId": 36451,
+          "base": 86,
+          "scalingPct": 220,
+          "parseSource": "detailed_tooltip",
+          "description": "Snares enemy for 12s (6s PvP) and deals 86 + 220% Magic Attack Magic Damage on expiration. Faster cast time (0.5s), shorter range."
+        }
+      ],
+      "abilityLevel": 1,
+      "cooldownSec": 18.0,
+      "castTimeSec": 0.5,
+      "icon": "icon_skill_illusion28.png"
+    },
+    {
+      "id": "witchcraft_bubble_trap_gale",
+      "skillset": "witchcraft",
+      "name": "Bubble Trap (Gale)",
+      "variant": "ancestral",
+      "ancestralElement": "gale",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Short-CD Bubbled CC (4.4s PvP / 8.8s PvE, 21s CD)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 36452,
+      "abilityLevel": 10,
+      "cooldownSec": 21.0,
+      "castTimeSec": 1.5,
+      "icon": "icon_skill_illusion29.png",
+      "description": "Traps an enemy inside a bubble (4.4s PvP / 8.8s PvE) and slowly lifts it into the air. Enemies in bubbles cannot attack and take -50% Magic Damage until freed by direct damage.\nReduced cooldown (21s) and shorter range compared to regular Bubble Trap."
+    },
+    {
+      "id": "witchcraft_devour_hope",
+      "skillset": "witchcraft",
+      "name": "Devour Hope",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "debuff",
+      "utilitySummary": "Hopelessness (5s PvP: +10–15s cooldown on cast skills)",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 34125,
+      "abilityLevel": 10,
+      "cooldownSec": 14.0,
+      "castTimeSec": 1.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred07.png",
+      "description": "Inflicts Hopelessness on your chosen victim for 5s. Any skills cast during this debuff have their cooldowns increased by +10s (+15s at Rank 2).\nCan only be used in PvP."
+    },
+    {
+      "id": "witchcraft_stonesight",
+      "skillset": "witchcraft",
+      "name": "Stonesight",
+      "variant": "abyssal",
+      "kind": "utility",
+      "utilityRole": "cc",
+      "utilitySummary": "Channeled 15m+ cone Petrify CC",
+      "damageType": "utility",
+      "scalingStat": "magicAttack",
+      "skillId": 34147,
+      "abilityLevel": 55,
+      "cooldownSec": 22.0,
+      "castTimeSec": 1.0,
+      "icon": "https://darugear.com/assets/icons/icon_skill_hatred08.png",
+      "description": "Unleashes the gaze of the terrifying Gorgon, petrifying all enemies facing the caster within a 15m cone. Enemies remain petrified until the caster stops channeling.\nAdditional Abyssal Charges are consumed on casting, increasing range."
     }
   ]
 }

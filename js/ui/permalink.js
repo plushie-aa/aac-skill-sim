@@ -80,9 +80,9 @@ export function buildComparisonPermalink() {
     const ma = encodeSlotBuffTokens("A");
     const mb = encodeSlotBuffTokens("B");
     const md = encodeSlotBuffTokens("defender");
-    if (ma) params.set("ma", ma);
-    if (mb) params.set("mb", mb);
-    if (md) params.set("md", md);
+    params.set("ma", ma || "");
+    params.set("mb", mb || "");
+    params.set("md", md || "");
 
     const ctxFlags = [];
     if (document.getElementById("ctxBackstab")?.checked) ctxFlags.push("bs");
@@ -105,7 +105,9 @@ function applySlotTokensAndConsumables(slotKey, rawCsv) {
     const consMap = {};
     for (const tok of tokens) {
         const baseId = tok.split(":")[0];
-        const mod = COMBAT_MODIFIERS[baseId];
+        const mod = Object.prototype.hasOwnProperty.call(COMBAT_MODIFIERS, baseId)
+            ? COMBAT_MODIFIERS[baseId]
+            : null;
         if (!mod) continue;
         if (mod.category === "consumable" && mod.slot) {
             consMap[mod.slot] = mod.id;

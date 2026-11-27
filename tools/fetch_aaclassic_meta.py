@@ -11,6 +11,7 @@ from __future__ import annotations
 import concurrent.futures
 import json
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -19,16 +20,32 @@ ROOT = Path(__file__).resolve().parent.parent
 CATALOG_PATH = ROOT / "tools" / "skill_catalog.json"
 OUT_PATH = ROOT / "tools" / "aaclassic_meta.json"
 BASE_URL = "https://aa-classic.com/data/skills/{sid}.json"
+MAX_META_BYTES = 2 * 1024 * 1024
+ALLOWED_META_HOSTS = {"aa-classic.com", "www.aa-classic.com"}
+
+
+class _SafeMetaRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        p = urllib.parse.urlparse(newurl)
+        if p.scheme.lower() != "https" or (p.hostname or "").lower() not in ALLOWED_META_HOSTS:
+            raise ValueError(f"Blocked redirect to untrusted host: {newurl}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_SAFE_META_OPENER = urllib.request.build_opener(_SafeMetaRedirectHandler())
 
 
 def fetch_one(sid: int) -> tuple[int, dict[str, Any] | None]:
     url = BASE_URL.format(sid=sid)
     req = urllib.request.Request(url, headers={"User-Agent": "damage-sim-meta-fetcher/1.0"})
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with _SAFE_META_OPENER.open(req, timeout=15) as resp:
             if resp.status != 200:
                 return sid, None
-            data = json.loads(resp.read().decode("utf-8"))
+            raw = resp.read(MAX_META_BYTES + 1)
+            if len(raw) > MAX_META_BYTES:
+                return sid, None
+            data = json.loads(raw.decode("utf-8"))
             return sid, {
                 "id": data.get("id", sid),
                 "name": data.get("name"),
