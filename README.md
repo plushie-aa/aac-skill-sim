@@ -1,12 +1,5 @@
 # ArcheAge Classic Skill & Damage Simulator
 
-[![Version](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2Fplushie-aa%2Faac-skill-sim%2Fmain%2FVERSION&search=v%3F%28%5B%5E%5Cs%5D%2B%29&replace=v%241&label=version&color=22c55e)](CHANGELOG.md)
-[![GitHub Pages](https://img.shields.io/github/actions/workflow/status/plushie-aa/aac-skill-sim/pages.yml?branch=main&label=GitHub%20Pages)](https://plushie-aa.github.io/aac-skill-sim/)
-[![AA Classic](https://img.shields.io/badge/AA%20Classic-1.3.6%20%283.5%29-6366f1)](https://aa-classic.com/)
-[![Zero-Build Vanilla JS](https://img.shields.io/badge/zero--build-Vanilla%20JS%20%2B%20ES%20Modules-f7df1e)](#project-layout)
-[![Last Commit](https://img.shields.io/github/last-commit/plushie-aa/aac-skill-sim)](https://github.com/plushie-aa/aac-skill-sim/commits/main)
-[![License](https://img.shields.io/github/license/plushie-aa/aac-skill-sim)](LICENSE)
-
 HTML + vanilla JavaScript (ES Modules) damage, gear, and build economy simulator for ArcheAge Classic.
 
 Open it now in your browser at [the github page.](https://plushie-aa.github.io/aac-skill-sim/)
