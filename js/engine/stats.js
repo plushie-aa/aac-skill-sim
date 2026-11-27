@@ -1207,7 +1207,7 @@ export const COMBAT_MODIFIERS = {
         category: "weapon_proc",
         aacBuffId: 9000756,
         weaponTypes: [],
-        icon: "assets/icons/icon_skill_fight06.png",
+        icon: "assets/icons/icon_skill_fight15.png",
         description: "Enlightened Berserker 3-Piece Set proc (AA Classic buff 9000756): Taking damage triggers +1,000 Attack Speed for 30s (3m cooldown).",
         addOffense: {
             attackSpeed: 1000,

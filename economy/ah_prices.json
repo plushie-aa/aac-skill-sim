@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "source": "sermeatball.com",
   "sourceUrl": "https://sermeatball.com/auction/item-price-history",
-  "syncedAt": "2026-11-25T10:25:57.232982+00:00",
+  "syncedAt": "2026-11-27T02:18:28.833760+00:00",
   "counts": {
-    "items": 2229,
-    "gems": 144,
+    "items": 2142,
+    "gems": 143,
     "frosts": 117,
-    "total": 2490,
-    "buildsMatchedItems": 83,
-    "buildsTotalItems": 162,
-    "buildsMatchedGems": 40,
-    "buildsTotalGems": 48,
+    "total": 2402,
+    "buildsMatchedItems": 86,
+    "buildsTotalItems": 167,
+    "buildsMatchedGems": 41,
+    "buildsTotalGems": 49,
     "buildsMatchedFrosts": 15,
     "buildsTotalFrosts": 58
   },
@@ -62,11 +62,6 @@
       "g": 16,
       "src": "latest",
       "id": 30962
-    },
-    "Clear Earth Lunagem: Mastery": {
-      "g": 5,
-      "src": "latest",
-      "id": 32582
     },
     "Clear Eternal Archery Lunagem": {
       "g": 50,
@@ -152,7 +147,7 @@
       "g": 12,
       "src": "30d",
       "id": 30942,
-      "v30": 11,
+      "v30": 9,
       "lat": 9,
       "a7": 9
     },
@@ -163,10 +158,10 @@
       "v30": 5
     },
     "Clear Gale Lunagem: Fury": {
-      "g": 11,
+      "g": 12,
       "src": "30d",
       "id": 30940,
-      "v30": 7,
+      "v30": 6,
       "lat": 14
     },
     "Clear Gale Lunagem: Harbinger": {
@@ -233,8 +228,7 @@
       "src": "30d",
       "id": 30915,
       "v30": 12,
-      "lat": 21,
-      "a7": 21
+      "lat": 21
     },
     "Clear Wave Lunagem: Magic Defense": {
       "g": 10,
@@ -280,19 +274,20 @@
       "id": 38172
     },
     "Lucid Ancient Witchcraft Lunagem": {
-      "g": 1050,
+      "g": 1016,
       "src": "30d",
       "id": 38164,
-      "v30": 5,
-      "lat": 950
+      "v30": 7,
+      "lat": 949,
+      "a7": 949
     },
     "Lucid Earth Lunagem: Celerity": {
       "g": 1133,
       "src": "30d",
       "id": 31007,
-      "v30": 71,
+      "v30": 67,
       "lat": 1295,
-      "a7": 1233
+      "a7": 1262
     },
     "Lucid Earth Lunagem: Esoteric": {
       "g": 1250,
@@ -300,27 +295,26 @@
       "id": 31006
     },
     "Lucid Earth Lunagem: Finesse": {
-      "g": 1246,
+      "g": 1254,
       "src": "30d",
       "id": 31005,
-      "v30": 75,
+      "v30": 67,
       "lat": 1350,
-      "a7": 1332
+      "a7": 1326
     },
     "Lucid Earth Lunagem: Flexibility": {
       "g": 2,
       "src": "30d",
       "id": 30997,
-      "v30": 307,
-      "a7": 3
+      "v30": 323
     },
     "Lucid Earth Lunagem: Impenetrable": {
-      "g": 1149,
+      "g": 1137,
       "src": "30d",
       "id": 31008,
-      "v30": 77,
+      "v30": 75,
       "lat": 1254,
-      "a7": 1203
+      "a7": 1232
     },
     "Lucid Earth Lunagem: Intercept": {
       "g": 1222,
@@ -331,7 +325,7 @@
       "g": 1,
       "src": "all_time",
       "id": 32584,
-      "v30": 190
+      "v30": 217
     },
     "Lucid Eternal Archery Lunagem": {
       "g": 1500,
@@ -356,12 +350,12 @@
       "id": 38175
     },
     "Lucid Eternal Songcraft Lunagem": {
-      "g": 976,
+      "g": 978,
       "src": "30d",
       "id": 38181,
-      "v30": 33,
-      "lat": 901,
-      "a7": 901
+      "v30": 40,
+      "lat": 999,
+      "a7": 934
     },
     "Lucid Eternal Sorcery Lunagem": {
       "g": 1099,
@@ -401,34 +395,34 @@
       "id": 30932
     },
     "Lucid Fire Lunagem: Sharpshot": {
-      "g": 922,
+      "g": 927,
       "src": "30d",
       "id": 30930,
-      "v30": 80,
+      "v30": 66,
       "lat": 889,
-      "a7": 951
+      "a7": 1008
     },
     "Lucid Fire Lunagem: Strong Blow": {
-      "g": 905,
+      "g": 898,
       "src": "30d",
       "id": 30929,
-      "v30": 173,
-      "lat": 916,
-      "a7": 952
+      "v30": 177,
+      "lat": 901,
+      "a7": 917
     },
     "Lucid Gale Lunagem: Benevolence": {
-      "g": 652,
+      "g": 640,
       "src": "30d",
       "id": 30996,
-      "v30": 25,
+      "v30": 22,
       "lat": 667,
       "a7": 622
     },
     "Lucid Gale Lunagem: Breakthrough": {
-      "g": 1103,
+      "g": 1084,
       "src": "30d",
       "id": 32574,
-      "v30": 26,
+      "v30": 20,
       "lat": 1210,
       "a7": 1155
     },
@@ -437,14 +431,14 @@
       "src": "30d",
       "id": 30994,
       "v30": 10,
-      "lat": 75,
-      "a7": 75
+      "lat": 75
     },
     "Lucid Gale Lunagem: Destruction": {
       "g": 1290,
       "src": "30d",
       "id": 30988,
-      "v30": 22,
+      "v30": 23,
+      "lat": 1300,
       "a7": 1260
     },
     "Lucid Gale Lunagem: Fidelity": {
@@ -452,32 +446,31 @@
       "src": "30d",
       "id": 30967,
       "v30": 10,
-      "lat": 19,
-      "a7": 19
+      "lat": 19
     },
     "Lucid Gale Lunagem: Fury": {
-      "g": 1141,
+      "g": 1124,
       "src": "30d",
       "id": 30986,
-      "v30": 26,
+      "v30": 24,
       "lat": 15,
-      "a7": 805
+      "a7": 608
     },
     "Lucid Gale Lunagem: Harbinger": {
       "g": 1332,
       "src": "30d",
       "id": 30995,
-      "v30": 45,
+      "v30": 39,
       "lat": 1350,
-      "a7": 1283
+      "a7": 1279
     },
     "Lucid Gale Lunagem: Harmony": {
-      "g": 582,
+      "g": 571,
       "src": "30d",
       "id": 9002435,
-      "v30": 26,
+      "v30": 25,
       "lat": 500,
-      "a7": 505
+      "a7": 508
     },
     "Lucid Gale Lunagem: Mastery": {
       "g": 11,
@@ -485,13 +478,13 @@
       "id": 30939,
       "v30": 38,
       "lat": 5,
-      "a7": 13
+      "a7": 16
     },
     "Lucid Gale Lunagem: Mercy": {
-      "g": 1331,
+      "g": 1326,
       "src": "30d",
       "id": 30989,
-      "v30": 32,
+      "v30": 29,
       "lat": 1300,
       "a7": 1300
     },
@@ -501,86 +494,85 @@
       "id": 31002,
       "v30": 59,
       "lat": 1388,
-      "a7": 1347
+      "a7": 1366
     },
     "Lucid Gale Lunagem: Serenity": {
-      "g": 1208,
+      "g": 1206,
       "src": "30d",
       "id": 30987,
-      "v30": 28,
-      "lat": 1100,
-      "a7": 1120
+      "v30": 29,
+      "lat": 1189,
+      "a7": 1137
     },
     "Lucid Gale Lunagem: Tempest": {
-      "g": 972,
+      "g": 983,
       "src": "30d",
       "id": 31000,
-      "v30": 87,
-      "lat": 1137,
-      "a7": 1118
+      "v30": 88,
+      "lat": 1150,
+      "a7": 1129
     },
     "Lucid Gale Lunagem: Torrent": {
-      "g": 1270,
+      "g": 1248,
       "src": "30d",
       "id": 31001,
-      "v30": 94,
-      "lat": 1250,
-      "a7": 1243
+      "v30": 89,
+      "lat": 1000,
+      "a7": 1167
     },
     "Lucid Gale Lunagem: Wrath": {
-      "g": 1281,
+      "g": 1276,
       "src": "30d",
       "id": 30993,
-      "v30": 54,
-      "lat": 1263,
-      "a7": 1288
+      "v30": 55,
+      "lat": 1200,
+      "a7": 1266
     },
     "Lucid Wave Lunagem: Defense": {
-      "g": 1031,
+      "g": 1030,
       "src": "30d",
       "id": 30937,
-      "v30": 252,
-      "lat": 1160,
-      "a7": 1207
+      "v30": 254,
+      "lat": 973,
+      "a7": 1164
     },
     "Lucid Wave Lunagem: Magic Defense": {
       "g": 967,
       "src": "30d",
       "id": 30938,
-      "v30": 61,
+      "v30": 66,
       "lat": 997,
-      "a7": 972
+      "a7": 998
     },
     "Radiant Earth Lunagem: Flexibility": {
       "g": 8,
       "src": "30d",
       "id": 29883,
-      "v30": 4778,
-      "a7": 10
+      "v30": 4882
     },
     "Radiant Earth Lunagem: Mastery": {
       "g": 7,
       "src": "30d",
       "id": 29884,
-      "v30": 3073,
-      "lat": 5,
-      "a7": 9
+      "v30": 3419,
+      "lat": 8,
+      "a7": 8
     },
     "Radiant Gale Lunagem: Fidelity": {
       "g": 10,
       "src": "30d",
       "id": 29885,
-      "v30": 1337,
-      "lat": 8,
-      "a7": 12
+      "v30": 1448,
+      "lat": 16,
+      "a7": 13
     },
     "Radiant Gale Lunagem: Mastery": {
       "g": 9,
       "src": "30d",
       "id": 29882,
-      "v30": 853,
-      "lat": 8,
-      "a7": 10
+      "v30": 893,
+      "lat": 6,
+      "a7": 8
     },
     "Sealed Vivid Lunagem": {
       "g": 20,
@@ -652,28 +644,27 @@
       "id": 30980
     },
     "Vivid Earth Lunascale: Celerity": {
-      "g": 430,
+      "g": 433,
       "src": "30d",
       "id": 39062,
-      "v30": 74,
-      "lat": 498,
-      "a7": 453
+      "v30": 65,
+      "lat": 425,
+      "a7": 456
     },
     "Vivid Earth Lunascale: Esoteric": {
-      "g": 426,
+      "g": 422,
       "src": "30d",
       "id": 39061,
-      "v30": 7,
-      "lat": 401,
-      "a7": 401
+      "v30": 6,
+      "lat": 401
     },
     "Vivid Earth Lunascale: Finesse": {
-      "g": 424,
+      "g": 425,
       "src": "30d",
       "id": 39060,
-      "v30": 58,
+      "v30": 55,
       "lat": 498,
-      "a7": 474
+      "a7": 498
     },
     "Vivid Earth Lunascale: Impenetrable": {
       "g": 389,
@@ -788,10 +779,12 @@
       "a7": 45
     },
     "Vivid Gale Lunagem: Fidelity": {
-      "g": 1,
+      "g": 2,
       "src": "30d",
       "id": 30951,
-      "v30": 3
+      "v30": 9,
+      "lat": 3,
+      "a7": 3
     },
     "Vivid Gale Lunagem: Fury": {
       "g": 45,
@@ -866,18 +859,18 @@
       "id": 39064
     },
     "Vivid Gale Lunascale: Breakthrough": {
-      "g": 437,
+      "g": 451,
       "src": "30d",
       "id": 39071,
-      "v30": 16,
+      "v30": 12,
       "lat": 383,
       "a7": 419
     },
     "Vivid Gale Lunascale: Clash": {
-      "g": 247,
+      "g": 245,
       "src": "30d",
       "id": 40938,
-      "v30": 4,
+      "v30": 3,
       "lat": 240
     },
     "Vivid Gale Lunascale: Overpower": {
@@ -891,23 +884,23 @@
       "id": 39070,
       "v30": 46,
       "lat": 497,
-      "a7": 436
+      "a7": 498
     },
     "Vivid Gale Lunascale: Tempest": {
-      "g": 381,
+      "g": 389,
       "src": "30d",
       "id": 39068,
-      "v30": 47,
-      "lat": 355,
-      "a7": 372
+      "v30": 48,
+      "lat": 499,
+      "a7": 410
     },
     "Vivid Gale Lunascale: Torrent": {
-      "g": 417,
+      "g": 420,
       "src": "30d",
       "id": 39069,
-      "v30": 79,
-      "lat": 421,
-      "a7": 473
+      "v30": 84,
+      "lat": 473,
+      "a7": 464
     },
     "Vivid Wave Lunagem: Defense": {
       "g": 197,
@@ -1244,7 +1237,7 @@
       "id": 24714,
       "v30": 19,
       "lat": 380,
-      "a7": 383
+      "a7": 380
     },
     "Flawless Blade Lunafrost": {
       "g": 210,
@@ -1265,9 +1258,9 @@
       "g": 491,
       "src": "30d",
       "id": 24693,
-      "v30": 11,
+      "v30": 12,
       "lat": 490,
-      "a7": 496
+      "a7": 490
     },
     "Flawless Roar Lunafrost": {
       "g": 111,
@@ -1291,9 +1284,9 @@
       "g": 77,
       "src": "30d",
       "id": 24745,
-      "v30": 17,
-      "lat": 70,
-      "a7": 130
+      "v30": 19,
+      "lat": 80,
+      "a7": 117
     },
     "Lucid Earthen Fire Lunadrop": {
       "g": 15,
@@ -1401,7 +1394,7 @@
       "id": 26857,
       "v30": 10,
       "lat": 378,
-      "a7": 438
+      "a7": 378
     },
     "Perfect Fire Lunafrost": {
       "g": 449,
@@ -1410,26 +1403,25 @@
       "v30": 1
     },
     "Perfect Gale Lunafrost": {
-      "g": 344,
+      "g": 342,
       "src": "30d",
       "id": 26856,
-      "v30": 6,
+      "v30": 5,
       "lat": 444
     },
     "Perfect Life Lunafrost": {
-      "g": 477,
+      "g": 484,
       "src": "30d",
       "id": 26859,
-      "v30": 2,
-      "lat": 499
-    },
-    "Perfect Wave Lunafrost": {
-      "g": 496,
-      "src": "30d",
-      "id": 26858,
-      "v30": 5,
+      "v30": 3,
       "lat": 499,
       "a7": 499
+    },
+    "Perfect Wave Lunafrost": {
+      "g": 499,
+      "src": "30d",
+      "id": 26858,
+      "v30": 3
     },
     "Radiant Earth Lunadrop": {
       "g": 10,
@@ -1527,10 +1519,10 @@
       "id": 24713
     },
     "Whole Barrier Lunafrost": {
-      "g": 435,
+      "g": 453,
       "src": "30d",
       "id": 24749,
-      "v30": 4,
+      "v30": 3,
       "lat": 480,
       "a7": 480
     },
@@ -1557,7 +1549,7 @@
       "id": 29030,
       "v30": 11,
       "lat": 170,
-      "a7": 172
+      "a7": 170
     },
     "Abyssal Devil Wings": {
       "g": 3,
@@ -1577,9 +1569,10 @@
       "id": 22606
     },
     "Airain Rock Breeches": {
-      "g": 12,
-      "src": "latest",
-      "id": 22492
+      "g": 30,
+      "src": "30d",
+      "id": 22492,
+      "v30": 1
     },
     "Airain Rock Dissention": {
       "g": 10,
@@ -1654,7 +1647,7 @@
       "id": 21945
     },
     "Ancient Dragon Talon": {
-      "g": 17,
+      "g": 1,
       "src": "all_time",
       "id": 21944,
       "v30": 1
@@ -1712,7 +1705,7 @@
       "id": 23752
     },
     "Anguished Monk's Greaves": {
-      "g": 5,
+      "g": 1,
       "src": "all_time",
       "id": 23753,
       "v30": 2
@@ -1878,12 +1871,12 @@
       "id": 20900
     },
     "Assassin Earrings": {
-      "g": 65,
+      "g": 67,
       "src": "30d",
       "id": 39662,
-      "v30": 49,
-      "lat": 50,
-      "a7": 59
+      "v30": 50,
+      "lat": 94,
+      "a7": 53
     },
     "Assassin Necklace": {
       "g": 52,
@@ -1891,15 +1884,15 @@
       "id": 39660,
       "v30": 8,
       "lat": 60,
-      "a7": 63
+      "a7": 60
     },
     "Assassin Ring": {
-      "g": 28,
+      "g": 32,
       "src": "30d",
       "id": 39661,
-      "v30": 10,
-      "lat": 23,
-      "a7": 39
+      "v30": 12,
+      "lat": 35,
+      "a7": 38
     },
     "Auroria Beldame Belt": {
       "g": 55,
@@ -1930,12 +1923,12 @@
       "id": 27013
     },
     "Auroria Beldame Guards": {
-      "g": 36,
+      "g": 31,
       "src": "30d",
       "id": 27010,
-      "v30": 3,
-      "lat": 80,
-      "a7": 80
+      "v30": 4,
+      "lat": 15,
+      "a7": 15
     },
     "Auroria Beldame Jerkin": {
       "g": 33,
@@ -1947,8 +1940,7 @@
       "src": "30d",
       "id": 39199,
       "v30": 5,
-      "lat": 10,
-      "a7": 10
+      "lat": 10
     },
     "Auroria Cruel Witchcraft Hood": {
       "g": 12,
@@ -1975,7 +1967,7 @@
       "v30": 1
     },
     "Auroria Cruel Witchcraft Shoes": {
-      "g": 23,
+      "g": 1,
       "src": "all_time",
       "id": 39201,
       "v30": 1
@@ -1988,12 +1980,12 @@
       "lat": 15
     },
     "Auroria Devious Shadowplay Belt": {
-      "g": 38,
+      "g": 35,
       "src": "30d",
       "id": 39281,
-      "v30": 11,
-      "lat": 20,
-      "a7": 20
+      "v30": 13,
+      "lat": 18,
+      "a7": 18
     },
     "Auroria Devious Shadowplay Boots": {
       "g": 30,
@@ -2012,11 +2004,10 @@
       "id": 39279
     },
     "Auroria Devious Shadowplay Fists": {
-      "g": 42,
+      "g": 70,
       "src": "30d",
       "id": 39283,
-      "v30": 3,
-      "lat": 70
+      "v30": 1
     },
     "Auroria Devious Shadowplay Guards": {
       "g": 100,
@@ -2031,10 +2022,10 @@
       "v30": 1
     },
     "Auroria Dulcet Vitalism Cap": {
-      "g": 50,
+      "g": 47,
       "src": "30d",
       "id": 39307,
-      "v30": 16,
+      "v30": 13,
       "lat": 30,
       "a7": 33
     },
@@ -2043,8 +2034,7 @@
       "src": "30d",
       "id": 39311,
       "v30": 4,
-      "lat": 1,
-      "a7": 1
+      "lat": 1
     },
     "Auroria Dulcet Vitalism Pants": {
       "g": 18,
@@ -2054,18 +2044,18 @@
       "lat": 15
     },
     "Auroria Dulcet Vitalism Sash": {
-      "g": 28,
+      "g": 31,
       "src": "30d",
       "id": 39309,
-      "v30": 8,
-      "lat": 40,
-      "a7": 40
+      "v30": 10,
+      "lat": 42,
+      "a7": 41
     },
     "Auroria Dulcet Vitalism Shirt": {
-      "g": 68,
+      "g": 61,
       "src": "30d",
       "id": 39308,
-      "v30": 5,
+      "v30": 6,
       "lat": 35,
       "a7": 35
     },
@@ -2122,7 +2112,7 @@
       "v30": 1
     },
     "Auroria Haunted Occultism Cuirass": {
-      "g": 181,
+      "g": 45,
       "src": "30d",
       "id": 39238,
       "v30": 11,
@@ -2135,7 +2125,7 @@
       "id": 39241,
       "v30": 13,
       "lat": 37,
-      "a7": 45
+      "a7": 37
     },
     "Auroria Haunted Occultism Greaves": {
       "g": 33,
@@ -2146,19 +2136,18 @@
       "a7": 35
     },
     "Auroria Haunted Occultism Helm": {
-      "g": 24,
+      "g": 19,
       "src": "30d",
       "id": 39237,
-      "v30": 4,
+      "v30": 3,
       "lat": 5
     },
     "Auroria Haunted Occultism Sabatons": {
-      "g": 39,
+      "g": 33,
       "src": "30d",
       "id": 39243,
-      "v30": 6,
-      "lat": 45,
-      "a7": 60
+      "v30": 7,
+      "a7": 23
     },
     "Auroria Haunted Occultism Tassets": {
       "g": 32,
@@ -2181,12 +2170,11 @@
       "id": 26991
     },
     "Auroria Heartbound Hood": {
-      "g": 40,
+      "g": 31,
       "src": "30d",
       "id": 26979,
-      "v30": 6,
-      "lat": 35,
-      "a7": 35
+      "v30": 4,
+      "lat": 35
     },
     "Auroria Heartbound Pants": {
       "g": 6,
@@ -2202,10 +2190,10 @@
       "a7": 66
     },
     "Auroria Heartbound Shirt": {
-      "g": 10,
+      "g": 5,
       "src": "30d",
       "id": 26982,
-      "v30": 1
+      "v30": 2
     },
     "Auroria Heartbound Shoes": {
       "g": 18,
@@ -2254,17 +2242,15 @@
     },
     "Auroria Hellbent Vambraces": {
       "g": 50,
-      "src": "30d",
-      "id": 27030,
-      "v30": 1
+      "src": "latest",
+      "id": 27030
     },
     "Auroria Lorn Battlerage Belt": {
       "g": 39,
       "src": "30d",
       "id": 39183,
       "v30": 7,
-      "lat": 22,
-      "a7": 22
+      "lat": 22
     },
     "Auroria Lorn Battlerage Boots": {
       "g": 3,
@@ -2272,9 +2258,10 @@
       "id": 39187
     },
     "Auroria Lorn Battlerage Breeches": {
-      "g": 23,
-      "src": "latest",
-      "id": 39186
+      "g": 10,
+      "src": "30d",
+      "id": 39186,
+      "v30": 2
     },
     "Auroria Lorn Battlerage Cap": {
       "g": 1,
@@ -2322,8 +2309,7 @@
       "src": "30d",
       "id": 26984,
       "v30": 2,
-      "lat": 29,
-      "a7": 29
+      "lat": 29
     },
     "Auroria Mystic Shirt": {
       "g": 5,
@@ -2345,7 +2331,7 @@
       "g": 48,
       "src": "30d",
       "id": 39266,
-      "v30": 3
+      "v30": 2
     },
     "Auroria Noble Sorcery Gauntlets": {
       "g": 51,
@@ -2368,18 +2354,19 @@
       "v30": 1
     },
     "Auroria Noble Sorcery Sabatons": {
-      "g": 34,
+      "g": 26,
       "src": "30d",
       "id": 39271,
-      "v30": 3,
+      "v30": 2,
       "lat": 33
     },
     "Auroria Noble Sorcery Tassets": {
-      "g": 38,
+      "g": 31,
       "src": "30d",
       "id": 39267,
       "v30": 5,
-      "lat": 55
+      "lat": 2,
+      "a7": 2
     },
     "Auroria Noble Sorcery Vambraces": {
       "g": 20,
@@ -2397,12 +2384,6 @@
       "g": 20,
       "src": "latest",
       "id": 39223
-    },
-    "Auroria Precise Auramancy Pants": {
-      "g": 23,
-      "src": "all_time",
-      "id": 39228,
-      "v30": 1
     },
     "Auroria Precise Auramancy Sash": {
       "g": 10,
@@ -2453,7 +2434,7 @@
       "g": 39,
       "src": "30d",
       "id": 27011,
-      "v30": 9,
+      "v30": 8,
       "lat": 36
     },
     "Auroria Promise Guards": {
@@ -2476,12 +2457,12 @@
       "v30": 2
     },
     "Auroria Savage Gauntlets": {
-      "g": 18,
+      "g": 15,
       "src": "30d",
       "id": 27034,
-      "v30": 4,
-      "lat": 45,
-      "a7": 45
+      "v30": 5,
+      "lat": 1,
+      "a7": 23
     },
     "Auroria Savage Greaves": {
       "g": 119,
@@ -2540,22 +2521,18 @@
       "lat": 15
     },
     "Auroria Songcraft Shirt": {
-      "g": 7,
-      "src": "30d",
+      "g": 1,
+      "src": "all_time",
       "id": 39287,
       "v30": 3
     },
-    "Auroria Songcraft Shoes": {
-      "g": 18,
-      "src": "all_time",
-      "id": 39292,
-      "v30": 2
-    },
     "Auroria Songcraft Sleeves": {
-      "g": 2,
+      "g": 3,
       "src": "30d",
       "id": 39289,
-      "v30": 2
+      "v30": 3,
+      "lat": 5,
+      "a7": 5
     },
     "Auroria Soulbane Gloves": {
       "g": 14,
@@ -2569,26 +2546,19 @@
       "src": "latest",
       "id": 26980
     },
-    "Auroria Soulbane Pants": {
-      "g": 157,
-      "src": "all_time",
-      "id": 26995,
-      "v30": 1
-    },
     "Auroria Soulbane Sash": {
-      "g": 44,
+      "g": 39,
       "src": "30d",
       "id": 26986,
-      "v30": 3,
+      "v30": 2,
       "lat": 45
     },
     "Auroria Soulbane Shirt": {
-      "g": 57,
+      "g": 49,
       "src": "30d",
       "id": 26983,
       "v30": 13,
-      "lat": 50,
-      "a7": 40
+      "a7": 25
     },
     "Auroria Soulbane Shoes": {
       "g": 10,
@@ -2601,21 +2571,14 @@
       "id": 26989,
       "v30": 3,
       "lat": 1,
-      "a7": 10
+      "a7": 1
     },
     "Auroria Swordbane Cuirass": {
       "g": 16,
       "src": "30d",
       "id": 27023,
       "v30": 2,
-      "lat": 3,
-      "a7": 3
-    },
-    "Auroria Swordbane Gauntlets": {
-      "g": 23,
-      "src": "all_time",
-      "id": 27032,
-      "v30": 1
+      "lat": 3
     },
     "Auroria Swordbane Greaves": {
       "g": 10,
@@ -2640,28 +2603,17 @@
       "v30": 3,
       "lat": 15
     },
-    "Auroria Swordbane Vambraces": {
-      "g": 27,
-      "src": "all_time",
-      "id": 27029,
-      "v30": 1
-    },
     "Auroria Wildborn Archery Belt": {
       "g": 12,
       "src": "30d",
       "id": 39253,
       "v30": 1
     },
-    "Auroria Wildborn Archery Boots": {
-      "g": 31,
-      "src": "all_time",
-      "id": 39257,
-      "v30": 1
-    },
     "Auroria Wildborn Archery Breeches": {
-      "g": 66,
-      "src": "latest",
-      "id": 39256
+      "g": 10,
+      "src": "30d",
+      "id": 39256,
+      "v30": 1
     },
     "Auroria Wildborn Archery Cap": {
       "g": 15,
@@ -2671,19 +2623,13 @@
       "lat": 25,
       "a7": 25
     },
-    "Auroria Wildborn Archery Fists": {
-      "g": 48,
-      "src": "all_time",
-      "id": 39255,
-      "v30": 1
-    },
     "Auroria Wildborn Archery Guards": {
       "g": 49,
       "src": "30d",
       "id": 39254,
       "v30": 13,
       "lat": 100,
-      "a7": 66
+      "a7": 65
     },
     "Auroria Wildborn Archery Jerkin": {
       "g": 35,
@@ -2712,10 +2658,10 @@
       "id": 27015
     },
     "Auroria Wildborn Cap": {
-      "g": 37,
+      "g": 53,
       "src": "30d",
       "id": 27000,
-      "v30": 3,
+      "v30": 4,
       "lat": 100,
       "a7": 100
     },
@@ -2727,12 +2673,12 @@
       "lat": 39
     },
     "Auroria Wildborn Guards": {
-      "g": 71,
+      "g": 76,
       "src": "30d",
       "id": 27009,
-      "v30": 25,
-      "lat": 60,
-      "a7": 73
+      "v30": 27,
+      "lat": 150,
+      "a7": 87
     },
     "Auroria Wildborn Jerkin": {
       "g": 23,
@@ -2792,12 +2738,12 @@
       "id": 28377
     },
     "Axis Mundi Aegis": {
-      "g": 4124,
+      "g": 4116,
       "src": "30d",
       "id": 26675,
       "v30": 20,
       "lat": 3900,
-      "a7": 4104
+      "a7": 3967
     },
     "Ayanad Autumn Club": {
       "g": 23001,
@@ -3007,20 +2953,20 @@
       "v30": 1
     },
     "Ayanad Flame Belt": {
-      "g": 21500,
+      "g": 22500,
       "src": "30d",
       "id": 31515,
-      "v30": 3,
+      "v30": 2,
       "lat": 23000,
       "a7": 23000
     },
     "Ayanad Flame Boots": {
-      "g": 48000,
+      "g": 39667,
       "src": "30d",
       "id": 31513,
-      "v30": 2,
-      "lat": 75000,
-      "a7": 75000
+      "v30": 3,
+      "lat": 23000,
+      "a7": 49000
     },
     "Ayanad Flame Bow": {
       "g": 21000,
@@ -3031,17 +2977,17 @@
       "a7": 14000
     },
     "Ayanad Flame Breeches": {
-      "g": 64500,
+      "g": 63000,
       "src": "30d",
       "id": 31511,
-      "v30": 2,
-      "lat": 63000
+      "v30": 1
     },
     "Ayanad Flame Cap": {
-      "g": 72000,
+      "g": 47500,
       "src": "30d",
       "id": 31509,
-      "v30": 1
+      "v30": 2,
+      "lat": 23000
     },
     "Ayanad Flame Club": {
       "g": 20000,
@@ -3055,12 +3001,12 @@
       "v30": 1
     },
     "Ayanad Flame Earring": {
-      "g": 17677,
+      "g": 16398,
       "src": "30d",
       "id": 31655,
-      "v30": 5,
-      "lat": 5500,
-      "a7": 19250
+      "v30": 6,
+      "lat": 9999,
+      "a7": 16166
     },
     "Ayanad Flame Fists": {
       "g": 40697,
@@ -3149,10 +3095,10 @@
       "id": 31465
     },
     "Ayanad Gale Belt": {
-      "g": 46925,
+      "g": 41900,
       "src": "30d",
       "id": 31522,
-      "v30": 4,
+      "v30": 3,
       "lat": 50500,
       "a7": 50500
     },
@@ -3165,12 +3111,12 @@
       "a7": 23999
     },
     "Ayanad Gale Bow": {
-      "g": 40494,
+      "g": 31663,
       "src": "30d",
       "id": 31409,
-      "v30": 2,
-      "lat": 65000,
-      "a7": 65000
+      "v30": 3,
+      "lat": 14000,
+      "a7": 39500
     },
     "Ayanad Gale Breeches": {
       "g": 31999,
@@ -3184,10 +3130,12 @@
       "id": 31516
     },
     "Ayanad Gale Earring": {
-      "g": 9400,
+      "g": 9700,
       "src": "30d",
       "id": 31656,
-      "v30": 1
+      "v30": 2,
+      "lat": 9999,
+      "a7": 9999
     },
     "Ayanad Gale Fists": {
       "g": 44500,
@@ -3198,11 +3146,10 @@
       "a7": 64000
     },
     "Ayanad Gale Guards": {
-      "g": 56750,
+      "g": 51500,
       "src": "30d",
       "id": 31521,
-      "v30": 2,
-      "lat": 51500
+      "v30": 1
     },
     "Ayanad Gale Jerkin": {
       "g": 55333,
@@ -3236,12 +3183,12 @@
       "id": 31343
     },
     "Ayanad Gale Ring": {
-      "g": 12179,
+      "g": 11476,
       "src": "30d",
       "id": 31662,
-      "v30": 9,
-      "lat": 5900,
-      "a7": 5900
+      "v30": 10,
+      "lat": 6555,
+      "a7": 6228
     },
     "Ayanad Gale Shortspear": {
       "g": 79999,
@@ -3377,12 +3324,12 @@
       "id": 31574
     },
     "Ayanad Life Ring": {
-      "g": 12393,
+      "g": 12468,
       "src": "30d",
       "id": 31663,
       "v30": 7,
-      "lat": 9000,
-      "a7": 8501
+      "lat": 9500,
+      "a7": 8834
     },
     "Ayanad Life Sash": {
       "g": 23000,
@@ -3426,11 +3373,12 @@
       "id": 31405
     },
     "Ayanad Lightning Earring": {
-      "g": 9476,
+      "g": 8681,
       "src": "30d",
       "id": 35407,
-      "v30": 4,
-      "lat": 9497
+      "v30": 5,
+      "lat": 5500,
+      "a7": 5500
     },
     "Ayanad Lightning Fists": {
       "g": 21000,
@@ -3443,11 +3391,12 @@
       "id": 31493
     },
     "Ayanad Lightning Necklace": {
-      "g": 9066,
+      "g": 9550,
       "src": "30d",
       "id": 35413,
-      "v30": 3,
-      "lat": 10000
+      "v30": 4,
+      "lat": 11000,
+      "a7": 11000
     },
     "Ayanad Lightning Nodachi": {
       "g": 83000,
@@ -3729,9 +3678,8 @@
     },
     "Ayanad Wave Cuirass": {
       "g": 79999,
-      "src": "30d",
-      "id": 31475,
-      "v30": 1
+      "src": "latest",
+      "id": 31475
     },
     "Ayanad Wave Earring": {
       "g": 12640,
@@ -3742,10 +3690,12 @@
       "a7": 5340
     },
     "Ayanad Wave Gauntlets": {
-      "g": 22999,
+      "g": 24000,
       "src": "30d",
       "id": 31477,
-      "v30": 1
+      "v30": 2,
+      "lat": 25000,
+      "a7": 25000
     },
     "Ayanad Wave Gloves": {
       "g": 26000,
@@ -3775,10 +3725,10 @@
       "id": 31389
     },
     "Ayanad Wave Necklace": {
-      "g": 9799,
+      "g": 10065,
       "src": "30d",
       "id": 31653,
-      "v30": 5,
+      "v30": 4,
       "lat": 11000,
       "a7": 11000
     },
@@ -3862,30 +3812,18 @@
       "src": "latest",
       "id": 31376
     },
-    "Backstabber": {
-      "g": 11,
-      "src": "all_time",
-      "id": 21856,
-      "v30": 1
-    },
     "Baktehan's Swimfins": {
       "g": 247,
       "src": "30d",
       "id": 19401,
-      "v30": 24,
-      "lat": 260,
+      "v30": 23,
+      "lat": 251,
       "a7": 251
     },
     "Baleful Timekeeper": {
       "g": 50,
       "src": "30d",
       "id": 22056,
-      "v30": 1
-    },
-    "Banded Iron Wall": {
-      "g": 13,
-      "src": "all_time",
-      "id": 22209,
       "v30": 1
     },
     "Bandit King": {
@@ -3931,10 +3869,9 @@
       "id": 21933
     },
     "Battle Plans": {
-      "g": 80,
+      "g": 17,
       "src": "all_time",
-      "id": 21940,
-      "v30": 1
+      "id": 21940
     },
     "Battle Rush": {
       "g": 10,
@@ -3967,12 +3904,10 @@
       "id": 34675
     },
     "Beekeeper's Veil": {
-      "g": 18,
+      "g": 20,
       "src": "30d",
       "id": 27622,
-      "v30": 2,
-      "lat": 20,
-      "a7": 20
+      "v30": 1
     },
     "Begrudging Snake Eye": {
       "g": 10,
@@ -4000,28 +3935,28 @@
       "id": 28901
     },
     "Berserker Earrings": {
-      "g": 103,
+      "g": 73,
       "src": "30d",
       "id": 39659,
-      "v30": 51,
+      "v30": 46,
       "lat": 94,
-      "a7": 58
+      "a7": 65
     },
     "Berserker Necklace": {
-      "g": 354,
+      "g": 100,
       "src": "30d",
       "id": 39657,
-      "v30": 29,
+      "v30": 23,
       "lat": 125,
-      "a7": 110
+      "a7": 127
     },
     "Berserker Ring": {
-      "g": 279,
+      "g": 96,
       "src": "30d",
       "id": 39658,
-      "v30": 37,
-      "lat": 25,
-      "a7": 73
+      "v30": 38,
+      "lat": 47,
+      "a7": 38
     },
     "Berserker's Peace": {
       "g": 13500,
@@ -4085,12 +4020,6 @@
       "id": 22211,
       "v30": 1
     },
-    "Blood Collector's Hood": {
-      "g": 10,
-      "src": "all_time",
-      "id": 23770,
-      "v30": 1
-    },
     "Blood Collector's Pants": {
       "g": 5,
       "src": "latest",
@@ -4102,7 +4031,7 @@
       "id": 23771
     },
     "Blood Collector's Shoes": {
-      "g": 5,
+      "g": 2,
       "src": "all_time",
       "id": 23774,
       "v30": 1
@@ -4113,7 +4042,7 @@
       "id": 21924
     },
     "Blood Drinking Staff": {
-      "g": 4,
+      "g": 1,
       "src": "all_time",
       "id": 23767,
       "v30": 1
@@ -4137,16 +4066,6 @@
       "g": 1,
       "src": "latest",
       "id": 22700
-    },
-    "Blood Prince Helm": {
-      "g": 6,
-      "src": "latest",
-      "id": 22644
-    },
-    "Blood Prince Sabatons": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22756
     },
     "Blood Prince Tassets": {
       "g": 7,
@@ -4184,11 +4103,6 @@
       "src": "latest",
       "id": 22801
     },
-    "Blood Stench Vambraces": {
-      "g": 2,
-      "src": "all_time",
-      "id": 22773
-    },
     "Blood-Stained Earth": {
       "g": 10,
       "src": "30d",
@@ -4201,12 +4115,12 @@
       "id": 9000342
     },
     "BloodCrimson Lightning": {
-      "g": 1934,
+      "g": 548,
       "src": "30d",
       "id": 22158,
-      "v30": 39,
-      "lat": 400,
-      "a7": 1629
+      "v30": 37,
+      "lat": 300,
+      "a7": 560
     },
     "Bloodmist Blade": {
       "g": 4,
@@ -4223,20 +4137,10 @@
       "src": "latest",
       "id": 22551
     },
-    "Bloodmist Falcon Breeches": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22495
-    },
     "Bloodmist Falcon Cap": {
       "g": 5,
       "src": "latest",
       "id": 22439
-    },
-    "Bloodmist Falcon Fists": {
-      "g": 1,
-      "src": "all_time",
-      "id": 22523
     },
     "Bloodmist Falcon Guards": {
       "g": 1,
@@ -4270,19 +4174,13 @@
       "v30": 2,
       "lat": 10
     },
-    "Bloody Fang": {
-      "g": 9,
-      "src": "all_time",
-      "id": 23765,
-      "v30": 1
-    },
     "Bloody Tears": {
       "g": 37,
       "src": "latest",
       "id": 21878
     },
     "Blue Wind Sound": {
-      "g": 18,
+      "g": 13,
       "src": "all_time",
       "id": 22016
     },
@@ -4295,12 +4193,6 @@
       "g": 5,
       "src": "latest",
       "id": 22119
-    },
-    "Body Thief's Cuirass": {
-      "g": 6,
-      "src": "all_time",
-      "id": 23781,
-      "v30": 1
     },
     "Body Thief's Greaves": {
       "g": 3,
@@ -4327,11 +4219,6 @@
       "src": "latest",
       "id": 22617
     },
-    "Brave Aeon's Boots": {
-      "g": 1,
-      "src": "all_time",
-      "id": 22561
-    },
     "Brave Aeon's Breeches": {
       "g": 1,
       "src": "latest",
@@ -4354,7 +4241,7 @@
       "v30": 1
     },
     "Brave Aeon's Jerkin": {
-      "g": 5,
+      "g": 4,
       "src": "all_time",
       "id": 22477
     },
@@ -4406,13 +4293,8 @@
       "src": "latest",
       "id": 22120
     },
-    "Calm Cloud Breeches": {
-      "g": 11,
-      "src": "latest",
-      "id": 22501
-    },
     "Calm Discord": {
-      "g": 10500,
+      "g": 3,
       "src": "latest",
       "id": 22163
     },
@@ -4442,7 +4324,7 @@
       "id": 22567
     },
     "Castaways' Vortex": {
-      "g": 41,
+      "g": 28,
       "src": "all_time",
       "id": 21918
     },
@@ -4450,12 +4332,6 @@
       "g": 15,
       "src": "latest",
       "id": 21885
-    },
-    "Chaos-Born Man": {
-      "g": 6,
-      "src": "all_time",
-      "id": 22070,
-      "v30": 1
     },
     "Charming Summer Scent": {
       "g": 1,
@@ -4501,7 +4377,7 @@
       "id": 23797
     },
     "Chivalry's Grace": {
-      "g": 13,
+      "g": 1,
       "src": "all_time",
       "id": 22226,
       "v30": 1
@@ -4590,17 +4466,17 @@
       "g": 26,
       "src": "30d",
       "id": 38843,
-      "v30": 16780,
-      "lat": 27,
+      "v30": 16926,
+      "lat": 24,
       "a7": 27
     },
     "Cold Anguish": {
-      "g": 695,
+      "g": 651,
       "src": "30d",
       "id": 18662,
-      "v30": 5,
-      "lat": 1500,
-      "a7": 1500
+      "v30": 7,
+      "lat": 430,
+      "a7": 965
     },
     "Cold Flames Gloves": {
       "g": 45000,
@@ -4628,8 +4504,7 @@
       "src": "30d",
       "id": 22564,
       "v30": 2,
-      "lat": 10,
-      "a7": 10
+      "lat": 10
     },
     "Cold White Eye": {
       "g": 5,
@@ -4648,16 +4523,6 @@
       "src": "latest",
       "id": 22480
     },
-    "Cold White Tears": {
-      "g": 5,
-      "src": "all_time",
-      "id": 22592
-    },
-    "Cold White Trails": {
-      "g": 2,
-      "src": "all_time",
-      "id": 22508
-    },
     "Cold White Yearning": {
       "g": 10,
       "src": "all_time",
@@ -4668,17 +4533,10 @@
       "src": "latest",
       "id": 23812
     },
-    "Cold-Blooded Breeches": {
-      "g": 14,
-      "src": "all_time",
-      "id": 23810,
-      "v30": 1
-    },
     "Cold-Blooded Cap": {
       "g": 22,
-      "src": "30d",
-      "id": 23808,
-      "v30": 1
+      "src": "latest",
+      "id": 23808
     },
     "Cold-Blooded Jerkin": {
       "g": 50,
@@ -4691,21 +4549,10 @@
       "src": "latest",
       "id": 22064
     },
-    "Condemnation's Eye": {
-      "g": 5,
-      "src": "all_time",
-      "id": 21891,
-      "v30": 1
-    },
     "Conqueror's Greatsword": {
       "g": 2750,
       "src": "latest",
       "id": 31209
-    },
-    "Conqueror's Imperial Gift": {
-      "g": 4,
-      "src": "all_time",
-      "id": 22219
     },
     "Conqueror's Jerkin": {
       "g": 6350,
@@ -4725,7 +4572,7 @@
       "id": 19329,
       "v30": 7,
       "lat": 1083,
-      "a7": 961
+      "a7": 1041
     },
     "Corrupted Kyrios Hood": {
       "g": 2338,
@@ -4736,11 +4583,12 @@
       "a7": 1163
     },
     "Corrupted Kyrios Pants": {
-      "g": 1351,
+      "g": 1134,
       "src": "30d",
       "id": 19331,
-      "v30": 3,
-      "lat": 1301
+      "v30": 4,
+      "lat": 485,
+      "a7": 485
     },
     "Corrupted Kyrios Sash": {
       "g": 795,
@@ -4756,7 +4604,7 @@
       "id": 19327,
       "v30": 8,
       "lat": 5000,
-      "a7": 2033
+      "a7": 2750
     },
     "Corrupted Kyrios Shoes": {
       "g": 1972,
@@ -4815,10 +4663,10 @@
       "id": 24504
     },
     "Crescent Throne Hood": {
-      "g": 10,
+      "g": 5,
       "src": "30d",
       "id": 22254,
-      "v30": 1
+      "v30": 2
     },
     "Crescent Throne Ritual Axe": {
       "g": 1,
@@ -4870,7 +4718,7 @@
       "id": 21861
     },
     "Cumulus Cloud Gloves": {
-      "g": 24,
+      "g": 1,
       "src": "all_time",
       "id": 22333,
       "v30": 1
@@ -4879,11 +4727,6 @@
       "g": 19,
       "src": "latest",
       "id": 22249
-    },
-    "Cumulus Cloud Pants": {
-      "g": 6,
-      "src": "all_time",
-      "id": 22305
     },
     "Cumulus Cloud Sash": {
       "g": 1,
@@ -4906,12 +4749,6 @@
       "src": "all_time",
       "id": 22389
     },
-    "Cunning Thief's Pants": {
-      "g": 3,
-      "src": "all_time",
-      "id": 24440,
-      "v30": 2
-    },
     "Cunning Thief's Shirt": {
       "g": 2,
       "src": "latest",
@@ -4919,14 +4756,14 @@
     },
     "Cunning Thief's Shoes": {
       "g": 3,
-      "src": "latest",
-      "id": 24441
+      "src": "30d",
+      "id": 24441,
+      "v30": 1
     },
     "Cursed King's Shield": {
-      "g": 40,
+      "g": 10,
       "src": "all_time",
-      "id": 22225,
-      "v30": 1
+      "id": 22225
     },
     "Cursed Obsidian Axe": {
       "g": 500,
@@ -4940,18 +4777,18 @@
       "v30": 1
     },
     "Cursed Obsidian Bow": {
-      "g": 2825,
+      "g": 3664,
       "src": "30d",
       "id": 34649,
       "v30": 4,
-      "lat": 300,
-      "a7": 4400
+      "lat": 3555,
+      "a7": 4118
     },
     "Cursed Obsidian Breeches": {
-      "g": 29250,
+      "g": 29000,
       "src": "30d",
       "id": 35618,
-      "v30": 2,
+      "v30": 3,
       "lat": 28500,
       "a7": 28500
     },
@@ -5011,7 +4848,7 @@
       "id": 34644
     },
     "Cursed Obsidian Greatsword": {
-      "g": 30000,
+      "g": 499,
       "src": "latest",
       "id": 34638
     },
@@ -5057,7 +4894,7 @@
       "id": 34640,
       "v30": 8,
       "lat": 31888,
-      "a7": 19996
+      "a7": 15994
     },
     "Cursed Obsidian Pants": {
       "g": 32000,
@@ -5072,15 +4909,15 @@
       "v30": 1
     },
     "Cursed Obsidian Scepter": {
-      "g": 27000,
+      "g": 8750,
       "src": "latest",
       "id": 34647
     },
     "Cursed Obsidian Shield": {
-      "g": 19661,
+      "g": 17793,
       "src": "30d",
       "id": 34652,
-      "v30": 6,
+      "v30": 5,
       "lat": 80,
       "a7": 80
     },
@@ -5090,18 +4927,18 @@
       "id": 35612
     },
     "Cursed Obsidian Shoes": {
-      "g": 24000,
+      "g": 17467,
       "src": "30d",
       "id": 35615,
-      "v30": 2,
-      "lat": 23500,
-      "a7": 23500
+      "v30": 3,
+      "lat": 4400,
+      "a7": 13950
     },
     "Cursed Obsidian Shortspear": {
-      "g": 28087,
+      "g": 37333,
       "src": "30d",
       "id": 34645,
-      "v30": 4,
+      "v30": 3,
       "lat": 35000,
       "a7": 35000
     },
@@ -5123,7 +4960,7 @@
       "id": 24481
     },
     "Cursed Paladin's Gauntlets": {
-      "g": 50,
+      "g": 1,
       "src": "latest",
       "id": 24483
     },
@@ -5133,14 +4970,9 @@
       "id": 24480
     },
     "Cursed Paladin's Sabatons": {
-      "g": 50,
+      "g": 1,
       "src": "latest",
       "id": 24484
-    },
-    "Cypress Forest Gloves": {
-      "g": 5,
-      "src": "latest",
-      "id": 22324
     },
     "Cypress Forest Hood": {
       "g": 4,
@@ -5225,28 +5057,10 @@
       "id": 22391,
       "v30": 1
     },
-    "Dark Assembly's Gloves": {
-      "g": 44,
-      "src": "latest",
-      "id": 22335
-    },
-    "Dark Assembly's Shirt": {
-      "g": 14,
-      "src": "all_time",
-      "id": 22279,
-      "v30": 1
-    },
-    "Dark Assembly's Shoes": {
-      "g": 4,
-      "src": "all_time",
-      "id": 22363,
-      "v30": 1
-    },
     "Dark Crawler's Boots": {
       "g": 6,
       "src": "all_time",
-      "id": 23779,
-      "v30": 1
+      "id": 23779
     },
     "Dark Crawler's Breeches": {
       "g": 15,
@@ -5279,13 +5093,8 @@
       "src": "latest",
       "id": 22703
     },
-    "Dark Desert Helm": {
-      "g": 15,
-      "src": "all_time",
-      "id": 22647
-    },
     "Dark Desert Tassets": {
-      "g": 12,
+      "g": 3,
       "src": "all_time",
       "id": 22815
     },
@@ -5295,13 +5104,8 @@
       "id": 22787,
       "v30": 1
     },
-    "Dark Ruler's Cuirass": {
-      "g": 10,
-      "src": "latest",
-      "id": 22676
-    },
     "Dark Ruler's Gauntlets": {
-      "g": 2,
+      "g": 1,
       "src": "all_time",
       "id": 22732
     },
@@ -5320,11 +5124,6 @@
       "src": "all_time",
       "id": 22760
     },
-    "Dark Ruler's Tassets": {
-      "g": 5,
-      "src": "latest",
-      "id": 22816
-    },
     "Dark Ruler's Vambraces": {
       "g": 10,
       "src": "latest",
@@ -5341,9 +5140,10 @@
       "id": 22332
     },
     "Dark Watcher's Hood": {
-      "g": 4,
-      "src": "latest",
-      "id": 22248
+      "g": 10,
+      "src": "30d",
+      "id": 22248,
+      "v30": 1
     },
     "Dark Watcher's Pants": {
       "g": 14,
@@ -5386,12 +5186,6 @@
       "src": "latest",
       "id": 22334
     },
-    "Dawn Witch Hood": {
-      "g": 6,
-      "src": "all_time",
-      "id": 22250,
-      "v30": 1
-    },
     "Dawn Witch Pants": {
       "g": 1,
       "src": "latest",
@@ -5430,12 +5224,10 @@
       "v30": 1
     },
     "Dawnsdrop Belt": {
-      "g": 202,
+      "g": 200,
       "src": "30d",
       "id": 34942,
-      "v30": 4,
-      "lat": 200,
-      "a7": 200
+      "v30": 2
     },
     "Dawnsdrop Boots": {
       "g": 172,
@@ -5454,28 +5246,28 @@
       "a7": 200
     },
     "Dawnsdrop Cap": {
-      "g": 134,
+      "g": 131,
       "src": "30d",
       "id": 34936,
-      "v30": 7,
+      "v30": 5,
       "lat": 151,
       "a7": 128
     },
     "Dawnsdrop Fists": {
-      "g": 218,
+      "g": 228,
       "src": "30d",
       "id": 34939,
-      "v30": 7,
+      "v30": 6,
       "lat": 170,
       "a7": 165
     },
     "Dawnsdrop Guards": {
-      "g": 162,
+      "g": 156,
       "src": "30d",
       "id": 34941,
-      "v30": 6,
+      "v30": 5,
       "lat": 120,
-      "a7": 110
+      "a7": 120
     },
     "Dawnsdrop Jerkin": {
       "g": 161,
@@ -5532,7 +5324,7 @@
       "v30": 1
     },
     "Death Sentence": {
-      "g": 3,
+      "g": 1,
       "src": "all_time",
       "id": 22044,
       "v30": 2
@@ -5542,7 +5334,8 @@
       "src": "30d",
       "id": 21972,
       "v30": 2,
-      "lat": 5
+      "lat": 5,
+      "a7": 5
     },
     "Death Wave": {
       "g": 10,
@@ -5791,12 +5584,12 @@
       "id": 20291
     },
     "Delphinad Flame Ring": {
-      "g": 1328,
+      "g": 1341,
       "src": "30d",
       "id": 7728,
-      "v30": 4,
+      "v30": 3,
       "lat": 1300,
-      "a7": 1261
+      "a7": 1300
     },
     "Delphinad Gale Belt": {
       "g": 9556,
@@ -5933,11 +5726,12 @@
       "id": 20626
     },
     "Delphinad Life Ring": {
-      "g": 1156,
+      "g": 1169,
       "src": "30d",
       "id": 17886,
-      "v30": 5,
-      "lat": 1222
+      "v30": 6,
+      "lat": 1222,
+      "a7": 1222
     },
     "Delphinad Life Sash": {
       "g": 2750,
@@ -6005,12 +5799,12 @@
       "id": 20290
     },
     "Delphinad Lightning Ring": {
-      "g": 2110,
+      "g": 2152,
       "src": "30d",
       "id": 35399,
-      "v30": 9,
-      "lat": 1222,
-      "a7": 1361
+      "v30": 12,
+      "lat": 2448,
+      "a7": 1723
     },
     "Delphinad Meadow Earring": {
       "g": 500,
@@ -6163,7 +5957,7 @@
       "id": 21084
     },
     "Delphinad Tidal Bow": {
-      "g": 45000,
+      "g": 3000,
       "src": "latest",
       "id": 20476
     },
@@ -6209,10 +6003,10 @@
       "id": 20473
     },
     "Delphinad Wave Bow": {
-      "g": 5397,
+      "g": 5275,
       "src": "30d",
       "id": 20479,
-      "v30": 13,
+      "v30": 12,
       "lat": 6000,
       "a7": 6000
     },
@@ -6227,12 +6021,12 @@
       "id": 20977
     },
     "Delphinad Wave Earring": {
-      "g": 2377,
+      "g": 2337,
       "src": "30d",
       "id": 18821,
-      "v30": 33,
-      "lat": 1782,
-      "a7": 1784
+      "v30": 38,
+      "lat": 1781,
+      "a7": 1783
     },
     "Delphinad Wave Flute": {
       "g": 13500,
@@ -6273,12 +6067,12 @@
       "id": 20624
     },
     "Delphinad Wave Ring": {
-      "g": 2603,
+      "g": 2498,
       "src": "30d",
       "id": 17797,
-      "v30": 15,
-      "lat": 4000,
-      "a7": 2849
+      "v30": 16,
+      "lat": 1555,
+      "a7": 2777
     },
     "Delphinad Wave Sash": {
       "g": 9499,
@@ -6331,7 +6125,7 @@
       "id": 21864
     },
     "Demon War Barrier": {
-      "g": 3,
+      "g": 2,
       "src": "all_time",
       "id": 22099
     },
@@ -6349,12 +6143,6 @@
       "g": 10,
       "src": "all_time",
       "id": 21927
-    },
-    "Demon's Destruction": {
-      "g": 5,
-      "src": "all_time",
-      "id": 21981,
-      "v30": 1
     },
     "Demon's Fall": {
       "g": 7,
@@ -6393,11 +6181,6 @@
       "id": 22479,
       "v30": 2,
       "lat": 8
-    },
-    "Destiny's Spear": {
-      "g": 17,
-      "src": "latest",
-      "id": 22060
     },
     "Destroyer's Hammer": {
       "g": 5,
@@ -6477,7 +6260,7 @@
       "id": 22442
     },
     "Dirge Fists": {
-      "g": 6,
+      "g": 1,
       "src": "all_time",
       "id": 22526
     },
@@ -6504,8 +6287,8 @@
       "id": 22340
     },
     "Divine Touch Hood": {
-      "g": 15,
-      "src": "latest",
+      "g": 1,
+      "src": "all_time",
       "id": 22256
     },
     "Divine Touch Pants": {
@@ -6556,11 +6339,11 @@
       "v30": 3
     },
     "Dreadnaught's Earring": {
-      "g": 12,
+      "g": 11,
       "src": "30d",
       "id": 38764,
-      "v30": 29,
-      "lat": 20
+      "v30": 30,
+      "a7": 8
     },
     "Dreadnaught's Necklace": {
       "g": 10,
@@ -6569,12 +6352,12 @@
       "v30": 2
     },
     "Dreadnaught's Ring": {
-      "g": 31,
+      "g": 29,
       "src": "30d",
       "id": 38762,
       "v30": 26,
-      "lat": 37,
-      "a7": 35
+      "lat": 20,
+      "a7": 31
     },
     "Dreamer's Point": {
       "g": 5001,
@@ -6772,7 +6555,7 @@
       "id": 21073
     },
     "Epherium Earth Earring": {
-      "g": 20000,
+      "g": 3200,
       "src": "latest",
       "id": 31639
     },
@@ -7294,12 +7077,6 @@
       "src": "latest",
       "id": 22013
     },
-    "Eternal Life Urn": {
-      "g": 7,
-      "src": "all_time",
-      "id": 22117,
-      "v30": 1
-    },
     "Eternal Prophet": {
       "g": 65000,
       "src": "latest",
@@ -7371,12 +7148,12 @@
       "id": 22331
     },
     "Everdreaming Shirt": {
-      "g": 16,
+      "g": 2,
       "src": "all_time",
       "id": 22275
     },
     "Evil Ancient Will": {
-      "g": 255,
+      "g": 7,
       "src": "latest",
       "id": 24464
     },
@@ -7431,12 +7208,6 @@
       "src": "latest",
       "id": 30598
     },
-    "Faceless Moon's Song": {
-      "g": 23,
-      "src": "all_time",
-      "id": 22168,
-      "v30": 1
-    },
     "Faded Crescent Gloves": {
       "g": 1,
       "src": "all_time",
@@ -7451,11 +7222,6 @@
       "g": 10,
       "src": "latest",
       "id": 22282
-    },
-    "Faded Crescent Shoes": {
-      "g": 6,
-      "src": "all_time",
-      "id": 22366
     },
     "Faded Gloves": {
       "g": 20,
@@ -7619,12 +7385,6 @@
       "id": 22186,
       "v30": 1
     },
-    "Final Lord's Breeches": {
-      "g": 10,
-      "src": "all_time",
-      "id": 22493,
-      "v30": 1
-    },
     "Final Lord's Fists": {
       "g": 5,
       "src": "latest",
@@ -7647,7 +7407,7 @@
       "v30": 2
     },
     "Fire-Striking Hammer": {
-      "g": 4,
+      "g": 1,
       "src": "all_time",
       "id": 23734,
       "v30": 1
@@ -7775,11 +7535,10 @@
       "id": 22383
     },
     "Forgotten Wayfarer": {
-      "g": 14500,
+      "g": 11999,
       "src": "30d",
       "id": 34685,
-      "v30": 2,
-      "lat": 11999
+      "v30": 1
     },
     "Forsaken Pirate Earring": {
       "g": 50,
@@ -7851,17 +7610,10 @@
       "src": "latest",
       "id": 19344
     },
-    "Fox Star": {
-      "g": 6,
-      "src": "all_time",
-      "id": 21926,
-      "v30": 1
-    },
     "Free Shot": {
       "g": 3,
-      "src": "30d",
-      "id": 22157,
-      "v30": 1
+      "src": "latest",
+      "id": 22157
     },
     "Freedom's Enforcer": {
       "g": 3,
@@ -7869,17 +7621,17 @@
       "id": 21895
     },
     "Fresh Grass Fragrance": {
-      "g": 30,
-      "src": "latest",
+      "g": 1,
+      "src": "all_time",
       "id": 22175
     },
     "Frozen Abyssal Crevice": {
-      "g": 34,
+      "g": 22,
       "src": "all_time",
       "id": 22153
     },
     "Frozen Hatred": {
-      "g": 9,
+      "g": 1,
       "src": "all_time",
       "id": 22045,
       "v30": 2
@@ -7995,10 +7747,12 @@
       "a7": 500
     },
     "Glenn's Boots": {
-      "g": 313,
+      "g": 256,
       "src": "30d",
       "id": 30055,
-      "v30": 1
+      "v30": 2,
+      "lat": 200,
+      "a7": 200
     },
     "Glenn's Gloves": {
       "g": 132,
@@ -8183,54 +7937,55 @@
       "id": 27294,
       "v30": 29,
       "lat": 499,
-      "a7": 525
+      "a7": 550
     },
     "Grimghast Gauntlets": {
-      "g": 229,
+      "g": 236,
       "src": "30d",
       "id": 27296,
-      "v30": 33,
-      "lat": 399,
-      "a7": 264
+      "v30": 34,
+      "lat": 389,
+      "a7": 313
     },
     "Grimghast Greaves": {
-      "g": 145,
+      "g": 139,
       "src": "30d",
       "id": 27298,
-      "v30": 35,
-      "lat": 175,
-      "a7": 134
+      "v30": 37,
+      "lat": 124,
+      "a7": 131
     },
     "Grimghast Helm": {
-      "g": 364,
+      "g": 360,
       "src": "30d",
       "id": 27293,
-      "v30": 29,
-      "lat": 400,
-      "a7": 407
+      "v30": 31,
+      "lat": 300,
+      "a7": 377
     },
     "Grimghast Sabatons": {
-      "g": 178,
+      "g": 182,
       "src": "30d",
       "id": 27299,
-      "v30": 28,
-      "lat": 300,
-      "a7": 258
+      "v30": 30,
+      "lat": 271,
+      "a7": 282
     },
     "Grimghast Tassets": {
-      "g": 150,
+      "g": 157,
       "src": "30d",
       "id": 27297,
-      "v30": 27,
-      "a7": 172
+      "v30": 29,
+      "lat": 270,
+      "a7": 200
     },
     "Grimghast Vambraces": {
-      "g": 269,
+      "g": 266,
       "src": "30d",
       "id": 27295,
-      "v30": 34,
-      "lat": 333,
-      "a7": 260
+      "v30": 35,
+      "lat": 200,
+      "a7": 264
     },
     "Gusting Ray": {
       "g": 8,
@@ -8289,9 +8044,10 @@
       "id": 22716
     },
     "Harsh Trials Greaves": {
-      "g": 10,
-      "src": "latest",
-      "id": 22688
+      "g": 2,
+      "src": "30d",
+      "id": 22688,
+      "v30": 1
     },
     "Harsh Trials Sabatons": {
       "g": 1,
@@ -8303,22 +8059,10 @@
       "src": "latest",
       "id": 22800
     },
-    "Harsh Whirlwind": {
-      "g": 3,
-      "src": "all_time",
-      "id": 24459,
-      "v30": 2
-    },
     "Havoc's Blade": {
       "g": 4,
       "src": "latest",
       "id": 21930
-    },
-    "He Who Abhors Light": {
-      "g": 16,
-      "src": "all_time",
-      "id": 21874,
-      "v30": 1
     },
     "He Who Corrupts Light": {
       "g": 3,
@@ -8340,13 +8084,13 @@
       "id": 8001858,
       "v30": 5,
       "lat": 444,
-      "a7": 422
+      "a7": 444
     },
     "Healing Black Pearl Undergarments": {
-      "g": 298,
+      "g": 297,
       "src": "30d",
       "id": 8001846,
-      "v30": 6,
+      "v30": 5,
       "lat": 170
     },
     "Heart's Sunset": {
@@ -8363,11 +8107,6 @@
       "g": 4,
       "src": "latest",
       "id": 22666
-    },
-    "Heedmar Gauntlets": {
-      "g": 10,
-      "src": "latest",
-      "id": 22722
     },
     "Heedmar Greaves": {
       "g": 5,
@@ -8395,7 +8134,7 @@
       "id": 22778
     },
     "Hereafter Gatekeeper": {
-      "g": 7,
+      "g": 1,
       "src": "all_time",
       "id": 22068,
       "v30": 1
@@ -8414,12 +8153,6 @@
       "g": 7,
       "src": "all_time",
       "id": 21905
-    },
-    "Heroic Hope": {
-      "g": 6,
-      "src": "all_time",
-      "id": 21904,
-      "v30": 1
     },
     "Heroic Illusion": {
       "g": 50,
@@ -8462,11 +8195,6 @@
       "src": "latest",
       "id": 22323
     },
-    "Honorable Silk Hood": {
-      "g": 7,
-      "src": "latest",
-      "id": 22239
-    },
     "Honorable Silk Pants": {
       "g": 12,
       "src": "latest",
@@ -8479,9 +8207,8 @@
     },
     "Honorable Silk Shoes": {
       "g": 3,
-      "src": "30d",
-      "id": 22351,
-      "v30": 1
+      "src": "latest",
+      "id": 22351
     },
     "Honorable Silk Sleeves": {
       "g": 10,
@@ -8555,7 +8282,7 @@
       "id": 21038
     },
     "Illustrious Desert Shield": {
-      "g": 30,
+      "g": 1,
       "src": "all_time",
       "id": 20525
     },
@@ -8587,8 +8314,7 @@
       "src": "30d",
       "id": 7722,
       "v30": 6,
-      "lat": 255,
-      "a7": 255
+      "lat": 255
     },
     "Illustrious Flame Earring": {
       "g": 126,
@@ -8596,7 +8322,7 @@
       "id": 18815,
       "v30": 3,
       "lat": 70,
-      "a7": 185
+      "a7": 70
     },
     "Illustrious Flame Greataxe": {
       "g": 100,
@@ -8877,6 +8603,13 @@
       "src": "latest",
       "id": 21040
     },
+    "Illustrious Sunset Tassets": {
+      "g": 5,
+      "src": "30d",
+      "id": 21094,
+      "v30": 2,
+      "lat": 10
+    },
     "Illustrious Tidal Bow": {
       "g": 5,
       "src": "latest",
@@ -8915,10 +8648,12 @@
       "v30": 1
     },
     "Illustrious Vocational Gauntlets": {
-      "g": 100,
+      "g": 83,
       "src": "30d",
       "id": 35353,
-      "v30": 2
+      "v30": 3,
+      "lat": 50,
+      "a7": 50
     },
     "Illustrious Vocational Gloves": {
       "g": 150,
@@ -8944,8 +8679,7 @@
       "src": "30d",
       "id": 35315,
       "v30": 2,
-      "lat": 105,
-      "a7": 105
+      "lat": 105
     },
     "Illustrious Vocational Pants": {
       "g": 91,
@@ -9026,7 +8760,7 @@
       "id": 7724,
       "v30": 7,
       "lat": 120,
-      "a7": 89
+      "a7": 88
     },
     "Illustrious Wave Scepter": {
       "g": 70,
@@ -9055,7 +8789,7 @@
       "id": 31934,
       "v30": 7,
       "lat": 105,
-      "a7": 152
+      "a7": 105
     },
     "Inquisitor's Boots": {
       "g": 1,
@@ -9098,12 +8832,12 @@
       "id": 28372
     },
     "Jola's Eternal Grudge": {
-      "g": 88,
+      "g": 86,
       "src": "30d",
       "id": 30060,
-      "v30": 17,
+      "v30": 14,
       "lat": 30,
-      "a7": 90
+      "a7": 25
     },
     "Joyous Liberator": {
       "g": 5,
@@ -9126,7 +8860,7 @@
       "id": 22127
     },
     "Key to Paradise": {
-      "g": 4,
+      "g": 1,
       "src": "all_time",
       "id": 22071,
       "v30": 2
@@ -9171,12 +8905,6 @@
       "src": "latest",
       "id": 22308
     },
-    "Knotted Hell Sash": {
-      "g": 8,
-      "src": "all_time",
-      "id": 22420,
-      "v30": 1
-    },
     "Knotted Hell Shirt": {
       "g": 3,
       "src": "30d",
@@ -9200,16 +8928,15 @@
       "g": 50,
       "src": "30d",
       "id": 28326,
-      "v30": 23,
-      "a7": 49
+      "v30": 23
     },
     "Labyrinth's Leather Armor Chest": {
-      "g": 46,
+      "g": 47,
       "src": "30d",
       "id": 28324,
-      "v30": 21,
-      "lat": 65,
-      "a7": 54
+      "v30": 23,
+      "lat": 58,
+      "a7": 56
     },
     "Labyrinth's Plate Armor Chest": {
       "g": 18,
@@ -9217,7 +8944,7 @@
       "id": 28325,
       "v30": 27,
       "lat": 50,
-      "a7": 38
+      "a7": 50
     },
     "Labyrinth's Weapon Chest": {
       "g": 100,
@@ -9225,12 +8952,12 @@
       "id": 28323
     },
     "Large Jewelry Mana Wisp": {
-      "g": 63,
+      "g": 64,
       "src": "30d",
       "id": 38840,
-      "v30": 2855,
+      "v30": 2708,
       "lat": 66,
-      "a7": 68
+      "a7": 67
     },
     "Large Nutcracker": {
       "g": 1,
@@ -9262,19 +8989,13 @@
       "src": "latest",
       "id": 22151
     },
-    "Late Autumn Leaves": {
-      "g": 15,
-      "src": "all_time",
-      "id": 22150,
-      "v30": 1
-    },
     "Leather Mana Wisp": {
       "g": 29,
       "src": "30d",
       "id": 38844,
-      "v30": 27837,
-      "lat": 27,
-      "a7": 32
+      "v30": 27130,
+      "lat": 31,
+      "a7": 28
     },
     "Leatherbrand Scepter": {
       "g": 4,
@@ -9285,11 +9006,6 @@
       "g": 1,
       "src": "latest",
       "id": 22043
-    },
-    "Lengthy Journey": {
-      "g": 4,
-      "src": "latest",
-      "id": 21996
     },
     "Liberty Lovers": {
       "g": 15,
@@ -9309,12 +9025,10 @@
       "lat": 5
     },
     "Lightning God's Arm": {
-      "g": 7,
+      "g": 3,
       "src": "30d",
       "id": 21915,
-      "v30": 2,
-      "lat": 3,
-      "a7": 3
+      "v30": 1
     },
     "Lightning Stroke": {
       "g": 18,
@@ -9391,56 +9105,56 @@
       "g": 5,
       "src": "30d",
       "id": 39131,
-      "v30": 5,
-      "lat": 3,
-      "a7": 6
+      "v30": 6,
+      "lat": 1,
+      "a7": 2
     },
     "Lost Garden Faded Bow": {
-      "g": 2771,
+      "g": 21,
       "src": "30d",
       "id": 39141,
-      "v30": 9,
-      "lat": 10,
-      "a7": 6
+      "v30": 10,
+      "a7": 4
     },
     "Lost Garden Faded Club": {
-      "g": 66,
+      "g": 21,
       "src": "30d",
       "id": 39135,
-      "v30": 4,
+      "v30": 3,
       "lat": 19,
       "a7": 19
     },
     "Lost Garden Faded Dagger": {
-      "g": 15,
+      "g": 3,
       "src": "30d",
       "id": 39132,
-      "v30": 4,
-      "lat": 40
+      "v30": 5,
+      "lat": 2,
+      "a7": 2
     },
     "Lost Garden Faded Flute": {
-      "g": 6,
+      "g": 8,
       "src": "30d",
       "id": 39143,
-      "v30": 6,
+      "v30": 5,
       "lat": 19,
       "a7": 19
     },
     "Lost Garden Faded Greataxe": {
-      "g": 9,
+      "g": 11,
       "src": "30d",
       "id": 39134,
-      "v30": 8,
+      "v30": 7,
       "lat": 29,
       "a7": 29
     },
     "Lost Garden Faded Greatclub": {
-      "g": 895,
+      "g": 11,
       "src": "30d",
       "id": 39136,
-      "v30": 7,
-      "lat": 11,
-      "a7": 3106
+      "v30": 8,
+      "lat": 10,
+      "a7": 10
     },
     "Lost Garden Faded Greatsword": {
       "g": 8,
@@ -9450,57 +9164,54 @@
       "lat": 15
     },
     "Lost Garden Faded Katana": {
-      "g": 6,
+      "g": 7,
       "src": "30d",
       "id": 39133,
-      "v30": 4,
-      "lat": 15
+      "v30": 5,
+      "lat": 10,
+      "a7": 10
     },
     "Lost Garden Faded Longspear": {
-      "g": 15,
+      "g": 13,
       "src": "30d",
       "id": 39140,
-      "v30": 6,
-      "lat": 50,
-      "a7": 30
+      "v30": 7,
+      "a7": 20
     },
     "Lost Garden Faded Nodachi": {
-      "g": 8,
+      "g": 6,
       "src": "30d",
       "id": 39129,
-      "v30": 3,
-      "lat": 20,
-      "a7": 20
+      "v30": 4,
+      "lat": 1,
+      "a7": 10
     },
     "Lost Garden Faded Scepter": {
       "g": 7,
       "src": "30d",
       "id": 39137,
-      "v30": 6,
+      "v30": 5,
       "lat": 2,
       "a7": 2
     },
     "Lost Garden Faded Shield": {
-      "g": 14,
+      "g": 12,
       "src": "30d",
       "id": 39142,
-      "v30": 5
+      "v30": 6
     },
     "Lost Garden Faded Shortspear": {
-      "g": 13,
+      "g": 11,
       "src": "30d",
       "id": 39139,
-      "v30": 5,
-      "lat": 4,
-      "a7": 4
+      "v30": 6,
+      "a7": 2
     },
     "Lost Garden Faded Staff": {
-      "g": 7,
+      "g": 10,
       "src": "30d",
       "id": 39138,
-      "v30": 3,
-      "lat": 10,
-      "a7": 10
+      "v30": 2
     },
     "Lost Garden Faded Sword": {
       "g": 8,
@@ -9522,9 +9233,8 @@
     },
     "Lover-shooting Bow": {
       "g": 45,
-      "src": "30d",
-      "id": 22154,
-      "v30": 1
+      "src": "latest",
+      "id": 22154
     },
     "Lunar Eclipse": {
       "g": 4,
@@ -9591,12 +9301,12 @@
       "id": 20988
     },
     "Magnificent Earth Earring": {
-      "g": 1307,
+      "g": 210,
       "src": "30d",
       "id": 31624,
       "v30": 10,
       "lat": 167,
-      "a7": 1289
+      "a7": 183
     },
     "Magnificent Earth Necklace": {
       "g": 2222,
@@ -9609,8 +9319,7 @@
       "src": "30d",
       "id": 31629,
       "v30": 7,
-      "lat": 10000,
-      "a7": 10000
+      "lat": 10000
     },
     "Magnificent Flame Earring": {
       "g": 400,
@@ -9642,9 +9351,8 @@
     },
     "Magnificent Gale Ring": {
       "g": 800,
-      "src": "30d",
-      "id": 31632,
-      "v30": 1
+      "src": "latest",
+      "id": 31632
     },
     "Magnificent Lake Cuirass": {
       "g": 25000,
@@ -9744,8 +9452,7 @@
       "src": "30d",
       "id": 20717,
       "v30": 3,
-      "lat": 3500,
-      "a7": 3500
+      "lat": 3500
     },
     "Magnificent Ocean Scepter": {
       "g": 500,
@@ -9757,8 +9464,7 @@
       "src": "30d",
       "id": 20582,
       "v30": 3,
-      "lat": 400,
-      "a7": 400
+      "lat": 400
     },
     "Magnificent Ocean Shoes": {
       "g": 2400,
@@ -9822,12 +9528,11 @@
       "v30": 3
     },
     "Magnificent Quake Vambraces": {
-      "g": 1175,
+      "g": 233,
       "src": "30d",
       "id": 21068,
       "v30": 4,
-      "lat": 200,
-      "a7": 200
+      "lat": 200
     },
     "Magnificent Squall Belt": {
       "g": 6999,
@@ -9876,12 +9581,12 @@
       "id": 20464
     },
     "Magnificent Typhoon Belt": {
-      "g": 9233,
+      "g": 350,
       "src": "30d",
       "id": 20906,
       "v30": 3,
       "lat": 333,
-      "a7": 350
+      "a7": 333
     },
     "Magnificent Typhoon Boots": {
       "g": 24383,
@@ -10076,11 +9781,12 @@
       "a7": 287
     },
     "Meina's Guards": {
-      "g": 239,
+      "g": 221,
       "src": "30d",
       "id": 30049,
-      "v30": 5,
-      "lat": 100
+      "v30": 6,
+      "lat": 150,
+      "a7": 150
     },
     "Meina's Jerkin": {
       "g": 238,
@@ -10090,20 +9796,20 @@
       "lat": 200
     },
     "Melee Black Cat Undergarments": {
-      "g": 1580,
+      "g": 360,
       "src": "30d",
       "id": 8001855,
       "v30": 18,
       "lat": 388,
-      "a7": 367
+      "a7": 364
     },
     "Melee Black Pearl Undergarments": {
-      "g": 3670,
+      "g": 426,
       "src": "30d",
       "id": 8001843,
-      "v30": 15,
-      "lat": 450,
-      "a7": 5318
+      "v30": 14,
+      "lat": 590,
+      "a7": 440
     },
     "Memory Cutter": {
       "g": 1,
@@ -10171,11 +9877,6 @@
       "src": "all_time",
       "id": 22616
     },
-    "Misty Dusk Boots": {
-      "g": 5,
-      "src": "all_time",
-      "id": 22560
-    },
     "Misty Dusk Breeches": {
       "g": 4,
       "src": "30d",
@@ -10186,11 +9887,6 @@
       "g": 3,
       "src": "all_time",
       "id": 22448
-    },
-    "Misty Dusk Fists": {
-      "g": 8,
-      "src": "latest",
-      "id": 22532
     },
     "Misty Dusk Guards": {
       "g": 1,
@@ -10268,11 +9964,11 @@
       "id": 21994
     },
     "Musical Mana Wisp": {
-      "g": 75,
+      "g": 76,
       "src": "30d",
       "id": 38839,
-      "v30": 1098,
-      "lat": 72,
+      "v30": 873,
+      "lat": 84,
       "a7": 77
     },
     "Mysterious Astra Cuirass": {
@@ -10282,7 +9978,7 @@
       "v30": 1
     },
     "Mysterious Astra Gauntlets": {
-      "g": 3,
+      "g": 1,
       "src": "all_time",
       "id": 22730
     },
@@ -10435,7 +10131,7 @@
       "id": 24108
     },
     "Nuimari Cuirass": {
-      "g": 6,
+      "g": 1,
       "src": "all_time",
       "id": 22667
     },
@@ -10453,11 +10149,6 @@
       "g": 1,
       "src": "latest",
       "id": 22639
-    },
-    "Nuimari Sabatons": {
-      "g": 5,
-      "src": "latest",
-      "id": 22751
     },
     "Nuimari Tassets": {
       "g": 8,
@@ -10490,28 +10181,28 @@
       "id": 34607
     },
     "Obsidian Boots": {
-      "g": 1202,
+      "g": 1139,
       "src": "30d",
       "id": 35590,
-      "v30": 54,
-      "lat": 1516,
-      "a7": 996
+      "v30": 52,
+      "lat": 230,
+      "a7": 1002
     },
     "Obsidian Bow": {
-      "g": 2365,
+      "g": 1414,
       "src": "30d",
       "id": 34615,
-      "v30": 132,
-      "lat": 412,
-      "a7": 4150
+      "v30": 130,
+      "lat": 5580,
+      "a7": 2476
     },
     "Obsidian Breeches": {
-      "g": 5263,
+      "g": 1979,
       "src": "30d",
       "id": 35588,
       "v30": 36,
       "lat": 1041,
-      "a7": 3735
+      "a7": 5477
     },
     "Obsidian Cap": {
       "g": 1965,
@@ -10519,7 +10210,7 @@
       "id": 35586,
       "v30": 28,
       "lat": 1500,
-      "a7": 3165
+      "a7": 3050
     },
     "Obsidian Club": {
       "g": 3840,
@@ -10527,7 +10218,7 @@
       "id": 34609,
       "v30": 26,
       "lat": 2944,
-      "a7": 2748
+      "a7": 2971
     },
     "Obsidian Cuirass": {
       "g": 4201,
@@ -10535,28 +10226,28 @@
       "id": 35592
     },
     "Obsidian Dagger": {
-      "g": 4651,
+      "g": 2527,
       "src": "30d",
       "id": 34602,
-      "v30": 38,
+      "v30": 36,
       "lat": 3773,
       "a7": 2418
     },
     "Obsidian Fists": {
-      "g": 2602,
+      "g": 1286,
       "src": "30d",
       "id": 35589,
-      "v30": 82,
-      "lat": 758,
-      "a7": 5598
+      "v30": 72,
+      "lat": 1339,
+      "a7": 936
     },
     "Obsidian Flute": {
-      "g": 3054,
+      "g": 3104,
       "src": "30d",
       "id": 34617,
-      "v30": 31,
-      "lat": 76,
-      "a7": 3732
+      "v30": 32,
+      "lat": 1020,
+      "a7": 3661
     },
     "Obsidian Gauntlets": {
       "g": 222,
@@ -10564,17 +10255,18 @@
       "id": 35594
     },
     "Obsidian Gloves": {
-      "g": 671,
+      "g": 659,
       "src": "30d",
       "id": 35584,
-      "v30": 60,
+      "v30": 55,
       "lat": 1400,
-      "a7": 904
+      "a7": 1243
     },
     "Obsidian Greataxe": {
-      "g": 136,
-      "src": "latest",
-      "id": 34608
+      "g": 125,
+      "src": "30d",
+      "id": 34608,
+      "v30": 1
     },
     "Obsidian Greatclub": {
       "g": 16075,
@@ -10584,7 +10276,7 @@
       "lat": 32000
     },
     "Obsidian Greatsword": {
-      "g": 7196,
+      "g": 95,
       "src": "30d",
       "id": 34604,
       "v30": 5,
@@ -10602,12 +10294,12 @@
       "id": 35591
     },
     "Obsidian Hood": {
-      "g": 1320,
+      "g": 1380,
       "src": "30d",
       "id": 35581,
-      "v30": 56,
+      "v30": 55,
       "lat": 1538,
-      "a7": 1360
+      "a7": 1409
     },
     "Obsidian Jerkin": {
       "g": 1517,
@@ -10615,46 +10307,45 @@
       "id": 35587,
       "v30": 27,
       "lat": 663,
-      "a7": 1636
+      "a7": 2070
     },
     "Obsidian Katana": {
-      "g": 2067,
+      "g": 334,
       "src": "30d",
       "id": 34605,
       "v30": 7,
-      "lat": 8999
+      "lat": 1000
     },
     "Obsidian Longspear": {
-      "g": 2365,
+      "g": 1741,
       "src": "30d",
       "id": 34612,
-      "v30": 13,
-      "lat": 8999,
-      "a7": 5257
+      "v30": 12,
+      "lat": 1514,
+      "a7": 1514
     },
     "Obsidian Lute": {
-      "g": 1523,
+      "g": 80,
       "src": "30d",
       "id": 34616,
-      "v30": 18,
-      "lat": 76,
-      "a7": 85
+      "v30": 17,
+      "a7": 84
     },
     "Obsidian Nodachi": {
-      "g": 1828,
+      "g": 1943,
       "src": "30d",
       "id": 34606,
-      "v30": 100,
-      "lat": 250,
-      "a7": 2653
+      "v30": 90,
+      "lat": 5100,
+      "a7": 2472
     },
     "Obsidian Pants": {
-      "g": 2622,
+      "g": 2619,
       "src": "30d",
       "id": 35583,
-      "v30": 25,
+      "v30": 23,
       "lat": 1850,
-      "a7": 687
+      "a7": 1074
     },
     "Obsidian Sabatons": {
       "g": 350,
@@ -10663,65 +10354,65 @@
       "v30": 1
     },
     "Obsidian Scepter": {
-      "g": 3825,
+      "g": 1718,
       "src": "30d",
       "id": 34613,
       "v30": 23,
-      "lat": 26999,
-      "a7": 9494
+      "lat": 160,
+      "a7": 160
     },
     "Obsidian Shield": {
-      "g": 2518,
+      "g": 2541,
       "src": "30d",
       "id": 34618,
-      "v30": 170,
-      "lat": 748,
-      "a7": 1555
+      "v30": 173,
+      "lat": 2575,
+      "a7": 925
     },
     "Obsidian Shirt": {
-      "g": 1017,
+      "g": 1267,
       "src": "30d",
       "id": 35582,
-      "v30": 18,
-      "lat": 2817,
-      "a7": 1491
+      "v30": 19,
+      "lat": 3288,
+      "a7": 2330
     },
     "Obsidian Shoes": {
-      "g": 1993,
+      "g": 2108,
       "src": "30d",
       "id": 35585,
-      "v30": 36,
+      "v30": 31,
       "lat": 2090,
-      "a7": 1162
+      "a7": 2090
     },
     "Obsidian Shortspear": {
-      "g": 2160,
+      "g": 2580,
       "src": "30d",
       "id": 34611,
-      "v30": 76,
-      "lat": 3093,
-      "a7": 2987
+      "v30": 80,
+      "lat": 9020,
+      "a7": 2515
     },
     "Obsidian Staff": {
-      "g": 3378,
+      "g": 3192,
       "src": "30d",
       "id": 34614,
-      "v30": 38,
-      "lat": 8499,
-      "a7": 5035
+      "v30": 37,
+      "lat": 250,
+      "a7": 4717
     },
     "Obsidian Sword": {
-      "g": 770,
+      "g": 128,
       "src": "30d",
       "id": 34603,
-      "v30": 15,
-      "lat": 150,
-      "a7": 924
+      "v30": 17,
+      "lat": 105
     },
     "Offensive Blitz": {
-      "g": 11,
-      "src": "latest",
-      "id": 21932
+      "g": 1,
+      "src": "30d",
+      "id": 21932,
+      "v30": 1
     },
     "Old Longing": {
       "g": 3,
@@ -10815,8 +10506,7 @@
       "src": "30d",
       "id": 35596,
       "v30": 2,
-      "lat": 1450,
-      "a7": 1450
+      "lat": 1450
     },
     "Ominous Obsidian Jerkin": {
       "g": 4450,
@@ -10829,7 +10519,7 @@
       "id": 34622
     },
     "Ominous Obsidian Longspear": {
-      "g": 31000,
+      "g": 300,
       "src": "latest",
       "id": 34629
     },
@@ -10840,9 +10530,8 @@
     },
     "Ominous Obsidian Nodachi": {
       "g": 1300,
-      "src": "30d",
-      "id": 34623,
-      "v30": 1
+      "src": "latest",
+      "id": 34623
     },
     "Ominous Obsidian Pants": {
       "g": 3000,
@@ -10878,8 +10567,7 @@
       "src": "30d",
       "id": 35600,
       "v30": 2,
-      "lat": 3000,
-      "a7": 3000
+      "lat": 3000
     },
     "Ominous Obsidian Shortspear": {
       "g": 350,
@@ -10901,19 +10589,14 @@
       "g": 89,
       "src": "30d",
       "id": 38835,
-      "v30": 3588,
-      "lat": 95,
-      "a7": 97
+      "v30": 3539,
+      "lat": 94,
+      "a7": 96
     },
     "Orc Hunter": {
       "g": 10,
       "src": "latest",
       "id": 21970
-    },
-    "Order of Pavitra the Conqueror": {
-      "g": 2,
-      "src": "all_time",
-      "id": 22451
     },
     "Outlaw": {
       "g": 35000,
@@ -10940,11 +10623,6 @@
       "src": "latest",
       "id": 22204
     },
-    "Pavitra's Victory": {
-      "g": 7,
-      "src": "all_time",
-      "id": 22507
-    },
     "Peace Keeping Cuirass": {
       "g": 6,
       "src": "latest",
@@ -10962,8 +10640,8 @@
       "v30": 1
     },
     "Peace Keeping Sabatons": {
-      "g": 10,
-      "src": "latest",
+      "g": 1,
+      "src": "all_time",
       "id": 22754
     },
     "Peace Keeping Tassets": {
@@ -10976,17 +10654,6 @@
       "src": "30d",
       "id": 22782,
       "v30": 2
-    },
-    "Peaceful Cloud Belt": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22613
-    },
-    "Peaceful Cloud Boots": {
-      "g": 11,
-      "src": "all_time",
-      "id": 22557,
-      "v30": 1
     },
     "Peaceful Cloud Cap": {
       "g": 5,
@@ -11047,9 +10714,8 @@
       "g": 34,
       "src": "30d",
       "id": 38845,
-      "v30": 8245,
-      "lat": 36,
-      "a7": 33
+      "v30": 7954,
+      "lat": 37
     },
     "Plushie Hat Prize Egg": {
       "g": 1150,
@@ -11071,39 +10737,10 @@
       "src": "latest",
       "id": 21860
     },
-    "Prisoner Hood": {
-      "g": 14,
-      "src": "all_time",
-      "id": 17897,
-      "v30": 2
-    },
-    "Prisoner Pants": {
-      "g": 24,
-      "src": "all_time",
-      "id": 17899,
-      "v30": 1
-    },
-    "Prisoner Shirt": {
-      "g": 19,
-      "src": "all_time",
-      "id": 17898,
-      "v30": 1
-    },
-    "Prospector's Wanderlust Belt": {
-      "g": 5,
-      "src": "all_time",
-      "id": 22614,
-      "v30": 1
-    },
     "Prospector's Wanderlust Boots": {
       "g": 10,
       "src": "latest",
       "id": 22558
-    },
-    "Prospector's Wanderlust Breeches": {
-      "g": 15,
-      "src": "latest",
-      "id": 22502
     },
     "Prospector's Wanderlust Cap": {
       "g": 2,
@@ -11122,12 +10759,6 @@
       "g": 1,
       "src": "latest",
       "id": 22586
-    },
-    "Prospector's Wanderlust Jerkin": {
-      "g": 2,
-      "src": "all_time",
-      "id": 22474,
-      "v30": 1
     },
     "Punished Believer's Boots": {
       "g": 2,
@@ -11259,31 +10890,19 @@
       "src": "all_time",
       "id": 23741
     },
-    "Purified Monk's Shoes": {
-      "g": 3,
-      "src": "all_time",
-      "id": 23744,
-      "v30": 1
-    },
     "Purple Mirror Shard": {
       "g": 40,
       "src": "latest",
       "id": 21898
     },
-    "Quick Robber's Boots": {
-      "g": 3,
-      "src": "all_time",
-      "id": 24445,
-      "v30": 1
-    },
     "Quick Robber's Breeches": {
-      "g": 4,
+      "g": 1,
       "src": "all_time",
       "id": 24444,
       "v30": 1
     },
     "Quick Robber's Jerkin": {
-      "g": 6,
+      "g": 1,
       "src": "all_time",
       "id": 24443,
       "v30": 1
@@ -11431,7 +11050,7 @@
       "id": 24865
     },
     "Rancor's Melody": {
-      "g": 100,
+      "g": 1,
       "src": "latest",
       "id": 21950
     },
@@ -11472,40 +11091,40 @@
       "v30": 1
     },
     "Reckless Captain's Cuirass": {
-      "g": 20,
+      "g": 17,
       "src": "30d",
       "id": 19334,
       "v30": 29,
-      "lat": 15,
-      "a7": 16
+      "a7": 11
     },
     "Reckless Captain's Gauntlets": {
       "g": 16,
       "src": "30d",
       "id": 19336,
-      "v30": 42,
-      "lat": 19
+      "v30": 40,
+      "lat": 19,
+      "a7": 18
     },
     "Reckless Captain's Greaves": {
-      "g": 29,
+      "g": 17,
       "src": "30d",
       "id": 19338,
-      "v30": 36,
+      "v30": 35,
       "lat": 33,
-      "a7": 115
+      "a7": 33
     },
     "Reckless Captain's Helm": {
       "g": 18,
       "src": "30d",
       "id": 19333,
-      "v30": 38,
-      "a7": 26
+      "v30": 40,
+      "a7": 22
     },
     "Reckless Captain's Sabatons": {
       "g": 16,
       "src": "30d",
       "id": 19339,
-      "v30": 40,
+      "v30": 39,
       "lat": 13,
       "a7": 14
     },
@@ -11515,15 +11134,15 @@
       "id": 19337,
       "v30": 40,
       "lat": 16,
-      "a7": 18
+      "a7": 13
     },
     "Reckless Captain's Vambraces": {
       "g": 23,
       "src": "30d",
       "id": 19335,
-      "v30": 32,
-      "lat": 25,
-      "a7": 18
+      "v30": 33,
+      "lat": 13,
+      "a7": 16
     },
     "Recollections Gloves": {
       "g": 75,
@@ -11594,12 +11213,6 @@
       "g": 95,
       "src": "latest",
       "id": 22156
-    },
-    "Red Dream": {
-      "g": 6,
-      "src": "all_time",
-      "id": 21877,
-      "v30": 1
     },
     "Red Rose Petals": {
       "g": 100,
@@ -11705,7 +11318,7 @@
       "id": 22774
     },
     "Ritual Requiem Gloves": {
-      "g": 10,
+      "g": 1,
       "src": "latest",
       "id": 22321
     },
@@ -11780,11 +11393,6 @@
       "src": "latest",
       "id": 22599
     },
-    "Ruthless Death's Boots": {
-      "g": 7,
-      "src": "all_time",
-      "id": 22543
-    },
     "Ruthless Death's Cap": {
       "g": 7,
       "src": "all_time",
@@ -11821,6 +11429,12 @@
       "g": 1,
       "src": "latest",
       "id": 22677
+    },
+    "Safety First Helm": {
+      "g": 5,
+      "src": "30d",
+      "id": 22621,
+      "v30": 1
     },
     "Safety First Vambraces": {
       "g": 1,
@@ -11905,12 +11519,6 @@
       "g": 5,
       "src": "30d",
       "id": 22421,
-      "v30": 1
-    },
-    "Sea Witch Shirt": {
-      "g": 7,
-      "src": "all_time",
-      "id": 22281,
       "v30": 1
     },
     "Sea Witch Shoes": {
@@ -12057,11 +11665,11 @@
       "id": 23879
     },
     "Searing Oath": {
-      "g": 1294,
+      "g": 1199,
       "src": "30d",
       "id": 18661,
       "v30": 15,
-      "lat": 810,
+      "lat": 960,
       "a7": 910
     },
     "Searing Outcry": {
@@ -12233,7 +11841,7 @@
       "id": 22108
     },
     "Shining Silk Hood": {
-      "g": 475,
+      "g": 10,
       "src": "latest",
       "id": 22241
     },
@@ -12260,12 +11868,12 @@
       "v30": 1
     },
     "Shroudmaster Earring": {
-      "g": 20,
+      "g": 19,
       "src": "30d",
       "id": 38767,
-      "v30": 22,
-      "lat": 7,
-      "a7": 12
+      "v30": 23,
+      "lat": 10,
+      "a7": 8
     },
     "Shroudmaster Necklace": {
       "g": 18,
@@ -12276,12 +11884,11 @@
       "a7": 30
     },
     "Shroudmaster Ring": {
-      "g": 15,
+      "g": 13,
       "src": "30d",
       "id": 38765,
-      "v30": 11,
-      "lat": 8,
-      "a7": 9
+      "v30": 12,
+      "a7": 4
     },
     "Sidewise Green Elk Beanie": {
       "g": 150,
@@ -12319,16 +11926,12 @@
       "id": 35677
     },
     "Silent Forest Belt": {
-      "g": 8,
-      "src": "all_time",
+      "g": 5,
+      "src": "30d",
       "id": 22618,
-      "v30": 1
-    },
-    "Silent Forest Breeches": {
-      "g": 6,
-      "src": "all_time",
-      "id": 22506,
-      "v30": 1
+      "v30": 2,
+      "lat": 10,
+      "a7": 10
     },
     "Silent Forest Cap": {
       "g": 11,
@@ -12407,17 +12010,6 @@
       "src": "all_time",
       "id": 22729
     },
-    "Silver Shadow Greaves": {
-      "g": 5,
-      "src": "all_time",
-      "id": 22701,
-      "v30": 1
-    },
-    "Silver Shadow Helm": {
-      "g": 3,
-      "src": "latest",
-      "id": 22645
-    },
     "Silver Shadow Sabatons": {
       "g": 1,
       "src": "latest",
@@ -12459,7 +12051,7 @@
       "id": 22262
     },
     "Singing Phoenix Shoes": {
-      "g": 10500,
+      "g": 7,
       "src": "latest",
       "id": 22346
     },
@@ -12489,11 +12081,10 @@
       "id": 21925
     },
     "Sly Plunderer's Hood": {
-      "g": 3,
+      "g": 5,
       "src": "30d",
       "id": 23803,
-      "v30": 2,
-      "lat": 5
+      "v30": 1
     },
     "Sly Plunderer's Pants": {
       "g": 20,
@@ -12515,7 +12106,7 @@
       "g": 33,
       "src": "30d",
       "id": 38841,
-      "v30": 7364
+      "v30": 7684
     },
     "Snake Fang": {
       "g": 20,
@@ -12543,52 +12134,52 @@
       "id": 35536
     },
     "Soothsayer Earrings": {
-      "g": 163,
+      "g": 50,
       "src": "30d",
       "id": 39668,
       "v30": 36,
       "lat": 46,
-      "a7": 450
+      "a7": 57
     },
     "Soothsayer Necklace": {
-      "g": 209,
+      "g": 80,
       "src": "30d",
       "id": 39666,
-      "v30": 18,
+      "v30": 15,
       "lat": 50,
       "a7": 40
     },
     "Soothsayer Ring": {
-      "g": 481,
+      "g": 61,
       "src": "30d",
       "id": 39667,
       "v30": 31,
       "lat": 42,
-      "a7": 1193
+      "a7": 31
     },
     "Sorcerer Earrings": {
-      "g": 467,
+      "g": 68,
       "src": "30d",
       "id": 39665,
       "v30": 51,
-      "lat": 77,
-      "a7": 187
+      "lat": 44,
+      "a7": 59
     },
     "Sorcerer Necklace": {
-      "g": 175,
+      "g": 73,
       "src": "30d",
       "id": 39663,
-      "v30": 23,
-      "lat": 69,
-      "a7": 80
+      "v30": 27,
+      "lat": 81,
+      "a7": 75
     },
     "Sorcerer Ring": {
       "g": 42,
       "src": "30d",
       "id": 39664,
       "v30": 32,
-      "lat": 44,
-      "a7": 43
+      "lat": 2,
+      "a7": 30
     },
     "Soul Summoner's Red Gloves": {
       "g": 6,
@@ -12611,12 +12202,12 @@
       "id": 22342
     },
     "Spiritflesh Sword": {
-      "g": 179,
+      "g": 25,
       "src": "latest",
       "id": 21931
     },
     "Splitting Earth": {
-      "g": 7,
+      "g": 1,
       "src": "all_time",
       "id": 22004
     },
@@ -12731,17 +12322,6 @@
       "src": "all_time",
       "id": 22283
     },
-    "Sun's End Shoes": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22367,
-      "v30": 1
-    },
-    "Sun's End Sleeves": {
-      "g": 2,
-      "src": "all_time",
-      "id": 22395
-    },
     "Sun's Target": {
       "g": 6,
       "src": "latest",
@@ -12753,7 +12333,7 @@
       "id": 34657
     },
     "Sunset Haze Greatclub": {
-      "g": 150,
+      "g": 2,
       "src": "latest",
       "id": 31939
     },
@@ -12766,12 +12346,6 @@
       "g": 20,
       "src": "latest",
       "id": 22017
-    },
-    "Survivor Butcher": {
-      "g": 15,
-      "src": "all_time",
-      "id": 21935,
-      "v30": 1
     },
     "Survivor Slayer": {
       "g": 10,
@@ -12856,7 +12430,7 @@
       "id": 21989
     },
     "Terror's Erasure": {
-      "g": 16,
+      "g": 1,
       "src": "all_time",
       "id": 21961,
       "v30": 1
@@ -12877,21 +12451,10 @@
       "src": "latest",
       "id": 21920
     },
-    "The Unforgiven": {
-      "g": 4,
-      "src": "all_time",
-      "id": 21983
-    },
     "Thief's Resolution": {
       "g": 1,
       "src": "latest",
       "id": 34243
-    },
-    "Thornscale Shield": {
-      "g": 7,
-      "src": "all_time",
-      "id": 24468,
-      "v30": 1
     },
     "Thrall's Despair": {
       "g": 9,
@@ -12994,11 +12557,6 @@
       "id": 42575,
       "v30": 1
     },
-    "Torment's Abyss": {
-      "g": 7,
-      "src": "all_time",
-      "id": 22022
-    },
     "Torment's Chaos": {
       "g": 1,
       "src": "latest",
@@ -13011,15 +12569,8 @@
     },
     "Torment's Pain": {
       "g": 1,
-      "src": "30d",
-      "id": 22025,
-      "v30": 1
-    },
-    "Torment's Ruins": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22024,
-      "v30": 1
+      "src": "latest",
+      "id": 22025
     },
     "Torment's Sacrifice": {
       "g": 4,
@@ -13138,15 +12689,9 @@
       "id": 34679
     },
     "Twilight Sage: Verity": {
-      "g": 49,
+      "g": 8,
       "src": "latest",
       "id": 22100
-    },
-    "Twilight Sage: Volition": {
-      "g": 6,
-      "src": "all_time",
-      "id": 22101,
-      "v30": 1
     },
     "Twilight Wanderer": {
       "g": 8100,
@@ -13181,16 +12726,14 @@
     "Twisted Shadows": {
       "g": 7,
       "src": "all_time",
-      "id": 22185,
-      "v30": 1
+      "id": 22185
     },
     "Two-Hander Metal Mana Wisp": {
-      "g": 88,
+      "g": 89,
       "src": "30d",
       "id": 38836,
-      "v30": 2717,
-      "lat": 97,
-      "a7": 85
+      "v30": 2637,
+      "lat": 100
     },
     "Tyrant's Nail Clippers": {
       "g": 1,
@@ -13212,12 +12755,6 @@
       "g": 50,
       "src": "latest",
       "id": 22072
-    },
-    "Unstoppable Force": {
-      "g": 197,
-      "src": "all_time",
-      "id": 21953,
-      "v30": 2
     },
     "Unworthy Overlord's Seal": {
       "g": 10,
@@ -13241,18 +12778,14 @@
     },
     "Usurper's Helm": {
       "g": 5,
-      "src": "latest",
-      "id": 22625
+      "src": "30d",
+      "id": 22625,
+      "v30": 1
     },
     "Usurper's Tassets": {
       "g": 3,
       "src": "latest",
       "id": 22793
-    },
-    "Vanished Star Tear": {
-      "g": 4,
-      "src": "all_time",
-      "id": 22061
     },
     "Vengeful Annihilator Cuirass": {
       "g": 6400,
@@ -13325,12 +12858,6 @@
       "src": "latest",
       "id": 24446
     },
-    "Vicious Thug's Greaves": {
-      "g": 7,
-      "src": "all_time",
-      "id": 24447,
-      "v30": 1
-    },
     "Vicious Thug's Sabatons": {
       "g": 10,
       "src": "latest",
@@ -13340,11 +12867,6 @@
       "g": 40000,
       "src": "latest",
       "id": 34693
-    },
-    "Victorious General's Cuirass": {
-      "g": 7,
-      "src": "all_time",
-      "id": 22655
     },
     "Victorious General's Gauntlets": {
       "g": 8,
@@ -13381,14 +12903,8 @@
       "src": "latest",
       "id": 21894
     },
-    "Violent Wind": {
-      "g": 4,
-      "src": "all_time",
-      "id": 24450,
-      "v30": 1
-    },
     "Violet Glory Belt": {
-      "g": 45,
+      "g": 9,
       "src": "all_time",
       "id": 22615
     },
@@ -13397,16 +12913,6 @@
       "src": "30d",
       "id": 22559,
       "v30": 1
-    },
-    "Violet Glory Breeches": {
-      "g": 2,
-      "src": "all_time",
-      "id": 22503
-    },
-    "Violet Glory Cap": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22447
     },
     "Violet Glory Fists": {
       "g": 1,
@@ -13524,7 +13030,7 @@
       "id": 34668
     },
     "Weighty Resolution": {
-      "g": 9,
+      "g": 4,
       "src": "all_time",
       "id": 22210
     },
@@ -13537,6 +13043,12 @@
       "g": 1,
       "src": "30d",
       "id": 22171,
+      "v30": 1
+    },
+    "Wicked Scoundrel's Belt": {
+      "g": 8,
+      "src": "30d",
+      "id": 22612,
       "v30": 1
     },
     "Wicked Scoundrel's Boots": {
@@ -13573,11 +13085,6 @@
       "g": 5,
       "src": "all_time",
       "id": 22247
-    },
-    "Wild Dream Pants": {
-      "g": 1,
-      "src": "all_time",
-      "id": 22303
     },
     "Wild Dream Sash": {
       "g": 1,
@@ -13635,9 +13142,8 @@
     },
     "Winter Rain Sabatons": {
       "g": 10,
-      "src": "30d",
-      "id": 22753,
-      "v30": 1
+      "src": "latest",
+      "id": 22753
     },
     "Winter Rain Tassets": {
       "g": 12,
@@ -13728,9 +13234,8 @@
       "g": 65,
       "src": "30d",
       "id": 38837,
-      "v30": 7263,
-      "lat": 66,
-      "a7": 66
+      "v30": 7337,
+      "lat": 63
     },
     "World Atlas Designer": {
       "g": 5,
@@ -13743,11 +13248,6 @@
       "id": 22112,
       "v30": 1
     },
-    "Wraith Agent's Cuirass": {
-      "g": 11,
-      "src": "latest",
-      "id": 22671
-    },
     "Wraith Agent's Gauntlets": {
       "g": 6,
       "src": "30d",
@@ -13755,7 +13255,7 @@
       "v30": 1
     },
     "Wraith Agent's Greaves": {
-      "g": 4,
+      "g": 2,
       "src": "all_time",
       "id": 22699
     },
@@ -13764,16 +13264,6 @@
       "src": "30d",
       "id": 22643,
       "v30": 1
-    },
-    "Wraith Agent's Sabatons": {
-      "g": 3,
-      "src": "all_time",
-      "id": 22755
-    },
-    "Wraith Agent's Tassets": {
-      "g": 5,
-      "src": "latest",
-      "id": 22811
     },
     "Wraith Agent's Vambraces": {
       "g": 12,

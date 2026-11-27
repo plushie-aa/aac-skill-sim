@@ -412,6 +412,7 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_illusion04.png",
           "desc": "Traps an enemy inside a bubble for and slowly lifts it into the air. \nEnemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect.\nBubble duration reduced -50% in PvP.",
+          "simSkillId": "witchcraft_bubble_trap",
           "ancestrals": [
             {
               "id": "gale",
@@ -431,8 +432,7 @@
               "desc": "Summons a mist at the target location that lasts for 15 seconds, affecting all enemies within a 4m radius.\nEach time an enemy enters the mist it becomes trapped in a bubble, rising into the air for 5.4s.\nEnemies in bubbles can't attack, but take -50% less Magic Damage.\nBeing damaged by a direct attack will free the target early, but debuffs that deal damage over time will not end this effect. \nBubble duration reduced -50% in PvP.",
               "simSkillId": "witchcraft_bubble_trap_mist"
             }
-          ],
-          "simSkillId": "witchcraft_bubble_trap"
+          ]
         },
         {
           "key": "witchcraft_insidious_whisper",
@@ -484,6 +484,7 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_illusion18.png",
           "desc": "Causes Fear in all nearby enemies for , forcing them to flee and Stunning them for 2 seconds.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect.",
+          "simSkillId": "witchcraft_banshee_wail",
           "ancestrals": [
             {
               "id": "stone",
@@ -503,8 +504,7 @@
               "desc": "Summons a Phantasm at the target location for 6 seconds, which inflicts Fear on all enemies within a 5m radius every second. Feared enemies flee for up to 2.8s, then are Stunned for 2 seconds afterward.\nBeing damaged by a direct attack has a chance to free the target early, but debuffs that deal damage over time will not end this effect. \nThe duration of this skill's Fear effect is not affected by the caster's Passive skills.\nCannot be used in conjunction with Mist Summon Wraith (Occultism).",
               "simSkillId": "witchcraft_banshee_wail_mist"
             }
-          ],
-          "simSkillId": "witchcraft_banshee_wail"
+          ]
         },
         {
           "key": "witchcraft_focal_concussion",
@@ -828,6 +828,7 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_love10.png",
           "desc": "Imprisons all enemies within a boundary for 12 seconds. Enemies can break out if they use enough force.",
+          "simSkillId": "defense_imprison",
           "ancestrals": [
             {
               "id": "wave",
@@ -847,8 +848,7 @@
               "desc": "Summons a 20m wide wall of mist directly in front of you. The wall remains in place for 12 seconds. \nEnemies can break through if they use enough force.",
               "simSkillId": "defense_imprison_mist"
             }
-          ],
-          "simSkillId": "defense_imprison"
+          ]
         },
         {
           "key": "defense_invincibility",
@@ -1037,6 +1037,7 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_will24.png",
           "desc": "Inflicts Shaken on all enemies within a m radius, decreasing their Move Speed -27%, Skill Damage -8%, and Attack Speed -75. Grants the caster 1 stack of Inspired.\n\nInspired:\n- Increases Attack Speed +53.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- Stacks up to 3 times.",
+          "simSkillId": "auramancy_thwart",
           "ancestrals": [
             {
               "id": "mist",
@@ -1056,8 +1057,7 @@
               "desc": "Increases received damage +20 on enemies in a 6m radius for 5 seconds.\nGrants the caster 1 stack of Inspired.\n\nInspired:\n- Increases Attack Speed +53.\n- Vicious Implosion (Auramancy): increases damage +52%.\n- Antithesis (Vitalism): decreases cooldown 0.6 sec.\n- Mend (Vitalism): decreases cooldown 2.1 sec.\n- Fervent Healing (Vitalism): decreases cooldown 1.2 sec.\n- Stacks up to 3 times.",
               "simSkillId": "auramancy_thwart_stone"
             }
-          ],
-          "simSkillId": "auramancy_thwart"
+          ]
         },
         {
           "key": "auramancy_comet_s_boon",
@@ -1510,6 +1510,7 @@
           "points": 1,
           "icon": "assets/icons/icon_skill_death13.png",
           "desc": "Summons a Wraith that deals Magic Damage per second for a maximum of 9 seconds to all enemies within 7 meters. Inflicts enemies with the Wraith Curse, reducing Move Speed, Attack Speed, and Cast Speed.",
+          "simSkillId": "occultism_summon_wraith",
           "ancestrals": [
             {
               "id": "wave",
@@ -1529,8 +1530,7 @@
               "desc": "Summons a corporeal Wraith at the target location, dealing a single burst of 627 (528 + 240% Magic Attack) Magic Damage to all enemies in a 7m radius. It then inflicts Wraith Curse in the area for up to 9 seconds, reducing enemies' Move Speed, Attack Speed, and Cast Speed.\nCannot be used in conjunction with Mist Banshee Wail (Witchcraft)",
               "simSkillId": "occultism_summon_wraith_burst"
             }
-          ],
-          "simSkillId": "occultism_summon_wraith"
+          ]
         },
         {
           "key": "occultism_death_s_vengeance",
@@ -2781,6 +2781,7 @@
           "points": 1,
           "icon": "https://darugear.com/assets/icons/icon_skill_romance15.png",
           "desc": "Stuns an enemy for with a special performance. After the Stun ends, the enemy is Charmed and susceptible to other Songcraft skill effects. Reduces caster's Cast Time -20% for 5 seconds. Does not stop a performance skill.",
+          "simSkillId": "songcraft_startling_strain",
           "ancestrals": [
             {
               "id": "life",
@@ -2800,8 +2801,7 @@
               "desc": "Charms an enemy for 24s, making them more susceptible to other Songcraft skill effects.\nDecreases your Cast Time -20% for 5 seconds.\nThis skill does not stop ongoing Perform skills.",
               "simSkillId": "songcraft_startling_strain_wave"
             }
-          ],
-          "simSkillId": "songcraft_startling_strain"
+          ]
         },
         {
           "key": "songcraft_perform_quickstep",
@@ -3110,6 +3110,7 @@
           "points": 1,
           "icon": "assets/icons/icon_skill_love01.png",
           "desc": "Allies/caster: Instantly restores + Health.\nEnemies: Deals Magic Damage.\nHold ALT to use on yourself.",
+          "simSkillId": "vitalism_antithesis_heal",
           "ancestrals": [
             {
               "id": "life",
@@ -3133,8 +3134,7 @@
                 "vitalism_antithesis_wave_damage"
               ]
             }
-          ],
-          "simSkillId": "vitalism_antithesis_heal"
+          ]
         },
         {
           "key": "vitalism_resurgence",
